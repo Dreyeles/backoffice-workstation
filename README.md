@@ -1,6 +1,6 @@
 # 🚀 BackOffice WorkStation Suite
 
-Plataforma web integral de productividad, diagnóstico técnico y automatización operativa diseñada para asesores de **BackOffice Telecom** (HFC / FTTH / SIAC / Manto / Helix).
+Plataforma web integral de productividad, diagnóstico técnico y automatización operativa diseñada para asesores de **BackOffice**
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
