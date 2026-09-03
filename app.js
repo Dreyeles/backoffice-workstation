@@ -1419,13 +1419,24 @@ HASHTAGS: ${tagsStr}`.toUpperCase();
             }
         };
 
+        const resetRemedyModal = () => {
+            if (remedyInputFalla) remedyInputFalla.value = '';
+            if (remedyInputId) remedyInputId.value = '';
+            if (remedyInputDni) remedyInputDni.value = '';
+            if (remedyInputCliente) remedyInputCliente.value = '';
+            if (remedyInputDetalle) remedyInputDetalle.value = '';
+            remedyImagesList = [];
+            renderRemedyImages();
+            updateRemedyPreview();
+        };
+
         const closeRemedyModal = () => {
             if (remedyModal) remedyModal.classList.remove('active');
+            resetRemedyModal();
         };
 
         if (btnOpenRemedyModal) btnOpenRemedyModal.addEventListener('click', openRemedyModal);
         if (remedyModalClose) remedyModalClose.addEventListener('click', closeRemedyModal);
-        if (remedyModalCancel) remedyModalCancel.addEventListener('click', closeRemedyModal);
         if (remedyModal) {
             remedyModal.addEventListener('click', (e) => {
                 if (e.target === remedyModal) closeRemedyModal();
