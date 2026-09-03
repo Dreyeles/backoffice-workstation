@@ -1316,6 +1316,222 @@ HASHTAGS: ${tagsStr}`.toUpperCase();
             });
         }
 
+        // Setup Remedy Modal & Logic
+        const btnOpenRemedyModal = document.getElementById('btnOpenRemedyModal');
+        const remedyModal = document.getElementById('remedyModal');
+        const remedyModalClose = document.getElementById('remedyModalClose');
+        const remedyModalCancel = document.getElementById('remedyModalCancel');
+        const remedyInputFalla = document.getElementById('remedyInputFalla');
+        const remedyInputId = document.getElementById('remedyInputId');
+        const remedyInputDni = document.getElementById('remedyInputDni');
+        const remedyInputCliente = document.getElementById('remedyInputCliente');
+        const remedyInputDetalle = document.getElementById('remedyInputDetalle');
+        const remedyDropZone = document.getElementById('remedyDropZone');
+        const remedyImagesContainer = document.getElementById('remedyImagesContainer');
+        const btnClearRemedyImages = document.getElementById('btnClearRemedyImages');
+        const remedyPreviewBox = document.getElementById('remedyPreviewBox');
+        const btnCopyRemedyWord = document.getElementById('btnCopyRemedyWord');
+        const btnCopyRemedyText = document.getElementById('btnCopyRemedyText');
+
+        let remedyImagesList = [];
+
+        const getRemedyPlainText = () => {
+            const falla = remedyInputFalla?.value.trim() || '[Descripción de la falla]';
+            const id = remedyInputId?.value.trim() || '[Customer ID]';
+            const dni = remedyInputDni?.value.trim() || '[DNI/RUC]';
+            const cliente = remedyInputCliente?.value.trim() || '[Nombre del Cliente]';
+            const detalle = remedyInputDetalle?.value.trim() || '';
+
+            let text = `FALLA: ${falla}\n\n`;
+            text += `   • ID: ${id}\n`;
+            text += `   • DNI: ${dni}\n`;
+            text += `   • CLIENTE: ${cliente}\n`;
+            if (detalle) {
+                text += `   • ${detalle}\n`;
+            }
+            if (remedyImagesList.length > 0) {
+                text += `\n[${remedyImagesList.length} imagen(es) adjunta(s)]`;
+            }
+            return text;
+        };
+
+        const updateRemedyPreview = () => {
+            if (remedyPreviewBox) {
+                remedyPreviewBox.textContent = getRemedyPlainText();
+            }
+        };
+
+        const renderRemedyImages = () => {
+            if (!remedyImagesContainer) return;
+            remedyImagesContainer.innerHTML = '';
+            remedyImagesList.forEach((imgData, idx) => {
+                const thumbWrapper = document.createElement('div');
+                thumbWrapper.style.cssText = 'position:relative; width:90px; height:70px; border-radius:6px; overflow:hidden; border:1px solid var(--border-color); background:#000;';
+                
+                const img = document.createElement('img');
+                img.src = imgData;
+                img.style.cssText = 'width:100%; height:100%; object-fit:cover;';
+                
+                const delBtn = document.createElement('button');
+                delBtn.innerHTML = '✕';
+                delBtn.style.cssText = 'position:absolute; top:2px; right:2px; background:rgba(220,53,69,0.85); color:#fff; border:none; border-radius:50%; width:18px; height:18px; font-size:10px; cursor:pointer; display:flex; align-items:center; justify-content:center;';
+                delBtn.title = 'Eliminar imagen';
+                delBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    remedyImagesList.splice(idx, 1);
+                    renderRemedyImages();
+                    updateRemedyPreview();
+                });
+
+                thumbWrapper.appendChild(img);
+                thumbWrapper.appendChild(delBtn);
+                remedyImagesContainer.appendChild(thumbWrapper);
+            });
+            updateRemedyPreview();
+        };
+
+        const handleImageFile = (file) => {
+            if (!file || !file.type.startsWith('image/')) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                remedyImagesList.push(e.target.result);
+                renderRemedyImages();
+                showToast('Captura añadida a Remedy');
+            };
+            reader.readAsDataURL(file);
+        };
+
+        const openRemedyModal = () => {
+            if (remedyModal) {
+                // Auto-fill from main form if available
+                if (elements.genCustomer && elements.genCustomer.value.trim() && (!remedyInputCliente.value || remedyInputCliente.value === '')) {
+                    remedyInputCliente.value = elements.genCustomer.value.trim().toUpperCase();
+                }
+                if (elements.genDni && elements.genDni.value.trim() && (!remedyInputDni.value || remedyInputDni.value === '')) {
+                    remedyInputDni.value = elements.genDni.value.trim();
+                }
+                if (elements.genIdLlamada && elements.genIdLlamada.value.trim() && (!remedyInputId.value || remedyInputId.value === '')) {
+                    remedyInputId.value = elements.genIdLlamada.value.trim();
+                }
+                remedyModal.classList.add('active');
+                updateRemedyPreview();
+            }
+        };
+
+        const closeRemedyModal = () => {
+            if (remedyModal) remedyModal.classList.remove('active');
+        };
+
+        if (btnOpenRemedyModal) btnOpenRemedyModal.addEventListener('click', openRemedyModal);
+        if (remedyModalClose) remedyModalClose.addEventListener('click', closeRemedyModal);
+        if (remedyModalCancel) remedyModalCancel.addEventListener('click', closeRemedyModal);
+        if (remedyModal) {
+            remedyModal.addEventListener('click', (e) => {
+                if (e.target === remedyModal) closeRemedyModal();
+            });
+        }
+
+        [remedyInputFalla, remedyInputId, remedyInputDni, remedyInputCliente, remedyInputDetalle].forEach(inp => {
+            if (inp) inp.addEventListener('input', updateRemedyPreview);
+        });
+
+        if (btnClearRemedyImages) {
+            btnClearRemedyImages.addEventListener('click', () => {
+                remedyImagesList = [];
+                renderRemedyImages();
+                showToast('Imágenes eliminadas');
+            });
+        }
+
+        // Paste event support (Ctrl+V)
+        window.addEventListener('paste', (e) => {
+            if (!remedyModal || !remedyModal.classList.contains('active')) return;
+            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+            for (let item of items) {
+                if (item.type.indexOf('image') !== -1) {
+                    const blob = item.getAsFile();
+                    handleImageFile(blob);
+                }
+            }
+        });
+
+        // Drag and Drop support
+        if (remedyDropZone) {
+            remedyDropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                remedyDropZone.style.borderColor = 'var(--primary)';
+                remedyDropZone.style.background = 'rgba(2, 132, 199, 0.15)';
+            });
+            remedyDropZone.addEventListener('dragleave', () => {
+                remedyDropZone.style.borderColor = 'var(--border-color)';
+                remedyDropZone.style.background = 'rgba(0,0,0,0.15)';
+            });
+            remedyDropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                remedyDropZone.style.borderColor = 'var(--border-color)';
+                remedyDropZone.style.background = 'rgba(0,0,0,0.15)';
+                if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                    for (let file of e.dataTransfer.files) {
+                        handleImageFile(file);
+                    }
+                }
+            });
+        }
+
+        // Action: Copy Plain Text
+        if (btnCopyRemedyText) {
+            btnCopyRemedyText.addEventListener('click', () => {
+                const text = getRemedyPlainText();
+                copyToClipboard(text, 'Texto Remedy copiado');
+                addHistoryRecord('Remedy', 'Incidencia / Escalamiento', text);
+            });
+        }
+
+        // Action: Copy Rich Format for Word (With Embedded Images)
+        if (btnCopyRemedyWord) {
+            btnCopyRemedyWord.addEventListener('click', async () => {
+                const falla = remedyInputFalla?.value.trim() || '[Descripción de la falla]';
+                const id = remedyInputId?.value.trim() || '[Customer ID]';
+                const dni = remedyInputDni?.value.trim() || '[DNI/RUC]';
+                const cliente = remedyInputCliente?.value.trim() || '[Nombre del Cliente]';
+                const detalle = remedyInputDetalle?.value.trim() || '';
+
+                let htmlContent = `<div style="font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1f2937; line-height: 1.5;">`;
+                htmlContent += `<p style="margin: 0 0 10pt 0;"><strong>FALLA:</strong> ${falla}</p>`;
+                htmlContent += `<ul style="margin: 0 0 14pt 20pt; padding: 0;">`;
+                htmlContent += `<li style="margin-bottom: 3pt;"><strong>ID:</strong> ${id}</li>`;
+                htmlContent += `<li style="margin-bottom: 3pt;"><strong>DNI:</strong> ${dni}</li>`;
+                htmlContent += `<li style="margin-bottom: 3pt;"><strong>CLIENTE:</strong> ${cliente}</li>`;
+                if (detalle) {
+                    htmlContent += `<li style="margin-bottom: 3pt;">${detalle}</li>`;
+                }
+                htmlContent += `</ul>`;
+
+                if (remedyImagesList.length > 0) {
+                    htmlContent += `<div style="margin-top: 15pt;">`;
+                    remedyImagesList.forEach(imgData => {
+                        htmlContent += `<p style="margin: 0 0 12pt 0;"><img src="${imgData}" style="max-width: 100%; height: auto; border: 1px solid #d1d5db; border-radius: 4px;" /></p>`;
+                    });
+                    htmlContent += `</div>`;
+                }
+                htmlContent += `</div>`;
+
+                const plainText = getRemedyPlainText();
+
+                try {
+                    const blobHtml = new Blob([htmlContent], { type: 'text/html' });
+                    const blobText = new Blob([plainText], { type: 'text/plain' });
+                    const data = [new ClipboardItem({ 'text/html': blobHtml, 'text/plain': blobText })];
+                    await navigator.clipboard.write(data);
+                    showToast('📋 ¡Formato completo con fotos copiado! Listo para pegar en Word (Ctrl+V)');
+                    addHistoryRecord('Remedy', 'Incidencia Word / Escalamiento', plainText);
+                } catch (err) {
+                    // Fallback to text copy
+                    copyToClipboard(plainText, 'Texto Remedy copiado');
+                }
+            });
+        }
+
         // Setup Beta Info Popover
         const btnBetaInfo = document.getElementById('btnBetaInfo');
         const betaInfoPopover = document.getElementById('betaInfoPopover');
