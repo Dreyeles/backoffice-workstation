@@ -987,7 +987,7 @@ HASHTAGS: ${tagsStr}`.toUpperCase();
             const dsSnr = parseNumbers(elements.incInputDwsSnr.value);
             const usSnr = parseNumbers(elements.incInputUsSnr.value);
 
-            const validate = (values, min, max) => {
+            const validate = (values, min, max, unit = 'dB', checkVariation = false) => {
                 if (!values || values.length === 0) return { status: 'UNKNOWN', text: 'Esperando datos...' };
                 let outOfRange = false;
                 for (let v of values) {
@@ -998,10 +998,43 @@ HASHTAGS: ${tagsStr}`.toUpperCase();
                 }
                 const displayVals = values.length > 5 ? values.slice(0, 5).join(', ') + '...' : values.join(', ');
 
-                if (outOfRange) {
-                    return { status: 'ERROR', text: `Fuera de Rango (${displayVals})` };
+                // Variación de niveles en el bloque (Máx - Mín <= 4)
+                if (checkVariation && values.length > 1) {
+                    const minVal = Math.min(...values);
+                    const maxVal = Math.max(...values);
+                    const delta = +(maxVal - minVal).toFixed(2);
+                    const deltaExceeded = delta > 4.0;
+
+                    if (outOfRange) {
+                        if (deltaExceeded) {
+                            return { 
+                                status: 'ERROR', 
+                                text: `Fuera de Rango y Variación Excesiva (Δ: ${delta} ${unit} [Máx: ${maxVal}, Mín: ${minVal}] > 4.0 ${unit})` 
+                            };
+                        }
+                        return { 
+                            status: 'ERROR', 
+                            text: `Fuera de Rango (${displayVals} ${unit}) [Δ: ${delta} ${unit}]` 
+                        };
+                    }
+
+                    if (deltaExceeded) {
+                        return { 
+                            status: 'ERROR', 
+                            text: `⚠️ Variación Excesiva: Δ ${delta} ${unit} (Máx: ${maxVal}, Mín: ${minVal}) [Máx permitido: 4.0 ${unit}]` 
+                        };
+                    }
+
+                    return { 
+                        status: 'OK', 
+                        text: `Dentro del Rango (Δ: ${delta} ${unit} [Máx: ${maxVal}, Mín: ${minVal}] - Variación OK)` 
+                    };
                 }
-                return { status: 'OK', text: `Dentro del Rango (${displayVals})` };
+
+                if (outOfRange) {
+                    return { status: 'ERROR', text: `Fuera de Rango (${displayVals} ${unit})` };
+                }
+                return { status: 'OK', text: `Dentro del Rango (${displayVals} ${unit})` };
             };
 
             const setVisuals = (element, result, label) => {
@@ -1022,10 +1055,10 @@ HASHTAGS: ${tagsStr}`.toUpperCase();
                 }
             };
 
-            const dsSnrRes = validate(dsSnr, 33.5, null);
-            const dsPotRes = validate(dsPot, -15, 20.9);
-            const usSnrRes = validate(usSnr, 28, null);
-            const usPotRes = validate(usPot, 36.1, 52.9);
+            const dsSnrRes = validate(dsSnr, 33.5, null, 'dB', true);
+            const dsPotRes = validate(dsPot, -15, 20.9, 'dBmV', true);
+            const usSnrRes = validate(usSnr, 28, null, 'dB', false);
+            const usPotRes = validate(usPot, 35, 57, 'dBmV', false);
 
             setVisuals(elements.incResultUsSnr, usSnrRes, 'U/S SNR');
             setVisuals(elements.incResultDwsSnr, dsSnrRes, 'D/S SNR');

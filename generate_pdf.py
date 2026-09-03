@@ -516,11 +516,11 @@ html += f"""
             </tr>
             <tr>
                 <td>D/S SNR (Downstream SNR)</td>
-                <td>Mínimo: <strong>33.5 dB</strong></td>
+                <td>Mínimo: <strong>33.5 dB</strong> · <span class="badge badge-amber">Var. Bloque: Δ ≤ 4.0 dB</span><br><small style="color:#64748b;">(Diferencia Máx - Mín en el bloque no debe superar 4.0 dB)</small></td>
             </tr>
             <tr>
                 <td>Potencia Downstream (Rx)</td>
-                <td>Rango: <strong>-15.0 dBmV a +20.9 dBmV</strong></td>
+                <td>Rango: <strong>-15.0 dBmV a +20.9 dBmV</strong> · <span class="badge badge-amber">Var. Bloque: Δ ≤ 4.0 dBmV</span><br><small style="color:#64748b;">(Diferencia Máx - Mín en el bloque no debe superar 4.0 dBmV)</small></td>
             </tr>
             <tr>
                 <td>Potencia Upstream (Tx)</td>
