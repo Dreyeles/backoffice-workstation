@@ -17,7 +17,6 @@ Plataforma web integral de productividad, diagnóstico técnico y automatizació
 - **📚 Gestor Rápido de Plantillas & Snippets:** Rediseño a 1-clic con vista previa fluida al pasar el mouse (*Hover preview* expandible sin barras de scroll).
 - **🎈 Globos Contextuales de Advertencia (Popovers):** Notificaciones flotantes directas para funciones predictivas en Categorías de Cierre e Identificador de Equipos.
 - **📞 Ciclo de Llamada Estandarizado:** Formato unificado para casos sin contacto del cliente.
-- **📄 Matriz Ejecutiva Actualizada:** Exportador de matriz con desglose exhaustivo de comboboxes de fallas y motivos de cierre.
 
 ---
 
