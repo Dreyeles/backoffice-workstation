@@ -13,7 +13,7 @@
     <header class="app-header">
         <div class="brand">
             <div>
-                <div class="brand-title">WORKSTATION BACKOFFICE <span id="btnChangelog" style="display: inline-flex; align-items: center; border-radius: 4px; overflow: hidden; vertical-align: middle; margin-left: 0.5rem; font-size: 0.55em; letter-spacing: normal; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">6.0</span></span></div>
+                <div class="brand-title">WORKSTATION BACKOFFICE <span id="btnChangelog" style="display: inline-flex; align-items: center; border-radius: 4px; overflow: hidden; vertical-align: middle; margin-left: 0.5rem; font-size: 0.55em; letter-spacing: normal; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">7.0</span></span></div>
                 <div class="brand-subtitle">PLATAFORMA LOCAL DE PLANTILLAS Y SEGUIMIENTO PARA BO-FIJA</div>
             </div>
         </div>
@@ -494,23 +494,22 @@
 
     <!-- MODAL FOR CHANGELOG -->
     <div id="changelogModal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 530px;">
+        <div class="modal-content" style="max-width: 560px;">
             <div class="card-title">
-                <div class="card-title-text">🚀 Novedades de la Versión 6.0</div>
+                <div class="card-title-text">🚀 Novedades de la Versión 7.0</div>
                 <button id="changelogModalClose" class="btn btn-sm">✕</button>
             </div>
-            <div style="font-size: 0.93rem; line-height: 1.6; color: var(--text-main); margin-top: 1rem;">
-                <ul style="padding-left: 1.4rem; margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem;">
-                    <li><strong>2 Plantillas Inteligentes:</strong> Unificación en 2 vistas (SIAC / Helix y Mantenimiento). La plantilla SIAC detecta automáticamente ciclos de llamada (modo cian) con opción de forzar manual/auto.</li>
-                    <li><strong>Pegado Continuo y Concatenación de Contactos:</strong> El sistema identifica automáticamente si pegas un ID de llamada o Chat ID (UUID), permitiendo pegar múltiples IDs consecutivos sin borrar y concatenándolos ordenadamente con <code> / </code>.</li>
-                    <li><strong>Validador Dual HFC / FTTH:</strong> Nuevo soporte de validación para tecnología de Fibra Óptica (Transmission Power de 0.5 a 5.0 dBm y Receiving Power de -24.9 a -6.1 dBm) con selector switch interactivo HFC/FTTH.</li>
-                    <li><strong>SOT Condicional en SIAC:</strong> La línea de SOT solo se añade a la plantilla SIAC cuando el campo está completado.</li>
-                    <li><strong>Hashtags Estandarizados:</strong> Cuando no se seleccionan hashtags en la plantilla de mantenimiento, se muestra <code>HASHTAGS: N/A</code>.</li>
-                    <li><strong>Aviso Informativo BETA:</strong> Modal explicativo de validación y control de calidad al consultar el botón BETA o autocompletar categorías de cierre.</li>
-                    <li><strong>Descarte Rápido SGA:</strong> Se actualizó el descarte rápido para registrar <em>"SE VALIDA DATOS DE SOT E HISTORIAL EN SGA"</em>.</li>
+            <div style="font-size: 0.92rem; line-height: 1.55; color: var(--text-main); margin-top: 1rem;">
+                <ul style="padding-left: 1.3rem; margin-bottom: 1.3rem; display: flex; flex-direction: column; gap: 0.65rem;">
+                    <li><strong>🛠️ Generador de Escalamientos Remedy:</strong> Nuevo estructurador de incidencias con pegado directo de capturas con <code>Ctrl+V</code>, copiado enriquecido para Word y exportación a <strong>PDF en 1-clic</strong>.</li>
+                    <li><strong>⚡ Diagnóstico de Variación de Niveles HFC:</strong> Algoritmo inteligente que evalúa la diferencia en bloque (Máx - Mín &le; 4.0 dB/dBmV) en D/S SNR y Potencia Downstream, emitiendo alertas de degradación de planta.</li>
+                    <li><strong>📚 Gestor de Plantillas & Snippets:</strong> Rediseño a 1-clic con vista previa fluida al pasar el mouse (<em>Hover preview</em> sin barras de desplazamiento).</li>
+                    <li><strong>🎈 Globos Contextuales de Advertencia (Popovers):** Avisos informativos directos para funciones predictivas en Categorías de Cierre e Identificador de Equipos.</li>
+                    <li><strong>📞 Ciclo de Llamada Oficial:</strong> Estandarización del texto de descarte para casos sin contacto del cliente.</li>
+                    <li><strong>📄 Matriz Ejecutiva Actualizada:</strong> Nueva exportación en PDF de la matriz integral con desglose exhaustivo de comboboxes de fallas y motivos de cierre.</li>
                 </ul>
-                <p style="color: var(--text-muted); font-size: 0.85rem; border-top: 1px dashed var(--border-color); padding-top: 1rem; text-align: center;">
-                    ¡Desarrollado para hacer tu gestión más rápida, precisa y eficiente!
+                <p style="color: var(--text-muted); font-size: 0.82rem; border-top: 1px dashed var(--border-color); padding-top: 0.8rem; text-align: center;">
+                    ¡Optimizado para máxima velocidad, precisión técnica y productividad en BackOffice!
                 </p>
             </div>
         </div>

@@ -311,7 +311,7 @@ html = f"""<!DOCTYPE html>
             <h2>Back Office Técnica Fija · HITSS / América Móvil Perú</h2>
         </div>
         <div class="meta-area">
-            <div><strong>Plataforma:</strong> WorkStation BackOffice v6.0</div>
+            <div><strong>Plataforma:</strong> WorkStation BackOffice v7.0</div>
             <div><strong>Especialidad:</strong> Comboboxes de Fallas & Categorías de Cierre</div>
             <div><strong>Actualización:</strong> Septiembre 2026</div>
         </div>
@@ -570,7 +570,7 @@ html += """
     </table>
 
     <div class="doc-footer">
-        <div>WorkStation BackOffice v6.0 · Plataforma de Soporte Técnico HITSS / Claro</div>
+        <div>WorkStation BackOffice v7.0 · Plataforma de Soporte Técnico HITSS / Claro</div>
         <div>Generado automáticamente para auditoría, supervisión y validación operativa</div>
     </div>
 
