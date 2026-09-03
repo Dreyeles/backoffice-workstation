@@ -1330,6 +1330,7 @@ HASHTAGS: ${tagsStr}`.toUpperCase();
         const remedyImagesContainer = document.getElementById('remedyImagesContainer');
         const btnClearRemedyImages = document.getElementById('btnClearRemedyImages');
         const remedyPreviewBox = document.getElementById('remedyPreviewBox');
+        const btnClearRemedyAll = document.getElementById('btnClearRemedyAll');
         const btnExportRemedyPdf = document.getElementById('btnExportRemedyPdf');
         const btnCopyRemedyWord = document.getElementById('btnCopyRemedyWord');
         const btnCopyRemedyText = document.getElementById('btnCopyRemedyText');
@@ -1432,7 +1433,6 @@ HASHTAGS: ${tagsStr}`.toUpperCase();
 
         const closeRemedyModal = () => {
             if (remedyModal) remedyModal.classList.remove('active');
-            resetRemedyModal();
         };
 
         if (btnOpenRemedyModal) btnOpenRemedyModal.addEventListener('click', openRemedyModal);
@@ -1440,6 +1440,13 @@ HASHTAGS: ${tagsStr}`.toUpperCase();
         if (remedyModal) {
             remedyModal.addEventListener('click', (e) => {
                 if (e.target === remedyModal) closeRemedyModal();
+            });
+        }
+
+        if (btnClearRemedyAll) {
+            btnClearRemedyAll.addEventListener('click', () => {
+                resetRemedyModal();
+                showToast('Formulario de Remedy limpiado');
             });
         }
 
