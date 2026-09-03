@@ -1,0 +1,232 @@
+[
+  {
+    "row": "4",
+    "plantilla": "BACK OFFICE FIJA HITSS\nSolucionado/Cliente brinda Conformidad\nProblema/Solución:\nPersona de Contacto:\nNumero de Contacto:\nID Llamada:\nAsesor:",
+    "estado_siac": "CERRADO-NO APLICA-PROCEDENTE",
+    "estado_form": "PROCEDENTE",
+    "motivo_form": "SOLUCIONADO ACCESO ACTIVAR BOUQUETS\nSOLUCIONADO ACCESO ALTA Y BAJA INCOGNITO > Instalar ONT/CM\nSOLUCIONADO ACCESO CAMBIO DE RESOLUCIÓN SKYWAY\nSOLUCIONADO ACCESO CLEAN DATA SKYWAY\nSOLUCIONADO ACCESO FIJACIÓN DE IP\nSOLUCIONADO ACCESO PREFERENCES SKYWAY\nSOLUCIONADO ACCESO PROVISIÓN FIJA + CLEAN DATA SKYWAY\nSOLUCIONADO ACCESO PROVISIÓN FIJA > ActivarGPONTV \nSOLUCIONADO ACCESO PROVISIÓN FIJA > Instalar serialNumber STB\nSOLUCIONADO ACCESO PROVISIÓN FIJA > REGENERAR IPTV\nSOLUCIONADO DESCARTES TÉCNICOS CAMBIO DE PILAS CONTROL REMOTO\nSOLUCIONADO DESCARTES TÉCNICOS CONEXIONES\nSOLUCIONADO DESCARTES TÉCNICOS PROBLEMAS EQUIPOS DEL CLIENTE\nSOLUCIONADO DESCARTES TÉCNICOS RESET FACTORY\nSOLUCIONADO DESCARTES TÉCNICOS RESET FACTORY + CLEAN DATA SKYWAY\nSOLUCIONADO DESCARTES TÉCNICOS VELOCIDAD MÍNIMA 70%\nSOLUCIONADO INFORMACIÓN PRODUCTO PLAN TV DIGITAL\nSOLUCIONADO INFORMACIÓN COMERCIAL SOLICITUD FAST TRACK\nSOLUCIONADO INFORMACIÓN GRILLA DE CANALES TV DIGITAL\nSOLUCIONADO INFORMACIÓN SIN SALDO PARA LLAMADAS\nSOLUCIONADO OK EN LÍNEA",
+    "hashtag": "#SINSERVICIOPRIORIDADAM#",
+    "descripcion": "SOTs generadas cuando el problema es sin servicio total. Se utiliza para que contrata lleve escalera.",
+    "area": "BO-TECNICO-BO PREVENTIVA"
+  },
+  {
+    "row": "5",
+    "plantilla": "",
+    "estado_siac": "",
+    "estado_form": "",
+    "motivo_form": "",
+    "hashtag": "#SINSERVICIOPRIORIDADPM#",
+    "descripcion": "",
+    "area": "BO-TECNICO-BO PREVENTIVA"
+  },
+  {
+    "row": "6",
+    "plantilla": "",
+    "estado_siac": "",
+    "estado_form": "",
+    "motivo_form": "",
+    "hashtag": "*A SOLICITUD CLARO",
+    "descripcion": "SOTs generadas a Solicitud del Claro.",
+    "area": "BO/ATENCION ESPECIALIZADA"
+  },
+  {
+    "row": "7",
+    "plantilla": "",
+    "estado_siac": "",
+    "estado_form": "",
+    "motivo_form": "",
+    "hashtag": "*A SOLICITUD DEL CLIENTE",
+    "descripcion": "SOTs generadas a Solicitud del Cliente.",
+    "area": "BO-TECNICO"
+  },
+  {
+    "row": "8",
+    "plantilla": "",
+    "estado_siac": "",
+    "estado_form": "",
+    "motivo_form": "",
+    "hashtag": "*CONTROL REMOTO",
+    "descripcion": "SOTs generadas por inconvenientes con el control remoto.",
+    "area": "BO-TECNICO"
+  },
+  {
+    "row": "9",
+    "plantilla": "",
+    "estado_siac": "",
+    "estado_form": "",
+    "motivo_form": "",
+    "hashtag": "*CLIENTE DEMO",
+    "descripcion": "SOTs generadas para servicios de Cliente “América Móvil S.A.C.”",
+    "area": "BO/ATENCION ESPECIALIZADA"
+  },
+  {
+    "row": "10",
+    "plantilla": "",
+    "estado_siac": "",
+    "estado_form": "",
+    "motivo_form": "",
+    "hashtag": "*REPOSICIÓN DE EQUIPO",
+    "descripcion": "SOTs generada por reposición de equipo extraviado o robado",
+    "area": "BO-TECNICO"
+  },
+  {
+    "row": "11",
+    "plantilla": "",
+    "estado_siac": "",
+    "estado_form": "",
+    "motivo_form": "",
+    "hashtag": "#BASE PREVENTIVA RED",
+    "descripcion": "SOTs generadas por Reinicios Constantes de Cable Módem/ONT alertados por Red.",
+    "area": "BO-PREVENTIVA"
+  },
+  {
+    "row": "12",
+    "plantilla": "",
+    "estado_siac": "",
+    "estado_form": "",
+    "motivo_form": "",
+    "hashtag": "#BASE POTENCIA",
+    "descripcion": "SOTs generadas por Niveles Fuera de Rango",
+    "area": "BO-PREVENTIVA"
+  },
+  {
+    "row": "13",
+    "plantilla": "",
+    "estado_siac": "",
+    "estado_form": "",
+    "motivo_form": "",
+    "hashtag": "#BASE PREVENTIVA",
+    "descripcion": "SOTs generadas por Reinicios Constantes de Cable Módem/ONT",
+    "area": "BO-PREVENTIVA"
+  },
+  {
+    "row": "25",
+    "plantilla": "BACK OFFICE FIJA HITSS\nCon Visita Técnica\nSot:\nFecha Confirmada:\nProblema:\nMotivo:\nPersona de Contacto:\nNumero de Contacto:\nID Llamada:\nAsesor:",
+    "estado_siac": "CERRADO-NO APLICA-PROCEDENTE",
+    "estado_form": "PROCEDENTE",
+    "motivo_form": "BO ATC - SOT DE MANTTO A SOLICITUD CLARO - CONMUTACIÓN\nBO ATC - SOT DE MANTTO A SOLICITUD CLARO - RED\nBO ATC - SOT DE MANTTO A SOLICITUD DEL CLIENTE\nBO ATC - SOT DE MANTTO NO FUNCIONA CONTROL REMOTO\nBO ATC - SOT DE MANTTO SIN SERVICIO GENERAL",
+    "hashtag": "",
+    "descripcion": "",
+    "area": ""
+  },
+  {
+    "row": "36",
+    "plantilla": "BACK OFFICE FIJA HITSS\nCiclo Cumplido/Sin Contacto\nProblema/Solución:\nPersona de Contacto:\nNumero de Contacto:\nIntentos de Llamada:3\nBuzón de voz: ->OBLIGATORIO DEJAR MENSAJE DE VOZ\nID Llamada:\nAsesor:",
+    "estado_siac": "CERRADO-NO APLICA-PROCEDENTE",
+    "estado_form": "PROCEDENTE",
+    "motivo_form": "MENSAJE BUZÓN DE VOZ\nNO CONTACTO SIN CASILLA DE VOZ",
+    "hashtag": "",
+    "descripcion": "",
+    "area": ""
+  },
+  {
+    "row": "46",
+    "plantilla": "BACK OFFICE FIJA HITSS\nInformativo/Avería Masiva\nPersona de Contacto:\nNumero de Contacto:\nContesta: SI/NO\nBuzón de voz: SI/NO\nID Llamada:\nAsesor:",
+    "estado_siac": "CERRADO-NO APLICA-PROCEDENTE",
+    "estado_form": "NO PROCEDENTE",
+    "motivo_form": "BO ATC - AVERÍA MASIVA EN EJECUCIÓN POST-CREACIÓN CASO\nBO ATC - AVERÍA MASIVA EN EJECUCIÓN PRE-CREACIÓN CASO",
+    "hashtag": "",
+    "descripcion": "",
+    "area": ""
+  },
+  {
+    "row": "55",
+    "plantilla": "BACK OFFICE FIJA HITSS\nCliente con suspensión de servicios\nID Llamada: N/A\nAsesor:",
+    "estado_siac": "CERRADO-NO APLICA-PROCEDENTE",
+    "estado_form": "NO PROCEDENTE",
+    "motivo_form": "BO ATC - SERVICIO SUSPENDIDO POST-CREACIÓN CASO\nBO ATC - SERVICIO SUSPENDIDO PRE-CREACIÓN CASO",
+    "hashtag": "",
+    "descripcion": "",
+    "area": ""
+  },
+  {
+    "row": "61",
+    "plantilla": "BACK OFFICE FIJA HITSS\nCliente dara de baja el servicio\nID Llamada: N/A\nAsesor:",
+    "estado_siac": "CERRADO-NO APLICA-PROCEDENTE",
+    "estado_form": "NO PROCEDENTE",
+    "motivo_form": "BO ATC - CLIENTE DARÁ DE BAJA SERVICIO",
+    "hashtag": "",
+    "descripcion": "",
+    "area": ""
+  },
+  {
+    "row": "66",
+    "plantilla": "BACK OFFICE FIJA HITSS\nNumero no existe/Numero errado/Mal creado\nContacto:\nN° Telefónico:\nID Llamada:\nAsesor:",
+    "estado_siac": "CERRADO-NO APLICA-PROCEDENTE",
+    "estado_form": "NO PROCEDENTE",
+    "motivo_form": "BO ATC - DERIVACIÓN INCORRECTA                                                                                       BO ATC - EMTA/ONT NO HOMOLOGADO EN SMARTHOME                                                                                          BO ATC - DUPLICIDAD DE CASO                                                                                                                          BO ATC - TIPIFICACIÓN INCORRECTA                                                                                                           BO ATC - PÁGINAS WEB BLOQUEADAS POR INDECOPI",
+    "hashtag": "",
+    "descripcion": "",
+    "area": ""
+  },
+  {
+    "row": "75",
+    "plantilla": "BACK OFFICE FIJA HITSS\nCliente desiste de la atención\nPersona de Contacto:\nNumero de Contacto:\nMotivo:\nID Llamada:\nAsesor:",
+    "estado_siac": "CERRADO-NO APLICA-PROCEDENTE",
+    "estado_form": "NO PROCEDENTE",
+    "motivo_form": "BO ATC - CLIENTE NO BRINDA FACILIDADES TÉCNICAS\nBO ATC - SIN RECEPCIÓN PRUEBAS CLIENTE",
+    "hashtag": "",
+    "descripcion": "",
+    "area": ""
+  },
+  {
+    "row": "82",
+    "plantilla": "BACK OFFICE FIJA HITSS\nCiclo de llamada\nIntentos de Llamada:1/2/3\nProblema/Solución:\nPersona de Contacto:\nNumero de Contacto:\nBuzón de voz: ->OBLIGATORIO DEJAR MENSAJE DE VOZ\nID Llamada:\nAsesor:",
+    "estado_siac": "RECUPERADO-EN TRAMITE",
+    "estado_form": "EN TRAMITE",
+    "motivo_form": "BO ATC - 1ER INTENTO COMUNICACIÓN SIN BUZÓN DE VOZ\nBO ATC - 1ER INTENTO COMUNICACIÓN MENSAJE EN EL BUZÓN DE VOZ\nBO ATC - 2DO INTENTO COMUNICACIÓN SIN BUZÓN DE VOZ\nBO ATC - 2DO INTENTO COMUNICACIÓN MENSAJE EN EL BUZÓN DE VOZ\nBO ATC - FALLA SOLUCIONADA / CONTACTO CLIENTE\nBO ATC - DIAGNÓSTICO PROVISIÓN TÉCNICA\nBO ATC - CASO DERIVADO CON SUPERVISIÓN BOT",
+    "hashtag": "",
+    "descripcion": "",
+    "area": ""
+  },
+  {
+    "row": "91",
+    "plantilla": "BACK OFFICE FIJA HITSS\nCliente solicita devolución de llamada\nFecha/Hora:\nProblema/Solución:\nPersona de Contacto:\nNumero de Contacto:\nID Llamada:\nAsesor:",
+    "estado_siac": "RECUPERADO-EN TRAMITE",
+    "estado_form": "EN TRAMITE",
+    "motivo_form": "BO ATC - CLIENTE SOLICITA DEVOLUCIÓN DE LLAMADA                                                      BO ATC - LLAMADA PROGRAMADA POR DISPONIBILIDAD CLIENTE",
+    "hashtag": "",
+    "descripcion": "",
+    "area": ""
+  },
+  {
+    "row": "100",
+    "plantilla": "BACK OFFICE FIJA HITSS\nDerivado a conmutación-Correo                  (ADJUNTAR)\nPersona de Contacto:\nNumero de Contacto:\nID Llamada:\nAsesor:",
+    "estado_siac": "RECUPERADO-EN TRAMITE",
+    "estado_form": "EN TRAMITE",
+    "motivo_form": "BO ATC - DERIVADO A CONMUTACIÓN",
+    "hashtag": "",
+    "descripcion": "",
+    "area": ""
+  },
+  {
+    "row": "108",
+    "plantilla": "BACK OFFICE FIJA HITSS\nDerivado a TI-Remedy\nMotivo:\nRemedy:\nPersona de Contacto:\nNumero de Contacto:\nID Llamada:\nAsesor:",
+    "estado_siac": "RECUPERADO-EN TRAMITE",
+    "estado_form": "EN TRAMITE",
+    "motivo_form": "IPTV - PAQUETES NO PROVISIONADOS EN IOTDB\nIPTV - EQUIPOS NO PROVISIONADOS EN IOTDB\nBO ATC - MIGRACION A CBIO FALLO / SGA MUESTRA MENSAJE DE ERROR\nBO ATC - LÍNEA NO REGISTRADA EN CBIO\nBO ATC - DESALINEACION OCSI\nAPP SMART HOME - DISPOSITIVOS CONECTADOS - ERROR AL CARGAR LOS DISPOSITIVOS CONECTADOS\nBO ATC - SUSCRIPCIONES INCOMPLETAS\nBO ATC - SIN E. INCOGNITO / ACTIVO SIAC (SGA TRANSLATOR)\nIPTV - EQUIPOS Y PAQUETES NO PROVISIONADOS EN IOTDB\nBO ATC - SUSCRIPCIONES INCORRECTAS\nBO ATC - ERROR CON ACTIVACIÓN DE BOUQUETS\nBO ATC - SERVICIO CON TECNOLOGIA ERRADA\nBO CN - INCOGNITO SUSPENDIDO / SGA ACTIVO\nBO ATC - LÍNEA CON BOLSA INCORRECTA EN CBIO",
+    "hashtag": "",
+    "descripcion": "",
+    "area": ""
+  },
+  {
+    "row": "116",
+    "plantilla": "BACK OFFICE FIJA HITSS\nPendiente de envió de pruebas\nProblema:\nMotivo: **Derivación en Curso**\nPersona de Contacto:\nNumero de Contacto:\nID Llamada:\nAsesor:",
+    "estado_siac": "RECUPERADO-EN TRAMITE",
+    "estado_form": "EN TRAMITE",
+    "motivo_form": "BO ATC - ENVÍO PRUEBAS CLIENTE",
+    "hashtag": "",
+    "descripcion": "",
+    "area": ""
+  },
+  {
+    "row": "124",
+    "plantilla": "BACK OFFICE FIJA HITSS\nDescarte cambio de IP\nProblema: Relance de Servicios - Validar en 10 minutos",
+    "estado_siac": "RECUPERADO-EN TRAMITE",
+    "estado_form": "EN TRAMITE",
+    "motivo_form": "BO ATC - EJECUCIÓN BAJA Y ALTA INCOGNITO - INSTALAR                                          BO ATC - EJECUCIÓN BAJA Y ALTA INCOGNITO - DESACTIVAR",
+    "hashtag": "",
+    "descripcion": "",
+    "area": ""
+  }
+]

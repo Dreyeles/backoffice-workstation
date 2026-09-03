@@ -1,0 +1,4346 @@
+{
+  "BASE_DATOS": [
+    [
+      "2",
+      {
+        "A2": "PLANTILLAS BO TECNICA HITSS",
+        "B2": "",
+        "C2": "",
+        "D2": ""
+      }
+    ],
+    [
+      "3",
+      {
+        "A3": "PLANTILLA",
+        "B3": "ESTADO SIAC",
+        "C3": "ESTADO FORMULARIO",
+        "D3": "MOTIVO FORMULARIO",
+        "J3": "HASHTAG",
+        "K3": "DESCRIPCIÓN",
+        "L3": "ÁREA GENERADORA",
+        "M3": "VALIDACION",
+        "N3": "OBSERVACIONES"
+      }
+    ],
+    [
+      "4",
+      {
+        "A4": "BACK OFFICE FIJA HITSS\nSolucionado/Cliente brinda Conformidad\nProblema/Solución:\nPersona de Contacto:\nNumero de Contacto:\nID Llamada:\nAsesor:",
+        "B4": "CERRADO-NO APLICA-PROCEDENTE",
+        "C4": "PROCEDENTE",
+        "D4": "SOLUCIONADO ACCESO ACTIVAR BOUQUETS\nSOLUCIONADO ACCESO ALTA Y BAJA INCOGNITO > Instalar ONT/CM\nSOLUCIONADO ACCESO CAMBIO DE RESOLUCIÓN SKYWAY\nSOLUCIONADO ACCESO CLEAN DATA SKYWAY\nSOLUCIONADO ACCESO FIJACIÓN DE IP\nSOLUCIONADO ACCESO PREFERENCES SKYWAY\nSOLUCIONADO ACCESO PROVISIÓN FIJA + CLEAN DATA SKYWAY\nSOLUCIONADO ACCESO PROVISIÓN FIJA > ActivarGPONTV \nSOLUCIONADO ACCESO PROVISIÓN FIJA > Instalar serialNumber STB\nSOLUCIONADO ACCESO PROVISIÓN FIJA > REGENERAR IPTV\nSOLUCIONADO DESCARTES TÉCNICOS CAMBIO DE PILAS CONTROL REMOTO\nSOLUCIONADO DESCARTES TÉCNICOS CONEXIONES\nSOLUCIONADO DESCARTES TÉCNICOS PROBLEMAS EQUIPOS DEL CLIENTE\nSOLUCIONADO DESCARTES TÉCNICOS RESET FACTORY\nSOLUCIONADO DESCARTES TÉCNICOS RESET FACTORY + CLEAN DATA SKYWAY\nSOLUCIONADO DESCARTES TÉCNICOS VELOCIDAD MÍNIMA 70%\nSOLUCIONADO INFORMACIÓN PRODUCTO PLAN TV DIGITAL\nSOLUCIONADO INFORMACIÓN COMERCIAL SOLICITUD FAST TRACK\nSOLUCIONADO INFORMACIÓN GRILLA DE CANALES TV DIGITAL\nSOLUCIONADO INFORMACIÓN SIN SALDO PARA LLAMADAS\nSOLUCIONADO OK EN LÍNEA",
+        "J4": "#SINSERVICIOPRIORIDADAM#",
+        "K4": "SOTs generadas cuando el problema es sin servicio total. Se utiliza para que contrata lleve escalera.",
+        "L4": "BO-TECNICO-BO PREVENTIVA",
+        "M4": "CONFORME",
+        "N4": "SIN FRANJAS CERCANAS DISPONIBLES"
+      }
+    ],
+    [
+      "5",
+      {
+        "A5": "",
+        "B5": "",
+        "C5": "",
+        "D5": "",
+        "J5": "#SINSERVICIOPRIORIDADPM#",
+        "K5": "",
+        "L5": "BO-TECNICO-BO PREVENTIVA",
+        "M5": "CONFORME",
+        "N5": "SIN FRANJAS CERCANAS DISPONIBLES"
+      }
+    ],
+    [
+      "6",
+      {
+        "A6": "",
+        "B6": "",
+        "C6": "",
+        "D6": "",
+        "J6": "*A SOLICITUD CLARO",
+        "K6": "SOTs generadas a Solicitud del Claro.",
+        "L6": "BO/ATENCION ESPECIALIZADA",
+        "M6": "CONFORME",
+        "N6": "CORREO/WSP"
+      }
+    ],
+    [
+      "7",
+      {
+        "A7": "",
+        "B7": "",
+        "C7": "",
+        "D7": "",
+        "J7": "*A SOLICITUD DEL CLIENTE",
+        "K7": "SOTs generadas a Solicitud del Cliente.",
+        "L7": "BO-TECNICO",
+        "M7": "CONFORME",
+        "N7": "N/A"
+      }
+    ],
+    [
+      "8",
+      {
+        "A8": "",
+        "B8": "",
+        "C8": "",
+        "D8": "",
+        "J8": "*CONTROL REMOTO",
+        "K8": "SOTs generadas por inconvenientes con el control remoto.",
+        "L8": "BO-TECNICO",
+        "M8": "CONFORME",
+        "N8": "SINCRONIZACION FALLIDA "
+      }
+    ],
+    [
+      "9",
+      {
+        "A9": "",
+        "B9": "",
+        "C9": "",
+        "D9": "",
+        "J9": "*CLIENTE DEMO",
+        "K9": "SOTs generadas para servicios de Cliente “América Móvil S.A.C.”",
+        "L9": "BO/ATENCION ESPECIALIZADA",
+        "M9": "CONFORME",
+        "N9": "CORREO/WSP"
+      }
+    ],
+    [
+      "10",
+      {
+        "A10": "",
+        "B10": "",
+        "C10": "",
+        "D10": "",
+        "J10": "*REPOSICIÓN DE EQUIPO",
+        "K10": "SOTs generada por reposición de equipo extraviado o robado",
+        "L10": "BO-TECNICO",
+        "M10": "CONFORME",
+        "N10": "VALIDAR SI DERIVACION DE CASO FUE POR CAC"
+      }
+    ],
+    [
+      "11",
+      {
+        "A11": "",
+        "B11": "",
+        "C11": "",
+        "D11": "",
+        "J11": "#BASE PREVENTIVA RED",
+        "K11": "SOTs generadas por Reinicios Constantes de Cable Módem/ONT alertados por Red.",
+        "L11": "BO-PREVENTIVA",
+        "M11": "CONFORME",
+        "N11": "BASE RED"
+      }
+    ],
+    [
+      "12",
+      {
+        "A12": "",
+        "B12": "",
+        "C12": "",
+        "D12": "",
+        "J12": "#BASE POTENCIA",
+        "K12": "SOTs generadas por Niveles Fuera de Rango",
+        "L12": "BO-PREVENTIVA",
+        "M12": "CONFORME",
+        "N12": "BASE RED"
+      }
+    ],
+    [
+      "13",
+      {
+        "A13": "",
+        "B13": "",
+        "C13": "",
+        "D13": "",
+        "J13": "#BASE PREVENTIVA",
+        "K13": "SOTs generadas por Reinicios Constantes de Cable Módem/ONT",
+        "L13": "BO-PREVENTIVA",
+        "M13": "CONFORME",
+        "N13": "BASE RED"
+      }
+    ],
+    [
+      "14",
+      {
+        "A14": "",
+        "B14": "",
+        "C14": "",
+        "D14": ""
+      }
+    ],
+    [
+      "15",
+      {
+        "A15": "",
+        "B15": "",
+        "C15": "",
+        "D15": ""
+      }
+    ],
+    [
+      "16",
+      {
+        "A16": "",
+        "B16": "",
+        "C16": "",
+        "D16": "",
+        "K16": "PLANTILLA SGA"
+      }
+    ],
+    [
+      "17",
+      {
+        "A17": "",
+        "B17": "",
+        "C17": "",
+        "D17": "",
+        "K17": "(INGRESAR \"#\" SEGUN ESCENARIO CORRESPONDIENTE)\n\nBACKOFFICE FIJA HITSS \n- FECHA CONFIRMADA:\n- POTENCIA HYGEIA:  \n- CUSTOMER ID: \n- PROBLEMA REPORTADO:\n- ¿HACE CUÁNTO TIEMPO PRESENTA EL PROBLEMA?:  \n- NOMBRE DE QUIEN REPORTA (TITULAR - PARENTESCO): \n- TELÉFONO (WHATSAPP): \n- ESTADO EN INCOGNITO:     \n- ESTADO DE SERVICIO EN TRACER: \n- ACCIONES REALIZADAS: Validación de descartes. Problema persiste. Se genera SOT para atención en campo.\n- ID DE LLAMADA/ CHAT ID: \n- CASO RELACIONADO (SIAC):\n- ASESOR: "
+      }
+    ],
+    [
+      "18",
+      {
+        "A18": "",
+        "B18": "",
+        "C18": "",
+        "D18": "",
+        "K18": ""
+      }
+    ],
+    [
+      "19",
+      {
+        "A19": "",
+        "B19": "",
+        "C19": "",
+        "D19": "",
+        "K19": ""
+      }
+    ],
+    [
+      "20",
+      {
+        "A20": "",
+        "B20": "",
+        "C20": "",
+        "D20": "",
+        "K20": ""
+      }
+    ],
+    [
+      "21",
+      {
+        "A21": "",
+        "B21": "",
+        "C21": "",
+        "D21": "",
+        "K21": ""
+      }
+    ],
+    [
+      "22",
+      {
+        "A22": "",
+        "B22": "",
+        "C22": "",
+        "D22": "",
+        "K22": ""
+      }
+    ],
+    [
+      "23",
+      {
+        "A23": "",
+        "B23": "",
+        "C23": "",
+        "D23": "",
+        "K23": ""
+      }
+    ],
+    [
+      "24",
+      {
+        "A24": "",
+        "B24": "",
+        "C24": "",
+        "D24": "",
+        "K24": ""
+      }
+    ],
+    [
+      "25",
+      {
+        "A25": "BACK OFFICE FIJA HITSS\nCon Visita Técnica\nSot:\nFecha Confirmada:\nProblema:\nMotivo:\nPersona de Contacto:\nNumero de Contacto:\nID Llamada:\nAsesor:",
+        "B25": "CERRADO-NO APLICA-PROCEDENTE",
+        "C25": "PROCEDENTE",
+        "D25": "BO ATC - SOT DE MANTTO A SOLICITUD CLARO - CONMUTACIÓN\nBO ATC - SOT DE MANTTO A SOLICITUD CLARO - RED\nBO ATC - SOT DE MANTTO A SOLICITUD DEL CLIENTE\nBO ATC - SOT DE MANTTO NO FUNCIONA CONTROL REMOTO\nBO ATC - SOT DE MANTTO SIN SERVICIO GENERAL",
+        "K25": ""
+      }
+    ],
+    [
+      "26",
+      {
+        "A26": "",
+        "B26": "",
+        "C26": "",
+        "D26": "",
+        "K26": ""
+      }
+    ],
+    [
+      "27",
+      {
+        "A27": "",
+        "B27": "",
+        "C27": "",
+        "D27": "",
+        "K27": ""
+      }
+    ],
+    [
+      "28",
+      {
+        "A28": "",
+        "B28": "",
+        "C28": "",
+        "D28": "",
+        "K28": ""
+      }
+    ],
+    [
+      "29",
+      {
+        "A29": "",
+        "B29": "",
+        "C29": "",
+        "D29": "",
+        "K29": ""
+      }
+    ],
+    [
+      "30",
+      {
+        "A30": "",
+        "B30": "",
+        "C30": "",
+        "D30": "",
+        "K30": ""
+      }
+    ],
+    [
+      "31",
+      {
+        "A31": "",
+        "B31": "",
+        "C31": "",
+        "D31": "",
+        "K31": ""
+      }
+    ],
+    [
+      "32",
+      {
+        "A32": "",
+        "B32": "",
+        "C32": "",
+        "D32": "",
+        "K32": ""
+      }
+    ],
+    [
+      "33",
+      {
+        "A33": "",
+        "B33": "",
+        "C33": "",
+        "D33": "",
+        "K33": ""
+      }
+    ],
+    [
+      "34",
+      {
+        "A34": "",
+        "B34": "",
+        "C34": "",
+        "D34": "",
+        "K34": ""
+      }
+    ],
+    [
+      "35",
+      {
+        "A35": "",
+        "B35": "",
+        "C35": "",
+        "D35": "",
+        "K35": ""
+      }
+    ],
+    [
+      "36",
+      {
+        "A36": "BACK OFFICE FIJA HITSS\nCiclo Cumplido/Sin Contacto\nProblema/Solución:\nPersona de Contacto:\nNumero de Contacto:\nIntentos de Llamada:3\nBuzón de voz: ->OBLIGATORIO DEJAR MENSAJE DE VOZ\nID Llamada:\nAsesor:",
+        "B36": "CERRADO-NO APLICA-PROCEDENTE",
+        "C36": "PROCEDENTE",
+        "D36": "MENSAJE BUZÓN DE VOZ\nNO CONTACTO SIN CASILLA DE VOZ",
+        "K36": ""
+      }
+    ],
+    [
+      "37",
+      {
+        "A37": "",
+        "B37": "",
+        "C37": "",
+        "D37": "",
+        "K37": ""
+      }
+    ],
+    [
+      "38",
+      {
+        "A38": "",
+        "B38": "",
+        "C38": "",
+        "D38": ""
+      }
+    ],
+    [
+      "39",
+      {
+        "A39": "",
+        "B39": "",
+        "C39": "",
+        "D39": ""
+      }
+    ],
+    [
+      "40",
+      {
+        "A40": "",
+        "B40": "",
+        "C40": "",
+        "D40": ""
+      }
+    ],
+    [
+      "41",
+      {
+        "A41": "",
+        "B41": "",
+        "C41": "",
+        "D41": ""
+      }
+    ],
+    [
+      "42",
+      {
+        "A42": "",
+        "B42": "",
+        "C42": "",
+        "D42": ""
+      }
+    ],
+    [
+      "43",
+      {
+        "A43": "",
+        "B43": "",
+        "C43": "",
+        "D43": ""
+      }
+    ],
+    [
+      "44",
+      {
+        "A44": "",
+        "B44": "",
+        "C44": "",
+        "D44": ""
+      }
+    ],
+    [
+      "45",
+      {
+        "A45": "",
+        "B45": "",
+        "C45": "",
+        "D45": ""
+      }
+    ],
+    [
+      "46",
+      {
+        "A46": "BACK OFFICE FIJA HITSS\nInformativo/Avería Masiva\nPersona de Contacto:\nNumero de Contacto:\nContesta: SI/NO\nBuzón de voz: SI/NO\nID Llamada:\nAsesor:\n",
+        "B46": "CERRADO-NO APLICA-PROCEDENTE",
+        "C46": "NO PROCEDENTE",
+        "D46": "BO ATC - AVERÍA MASIVA EN EJECUCIÓN POST-CREACIÓN CASO\nBO ATC - AVERÍA MASIVA EN EJECUCIÓN PRE-CREACIÓN CASO",
+        "E46": ""
+      }
+    ],
+    [
+      "47",
+      {
+        "A47": "",
+        "B47": "",
+        "C47": "",
+        "D47": "",
+        "E47": ""
+      }
+    ],
+    [
+      "48",
+      {
+        "A48": "",
+        "B48": "",
+        "C48": "",
+        "D48": "",
+        "E48": ""
+      }
+    ],
+    [
+      "49",
+      {
+        "A49": "",
+        "B49": "",
+        "C49": "",
+        "D49": "",
+        "E49": ""
+      }
+    ],
+    [
+      "50",
+      {
+        "A50": "",
+        "B50": "",
+        "C50": "",
+        "D50": "",
+        "E50": ""
+      }
+    ],
+    [
+      "51",
+      {
+        "A51": "",
+        "B51": "",
+        "C51": "",
+        "D51": "",
+        "E51": ""
+      }
+    ],
+    [
+      "52",
+      {
+        "A52": "",
+        "B52": "",
+        "C52": "",
+        "D52": "",
+        "E52": ""
+      }
+    ],
+    [
+      "53",
+      {
+        "A53": "",
+        "B53": "",
+        "C53": "",
+        "D53": "",
+        "E53": ""
+      }
+    ],
+    [
+      "54",
+      {
+        "A54": "",
+        "B54": "",
+        "C54": "",
+        "D54": "",
+        "E54": ""
+      }
+    ],
+    [
+      "55",
+      {
+        "A55": "BACK OFFICE FIJA HITSS\nCliente con suspensión de servicios\nID Llamada: N/A\nAsesor:",
+        "B55": "CERRADO-NO APLICA-PROCEDENTE",
+        "C55": "NO PROCEDENTE",
+        "D55": "BO ATC - SERVICIO SUSPENDIDO POST-CREACIÓN CASO\nBO ATC - SERVICIO SUSPENDIDO PRE-CREACIÓN CASO"
+      }
+    ],
+    [
+      "56",
+      {
+        "A56": "",
+        "B56": "",
+        "C56": "",
+        "D56": ""
+      }
+    ],
+    [
+      "57",
+      {
+        "A57": "",
+        "B57": "",
+        "C57": "",
+        "D57": ""
+      }
+    ],
+    [
+      "58",
+      {
+        "A58": "",
+        "B58": "",
+        "C58": "",
+        "D58": ""
+      }
+    ],
+    [
+      "59",
+      {
+        "A59": "",
+        "B59": "",
+        "C59": "",
+        "D59": ""
+      }
+    ],
+    [
+      "60",
+      {
+        "A60": "",
+        "B60": "",
+        "C60": "",
+        "D60": ""
+      }
+    ],
+    [
+      "61",
+      {
+        "A61": "BACK OFFICE FIJA HITSS\nCliente dara de baja el servicio\nID Llamada: N/A\nAsesor:",
+        "B61": "CERRADO-NO APLICA-PROCEDENTE",
+        "C61": "NO PROCEDENTE",
+        "D61": "BO ATC - CLIENTE DARÁ DE BAJA SERVICIO"
+      }
+    ],
+    [
+      "62",
+      {
+        "A62": "",
+        "B62": "",
+        "C62": "",
+        "D62": ""
+      }
+    ],
+    [
+      "63",
+      {
+        "A63": "",
+        "B63": "",
+        "C63": "",
+        "D63": ""
+      }
+    ],
+    [
+      "64",
+      {
+        "A64": "",
+        "B64": "",
+        "C64": "",
+        "D64": ""
+      }
+    ],
+    [
+      "65",
+      {
+        "A65": "",
+        "B65": "",
+        "C65": "",
+        "D65": ""
+      }
+    ],
+    [
+      "66",
+      {
+        "A66": "BACK OFFICE FIJA HITSS\nNumero no existe/Numero errado/Mal creado\nContacto:\nN° Telefónico:\nID Llamada:\nAsesor:",
+        "B66": "CERRADO-NO APLICA-PROCEDENTE",
+        "C66": "NO PROCEDENTE",
+        "D66": "BO ATC - DERIVACIÓN INCORRECTA                                                                                       BO ATC - EMTA/ONT NO HOMOLOGADO EN SMARTHOME                                                                                          BO ATC - DUPLICIDAD DE CASO                                                                                                                          BO ATC - TIPIFICACIÓN INCORRECTA                                                                                                           BO ATC - PÁGINAS WEB BLOQUEADAS POR INDECOPI"
+      }
+    ],
+    [
+      "67",
+      {
+        "A67": "",
+        "B67": "",
+        "C67": "",
+        "D67": ""
+      }
+    ],
+    [
+      "68",
+      {
+        "A68": "",
+        "B68": "",
+        "C68": "",
+        "D68": ""
+      }
+    ],
+    [
+      "69",
+      {
+        "A69": "",
+        "B69": "",
+        "C69": "",
+        "D69": ""
+      }
+    ],
+    [
+      "70",
+      {
+        "A70": "",
+        "B70": "",
+        "C70": "",
+        "D70": ""
+      }
+    ],
+    [
+      "71",
+      {
+        "A71": "",
+        "B71": "",
+        "C71": "",
+        "D71": ""
+      }
+    ],
+    [
+      "72",
+      {
+        "A72": "",
+        "B72": "",
+        "C72": "",
+        "D72": ""
+      }
+    ],
+    [
+      "73",
+      {
+        "A73": "",
+        "B73": "",
+        "C73": "",
+        "D73": ""
+      }
+    ],
+    [
+      "74",
+      {
+        "A74": "",
+        "B74": "",
+        "C74": "",
+        "D74": ""
+      }
+    ],
+    [
+      "75",
+      {
+        "A75": "BACK OFFICE FIJA HITSS\nCliente desiste de la atención\nPersona de Contacto:\nNumero de Contacto:\nMotivo:\nID Llamada:\nAsesor:",
+        "B75": "CERRADO-NO APLICA-PROCEDENTE",
+        "C75": "NO PROCEDENTE",
+        "D75": "BO ATC - CLIENTE NO BRINDA FACILIDADES TÉCNICAS\nBO ATC - SIN RECEPCIÓN PRUEBAS CLIENTE"
+      }
+    ],
+    [
+      "76",
+      {
+        "A76": "",
+        "B76": "",
+        "C76": "",
+        "D76": ""
+      }
+    ],
+    [
+      "77",
+      {
+        "A77": "",
+        "B77": "",
+        "C77": "",
+        "D77": ""
+      }
+    ],
+    [
+      "78",
+      {
+        "A78": "",
+        "B78": "",
+        "C78": "",
+        "D78": ""
+      }
+    ],
+    [
+      "79",
+      {
+        "A79": "",
+        "B79": "",
+        "C79": "",
+        "D79": ""
+      }
+    ],
+    [
+      "80",
+      {
+        "A80": "",
+        "B80": "",
+        "C80": "",
+        "D80": ""
+      }
+    ],
+    [
+      "81",
+      {
+        "A81": "",
+        "B81": "",
+        "C81": "",
+        "D81": ""
+      }
+    ],
+    [
+      "82",
+      {
+        "A82": "BACK OFFICE FIJA HITSS\nCiclo de llamada\nIntentos de Llamada:1/2/3\nProblema/Solución:\nPersona de Contacto:\nNumero de Contacto:\nBuzón de voz: ->OBLIGATORIO DEJAR MENSAJE DE VOZ\nID Llamada:\nAsesor:",
+        "B82": "RECUPERADO-EN TRAMITE",
+        "C82": "EN TRAMITE",
+        "D82": "BO ATC - 1ER INTENTO COMUNICACIÓN SIN BUZÓN DE VOZ\nBO ATC - 1ER INTENTO COMUNICACIÓN MENSAJE EN EL BUZÓN DE VOZ\nBO ATC - 2DO INTENTO COMUNICACIÓN SIN BUZÓN DE VOZ\nBO ATC - 2DO INTENTO COMUNICACIÓN MENSAJE EN EL BUZÓN DE VOZ\nBO ATC - FALLA SOLUCIONADA / CONTACTO CLIENTE\nBO ATC - DIAGNÓSTICO PROVISIÓN TÉCNICA\nBO ATC - CASO DERIVADO CON SUPERVISIÓN BOT"
+      }
+    ],
+    [
+      "83",
+      {
+        "A83": "",
+        "B83": "",
+        "C83": "",
+        "D83": ""
+      }
+    ],
+    [
+      "84",
+      {
+        "A84": "",
+        "B84": "",
+        "C84": "",
+        "D84": ""
+      }
+    ],
+    [
+      "85",
+      {
+        "A85": "",
+        "B85": "",
+        "C85": "",
+        "D85": ""
+      }
+    ],
+    [
+      "86",
+      {
+        "A86": "",
+        "B86": "",
+        "C86": "",
+        "D86": ""
+      }
+    ],
+    [
+      "87",
+      {
+        "A87": "",
+        "B87": "",
+        "C87": "",
+        "D87": ""
+      }
+    ],
+    [
+      "88",
+      {
+        "A88": "",
+        "B88": "",
+        "C88": "",
+        "D88": ""
+      }
+    ],
+    [
+      "89",
+      {
+        "A89": "",
+        "B89": "",
+        "C89": "",
+        "D89": ""
+      }
+    ],
+    [
+      "90",
+      {
+        "A90": "",
+        "B90": "",
+        "C90": "",
+        "D90": ""
+      }
+    ],
+    [
+      "91",
+      {
+        "A91": "BACK OFFICE FIJA HITSS\nCliente solicita devolución de llamada\nFecha/Hora:\nProblema/Solución:\nPersona de Contacto:\nNumero de Contacto:\nID Llamada:\nAsesor:",
+        "B91": "RECUPERADO-EN TRAMITE",
+        "C91": "EN TRAMITE",
+        "D91": "BO ATC - CLIENTE SOLICITA DEVOLUCIÓN DE LLAMADA                                                      BO ATC - LLAMADA PROGRAMADA POR DISPONIBILIDAD CLIENTE"
+      }
+    ],
+    [
+      "92",
+      {
+        "A92": "",
+        "B92": "",
+        "C92": "",
+        "D92": ""
+      }
+    ],
+    [
+      "93",
+      {
+        "A93": "",
+        "B93": "",
+        "C93": "",
+        "D93": ""
+      }
+    ],
+    [
+      "94",
+      {
+        "A94": "",
+        "B94": "",
+        "C94": "",
+        "D94": ""
+      }
+    ],
+    [
+      "95",
+      {
+        "A95": "",
+        "B95": "",
+        "C95": "",
+        "D95": ""
+      }
+    ],
+    [
+      "96",
+      {
+        "A96": "",
+        "B96": "",
+        "C96": "",
+        "D96": ""
+      }
+    ],
+    [
+      "97",
+      {
+        "A97": "",
+        "B97": "",
+        "C97": "",
+        "D97": ""
+      }
+    ],
+    [
+      "98",
+      {
+        "A98": "",
+        "B98": "",
+        "C98": "",
+        "D98": ""
+      }
+    ],
+    [
+      "99",
+      {
+        "A99": "",
+        "B99": "",
+        "C99": "",
+        "D99": ""
+      }
+    ],
+    [
+      "100",
+      {
+        "A100": "BACK OFFICE FIJA HITSS\nDerivado a conmutación-Correo                  (ADJUNTAR)\nPersona de Contacto:\nNumero de Contacto:\nID Llamada:\nAsesor:",
+        "B100": "RECUPERADO-EN TRAMITE",
+        "C100": "EN TRAMITE",
+        "D100": "BO ATC - DERIVADO A CONMUTACIÓN"
+      }
+    ],
+    [
+      "101",
+      {
+        "A101": "",
+        "B101": "",
+        "C101": "",
+        "D101": ""
+      }
+    ],
+    [
+      "102",
+      {
+        "A102": "",
+        "B102": "",
+        "C102": "",
+        "D102": ""
+      }
+    ],
+    [
+      "103",
+      {
+        "A103": "",
+        "B103": "",
+        "C103": "",
+        "D103": ""
+      }
+    ],
+    [
+      "104",
+      {
+        "A104": "",
+        "B104": "",
+        "C104": "",
+        "D104": ""
+      }
+    ],
+    [
+      "105",
+      {
+        "A105": "",
+        "B105": "",
+        "C105": "",
+        "D105": ""
+      }
+    ],
+    [
+      "106",
+      {
+        "A106": "",
+        "B106": "",
+        "C106": "",
+        "D106": ""
+      }
+    ],
+    [
+      "107",
+      {
+        "A107": "",
+        "B107": "",
+        "C107": "",
+        "D107": ""
+      }
+    ],
+    [
+      "108",
+      {
+        "A108": "BACK OFFICE FIJA HITSS\nDerivado a TI-Remedy\nMotivo:\nRemedy:\nPersona de Contacto:\nNumero de Contacto:\nID Llamada:\nAsesor:",
+        "B108": "RECUPERADO-EN TRAMITE",
+        "C108": "EN TRAMITE",
+        "D108": "IPTV - PAQUETES NO PROVISIONADOS EN IOTDB\nIPTV - EQUIPOS NO PROVISIONADOS EN IOTDB\nBO ATC - MIGRACION A CBIO FALLO / SGA MUESTRA MENSAJE DE ERROR\nBO ATC - LÍNEA NO REGISTRADA EN CBIO\nBO ATC - DESALINEACION OCSI\nAPP SMART HOME - DISPOSITIVOS CONECTADOS - ERROR AL CARGAR LOS DISPOSITIVOS CONECTADOS\nBO ATC - SUSCRIPCIONES INCOMPLETAS\nBO ATC - SIN E. INCOGNITO / ACTIVO SIAC (SGA TRANSLATOR)\nIPTV - EQUIPOS Y PAQUETES NO PROVISIONADOS EN IOTDB\nBO ATC - SUSCRIPCIONES INCORRECTAS\nBO ATC - ERROR CON ACTIVACIÓN DE BOUQUETS\nBO ATC - SERVICIO CON TECNOLOGIA ERRADA\nBO CN - INCOGNITO SUSPENDIDO / SGA ACTIVO\nBO ATC - LÍNEA CON BOLSA INCORRECTA EN CBIO"
+      }
+    ],
+    [
+      "109",
+      {
+        "A109": "",
+        "B109": "",
+        "C109": "",
+        "D109": ""
+      }
+    ],
+    [
+      "110",
+      {
+        "A110": "",
+        "B110": "",
+        "C110": "",
+        "D110": ""
+      }
+    ],
+    [
+      "111",
+      {
+        "A111": "",
+        "B111": "",
+        "C111": "",
+        "D111": ""
+      }
+    ],
+    [
+      "112",
+      {
+        "A112": "",
+        "B112": "",
+        "C112": "",
+        "D112": ""
+      }
+    ],
+    [
+      "113",
+      {
+        "A113": "",
+        "B113": "",
+        "C113": "",
+        "D113": ""
+      }
+    ],
+    [
+      "114",
+      {
+        "A114": "",
+        "B114": "",
+        "C114": "",
+        "D114": ""
+      }
+    ],
+    [
+      "115",
+      {
+        "A115": "",
+        "B115": "",
+        "C115": "",
+        "D115": ""
+      }
+    ],
+    [
+      "116",
+      {
+        "A116": "BACK OFFICE FIJA HITSS\nPendiente de envió de pruebas\nProblema:\nMotivo: **Derivación en Curso**\nPersona de Contacto:\nNumero de Contacto:\nID Llamada:\nAsesor:",
+        "B116": "RECUPERADO-EN TRAMITE",
+        "C116": "EN TRAMITE",
+        "D116": "BO ATC - ENVÍO PRUEBAS CLIENTE"
+      }
+    ],
+    [
+      "117",
+      {
+        "A117": "",
+        "B117": "",
+        "C117": "",
+        "D117": ""
+      }
+    ],
+    [
+      "118",
+      {
+        "A118": "",
+        "B118": "",
+        "C118": "",
+        "D118": ""
+      }
+    ],
+    [
+      "119",
+      {
+        "A119": "",
+        "B119": "",
+        "C119": "",
+        "D119": ""
+      }
+    ],
+    [
+      "120",
+      {
+        "A120": "",
+        "B120": "",
+        "C120": "",
+        "D120": ""
+      }
+    ],
+    [
+      "121",
+      {
+        "A121": "",
+        "B121": "",
+        "C121": "",
+        "D121": ""
+      }
+    ],
+    [
+      "122",
+      {
+        "A122": "",
+        "B122": "",
+        "C122": "",
+        "D122": ""
+      }
+    ],
+    [
+      "123",
+      {
+        "A123": "",
+        "B123": "",
+        "C123": "",
+        "D123": ""
+      }
+    ],
+    [
+      "124",
+      {
+        "A124": "BACK OFFICE FIJA HITSS\nDescarte cambio de IP\nProblema: Relance de Servicios - Validar en 10 minutos",
+        "B124": "RECUPERADO-EN TRAMITE",
+        "C124": "EN TRAMITE",
+        "D124": "BO ATC - EJECUCIÓN BAJA Y ALTA INCOGNITO - INSTALAR                                          BO ATC - EJECUCIÓN BAJA Y ALTA INCOGNITO - DESACTIVAR"
+      }
+    ],
+    [
+      "125",
+      {
+        "A125": "",
+        "B125": "",
+        "C125": "",
+        "D125": ""
+      }
+    ],
+    [
+      "126",
+      {
+        "A126": "",
+        "B126": "",
+        "C126": "",
+        "D126": ""
+      }
+    ],
+    [
+      "127",
+      {
+        "A127": "",
+        "B127": "",
+        "C127": "",
+        "D127": ""
+      }
+    ],
+    [
+      "128",
+      {
+        "A128": "",
+        "B128": "",
+        "C128": "",
+        "D128": ""
+      }
+    ]
+  ],
+  "PLANTILLAS": [
+    [
+      "1",
+      {
+        "A1": "Columna1",
+        "B1": "Columna2"
+      }
+    ],
+    [
+      "2",
+      {
+        "A2": "FORMULARIO DE TIPIFICACIÓN SIAC (INTERACTIVO)",
+        "B2": ""
+      }
+    ],
+    [
+      "3",
+      {
+        "B3": ""
+      }
+    ],
+    [
+      "4",
+      {
+        "A4": "TIPO DE PLANTILLA:",
+        "B4": "BACK OFFICE FIJA HITSS\nCliente desiste de la atención\nPersona de Contacto:\nNumero de Contacto:\nMotivo:\nID Llamada:\nAsesor:"
+      }
+    ],
+    [
+      "5",
+      {
+        "A5": "ESTADO SIAC:",
+        "B5": "CERRADO-NO APLICA-PROCEDENTE"
+      }
+    ],
+    [
+      "6",
+      {
+        "A6": "ESTADO FORMULARIO:",
+        "B6": "PROCEDENTE"
+      }
+    ],
+    [
+      "7",
+      {
+        "A7": "MOTIVO:",
+        "B7": "SOLUCIONADO ACCESO ACTIVAR BOUQUETS"
+      }
+    ],
+    [
+      "8",
+      {
+        "A8": "HASHTAG:",
+        "B8": "#SINSERVICIOPRIORIDADAM#"
+      }
+    ],
+    [
+      "9",
+      {
+        "A9": "ÁREA:",
+        "B9": "BO-TECNICO"
+      }
+    ],
+    [
+      "10",
+      {
+        "A10": "",
+        "B10": ""
+      }
+    ],
+    [
+      "11",
+      {
+        "A11": "DESCRIPCIÓN AUTOMÁTICA:",
+        "B11": "0"
+      }
+    ],
+    [
+      "15",
+      {
+        "A15": "PLANTILLA FINAL",
+        "B15": ""
+      }
+    ],
+    [
+      "16",
+      {
+        "A16": "NOMBRE DE USUARIO:",
+        "B16": "AARON SAAVEDRA"
+      }
+    ],
+    [
+      "17",
+      {
+        "A17": "USUARIO:",
+        "B17": "E759713"
+      }
+    ],
+    [
+      "18",
+      {
+        "A18": "TIPIFICACION",
+        "B18": ""
+      }
+    ],
+    [
+      "19",
+      {
+        "A19": "PERSONA DE CONTACTO:",
+        "B19": "AAROON"
+      }
+    ],
+    [
+      "20",
+      {
+        "A20": "NÚMERO DE CONTACTO:",
+        "B20": ""
+      }
+    ],
+    [
+      "21",
+      {
+        "A21": "SOT:",
+        "B21": ""
+      }
+    ],
+    [
+      "22",
+      {
+        "A22": "ID DE LLAMADA:",
+        "B22": ""
+      }
+    ],
+    [
+      "23",
+      {
+        "A23": "PLANTILLA:",
+        "B23": ""
+      }
+    ],
+    [
+      "24",
+      {
+        "A24": "FINAL:",
+        "B24": ""
+      }
+    ],
+    [
+      "31",
+      {
+        "A31": "BO TECNICO - PLANTILLAS AUTOMATICAS",
+        "B31": "",
+        "C31": "",
+        "D31": "",
+        "E31": "",
+        "F31": "",
+        "G31": ""
+      }
+    ],
+    [
+      "32",
+      {
+        "A32": "",
+        "B32": "",
+        "C32": "",
+        "D32": "",
+        "E32": "",
+        "F32": "",
+        "G32": ""
+      }
+    ],
+    [
+      "33",
+      {
+        "H33": "VINCULO",
+        "I33": "SERVICIOS",
+        "J33": "HASHTAG",
+        "K33": "PROBLEMA"
+      }
+    ],
+    [
+      "34",
+      {
+        "H34": "TITULAR",
+        "I34": "INTERNET",
+        "J34": "#SINSERVICIOPRIORIDAD#",
+        "K34": "LENTITUD"
+      }
+    ],
+    [
+      "35",
+      {
+        "A35": "PLANTILLEITOR MEJORADO",
+        "B35": "",
+        "H35": "FAMILIAR",
+        "I35": "TELEFONIA",
+        "J35": "#A SOLICITUD CLARO",
+        "K35": "SIN SERVICIO"
+      }
+    ],
+    [
+      "36",
+      {
+        "A36": "NOMBRE DE USUARIO:",
+        "B36": "",
+        "H36": "ENCARGADO",
+        "I36": "CABLE",
+        "J36": "#A SOLICITUD DEL CLIENTE",
+        "K36": "INTERMITENTE"
+      }
+    ],
+    [
+      "37",
+      {
+        "A37": "USUARIO:",
+        "B37": "",
+        "I37": "IPTV",
+        "J37": "#CONTROL REMOTO",
+        "K37": "SIN SEÑAL"
+      }
+    ],
+    [
+      "38",
+      {
+        "A38": "SERVICIO",
+        "B38": "INTERNET",
+        "I38": "DTH",
+        "J38": "#CLIENTE DEMO",
+        "K38": "IMAGEN PIXELEADA"
+      }
+    ],
+    [
+      "39",
+      {
+        "A39": "PROBLEMA DETECTADO",
+        "B39": "INT - LOS EN ROJO",
+        "I39": "IFI",
+        "J39": "#NO24",
+        "K39": "SIN VOLUMEN"
+      }
+    ],
+    [
+      "40",
+      {
+        "A40": "PERSONA DE CONTACTO:",
+        "B40": "WILMER JESUS CASTILLO DE LA CRUZ",
+        "J40": "#A SOLICITUD DE BAJA",
+        "K40": "SIN LLAMADAS SALIENTES"
+      }
+    ],
+    [
+      "41",
+      {
+        "A41": "NÚMERO DE CONTACTO:",
+        "B41": "928859319",
+        "D41": "",
+        "J41": "#MANTENIMIENTO + CAMBIO A 3.1",
+        "K41": "SIN LLAMADAS ENTRANTES"
+      }
+    ],
+    [
+      "42",
+      {
+        "A42": "SOT/REMEDY:",
+        "B42": "",
+        "G42": "",
+        "H42": "",
+        "I42": "",
+        "J42": "#TRACER POR MEJORA TECNOLOGICA 3.1",
+        "K42": "CONTROL NO SINCRONIZADO"
+      }
+    ],
+    [
+      "43",
+      {
+        "A43": "ID DE LLAMADA/CHAT ID:",
+        "B43": "1786548320-2769346",
+        "G43": "",
+        "H43": "",
+        "I43": "",
+        "J43": "#REINCIDENCIA",
+        "K43": "A SOLICITUD DE RED"
+      }
+    ],
+    [
+      "44",
+      {
+        "A44": "FECHA CONFIRMADA:",
+        "B44": "",
+        "G44": "",
+        "H44": "",
+        "I44": "",
+        "J44": "#SIN ACCESOS SISTEMAS ",
+        "K44": "EQUIPO ROTO/AVERIADO"
+      }
+    ],
+    [
+      "45",
+      {
+        "A45": "CUSTOMER ID:",
+        "B45": "",
+        "G45": "",
+        "H45": "",
+        "I45": "",
+        "J45": "#OTROS CALIDAD",
+        "K45": "ROUTER DESCONECTADO"
+      }
+    ],
+    [
+      "46",
+      {
+        "A46": "SOLUCION",
+        "B46": "SE GENERA SOT DE MTTO",
+        "C46": "",
+        "G46": "",
+        "H46": "",
+        "I46": "",
+        "J46": "#CONFIGURACION REPETIDOR",
+        "K46": "FALLA REPETIDOR"
+      }
+    ],
+    [
+      "47",
+      {
+        "A47": "TIPIFICACION DE SOLUCION",
+        "B47": "",
+        "G47": "",
+        "H47": "",
+        "I47": "",
+        "K47": ""
+      }
+    ],
+    [
+      "48",
+      {
+        "A48": "DESCARTES REALIZADOS:",
+        "B48": "SE VALIDA SIN CONSUMO EN TRACER, DESARTES FISICOS LOS EN ROJO, SE REINICIO SIN EXITO",
+        "G48": "",
+        "H48": "",
+        "I48": "",
+        "K48": ""
+      }
+    ],
+    [
+      "49",
+      {
+        "A49": "",
+        "B49": "",
+        "G49": "",
+        "H49": "",
+        "I49": "",
+        "J49": "",
+        "K49": "",
+        "M49": ""
+      }
+    ],
+    [
+      "50",
+      {
+        "A50": "HASHTAG",
+        "B50": "",
+        "G50": "",
+        "H50": "",
+        "I50": "",
+        "J50": "",
+        "K50": ""
+      }
+    ],
+    [
+      "51",
+      {
+        "A51": "PLANTILLA SIAC:",
+        "B51": "BACK OFFICE FIJA HITSS\nPersona de Contacto: WILMER JESUS CASTILLO DE LA CRUZ\nNumero de Contacto: 928859319\nProblema Detectado: INT - LOS EN ROJO\nSolución Del Caso: \nDescartes Realizados: SE VALIDA SIN CONSUMO EN TRACER, DESARTES FISICOS LOS EN ROJO, SE REINICIO SIN EXITO\nSOT/REMEDY: \nID LLAMADA: 1786548320-2769346\nAsesor:  - ",
+        "G51": "",
+        "H51": "",
+        "I51": "",
+        "J51": "",
+        "K51": ""
+      }
+    ],
+    [
+      "52",
+      {
+        "A52": "PLANTILLA MANTO:",
+        "B52": "BACK OFFICE FIJA HITSS\nProblema Detectado: INT - LOS EN ROJO\nDiagnostio: \nUsuario: WILMER JESUS CASTILLO DE LA CRUZ\nDescartes realizados: SE VALIDA SIN CONSUMO EN TRACER, DESARTES FISICOS LOS EN ROJO, SE REINICIO SIN EXITO\nNumero de Contacto: 928859319\nID LLAMADA: 1786548320-2769346\n\nAsesor:  - ",
+        "G52": "",
+        "H52": "",
+        "I52": "",
+        "J52": "",
+        "K52": ""
+      }
+    ],
+    [
+      "53",
+      {
+        "G53": "",
+        "H53": "",
+        "I53": "",
+        "J53": "",
+        "K53": ""
+      }
+    ],
+    [
+      "54",
+      {
+        "G54": "",
+        "H54": "",
+        "I54": "",
+        "J54": "",
+        "K54": ""
+      }
+    ],
+    [
+      "55",
+      {
+        "A55": "",
+        "B55": "",
+        "D55": "",
+        "E55": "",
+        "F55": "",
+        "G55": "",
+        "H55": "",
+        "I55": "",
+        "J55": "",
+        "K55": ""
+      }
+    ],
+    [
+      "56",
+      {
+        "A56": "",
+        "B56": "",
+        "D56": "",
+        "E56": "",
+        "F56": "",
+        "G56": "",
+        "H56": "",
+        "I56": "",
+        "J56": "",
+        "K56": ""
+      }
+    ],
+    [
+      "57",
+      {
+        "A57": "",
+        "B57": "",
+        "D57": "",
+        "E57": "",
+        "F57": "",
+        "G57": "",
+        "H57": "",
+        "I57": "",
+        "J57": "",
+        "K57": ""
+      }
+    ],
+    [
+      "58",
+      {
+        "A58": "",
+        "B58": "",
+        "D58": "",
+        "E58": "",
+        "F58": "",
+        "G58": "",
+        "H58": "",
+        "I58": "",
+        "J58": "",
+        "K58": ""
+      }
+    ],
+    [
+      "59",
+      {
+        "A59": "",
+        "B59": "",
+        "D59": "",
+        "E59": "",
+        "F59": "",
+        "G59": "",
+        "H59": "",
+        "I59": "",
+        "J59": "",
+        "K59": ""
+      }
+    ],
+    [
+      "60",
+      {
+        "A60": "",
+        "B60": "",
+        "D60": "",
+        "E60": "",
+        "F60": "",
+        "G60": "",
+        "H60": "",
+        "I60": "",
+        "J60": "",
+        "K60": ""
+      }
+    ],
+    [
+      "61",
+      {
+        "A61": "",
+        "B61": "",
+        "D61": "",
+        "E61": "",
+        "F61": "",
+        "G61": "",
+        "H61": "",
+        "I61": "",
+        "J61": "",
+        "K61": ""
+      }
+    ],
+    [
+      "62",
+      {
+        "A62": "",
+        "B62": "",
+        "D62": "",
+        "E62": "",
+        "F62": "",
+        "G62": "",
+        "H62": "",
+        "I62": "",
+        "J62": "",
+        "K62": ""
+      }
+    ],
+    [
+      "63",
+      {
+        "A63": "",
+        "B63": "",
+        "D63": "",
+        "E63": "",
+        "F63": "",
+        "G63": "",
+        "H63": "",
+        "I63": "",
+        "J63": "",
+        "K63": ""
+      }
+    ],
+    [
+      "64",
+      {
+        "A64": "",
+        "B64": "",
+        "D64": "",
+        "E64": "",
+        "F64": "",
+        "G64": "",
+        "H64": ""
+      }
+    ],
+    [
+      "65",
+      {
+        "A65": "",
+        "B65": "",
+        "D65": "",
+        "E65": "",
+        "F65": "",
+        "G65": "",
+        "H65": ""
+      }
+    ],
+    [
+      "66",
+      {
+        "A66": "",
+        "B66": "",
+        "D66": "",
+        "E66": "",
+        "F66": "",
+        "G66": "",
+        "H66": ""
+      }
+    ],
+    [
+      "67",
+      {
+        "A67": "",
+        "B67": "",
+        "D67": "",
+        "E67": "",
+        "F67": "",
+        "G67": "",
+        "H67": ""
+      }
+    ],
+    [
+      "68",
+      {
+        "A68": "",
+        "B68": "",
+        "D68": "",
+        "E68": "",
+        "F68": "",
+        "G68": "",
+        "H68": ""
+      }
+    ],
+    [
+      "69",
+      {
+        "A69": "",
+        "B69": "",
+        "D69": "",
+        "E69": "",
+        "F69": "",
+        "G69": "",
+        "H69": ""
+      }
+    ],
+    [
+      "70",
+      {
+        "A70": "",
+        "B70": "",
+        "D70": "",
+        "E70": "",
+        "F70": "",
+        "G70": "",
+        "H70": ""
+      }
+    ],
+    [
+      "71",
+      {
+        "A71": "",
+        "B71": "",
+        "D71": "",
+        "E71": "",
+        "F71": "",
+        "G71": "",
+        "H71": ""
+      }
+    ],
+    [
+      "72",
+      {
+        "A72": "",
+        "B72": "",
+        "D72": "",
+        "E72": "",
+        "F72": "",
+        "G72": "",
+        "H72": ""
+      }
+    ],
+    [
+      "73",
+      {
+        "A73": "",
+        "B73": "",
+        "D73": "",
+        "E73": "",
+        "F73": "",
+        "G73": "",
+        "H73": ""
+      }
+    ],
+    [
+      "74",
+      {
+        "A74": "",
+        "B74": "",
+        "D74": "",
+        "E74": "",
+        "F74": "",
+        "G74": "",
+        "H74": ""
+      }
+    ],
+    [
+      "75",
+      {
+        "A75": "",
+        "B75": "",
+        "D75": "",
+        "E75": "",
+        "F75": "",
+        "G75": "",
+        "H75": ""
+      }
+    ],
+    [
+      "76",
+      {
+        "A76": "",
+        "B76": "",
+        "D76": "",
+        "E76": "",
+        "F76": "",
+        "G76": "",
+        "H76": ""
+      }
+    ],
+    [
+      "77",
+      {
+        "A77": "",
+        "B77": "",
+        "D77": "",
+        "E77": "",
+        "F77": "",
+        "G77": "",
+        "H77": ""
+      }
+    ],
+    [
+      "78",
+      {
+        "A78": "",
+        "B78": "",
+        "D78": "",
+        "E78": "",
+        "F78": "",
+        "G78": "",
+        "H78": ""
+      }
+    ],
+    [
+      "79",
+      {
+        "B79": ""
+      }
+    ],
+    [
+      "80",
+      {
+        "B80": ""
+      }
+    ],
+    [
+      "81",
+      {
+        "B81": ""
+      }
+    ],
+    [
+      "82",
+      {
+        "B82": ""
+      }
+    ],
+    [
+      "83",
+      {
+        "B83": ""
+      }
+    ],
+    [
+      "84",
+      {
+        "B84": ""
+      }
+    ]
+  ],
+  "Hoja2": [
+    [
+      "1",
+      {
+        "B1": ""
+      }
+    ],
+    [
+      "2",
+      {
+        "A2": "BO TECNICO - PLANTILLAS AUTOMATICAS",
+        "B2": "",
+        "C2": "",
+        "D2": "",
+        "E2": "",
+        "F2": ""
+      }
+    ],
+    [
+      "3",
+      {
+        "A3": "",
+        "B3": "",
+        "C3": "",
+        "D3": "",
+        "E3": "",
+        "F3": ""
+      }
+    ],
+    [
+      "4",
+      {
+        "B4": ""
+      }
+    ],
+    [
+      "5",
+      {
+        "B5": ""
+      }
+    ],
+    [
+      "6",
+      {
+        "A6": "PLANTILLEITOR MEJORADO",
+        "B6": ""
+      }
+    ],
+    [
+      "7",
+      {
+        "A7": "NOMBRE DE USUARIO:",
+        "B7": "ALBERTO MANUEL QUISPE CHÁVEZ"
+      }
+    ],
+    [
+      "8",
+      {
+        "A8": "USUARIO:",
+        "B8": "E761034"
+      }
+    ],
+    [
+      "9",
+      {
+        "A9": "PROBLEMA DETECTADO",
+        "B9": ""
+      }
+    ],
+    [
+      "10",
+      {
+        "A10": "SOLUCION DEL CASO",
+        "B10": ""
+      }
+    ],
+    [
+      "11",
+      {
+        "A11": "PERSONA DE CONTACTO:",
+        "B11": ""
+      }
+    ],
+    [
+      "12",
+      {
+        "A12": "NÚMERO DE CONTACTO:",
+        "B12": ""
+      }
+    ],
+    [
+      "13",
+      {
+        "A13": "SOT/REMEDY:",
+        "B13": ""
+      }
+    ],
+    [
+      "14",
+      {
+        "A14": "ID DE LLAMADA/CHAT ID:",
+        "B14": "17982-569874"
+      }
+    ],
+    [
+      "15",
+      {
+        "A15": "FECHA CONFIRMADA:",
+        "B15": ""
+      }
+    ],
+    [
+      "16",
+      {
+        "A16": "CUSTOMER ID:",
+        "B16": ""
+      }
+    ],
+    [
+      "17",
+      {
+        "A17": "DOWNSTREAM HYGEA:",
+        "B17": "-17.350000000000001"
+      }
+    ],
+    [
+      "18",
+      {
+        "A18": "SERVICIO AFECTADO:",
+        "B18": "INTERNET"
+      }
+    ],
+    [
+      "19",
+      {
+        "A19": "PROBLEMA REPORTADO:",
+        "B19": "INTERMITENTE"
+      }
+    ],
+    [
+      "20",
+      {
+        "A20": "DILACION DEL INCOVENIENTE:",
+        "B20": ""
+      }
+    ],
+    [
+      "21",
+      {
+        "A21": "DESCARTES REALIZADOS:",
+        "B21": "incognito correcto, tracer sin averia"
+      }
+    ],
+    [
+      "22",
+      {
+        "A22": "CASO SIAC:",
+        "B22": "59568791"
+      }
+    ],
+    [
+      "23",
+      {
+        "A23": "HASHTAG",
+        "B23": "#SIN ACCESOS SISTEMAS "
+      }
+    ],
+    [
+      "24",
+      {
+        "A24": "PLANTILLA SIAC:",
+        "B24": "BACK OFFICE FIJA HITSS\nPersona de Contacto: \nNumero de Contacto: \nProblema Detectado: INTERNET\nDescartes Realizados: INTERMITENTE\nSolución Del Caso: \nSOT: \nID Llamada: 17982-569874\nAsesor: ALBERTO MANUEL QUISPE CHÁVEZ - E761034"
+      }
+    ]
+  ],
+  "Hoja1": [
+    [
+      "1",
+      {
+        "A1": "CERRADO-NO APLICA-PROCEDENTE",
+        "D1": "BACK OFFICE FIJA HITSS\nSolucionado/Cliente brinda Conformidad:",
+        "I1": "PROCEDENTE"
+      }
+    ],
+    [
+      "2",
+      {
+        "A2": "RECUPERADO-EN TRAMITE",
+        "D2": "BACK OFFICE FIJA HITSS\nCon Visita Técnica\nProblema:\nMotivo:",
+        "I2": "NO PROCEDENTE"
+      }
+    ],
+    [
+      "3",
+      {
+        "D3": "BACK OFFICE FIJA HITSS\nCiclo Cumplido/Sin Contacto:\nIntentos de Llamada:3\nBuzón de voz: ->OBLIGATORIO DEJAR MENSAJE DE VOZ",
+        "I3": "TRAMITE"
+      }
+    ],
+    [
+      "4",
+      {
+        "D4": "BACK OFFICE FIJA HITSS\nInformativo/Avería Masiva\nContesta: SI/NO\nBuzón de voz: SI/NO"
+      }
+    ],
+    [
+      "5",
+      {
+        "D5": "BACK OFFICE FIJA HITSS\nCliente con suspensión de servicios"
+      }
+    ],
+    [
+      "6",
+      {
+        "D6": "BACK OFFICE FIJA HITSS\nCliente dara de baja el servicio\n"
+      }
+    ],
+    [
+      "7",
+      {
+        "D7": "BACK OFFICE FIJA HITSS\nNumero no existe/Numero errado/Mal creado\n"
+      }
+    ],
+    [
+      "8",
+      {
+        "D8": "BACK OFFICE FIJA HITSS\nCliente desiste de la atención\nMotivo:\n"
+      }
+    ],
+    [
+      "9",
+      {
+        "D9": "BACK OFFICE FIJA HITSS\nCiclo de llamada\nIntentos de Llamada:1/2/3\nBuzón de voz: ->OBLIGATORIO DEJAR MENSAJE DE VOZ\n"
+      }
+    ],
+    [
+      "10",
+      {
+        "D10": "BACK OFFICE FIJA HITSS\nCliente solicita devolución de llamada\n"
+      }
+    ],
+    [
+      "11",
+      {
+        "D11": "BACK OFFICE FIJA HITSS\nDerivado a conmutación-Correo                  (ADJUNTAR)\n"
+      }
+    ],
+    [
+      "12",
+      {
+        "D12": "BACK OFFICE FIJA HITSS\nDerivado a TI-Remedy\nMotivo:\nRemedy:\n"
+      }
+    ],
+    [
+      "13",
+      {
+        "D13": "BACK OFFICE FIJA HITSS\nPendiente de envió de pruebas\nProblema:\nMotivo: **Derivación en Curso**\n"
+      }
+    ],
+    [
+      "14",
+      {
+        "D14": "BACK OFFICE FIJA HITSS\nDescarte cambio de IP\nProblema: Relance de Servicios - Validar en 10 minutos"
+      }
+    ],
+    [
+      "24",
+      {
+        "A24": "SOLUCIONADO ACCESO ACTIVAR BOUQUETS",
+        "D24": "#SINSERVICIOPRIORIDADAM#"
+      }
+    ],
+    [
+      "25",
+      {
+        "A25": "SOLUCIONADO ACCESO ALTA Y BAJA INCOGNITO > Instalar ONT/CM",
+        "D25": "#SINSERVICIOPRIORIDADPM#",
+        "F25": "BO-TECNICO-BO PREVENTIVA"
+      }
+    ],
+    [
+      "26",
+      {
+        "A26": "SOLUCIONADO ACCESO CAMBIO DE RESOLUCIÓN SKYWAY",
+        "D26": "*A SOLICITUD CLARO",
+        "F26": "BO/ATENCION ESPECIALIZADA"
+      }
+    ],
+    [
+      "27",
+      {
+        "A27": "SOLUCIONADO ACCESO CLEAN DATA SKYWAY",
+        "D27": "*A SOLICITUD DEL CLIENTE",
+        "F27": "BO-TECNICO"
+      }
+    ],
+    [
+      "28",
+      {
+        "A28": "SOLUCIONADO ACCESO FIJACIÓN DE IP",
+        "D28": "*CONTROL REMOTO",
+        "F28": "BO-TECNICO"
+      }
+    ],
+    [
+      "29",
+      {
+        "A29": "SOLUCIONADO ACCESO PREFERENCES SKYWAY",
+        "D29": "*CLIENTE DEMO",
+        "F29": "BO/ATENCION ESPECIALIZADA"
+      }
+    ],
+    [
+      "30",
+      {
+        "A30": "SOLUCIONADO ACCESO PROVISIÓN FIJA + CLEAN DATA SKYWAY",
+        "D30": "*REPOSICIÓN DE EQUIPO",
+        "F30": "BO-TECNICO"
+      }
+    ],
+    [
+      "31",
+      {
+        "A31": "SOLUCIONADO ACCESO PROVISIÓN FIJA > ActivarGPONTV",
+        "D31": "#BASE PREVENTIVA RED",
+        "F31": "BO-PREVENTIVA"
+      }
+    ],
+    [
+      "32",
+      {
+        "A32": "SOLUCIONADO ACCESO PROVISIÓN FIJA > Instalar serialNumber STB",
+        "D32": "#BASE POTENCIA",
+        "F32": "BO-PREVENTIVA"
+      }
+    ],
+    [
+      "33",
+      {
+        "A33": "SOLUCIONADO ACCESO PROVISIÓN FIJA > REGENERAR IPTV",
+        "D33": "#BASE PREVENTIVA",
+        "F33": "BO-PREVENTIVA"
+      }
+    ],
+    [
+      "34",
+      {
+        "A34": "SOLUCIONADO DESCARTES TÉCNICOS CAMBIO DE PILAS CONTROL REMOTO"
+      }
+    ],
+    [
+      "35",
+      {
+        "A35": "SOLUCIONADO DESCARTES TÉCNICOS CONEXIONES"
+      }
+    ],
+    [
+      "36",
+      {
+        "A36": "SOLUCIONADO DESCARTES TÉCNICOS PROBLEMAS EQUIPOS DEL CLIENTE"
+      }
+    ],
+    [
+      "37",
+      {
+        "A37": "SOLUCIONADO DESCARTES TÉCNICOS RESET FACTORY"
+      }
+    ],
+    [
+      "38",
+      {
+        "A38": "BO ATC - SOT DE MANTTO A SOLICITUD CLARO - CONMUTACIÓN"
+      }
+    ],
+    [
+      "39",
+      {
+        "A39": "BO ATC - SOT DE MANTTO A SOLICITUD CLARO - RED"
+      }
+    ],
+    [
+      "40",
+      {
+        "A40": "BO ATC - SOT DE MANTTO A SOLICITUD DEL CLIENTE"
+      }
+    ],
+    [
+      "41",
+      {
+        "A41": "BO ATC - SOT DE MANTTO NO FUNCIONA CONTROL REMOTO"
+      }
+    ],
+    [
+      "42",
+      {
+        "A42": "BO ATC - SOT DE MANTTO SIN SERVICIO GENERAL"
+      }
+    ],
+    [
+      "43",
+      {
+        "A43": "MENSAJE BUZÓN DE VOZ"
+      }
+    ],
+    [
+      "44",
+      {
+        "A44": "NO CONTACTO SIN CASILLA DE VOZ"
+      }
+    ],
+    [
+      "45",
+      {
+        "A45": "BO ATC - AVERÍA MASIVA EN EJECUCIÓN POST-CREACIÓN CASO"
+      }
+    ],
+    [
+      "46",
+      {
+        "A46": "BO ATC - AVERÍA MASIVA EN EJECUCIÓN PRE-CREACIÓN CASO(SIN LLAMADA)"
+      }
+    ],
+    [
+      "47",
+      {
+        "A47": "BO ATC - SERVICIO SUSPENDIDO POST-CREACIÓN CASO"
+      }
+    ],
+    [
+      "48",
+      {
+        "A48": "BO ATC - SERVICIO SUSPENDIDO PRE-CREACIÓN CASO(SIN LLAMADA)"
+      }
+    ],
+    [
+      "49",
+      {
+        "A49": "BO ATC - CLIENTE DARÁ DE BAJA SERVICIO"
+      }
+    ],
+    [
+      "50",
+      {
+        "A50": "BO ATC - DERIVACIÓN INCORRECTA                                                                                       "
+      }
+    ],
+    [
+      "51",
+      {
+        "A51": "BO ATC - EMTA/ONT NO HOMOLOGADO EN SMARTHOME                                                                                          "
+      }
+    ],
+    [
+      "52",
+      {
+        "A52": "BO ATC - DUPLICIDAD DE CASO                                                                                                                          "
+      }
+    ],
+    [
+      "53",
+      {
+        "A53": "BO ATC - TIPIFICACIÓN INCORRECTA                                                                                                           "
+      }
+    ],
+    [
+      "54",
+      {
+        "A54": "BO ATC - PÁGINAS WEB BLOQUEADAS POR INDECOPI"
+      }
+    ],
+    [
+      "55",
+      {
+        "A55": "NA"
+      }
+    ]
+  ],
+  "BASE DE DATOS": [
+    [
+      "1",
+      {
+        "A1": "PROBLEMA_DETECTADO",
+        "E1": "INTERNET",
+        "F1": "TELEFONIA",
+        "G1": "IPTV",
+        "H1": "CABLE",
+        "I1": "APPS",
+        "J1": "#CLIENTE_SOLICITA_DEVOLUCION_DE_LLAMADA",
+        "K1": "INFORMATIVO_AVERIA_MASIVA",
+        "L1": "CLIENTE_CON_SUSPENSION_DE_SERVICIOS",
+        "M1": "#DERIVADO_A_TI_REMEDY",
+        "N1": "CLIENTE_DARA_DE_BAJA_EL_SERVICIO",
+        "O1": "INFORMACION /DERIVACION ERRADA",
+        "P1": "CICLO_DE_LLAMADA",
+        "Q1": "CLIENTE_CON_SOT_CREADA_POR_TERCEROS",
+        "S1": "MOTIVO_SOLUCION",
+        "U1": "DESCARTES_FISICOS_INTERNET",
+        "V1": "DESCARTES_REMOTOS_INTERNET",
+        "W1": "DESCARTES_FISICOS_IPTV",
+        "X1": "DESCARTES_REMOTOS_IPTV",
+        "Y1": "DESCARTES_FISICOS_CABLE_DIGITAL",
+        "Z1": "DESCARTES_REMOTOS_CABLE_DIGITAL",
+        "AA1": "DESCARTES_FISICOS_TELEFONIA",
+        "AB1": "DESCARTES_REMOTOS_TELEFONIA",
+        "AC1": "GENERACION_SOT_BO",
+        "AD1": "GENERACION_SOT_SOLICITUD_CLIENTE",
+        "AE1": "AVERIA_MASIVA_POSIBLE_AVERIA",
+        "AF1": "VALIDACION_DE_LOS_EQUIPOS_DEL_CLIENTE",
+        "AG1": "EXPLICACIÓN_DE_USO_DEL_SERVICIO",
+        "AH1": "CLIENTE_NO_BRINDA_FACILIDADES",
+        "AI1": "WEB_APP_PLATAFORMAS_DE_ENTRETENIMIENTO"
+      }
+    ],
+    [
+      "2",
+      {
+        "A2": "INTERNET",
+        "E2": "INT - BAJA VELOCIDAD VIA CABLEADO (LENTITUD)",
+        "F2": "TEL - SIN TONO",
+        "G2": "IPTV - SIN CANALES",
+        "H2": "CABLE - PANTALLA DE CARGA",
+        "I2": "CLARO VIDEO - NO REGISTRADO",
+        "J2": "BO ATC - CLIENTE SOLICITA DEVOLUCIÓN DE LLAMADA",
+        "K2": "BO ATC - AVERÍA MASIVA EN EJECUCIÓN POST-CREACIÓN CASO",
+        "L2": "BO ATC - SERVICIO SUSPENDIDO POST-CREACIÓN CASO",
+        "M2": "BO ATC - SEGUIMIENTO DE REQUERIMIENTO",
+        "N2": "BO ATC - CLIENTE DARÁ DE BAJA SERVICIO",
+        "O2": "BO ATC - EMTA/ONT NO HOMOLOGADO EN SMARTHOME",
+        "P2": "BO ATC - CICLO DE LLAMADA CUMPLIDO",
+        "Q2": "BO ATC - SOT MANTTO TERCEROS ATENDIDA PRE-CREACIÓN CASO",
+        "S2": "DESCARTES_FISICOS_INTERNET",
+        "U2": "VALIDACION DE CONEXIONES",
+        "V2": "BAJA Y ALTA - SOT DE RECONEXION",
+        "W2": "DESCARTES CON CONTROL REMOTO",
+        "X2": "ACTUALIZACION DE CLARO TV",
+        "Y2": "DESCARTES CON CONTROL REMOTO",
+        "Z2": "ENVIO DE COMANDOS REFRESH + INIT",
+        "AA2": "VALIDACION DE CONEXIONES",
+        "AB2": "ALINEACION DE CMTS",
+        "AC2": "SIN SERVICIO LOS ENCENDIDO",
+        "AD2": "COBERTURA WIFI - A SOLICITUD",
+        "AE2": "AVERIA MASIVA CON FLAG EN PLANO",
+        "AF2": "PROBLEMAS CON EQUIPOS DE CLIENTE - EQUIPOS DE COMPUTO",
+        "AG2": "DEBE CONECTAR SU SMART TV VIA CABLEADO",
+        "AH2": "CLIENTE NO CONTESTA/CON BUZON DE VOZ",
+        "AI2": "EXPLICACION - NO CORRESPONDE SERVICIO ADICIONAL"
+      }
+    ],
+    [
+      "3",
+      {
+        "A3": "TELEFONIA",
+        "E3": "INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)",
+        "F3": "TEL - NO PUEDE REALIZAR LLAMADAS ",
+        "G3": "IPTV - NO VISUALIZA ALGUNOS CANALES",
+        "H3": "CABLE - PANTALLA NEGRA",
+        "I3": "CLARO VIDEO - NO PUEDE ACCEDER A CLARO VIDEO - DISPOSITIVO",
+        "J3": "BO ATC - LLAMADA PROGRAMADA POR DISPONIBILIDAD CLIENTE",
+        "K3": "BO ATC - AVERÍA MASIVA EN EJECUCIÓN PRE-CREACIÓN CASO",
+        "L3": "BO ATC - SERVICIO SUSPENDIDO PRE-CREACIÓN CASO",
+        "M3": "BO ATC - PROBLEMAS EN EL ACCESO A PÁGINAS WEB",
+        "O3": "BO ATC - DUPLICIDAD DE CASO",
+        "P3": "BO ATC - CICLO DE LLAMADA",
+        "Q3": "BO ATC - SOT MANTTO TERCEROS EN EJECUCIÓN PRE-CREACIÓN CASO",
+        "S3": "DESCARTES_REMOTOS_INTERNET",
+        "U3": "REINICIO MANUAL - EQUIPOS DEL CLIENTE",
+        "V3": "REINICIO DE SISTEMA - SOT DE RECONEXION",
+        "W3": "VALIDACION DE CONEXIONES",
+        "X3": "BORRAR DATOS CON EL CONTROL REMOTO",
+        "Y3": "VALIDACION DE CONEXIONES",
+        "Z3": "REINCIO MANUAL DEL DECODIFICADOR",
+        "AA3": "DESCARTES CON LAS BOTONERAS",
+        "AB3": "ALINEACION DE ETIQUETAS",
+        "AC3": "DESCARTES SIN SOLUCION",
+        "AD3": "NO BRINDA FACILIDADES",
+        "AE3": "AVERIA MASIVA - PLANO TOTALMENTE CAIDO",
+        "AF3": "PROBLEMAS CON EQUIPOS DE CLIENTE - EQUIPOS MOVILES",
+        "AG3": "EXPLICACION DE LA DIFERENCIA DE AMBAS REDES 2.4GHZ Y 5GHZ",
+        "AH3": "CLIENTE NO CONTESTA/SIN BUZON DE VOZ",
+        "AI3": "PROBLEMA CON NETFLIX - SOLUCIONADO"
+      }
+    ],
+    [
+      "4",
+      {
+        "A4": "IPTV",
+        "E4": "INT - VELOCIDAD MENOR A LA CONTRATADA",
+        "F4": "TEL - NO PUEDE RECIBIR LLAMADAS",
+        "G4": "IPTV - DESALINEADO EN SISTEMAS",
+        "H4": "CABLE - PROBLEMAS CON CONTROL REMOTO",
+        "I4": "CLARO VIDEO - NO PUEDE ACCEDER A CLARO VIDEO - AMCO",
+        "M4": "BO ATC - DERIVADO A RED",
+        "O4": "BO ATC - TIPIFICACIÓN INCORRECTA",
+        "Q4": "BO ATC - SOT MANTTO TERCEROS ATENDIDA POST-CREACIÓN CASO",
+        "S4": "DESCARTES_FISICOS_IPTV",
+        "U4": "REINICIO MODO FABRICA - MANUAL ",
+        "V4": "REINICIO POR SISTEMA",
+        "W4": "VALIDACION CON LAS TOMAS ELECTRICAS",
+        "X4": "REINCIO CON EL CONTROL REMOTO",
+        "Y4": "VALIDACION CON LAS TOMAS ELECTRICAS",
+        "Z4": "RESETEO CON EL CONTROL REMOTO",
+        "AA4": "VALIDACION ESTADO DE ROSETA",
+        "AB4": "ALINEACION CBIO",
+        "AC4": "FLAG EQUIPO RECOMENDABLE PARA PAQUETE CONTRATADO",
+        "AD4": "VELOCIDAD CONTRATADA - A SOLICITUD",
+        "AE4": "AVERIA NO PUBLICADA - EN TRACER TIENE INC/CRQ/WO",
+        "AF4": "PROBLEMAS CON EQUIPOS DE CLIENTE - SMART TV",
+        "AG4": "EXPLICACION DE LOS CANALES CONTRATADOS",
+        "AH4": "CLIENTE SE ENCUENTRA DE VIAJE",
+        "AI4": "REINICIO DE CONTRASEÑA (ENVIO DE LINK)"
+      }
+    ],
+    [
+      "5",
+      {
+        "A5": "CABLE",
+        "E5": "INT - NAVEGACION LENTA EN TODAS LAS PAGINAS",
+        "F5": "TEL - RUIDO/INTERFERENCIA",
+        "G5": "IPTV - PARAMETROS DESALINEADOS EN SKYWAY",
+        "H5": "CABLE - SIN CANALES",
+        "I5": "CLARO VIDEO - CORREO MAL ASOCIADO",
+        "M5": "BO ATC - LÍNEA CON BOLSA INCORRECTA EN CBIO",
+        "O5": "BO ATC - PÁGINAS WEB BLOQUEADAS POR INDECOPI",
+        "Q5": "BO ATC - SOT MANTTO TERCEROS EN EJECUCIÓN POST-CREACIÓN CASO",
+        "S5": "DESCARTES_REMOTOS_IPTV",
+        "U5": "VALIDACION CON LAS TOMAS ELECTRICAS",
+        "V5": "BAJA Y ALTA SGA",
+        "W5": "REINICIO MODO FABRICA - MANUAL ",
+        "X5": "SE PROCESO CLEAR DATA CON SKYWAY",
+        "Y5": "PROBLEMAS CON ADAPTADOR",
+        "Z5": "ALINEACION DE IDENTIFICADORES",
+        "AA5": "VALIDACION DE PUERTO",
+        "AB5": "VALIDACION DE BOLSA DE MINUTOS",
+        "AC5": "SCHAMAN - CAMBIO DE EQUIPO 3.1",
+        "AD5": "ADULTO DE TERCERA EDAD",
+        "AE5": "AVERIA PUBLICADO ANTES DEL CASO",
+        "AF5": "PROBLEMAS CON REPETIDOR PARTICULAR",
+        "AG5": "DEBE REALIZAR EL TEST VIA CABLEADO",
+        "AH5": "CLIENTE NO DESEA LA ATENCIÓN",
+        "AI5": "CAMBIO DE CORREO FAKE"
+      }
+    ],
+    [
+      "6",
+      {
+        "A6": "APPS",
+        "E6": "INT - INTERMITENCIA EN RANGOS HORARIOS CABLEADO",
+        "F6": "TEL - BOLSA DE MINUTOS DESCONFIGURADA",
+        "G6": "IPTV - RESOLUCION BAJA ",
+        "H6": "CABLE - CALIDAD PROBLEMAS CON CANALES",
+        "I6": "CLARO VIDEO - DESALINEADO EN BASE MEXICO",
+        "M6": "BO ATC - CLARO VIDEO SUSCRIPCIONES INCORRECTAS",
+        "S6": "DESCARTES_FISICOS_CABLE_DIGITAL",
+        "U6": "REINICIO MANUAL EMTA/ONT",
+        "V6": "VERIFICACION DE PORTADORAS",
+        "X6": "SE PROCESO REBOOT CON SKYWAY",
+        "Z6": "BAJA Y ALTA SGA - DECOS",
+        "AB6": "VALIDACION DE BOLSA DE MINUTOS MULTIDESTINOS",
+        "AC6": "FLAG IN HOUSE",
+        "AD6": "CLIENTE SOLICITA LA BAJA",
+        "AE6": "AVERIA PUBLICADO DESPUES DEL CASO",
+        "AF6": "TARJETA DE RED (PC, LAPTOP, ETC) NO TIENE LA VELOCIDAD 1000/1000 (MBPS)",
+        "AG6": "EXPLICACION DEL BONO FULL CLLARO",
+        "AH6": "CLIENTE NO ACEPTA LA SOLUCION",
+        "AI6": "BORRADO DE DATOS APP CLARO VIDEO"
+      }
+    ],
+    [
+      "7",
+      {
+        "A7": "CLIENTE_SOLICITA_DEVOLUCION_DE_LLAMADA",
+        "E7": "INT - INTERMITENCIA EN RANGOS HORARIOS WIFI",
+        "F7": "TEL - NO PUEDE REALIZAR LLAMADAS INTERNACIONALES",
+        "G7": "IPTV - SIN VOLUMEN",
+        "H7": "CABLE - SIN VOLUMEN",
+        "I7": "CLARO VIDEO - DESALINEADO EN BASE PERU",
+        "M7": "BO ATC - NO VISUALIZA ALGUNOS CANALES PLAN TV FLEX",
+        "S7": "DESCARTES_REMOTOS_CABLE_DIGITAL",
+        "V7": "ACTUALIZACION DE FIRMWARE",
+        "X7": "ACTUALIZACIÓN DE FIRMWARE",
+        "AB7": "REINICIO DE ONT/EMTA",
+        "AC7": "IPTV - DECO VIA WIFI",
+        "AE7": "",
+        "AF7": "PROBLEMAS CON ADAPTADOR HDMI",
+        "AG7": "EXPLICACION DEL USO CORRECTO DEL CONTROL REMOTO",
+        "AH7": "CLIENTE CORTA LA LLAMADA EN PLENO DESCARTE",
+        "AI7": "RECREACION DE CUENTA CLARO VIDEO"
+      }
+    ],
+    [
+      "8",
+      {
+        "A8": "INFORMATIVO_AVERIA_MASIVA",
+        "E8": "INT - DESCONEXIONES FRECUENTES",
+        "F8": "TEL - NO PUEDE RECIBIR LLAMADAS INTERNACIONALES",
+        "G8": "IPTV - CONTROL DESINCRONIZADO",
+        "H8": "CABLE - RESOLUCION DE CANALES",
+        "I8": "CLARO VIDEO - PROBLEMAS CON CORREO DEL CLIENTE",
+        "M8": "BO ATC - CLARO VIDEO NO REGISTRADO EN AMCO",
+        "S8": "DESCARTES_FISICOS_TELEFONIA",
+        "V8": "REMOTO - CAMBIO DE CHANNEL",
+        "X8": "ALINEACIÓN DE FICHAS EN SGA",
+        "AB8": "ALINEACION DE CALL_BARRING_TYPE",
+        "AC8": "REPETIDOR MESH SIN CABLEAR ",
+        "AE8": "",
+        "AF8": "PROBLEMAS CON CABLE ETHERNET",
+        "AG8": "EXPLICACIÓN SOBRE COBERTURA WIFI - SE OFRECE MESH NO ACEPTA",
+        "AH8": "CLIENTE SOLICITA REPROGRAMAR LA ATENCION",
+        "AI8": "REASIGNACION DE CUENTA EN USO"
+      }
+    ],
+    [
+      "9",
+      {
+        "A9": "CLIENTE_CON_SUSPENSION_DE_SERVICIOS",
+        "E9": "INT - SIN SERVICIO",
+        "F9": "TEL - INTERLOCUCION ",
+        "G9": "IPTV - CONTROL REMOTO NO FUNCIONA",
+        "H9": "CABLE - CONEXIONES/TOMACORRIENTE",
+        "I9": "CLARO VIDEO - L1 MAX NO ACTIVADO",
+        "M9": "BO ATC - LIGA 1 ADDONS NO PROVISIONADA - CLARO VIDEO",
+        "S9": "DESCARTES_REMOTOS_TELEFONIA",
+        "V9": "REMOTO - CAMBIO DE CLAVE/SSID DE WIFI",
+        "X9": "VINCULACION CONTROL REMOTO",
+        "AB9": "ALINEACION DE CALL_FEATURES:",
+        "AC9": "REPETIDOR PLUME SIN CABLEAR ",
+        "AE9": "",
+        "AF9": "",
+        "AG9": "EXPLICACIÓN SOBRE UBICACION DE LOS EQUIPOS",
+        "AH9": "CLIENTE SOLICITARA LA BAJA",
+        "AI9": "REGISTRO DE CUENTA"
+      }
+    ],
+    [
+      "10",
+      {
+        "A10": "CLIENTE_DARA_DE_BAJA_EL_SERVICIO",
+        "E10": "INT - INTERNET NO FUNCIONA EN UN SOLO EQUIPO",
+        "F10": "TEL - INFORMACION DE USO",
+        "G10": "IPTV - CALIDAD PROBLEMA CON CANALES",
+        "H10": "CABLE - PROBLEMAS CON DECODIFICADOR",
+        "I10": "CLARO VIDEO - HBO NO ACTIVO/REGISTRADO",
+        "M10": "BO ATC - NO VISUALIZA ALGUNOS CANALES PLAN HDTV BASICO DIGITAL",
+        "S10": "GENERACION_SOT_BO",
+        "V10": "REMOTO - RED WIFI OCULTA",
+        "X10": "DESBLOQUEO DE CANAL",
+        "AB10": "BAJA Y ALTA SGA",
+        "AC10": "PROBLEMAS FISICOS",
+        "AE10": "",
+        "AF10": "",
+        "AG10": "SERVICIO RESTABLECIDO/ESTABLE (OK EN LINEA)"
+      }
+    ],
+    [
+      "11",
+      {
+        "A11": "NUMERO_NO_EXISTE_NUMERO_ERRADO_MAL_CREADO",
+        "E11": "INT - COBERTURA WIFI",
+        "F11": "TEL - CONEXIONES",
+        "G11": "IPTV - CANALES PIXELADOS",
+        "H11": "CABLE - AV/HDMI DESCONFIGURADO",
+        "I11": "CLARO VIDEO - TV EN VIVO:CANAL NO DISONIBLE",
+        "M11": "BO ATC - NO ACTUALIZA CORREO- MICLARO",
+        "S11": "GENERACION_SOT_SOLICITUD_CLIENTE",
+        "V11": "REMOTO - RESETEO MODO FABRICA",
+        "X11": "ALINEACIÓN AMCO",
+        "AC11": "CONFIGURACION WIFI SIN SOLUCION",
+        "AE11": "",
+        "AF11": ""
+      }
+    ],
+    [
+      "12",
+      {
+        "A12": "DERIVADO_A_TI_REMEDY",
+        "E12": "INT - PROBLEMAS CON CONEXIONES CLARO",
+        "F12": "TEL - NO REGISTRADO EN LA CBIO",
+        "G12": "IPTV - CANAL BLOQUEADO",
+        "H12": "CABLE - CANALES FUERA DE GRILLA",
+        "I12": "CLARO VIDEO - PANTALLA NEGRA",
+        "M12": "BO ATC - INCONVENIENTE ACCESO REMOTO CONFIGURACIÓN WIFI HG8245W5-6T",
+        "S12": "AVERIA_MASIVA_POSIBLE_AVERIA",
+        "V12": "REMOTO - SOLICITA SEPARACION DE BANDAS WIFI",
+        "X12": "TRAFICO CANALES DE YOUBORA",
+        "AC12": "PROBLEMAS CON REPETIDOR",
+        "AE12": "",
+        "AF12": ""
+      }
+    ],
+    [
+      "13",
+      {
+        "A13": "INFORMACION_DERIVACION_ERRADA",
+        "E13": "INT - PROBLEMAS CON PAGINAS ",
+        "F13": "TEL - SERVICIO INTERMITENTE",
+        "G13": "IPTV - PROBLEMAS FISICOS CON DECODIFICADOR",
+        "H13": "CABLE - IMAGEN PIXELADA",
+        "I13": "CLARO VIDEO - REGISTRO FALLIDO",
+        "M13": "BO ATC - LENTITUD PARA ACCEDER ESCRITORIO REMOTO CLARO",
+        "S13": "VALIDACION_DE_LOS_EQUIPOS_DEL_CLIENTE",
+        "V13": "REMOTO - UNIFICACION DE BANDAS WIFI",
+        "X13": "CONFIGURACIÓN DE VOLUMEN",
+        "AC13": "PROBLEMAS CON CONTROL REMOTO",
+        "AE13": "",
+        "AF13": "",
+        "AG13": ""
+      }
+    ],
+    [
+      "14",
+      {
+        "A14": "CLIENTE_CON_SOT_CREADA_POR_TERCEROS",
+        "E14": "INT - REINICIOS CONSTANTES",
+        "F14": "TEL - LINEA OCUPADA",
+        "G14": "IPTV - CONEXIONES/TOMACORRIENTE",
+        "H14": "CABLE - PANTALLA AZUL",
+        "I14": "CLARO VIDEO - SUSCRIPCION NO REFLEJADA",
+        "M14": "IPTV - PAQUETES NO PROVISIONADOS EN IOTDB",
+        "S14": "EXPLICACIÓN_DE_USO_DEL_SERVICIO",
+        "V14": "TR069 - CAMBIO DE CHANNEL",
+        "X14": "CONFIGURACIÓN DE RESOLUCIÓN",
+        "AC14": "REPETIDOR MESH COMO SOLUCION",
+        "AE14": "",
+        "AF14": "",
+        "AG14": ""
+      }
+    ],
+    [
+      "15",
+      {
+        "A15": "CICLO_DE_LLAMADA",
+        "E15": "INT - NIVELES FUERA DE RANGO",
+        "F15": "TEL - NO PUEDE REALIZAR LLAMADAS LOCALES",
+        "G15": "IPTV - HDMI DESCONFIGURADO",
+        "H15": "CABLE - PANTALLA VERDE",
+        "I15": "CLARO VIDEO - USUARIO O CONTRASEÑA INCORRECTOS",
+        "M15": "IPTV - EQUIPOS NO PROVISIONADOS EN IOTDB",
+        "S15": "CLIENTE_NO_BRINDA_FACILIDADES",
+        "V15": "TR069 - CAMBIO DE CLAVE/SSID DE WIFI",
+        "X15": "BAJA Y ALTA SGA",
+        "AC15": "A SOLICITUD DE CLARO",
+        "AE15": "",
+        "AF15": "",
+        "AG15": ""
+      }
+    ],
+    [
+      "16",
+      {
+        "A16": "",
+        "E16": "INT - WIFI NO LLEGA A DETERMINADAS ZONAS",
+        "F16": "TEL - NO PUEDE REALIZAR LLAMADAS NACIONALES",
+        "G16": "IPTV - PANTALLA NEGRA",
+        "H16": "CABLE - DESFASE AUDIO/VIDEO",
+        "I16": "CLARO VIDEO - OLVIDO DE CONTRASEÑA",
+        "M16": "BO ATC- CLARO VIDEO PROBLEMAS DE SUSCRIPCION",
+        "S16": "WEB_APP_PLATAFORMAS_DE_ENTRETENIMIENTO",
+        "V16": "TR069 - RED WIFI OCULTA",
+        "AE16": "",
+        "AF16": "",
+        "AG16": ""
+      }
+    ],
+    [
+      "17",
+      {
+        "E17": "INT - PROBLEMAS CON WIFI 2.4 GHZ",
+        "F17": "TEL - NO PUEDE REALIZAR LLAMADAS CIERTO OPERADORES",
+        "G17": "IPTV - SERVICIO INTERMITENTE",
+        "H17": "CABLE - PROBLEMAS CON ADAPTADOR ",
+        "I17": "CLARO VIDEO - CUENTA BLOQUEADA",
+        "M17": "BO ATC - LÍNEA NO REGISTRADA EN CBIO",
+        "V17": "ZTE - CAMBIO DE CLAVE/SSID WIFI",
+        "AC17": "",
+        "AE17": "",
+        "AF17": "",
+        "AG17": ""
+      }
+    ],
+    [
+      "18",
+      {
+        "E18": "INT - PROBLEMAS CON  WIFI 5 GHZ",
+        "F18": "TEL - ECO EN LLAMADAS",
+        "G18": "IPTV - CANALES FUERA DE LA GRILLA",
+        "I18": "CLARO VIDEO - ERROR DE INICIO DE SESION",
+        "M18": "BO ATC - DESALINEACION OCSI",
+        "V18": "ZTE - SOLICITA SEPARACION DE BANDAS WIFI",
+        "AF18": "",
+        "AG18": ""
+      }
+    ],
+    [
+      "19",
+      {
+        "E19": "INT - PROBLEMAS CON APLICACIONES",
+        "F19": "TEL - BAJO VOLUMEN",
+        "G19": "IPTV - DESFASE ENTRE AUDIO Y VIDEO",
+        "I19": "CLARO VIDEO - CORREO NO RECIBE RESTABLECIMIENTO DE CONTRASEÑA",
+        "M19": "APP SMART HOME - DISPOSITIVOS CONECTADOS - ERROR AL CARGAR LOS DISPOSITIVOS CONECTADOS",
+        "V19": "ZTE - UNIFICACION DE BANDAS WIFI",
+        "AF19": "",
+        "AG19": ""
+      }
+    ],
+    [
+      "20",
+      {
+        "E20": "INT - ERROR DNS",
+        "F20": "TEL - CABLE TELEFONICO DAÑADO",
+        "G20": "IPTV - PANTALLA AZUL",
+        "I20": "CLARO VIDEO - ERROR DE REPRODUCCION",
+        "M20": "BO ATC - SUSCRIPCIONES INCOMPLETAS",
+        "V20": "PLUME - CAMBIO DE CLAVE/SSID DE WIFI",
+        "AF20": "",
+        "AG20": ""
+      }
+    ],
+    [
+      "21",
+      {
+        "E21": "INT - LATENCIA ALTA (PING ELEVADO)",
+        "F21": "TEL - PROBLEMAS EN ROSETA TELEFONICA",
+        "G21": "IPTV - PANTALLA VERDE",
+        "I21": "CLARO VIDEO - VIDEO NO CARGA",
+        "M21": "BO ATC - SIN E. INCOGNITO / ACTIVO SIAC (SGA TRANSLATOR)",
+        "V21": "PLUME - EXPLICACION QUE LAS BANDAS UNIFICADAS",
+        "AF21": "",
+        "AG21": ""
+      }
+    ],
+    [
+      "22",
+      {
+        "E22": "INT - PERDIDA DE PAQUETES",
+        "F22": "TEL - FALLA EN PUERTO TELEFONICO",
+        "G22": "IPTV - AUDIO DISTORSIONADO",
+        "I22": "CLARO VIDEO - CATALOGO INCOMPLETO",
+        "M22": "IPTV - EQUIPOS Y PAQUETES NO PROVISIONADOS EN IOTDB",
+        "V22": "PLUME - OPTIMIZACION/SINCRONIZAR EQUIPO",
+        "AF22": "",
+        "AG22": ""
+      }
+    ],
+    [
+      "23",
+      {
+        "E23": "INT - REINICIOS CONSTANTES",
+        "F23": "TEL - INFORMACION DE USO",
+        "G23": "IPTV - AUDIO EN OTRO IDIOMA",
+        "I23": "CLARO VIDEO - CONTENIDO NO DISPONIBLE EN LA REGION",
+        "M23": "BO ATC - SUSCRIPCIONES INCORRECTAS",
+        "V23": "PLUME - RECREACION DE NODOS O EQUIPOS",
+        "AF23": "",
+        "AG23": ""
+      }
+    ],
+    [
+      "24",
+      {
+        "E24": "INT - REPETIDOR MESH",
+        "F24": "TEL - IDENTIFICADOR DE LLAMADAS",
+        "G24": "IPTV - REAPROVISIONAMIENTO DEL SERVICIO",
+        "I24": "CLARO VIDEO - LIMITE DE DISPOSITIVOS ALCANZADO",
+        "M24": "BO ATC - ERROR CON ACTIVACIÓN DE BOUQUETS",
+        "V24": "TRACER - TRAFICO DE CONSUMO",
+        "AF24": "",
+        "AG24": ""
+      }
+    ],
+    [
+      "25",
+      {
+        "E25": "INT - PLUME DESALINEADO",
+        "F25": "TEL - BUZON DE VOZ",
+        "G25": "IPTV - YOUTUBE NO FUNCIONA",
+        "I25": "CLARO VIDEO - DISPOSITIVO NO COMPATIBLE",
+        "M25": "BO ATC - SERVICIO CON TECNOLOGIA ERRADA",
+        "AF25": "",
+        "AG25": ""
+      }
+    ],
+    [
+      "26",
+      {
+        "E26": "INT - PROBLEMAS CON PLUME",
+        "F26": "TEL - PORTABILIDAD EN PROCESO",
+        "G26": "IPTV - NETFLIX NO FUNCIONA",
+        "I26": "CLARO VIDEO - ERROR AL ACTUALIZAR APLICACION",
+        "M26": "BO CN - INCOGNITO SUSPENDIDO / SGA ACTIVO",
+        "AF26": "",
+        "AG26": ""
+      }
+    ],
+    [
+      "27",
+      {
+        "E27": "INT - MODEM NO ENCIENDE",
+        "F27": "TEL - SUSPENSION DEL SERVICIO",
+        "G27": "IPTV - ERROR DE INICIO DE SESION",
+        "I27": "CLARO VIDEO - COBRO INCORRECTO",
+        "M27": "BO ATC - REFRESH / INIT DECODIFICADOR(ES)",
+        "AF27": ""
+      }
+    ],
+    [
+      "28",
+      {
+        "E28": "INT - MODEM CON LUCES ANORMALES",
+        "G28": "IPTV - CANAL 2 Y 4 NO EXISTEN",
+        "I28": "CLARO VIDEO - BENEFICIO NO REFLEJADO",
+        "M28": "BO ATC- CLARO VIDEO PROBLEMAS DE SUSCRIPCION"
+      }
+    ],
+    [
+      "29",
+      {
+        "E29": "INT - FALLA EN PUERTOS LAN",
+        "G29": "IPTV - RETORNA A CANAL 1",
+        "I29": "SMARTHOME - NO PUEDE INICIAR SESION",
+        "M29": "BO ATC - PENDIENTE PROCESO SOT DE CONTINGENCIA"
+      }
+    ],
+    [
+      "30",
+      {
+        "A30": "ASESORES",
+        "B30": "Usuarios id",
+        "E30": "INT -  USO INADECUADO DE EQUIPOS",
+        "G30": "IPTV - PROBLEMAS CON LA GUIA DE CANALES",
+        "I30": "SMARTHOME - USUARIO NO REGISTRADO",
+        "M30": "BO ATC - NO FIGURA PLANO EN TX AUTOMÁTICA - MIGRACIÓN TECNOLÓGICA"
+      }
+    ],
+    [
+      "31",
+      {
+        "A31": "ALLER SSILEM BREIBAT RODRIGUEZ",
+        "B31": "E759946",
+        "E31": "INT - LENTITUD E INTERMITENCIA EN VIDEOJUEGOS",
+        "G31": "IPTV - SINCRONIZACION DE VOLUMEN",
+        "I31": "SMARTHOME - OLVIDO DE CONTRASEÑA",
+        "M31": "BO ATC - LIBERAR FRANJA HORARIA"
+      }
+    ],
+    [
+      "32",
+      {
+        "A32": "EDIL BOLAÑOS ARANDA ",
+        "B32": "E759945",
+        "E32": "INT - CORTES EN VIDEOLLAMADAS",
+        "I32": "SMARTHOME - CUENTA BLOQUEADA",
+        "M32": "BO ATC - NO FIGURA PLANO EN TX AUTOMÁTICA - TRASLADO EXTERNO"
+      }
+    ],
+    [
+      "33",
+      {
+        "A33": "LUIS ALBERTO FUCHS CALLISAYA",
+        "B33": "E760119",
+        "E33": "INT - BAJA CALIDAD DE VIDEO",
+        "I33": "SMARTHOME - ERROR DE AUTENTICACION",
+        "M33": "BO ATC - PENDIENTE MODIFICAR FECHA DE RECONEXIÓN ASC"
+      }
+    ],
+    [
+      "34",
+      {
+        "A34": "BRANDON MIGUEL RODRIGUEZ QUISPE",
+        "B34": "E759920",
+        "E34": "INT - CAMBIO DE CLAVE WIFI Y NOMBRE WIFI (SSID)",
+        "I34": "SMARTHOME - NO PUEDE DESCARGAR LA APLICACION",
+        "M34": "BO ATC - PENDIENTE PROCESO IFI"
+      }
+    ],
+    [
+      "35",
+      {
+        "A35": "LUIS ANGEL MANUEL ELIAS TRIGOSO",
+        "B35": "E760156",
+        "E35": "INT - DISPOSITIVOS NO SE CONECTAN AL WIFI",
+        "I35": "SMARTHOME - ERROR AL INSTALAR LA APLICACION",
+        "M35": "BO ATC - ERROR AL CREAR LA INTERACCIÓN \"EL TELÉFONO NO EXISTE\""
+      }
+    ],
+    [
+      "36",
+      {
+        "A36": "ROLANDO HUACCACHI PALOMINO",
+        "B36": "E759943",
+        "E36": "INT - LOS EN ROJO",
+        "I36": "SMARTHOME - DISPOSITIVO NO COMPATIBLE",
+        "M36": "BO ATC - DESALINEACION UDB"
+      }
+    ],
+    [
+      "37",
+      {
+        "A37": "RONNIE CORDOVA ROMAN",
+        "B37": "E760159",
+        "E37": "INT - INFORMACION DE USO",
+        "I37": "SMARTHOME - NO PUEDE CAMBIAR NOMBRE WIFI",
+        "M37": "BO ATC - DERIVADO CONSULTA ALÁMBRICO"
+      }
+    ],
+    [
+      "38",
+      {
+        "A38": "DANY DANIEL HERNÁNDEZ MORALES",
+        "B38": "E761035",
+        "I38": "SMARTHOME - NO PUEDE CAMBIAR CLAVE WIFI",
+        "M38": "BO ATC - CLARO VIDEO CAMBIO DE MAIL"
+      }
+    ],
+    [
+      "39",
+      {
+        "A39": "JOSEMARIA AGUILAR DIAZ",
+        "B39": "E759885",
+        "I39": "SMARTHOME - NO PUEDE APAGAR/ENCENDER WIFI",
+        "M39": "BO ATC - NO VISUALIZA TV EN VIVO - CLARO VIDEO"
+      }
+    ],
+    [
+      "40",
+      {
+        "A40": "MARCO JAIR NEVADO ESTRADA ",
+        "B40": "E761037",
+        "I40": "SMARTHOME - NO VISUALIZA DISPOSITIVOS CONECTADOS",
+        "M40": "BO ATC - PENDIENTE PROCESO DTH - LTE"
+      }
+    ],
+    [
+      "41",
+      {
+        "A41": "ALBERTO MANUEL QUISPE CHÁVEZ",
+        "B41": "E760146",
+        "I41": "SMARTHOME - NO PUEDE REINICIAR ROUTER",
+        "M41": "BO ATC - NO ACTUALIZA NUMERO - MICLARO"
+      }
+    ],
+    [
+      "42",
+      {
+        "A42": "LUAN ALEJANDRA FUENTES ORTIZ",
+        "B42": "E761189",
+        "I42": "SMARTHOME - NO FUNCIONAN LOS DESCARTES TECNICOS",
+        "M42": "BO ATC - NO ACTUALIZA CORREO- MICLARO"
+      }
+    ],
+    [
+      "43",
+      {
+        "A43": "ERNAN FREYRE GUARNIZ SALDAÑA",
+        "B43": "E761115",
+        "I43": "SMARTHOME - NO VISUALIZA LOS DECODIFICADORES",
+        "M43": ""
+      }
+    ],
+    [
+      "44",
+      {
+        "A44": "HECTOR ARMANDO POMA HERNANDEZ",
+        "B44": "E760639",
+        "I44": "SMARTHOME - NO PUEDE REINICIAR EL DECODIFICADOR",
+        "M44": ""
+      }
+    ],
+    [
+      "45",
+      {
+        "A45": "JORD DAVID MILLA GONZALES",
+        "B45": "E760919",
+        "I45": "SMARTHOME - NO PUEDE CAMBIAR EL NOMBRE DEL DECO",
+        "M45": ""
+      }
+    ],
+    [
+      "46",
+      {
+        "A46": "KATHERINE RUTH ATIRRO ROLDAN",
+        "B46": "E761345",
+        "I46": "SMARTHOME - NO CARGAN LOS DESCARTES DE TV",
+        "M46": ""
+      }
+    ],
+    [
+      "47",
+      {
+        "A47": "NICOLAS ARTURO CHUMPITAZ SAC",
+        "B47": "E761116",
+        "I47": "SMARTHOME - GUIA DE CANALES NO DISPONIBLE",
+        "M47": ""
+      }
+    ],
+    [
+      "48",
+      {
+        "A48": "OLINDA PALOMINO LICAS",
+        "B48": "E760097",
+        "I48": "SMARTHOME - CONTROL REMOTO NO DISPONIBLE",
+        "M48": ""
+      }
+    ],
+    [
+      "49",
+      {
+        "A49": "YESICA ESPINOZA GUTIERREZ",
+        "B49": "E761025",
+        "I49": "SMARTHOME - NO CARGAN DESCARTES DE TELEFONIA",
+        "M49": ""
+      }
+    ],
+    [
+      "50",
+      {
+        "A50": "ANABEL NICOL NOREÑA CONDORI",
+        "B50": "E760148",
+        "I50": "SMARTHOME - NO VISUALIZA GUIA DE TELEFONIA",
+        "M50": ""
+      }
+    ],
+    [
+      "51",
+      {
+        "A51": "DANIELA FERNANDA GONZALEZ VÁSQUEZ",
+        "B51": "E759921",
+        "I51": "SMARTHOME - NO MUESTRA CABLEADO TELEFONICO",
+        "M51": ""
+      }
+    ],
+    [
+      "52",
+      {
+        "A52": "DAVID PÉREZ ÑAHUE",
+        "B52": "E760606",
+        "I52": "SMARTHOME - NO VISUALIZA VISITA TECNICA",
+        "M52": ""
+      }
+    ],
+    [
+      "53",
+      {
+        "A53": "FABRICIO RODRIGO TELLO REVATTA",
+        "B53": "E759925",
+        "I53": "SMARTHOME - NO PUEDE REPROGRAMAR VISITA",
+        "M53": ""
+      }
+    ],
+    [
+      "54",
+      {
+        "A54": "FERNANDO ARAGON RETAMOZO",
+        "B54": "E760385",
+        "I54": "SMARTHOME - NO PUEDE CANCELAR VISITA",
+        "M54": ""
+      }
+    ],
+    [
+      "55",
+      {
+        "A55": "FRANCIS MELISSA VARGAS COLLAHUA",
+        "B55": "E760116",
+        "I55": "SMARTHOME - TRACKING NO DISPONIBLE",
+        "M55": ""
+      }
+    ],
+    [
+      "56",
+      {
+        "A56": "JOHANA CANDELA PEÑA VALENCIA",
+        "B56": "E759934",
+        "I56": "SMARTHOME - TECNICO NO FIGURA EN LA APLICACION",
+        "M56": ""
+      }
+    ],
+    [
+      "57",
+      {
+        "A57": "JUAN JOSE DE LA CRUZ RAMOS",
+        "B57": "E761034",
+        "I57": "SMARTHOME - SERVICIO FIGURA NO CONECTADO",
+        "M57": ""
+      }
+    ],
+    [
+      "58",
+      {
+        "A58": "ROBERTO SEBASTIAN MAGINO LLAMCCE",
+        "B58": "E759887",
+        "I58": "SMARTHOME - SERVICIO FIGURA SUSPENDIDO",
+        "M58": ""
+      }
+    ],
+    [
+      "59",
+      {
+        "A59": "FELIX ANDRES RAMOS LOZANO",
+        "B59": "E761198",
+        "I59": "SMARTHOME - SERVICIO FIGURA CON AVERIA MASIVA",
+        "M59": "",
+        "AF59": ""
+      }
+    ],
+    [
+      "60",
+      {
+        "A60": "JAIR AAROM MATOS CARAMUTTI",
+        "B60": "E759886",
+        "I60": "SMARTHOME - ESTADO DEL SERVICIO NO ACTUALIZA",
+        "M60": ""
+      }
+    ],
+    [
+      "61",
+      {
+        "A61": "JOSE MIGUEL MARIN OSORIO",
+        "B61": "E760736",
+        "I61": "SMARTHOME - NO PUEDE ESCANEAR SERIAL",
+        "M61": ""
+      }
+    ],
+    [
+      "62",
+      {
+        "A62": "SCOTT INO MOTTA VILCAPOMA",
+        "B62": "E761117",
+        "I62": "SMARTHOME - ERROR AL ESCANEAR CODIGO QR/SERIAL",
+        "M62": ""
+      }
+    ],
+    [
+      "63",
+      {
+        "A63": "ARANSAZU CARQUIN HERRERA",
+        "B63": "E760602",
+        "I63": "SMARTHOME - NO HABILITA OPCIONES DEL ROUTER",
+        "M63": ""
+      }
+    ],
+    [
+      "64",
+      {
+        "A64": "DIEGO HERRERA SALAZAR",
+        "B64": "E760607",
+        "I64": "SMARTHOME - SERVICIO DEGRADADO",
+        "M64": ""
+      }
+    ],
+    [
+      "65",
+      {
+        "A65": "FABRIZZIO SCOTT DIOSES GAMARRA",
+        "B65": "E759926",
+        "I65": "SMARTHOME - NO PUEDE CAMBIAR CLAVE WIFI DESDE APP",
+        "M65": ""
+      }
+    ],
+    [
+      "66",
+      {
+        "A66": "MARIA LUISA NAVARRO ABANTO",
+        "B66": "E760615",
+        "I66": "SMARTHOME - APLICACION LENTA",
+        "M66": ""
+      }
+    ],
+    [
+      "67",
+      {
+        "A67": "GABRIEL MALLMA PORTELLA",
+        "B67": "E760638",
+        "I67": "SMARTHOME - APLICACION SE CIERRA",
+        "M67": ""
+      }
+    ],
+    [
+      "68",
+      {
+        "A68": "GABY NATALY CASTREJON PAREDES",
+        "B68": "E760734",
+        "I68": "SMARTHOME - ERROR DE CARGA",
+        "M68": ""
+      }
+    ],
+    [
+      "69",
+      {
+        "A69": "GEAN FRANCO QUINTO ZAPANA",
+        "B69": "E761207",
+        "I69": "SMARTHOME - INFORMACION DESACTUALIZADA",
+        "M69": ""
+      }
+    ],
+    [
+      "70",
+      {
+        "A70": "JIMY NILTON PRINCIPE BLANCO",
+        "B70": "E760474",
+        "I70": "SMARTHOME - NOTIFICACIONES NO DISPONIBLES",
+        "M70": ""
+      }
+    ],
+    [
+      "71",
+      {
+        "A71": "JORDAN ELVIS NUÑEZ ZAVALA",
+        "B71": "E760611",
+        "I71": "SMARTHOME - VIDEOS TUTORIALES NO CARGAN",
+        "M71": ""
+      }
+    ],
+    [
+      "72",
+      {
+        "A72": "SHARON JUDITH SHERADER RIOS",
+        "B72": "E760751",
+        "I72": "SMARTHOME - GUIA PDF NO DISPONIBLE",
+        "M72": ""
+      }
+    ],
+    [
+      "73",
+      {
+        "A73": "SOFIA MARGARITA NUÑEZ AGUIRRE",
+        "B73": "E760735",
+        "I73": "MI CLARO WEB - NO PUEDE REGISTRARSE",
+        "M73": ""
+      }
+    ],
+    [
+      "74",
+      {
+        "A74": "HECTOR GABRIEL ALIAGA MEDINA",
+        "B74": "E759929",
+        "I74": "MI CLARO WEB - NO PUEDE INICIAR SESION",
+        "M74": ""
+      }
+    ],
+    [
+      "75",
+      {
+        "A75": "JAIR GONZALO RAMOS MALDONADO",
+        "B75": "E761022",
+        "I75": "MI CLARO WEB - OLVIDO DE CONTRASEÑA",
+        "M75": ""
+      }
+    ],
+    [
+      "76",
+      {
+        "A76": "REYNALDO FABRICIO GUEVARA CUETO",
+        "B76": "E760620",
+        "I76": "MI CLARO WEB - NO RECIBE CORREO DE RECUPERACION",
+        "M76": ""
+      }
+    ],
+    [
+      "77",
+      {
+        "A77": "NATALI ROSARIO CANALES VARGAS",
+        "B77": "E760517",
+        "I77": "MI CLARO WEB - CUENTA BLOQUEADA",
+        "M77": ""
+      }
+    ],
+    [
+      "78",
+      {
+        "A78": "RAUL LEONARDO ARMACTA OJEDA",
+        "B78": "E759714",
+        "I78": "MI CLARO WEB - ERROR DE AUTENTICACION",
+        "M78": ""
+      }
+    ],
+    [
+      "79",
+      {
+        "A79": "ANGELO NAHUEL DIAZ PIZARRO",
+        "B79": "E759918",
+        "I79": "MI CLARO WEB - NO RECONOCE DNI",
+        "M79": ""
+      }
+    ],
+    [
+      "80",
+      {
+        "A80": "MARCO ANTONIO JARA CABALLERO",
+        "B80": "E759940",
+        "I80": "MI CLARO WEB - ERROR AL REGISTRAR CUENTA",
+        "M80": ""
+      }
+    ],
+    [
+      "81",
+      {
+        "A81": "CARLOS CASELY MENDEZ VILLALVA",
+        "B81": "E760637",
+        "I81": "MI CLARO WEB - NO VISUALIZA SERVICIOS CONTRATADOS",
+        "M81": ""
+      }
+    ],
+    [
+      "82",
+      {
+        "A82": "FRANCISCO SANTIAGO ALCANTARA LUNA VICTORIA",
+        "B82": "E761344",
+        "I82": "MI CLARO WEB - INFORMACION DESACTUALIZADA",
+        "M82": ""
+      }
+    ],
+    [
+      "83",
+      {
+        "A83": "CLAUDIA LORENA AROSEMENA YAPIAS",
+        "B83": "E760604",
+        "I83": "MI CLARO WEB - NO VISUALIZA DETALLE DEL PLAN",
+        "M83": ""
+      }
+    ],
+    [
+      "84",
+      {
+        "A84": "JAIR ANTONIO APOLAYA JÁUREGUI",
+        "B84": "E760046",
+        "I84": "MI CLARO WEB - NO MUESTRA ESTADO DEL SERVICIO",
+        "M84": ""
+      }
+    ],
+    [
+      "85",
+      {
+        "A85": "",
+        "B85": "",
+        "I85": "MI CLARO WEB - NO VISUALIZA SALDOS",
+        "M85": ""
+      }
+    ],
+    [
+      "86",
+      {
+        "A86": "",
+        "B86": "",
+        "I86": "MI CLARO WEB - NO VISUALIZA CONSUMOS",
+        "M86": ""
+      }
+    ],
+    [
+      "87",
+      {
+        "A87": "",
+        "B87": "",
+        "I87": "MI CLARO WEB - NO VISUALIZA DETALLE DE CONSUMOS",
+        "M87": ""
+      }
+    ],
+    [
+      "88",
+      {
+        "A88": "",
+        "B88": "",
+        "I88": "MI CLARO WEB - NO PUEDE DESCARGAR REPORTE",
+        "M88": ""
+      }
+    ],
+    [
+      "89",
+      {
+        "A89": "",
+        "B89": "",
+        "I89": "MI CLARO WEB - NO PUEDE ENVIAR REPORTE POR CORREO",
+        "M89": ""
+      }
+    ],
+    [
+      "90",
+      {
+        "A90": "",
+        "B90": "",
+        "I90": "MI CLARO WEB - NO VISUALIZA RECIBOS",
+        "M90": ""
+      }
+    ],
+    [
+      "91",
+      {
+        "A91": "",
+        "B91": "",
+        "I91": "MI CLARO WEB - RECIBO NO DISPONIBLE",
+        "M91": ""
+      }
+    ],
+    [
+      "92",
+      {
+        "A92": "",
+        "B92": "",
+        "I92": "MI CLARO WEB - ERROR AL PAGAR RECIBO",
+        "M92": ""
+      }
+    ],
+    [
+      "93",
+      {
+        "A93": "",
+        "B93": "",
+        "I93": "MI CLARO WEB - NO PUEDE DESCARGAR RECIBO PDF",
+        "M93": ""
+      }
+    ],
+    [
+      "94",
+      {
+        "A94": "",
+        "B94": "",
+        "I94": "MI CLARO WEB - NO VISUALIZA HISTORIAL DE PAGOS",
+        "M94": ""
+      }
+    ],
+    [
+      "95",
+      {
+        "A95": "",
+        "B95": "",
+        "I95": "MI CLARO WEB - ERROR EN DEBITO AUTOMATICO",
+        "M95": ""
+      }
+    ],
+    [
+      "96",
+      {
+        "A96": "",
+        "B96": "",
+        "I96": "MI CLARO WEB - NO PUEDE AFILIARSE A DEBITO AUTOMATICO",
+        "M96": ""
+      }
+    ],
+    [
+      "97",
+      {
+        "A97": "",
+        "B97": "",
+        "I97": "MI CLARO WEB - NO PUEDE CAMBIAR DE PLAN",
+        "M97": ""
+      }
+    ],
+    [
+      "98",
+      {
+        "A98": "",
+        "B98": "",
+        "I98": "MI CLARO WEB - PLANES NO DISPONIBLES",
+        "M98": ""
+      }
+    ],
+    [
+      "99",
+      {
+        "A99": "",
+        "B99": "",
+        "I99": "MI CLARO WEB - ERROR AL SOLICITAR CAMBIO DE PLAN",
+        "M99": ""
+      }
+    ],
+    [
+      "100",
+      {
+        "A100": "",
+        "B100": "",
+        "I100": "MI CLARO WEB - CAMBIO DE PLAN NO REFLEJADO",
+        "M100": ""
+      }
+    ],
+    [
+      "101",
+      {
+        "A101": "",
+        "B101": "",
+        "I101": "MI CLARO WEB - NO PUEDE SOLICITAR DECO ADICIONAL",
+        "M101": ""
+      }
+    ],
+    [
+      "102",
+      {
+        "A102": "",
+        "B102": "",
+        "I102": "MI CLARO WEB - NO PUEDE CONTRATAR PAQUETE TV",
+        "M102": ""
+      }
+    ],
+    [
+      "103",
+      {
+        "A103": "",
+        "B103": "",
+        "I103": "MI CLARO WEB - NO PUEDE SUSPENDER TEMPORALMENTE",
+        "M103": ""
+      }
+    ],
+    [
+      "104",
+      {
+        "A104": "",
+        "B104": "",
+        "I104": "MI CLARO WEB - NO PUEDE CAMBIAR NUMERO",
+        "M104": ""
+      }
+    ],
+    [
+      "105",
+      {
+        "A105": "",
+        "B105": "",
+        "I105": "MI CLARO WEB - NO PUEDE REGISTRAR DIRECTORIO TELEFONICO",
+        "M105": ""
+      }
+    ],
+    [
+      "106",
+      {
+        "A106": "",
+        "B106": "",
+        "I106": "MI CLARO WEB - NO VISUALIZA ESTADO DE SOLICITUDES",
+        "M106": ""
+      }
+    ],
+    [
+      "107",
+      {
+        "A107": "",
+        "B107": "",
+        "I107": "MI CLARO WEB - OPERACION PENDIENTE",
+        "M107": ""
+      }
+    ],
+    [
+      "108",
+      {
+        "A108": "",
+        "B108": "",
+        "I108": "MI CLARO WEB - NO PUEDE APROBAR OPERACION",
+        "M108": ""
+      }
+    ],
+    [
+      "109",
+      {
+        "A109": "",
+        "B109": "",
+        "I109": "MI CLARO WEB - ERROR AL CONFIRMAR IDENTIDAD",
+        "M109": ""
+      }
+    ],
+    [
+      "110",
+      {
+        "A110": "",
+        "B110": "",
+        "I110": "MI CLARO WEB - OPERACION NO FINALIZA",
+        "M110": ""
+      }
+    ],
+    [
+      "111",
+      {
+        "A111": "",
+        "B111": "",
+        "I111": "MI CLARO WEB - TRANSACCION NO EXITOSA",
+        "M111": ""
+      }
+    ],
+    [
+      "112",
+      {
+        "A112": "",
+        "B112": "",
+        "I112": "MI CLARO WEB - NO VISUALIZA CLARO PUNTOS",
+        "M112": ""
+      }
+    ],
+    [
+      "113",
+      {
+        "A113": "",
+        "B113": "",
+        "I113": "MI CLARO WEB - ERROR AL CANJEAR PUNTOS",
+        "M113": ""
+      }
+    ],
+    [
+      "114",
+      {
+        "A114": "",
+        "B114": "",
+        "I114": "MI CLARO WEB - NO PUEDE CONVERTIR A MILLAS",
+        "M114": ""
+      }
+    ],
+    [
+      "115",
+      {
+        "A115": "",
+        "B115": "",
+        "I115": "MI CLARO WEB - PUNTOS NO ACTUALIZADOS",
+        "M115": ""
+      }
+    ],
+    [
+      "116",
+      {
+        "M116": ""
+      }
+    ],
+    [
+      "117",
+      {
+        "M117": ""
+      }
+    ],
+    [
+      "118",
+      {
+        "M118": ""
+      }
+    ],
+    [
+      "119",
+      {
+        "M119": ""
+      }
+    ],
+    [
+      "120",
+      {
+        "M120": ""
+      }
+    ],
+    [
+      "121",
+      {
+        "M121": ""
+      }
+    ],
+    [
+      "122",
+      {
+        "M122": ""
+      }
+    ],
+    [
+      "123",
+      {
+        "M123": ""
+      }
+    ],
+    [
+      "124",
+      {
+        "M124": ""
+      }
+    ],
+    [
+      "125",
+      {
+        "M125": ""
+      }
+    ],
+    [
+      "126",
+      {
+        "M126": ""
+      }
+    ]
+  ],
+  "RELACIONES": [
+    [
+      "1",
+      {
+        "A1": "SERVICIO",
+        "B1": "SOLUCIÓN",
+        "G1": "INTERNET_",
+        "H1": "TELEFONIA_",
+        "I1": "IPTV_",
+        "J1": "CABLE_",
+        "K1": "APPS_",
+        "L1": "CLIENTE_SOLICITA_DEVOLUCION_DE_LLAMADA_",
+        "M1": "INFORMATIVO_AVERIA_MASIVA_",
+        "N1": "CLIENTE_CON_SUSPENSION_DE_SERVICIOS_",
+        "O1": "CLIENTE_DARA_DE_BAJA_EL_SERVICIO_",
+        "P1": "NUMERO_NO_EXISTE_NUMERO_ERRADO_MAL_CREADO_",
+        "Q1": "DERIVADO_A_TI_REMEDY_",
+        "R1": "INFORMACION_DERIVACION_ERRADA_",
+        "S1": "CLIENTE_CON_SOT_CREADA_POR_TERCEROS_",
+        "T1": "CICLO_DE_LLAMADA_"
+      }
+    ],
+    [
+      "2",
+      {
+        "A2": "INTERNET",
+        "B2": "DESCARTES_FISICOS_INTERNET",
+        "G2": "DESCARTES_FISICOS_INTERNET",
+        "H2": "DESCARTES_FISICOS_TELEFONIA",
+        "I2": "DESCARTES_FISICOS_IPTV",
+        "J2": "DESCARTES_FISICOS_CABLE_DIGITAL",
+        "K2": "WEB_APP_PLATAFORMAS_DE_ENTRETENIMIENTO",
+        "M2": "AVERIA_MASIVA_POSIBLE_AVERIA",
+        "O2": "GENERACION_SOT_SOLICITUD_CLIENTE",
+        "Q2": "DESCARTES_FISICOS_INTERNET"
+      }
+    ],
+    [
+      "3",
+      {
+        "A3": "INTERNET",
+        "B3": "DESCARTES_REMOTOS_INTERNET",
+        "G3": "DESCARTES_REMOTOS_INTERNET",
+        "H3": "DESCARTES_REMOTOS_TELEFONIA",
+        "I3": "DESCARTES_REMOTOS_IPTV",
+        "J3": "DESCARTES_REMOTOS_CABLE_DIGITAL",
+        "K3": "EXPLICACIÓN_DE_USO_DEL_SERVICIO",
+        "O3": "CLIENTE_NO_BRINDA_FACILIDADES",
+        "Q3": "DESCARTES_REMOTOS_INTERNET"
+      }
+    ],
+    [
+      "4",
+      {
+        "A4": "INTERNET",
+        "B4": "GENERACION_SOT_BO",
+        "G4": "GENERACION_SOT_BO",
+        "H4": "GENERACION_SOT_BO",
+        "I4": "GENERACION_SOT_BO",
+        "J4": "GENERACION_SOT_BO",
+        "K4": "CLIENTE_NO_BRINDA_FACILIDADES",
+        "Q4": "DESCARTES_FISICOS_IPTV"
+      }
+    ],
+    [
+      "5",
+      {
+        "A5": "INTERNET",
+        "B5": "GENERACION_SOT_SOLICITUD_CLIENTE",
+        "G5": "GENERACION_SOT_SOLICITUD_CLIENTE",
+        "H5": "GENERACION_SOT_SOLICITUD_CLIENTE",
+        "I5": "GENERACION_SOT_SOLICITUD_CLIENTE",
+        "J5": "GENERACION_SOT_SOLICITUD_CLIENTE",
+        "Q5": "DESCARTES_REMOTOS_IPTV"
+      }
+    ],
+    [
+      "6",
+      {
+        "A6": "INTERNET",
+        "B6": "VALIDACION_DE_LOS_EQUIPOS_DEL_CLIENTE",
+        "G6": "VALIDACION_DE_LOS_EQUIPOS_DEL_CLIENTE",
+        "H6": "EXPLICACIÓN_DE_USO_DEL_SERVICIO",
+        "I6": "VALIDACION_DE_LOS_EQUIPOS_DEL_CLIENTE",
+        "J6": "VALIDACION_DE_LOS_EQUIPOS_DEL_CLIENTE",
+        "Q6": "DESCARTES_FISICOS_CABLE_DIGITAL"
+      }
+    ],
+    [
+      "7",
+      {
+        "A7": "INTERNET",
+        "B7": "EXPLICACIÓN_DE_USO_DEL_SERVICIO",
+        "G7": "EXPLICACIÓN_DE_USO_DEL_SERVICIO",
+        "H7": "CLIENTE_NO_BRINDA_FACILIDADES",
+        "I7": "EXPLICACIÓN_DE_USO_DEL_SERVICIO",
+        "J7": "EXPLICACIÓN_DE_USO_DEL_SERVICIO",
+        "Q7": "DESCARTES_REMOTOS_CABLE_DIGITAL"
+      }
+    ],
+    [
+      "8",
+      {
+        "A8": "INTERNET",
+        "B8": "CLIENTE_NO_BRINDA_FACILIDADES",
+        "G8": "CLIENTE_NO_BRINDA_FACILIDADES",
+        "I8": "CLIENTE_NO_BRINDA_FACILIDADES",
+        "J8": "CLIENTE_NO_BRINDA_FACILIDADES",
+        "Q8": "DESCARTES_FISICOS_TELEFONIA"
+      }
+    ],
+    [
+      "9",
+      {
+        "A9": "TELEFONIA",
+        "B9": "DESCARTES_FISICOS_TELEFONIA",
+        "Q9": "DESCARTES_REMOTOS_TELEFONIA"
+      }
+    ],
+    [
+      "10",
+      {
+        "A10": "TELEFONIA",
+        "B10": "DESCARTES_REMOTOS_TELEFONIA",
+        "Q10": "WEB_APP_PLATAFORMAS_DE_ENTRETENIMIENTO"
+      }
+    ],
+    [
+      "11",
+      {
+        "A11": "TELEFONIA",
+        "B11": "GENERACION_SOT_BO"
+      }
+    ],
+    [
+      "12",
+      {
+        "A12": "TELEFONIA",
+        "B12": "GENERACION_SOT_SOLICITUD_CLIENTE"
+      }
+    ],
+    [
+      "13",
+      {
+        "A13": "TELEFONIA",
+        "B13": "EXPLICACIÓN_DE_USO_DEL_SERVICIO"
+      }
+    ],
+    [
+      "14",
+      {
+        "A14": "TELEFONIA",
+        "B14": "CLIENTE_NO_BRINDA_FACILIDADES"
+      }
+    ],
+    [
+      "15",
+      {
+        "A15": "IPTV",
+        "B15": "DESCARTES_FISICOS_IPTV"
+      }
+    ],
+    [
+      "16",
+      {
+        "A16": "IPTV",
+        "B16": "DESCARTES_REMOTOS_IPTV"
+      }
+    ],
+    [
+      "17",
+      {
+        "A17": "IPTV",
+        "B17": "GENERACION_SOT_BO"
+      }
+    ],
+    [
+      "18",
+      {
+        "A18": "IPTV",
+        "B18": "GENERACION_SOT_SOLICITUD_CLIENTE"
+      }
+    ],
+    [
+      "19",
+      {
+        "A19": "IPTV",
+        "B19": "VALIDACION_DE_LOS_EQUIPOS_DEL_CLIENTE"
+      }
+    ],
+    [
+      "20",
+      {
+        "A20": "IPTV",
+        "B20": "EXPLICACIÓN_DE_USO_DEL_SERVICIO",
+        "Q20": ""
+      }
+    ],
+    [
+      "21",
+      {
+        "A21": "IPTV",
+        "B21": "CLIENTE_NO_BRINDA_FACILIDADES"
+      }
+    ],
+    [
+      "22",
+      {
+        "A22": "CABLE",
+        "B22": "DESCARTES_FISICOS_CABLE_DIGITAL"
+      }
+    ],
+    [
+      "23",
+      {
+        "A23": "CABLE",
+        "B23": "DESCARTES_REMOTOS_CABLE_DIGITAL"
+      }
+    ],
+    [
+      "24",
+      {
+        "A24": "CABLE",
+        "B24": "GENERACION_SOT_BO"
+      }
+    ],
+    [
+      "25",
+      {
+        "A25": "CABLE",
+        "B25": "GENERACION_SOT_SOLICITUD_CLIENTE"
+      }
+    ],
+    [
+      "26",
+      {
+        "A26": "CABLE",
+        "B26": "VALIDACION_DE_LOS_EQUIPOS_DEL_CLIENTE"
+      }
+    ],
+    [
+      "27",
+      {
+        "A27": "CABLE",
+        "B27": "EXPLICACIÓN_DE_USO_DEL_SERVICIO"
+      }
+    ],
+    [
+      "28",
+      {
+        "A28": "CABLE",
+        "B28": "CLIENTE_NO_BRINDA_FACILIDADES"
+      }
+    ],
+    [
+      "29",
+      {
+        "A29": "APPS",
+        "B29": "WEB_APP_PLATAFORMAS_DE_ENTRETENIMIENTO"
+      }
+    ],
+    [
+      "30",
+      {
+        "A30": "APPS",
+        "B30": "EXPLICACIÓN_DE_USO_DEL_SERVICIO"
+      }
+    ],
+    [
+      "31",
+      {
+        "A31": "APPS",
+        "B31": "CLIENTE_NO_BRINDA_FACILIDADES"
+      }
+    ],
+    [
+      "32",
+      {
+        "A32": "CLIENTE_SOLICITA_DEVOLUCION_DE_LLAMADA",
+        "B32": ""
+      }
+    ],
+    [
+      "33",
+      {
+        "A33": "INFORMATIVO_AVERIA_MASIVA",
+        "B33": "AVERIA_MASIVA_POSIBLE_AVERIA"
+      }
+    ],
+    [
+      "34",
+      {
+        "A34": "CLIENTE_CON_SUSPENSION_DE_SERVICIOS",
+        "B34": ""
+      }
+    ],
+    [
+      "35",
+      {
+        "A35": "CLIENTE_DARA_DE_BAJA_EL_SERVICIO",
+        "B35": "GENERACION_SOT_SOLICITUD_CLIENTE"
+      }
+    ],
+    [
+      "36",
+      {
+        "A36": "CLIENTE_DARA_DE_BAJA_EL_SERVICIO",
+        "B36": "CLIENTE_NO_BRINDA_FACILIDADES"
+      }
+    ],
+    [
+      "37",
+      {
+        "A37": "NUMERO_NO_EXISTE_NUMERO_ERRADO_MAL_CREADO",
+        "B37": ""
+      }
+    ],
+    [
+      "38",
+      {
+        "A38": "DERIVADO_A_TI_REMEDY",
+        "B38": "GENERACION_SOT_BO"
+      }
+    ],
+    [
+      "39",
+      {
+        "A39": "DERIVADO_A_TI_REMEDY",
+        "B39": "DESCARTES_FISICOS_INTERNET"
+      }
+    ],
+    [
+      "40",
+      {
+        "A40": "DERIVADO_A_TI_REMEDY",
+        "B40": "DESCARTES_REMOTOS_INTERNET"
+      }
+    ],
+    [
+      "41",
+      {
+        "A41": "DERIVADO_A_TI_REMEDY",
+        "B41": "DESCARTES_FISICOS_IPTV"
+      }
+    ],
+    [
+      "42",
+      {
+        "A42": "DERIVADO_A_TI_REMEDY",
+        "B42": "DESCARTES_REMOTOS_IPTV"
+      }
+    ],
+    [
+      "43",
+      {
+        "A43": "DERIVADO_A_TI_REMEDY",
+        "B43": "DESCARTES_FISICOS_CABLE_DIGITAL"
+      }
+    ],
+    [
+      "44",
+      {
+        "A44": "DERIVADO_A_TI_REMEDY",
+        "B44": "DESCARTES_REMOTOS_CABLE_DIGITAL"
+      }
+    ],
+    [
+      "45",
+      {
+        "A45": "DERIVADO_A_TI_REMEDY",
+        "B45": "DESCARTES_FISICOS_TELEFONIA"
+      }
+    ],
+    [
+      "46",
+      {
+        "A46": "DERIVADO_A_TI_REMEDY",
+        "B46": "DESCARTES_REMOTOS_TELEFONIA"
+      }
+    ],
+    [
+      "47",
+      {
+        "A47": "DERIVADO_A_TI_REMEDY",
+        "B47": "WEB_APP_PLATAFORMAS_DE_ENTRETENIMIENTO"
+      }
+    ],
+    [
+      "48",
+      {
+        "A48": "INFORMACION_DERIVACION_ERRADA",
+        "B48": ""
+      }
+    ],
+    [
+      "49",
+      {
+        "A49": "CLIENTE_CON_SOT_CREADA_POR_TERCEROS",
+        "B49": ""
+      }
+    ],
+    [
+      "50",
+      {
+        "A50": "CICLO_DE_LLAMADA",
+        "B50": ""
+      }
+    ]
+  ],
+  "RELACIONES SOLUCION": [
+    [
+      "1",
+      {
+        "A1": "SOLUCIÓN",
+        "B1": "TIPIFICACIÓN"
+      }
+    ],
+    [
+      "2",
+      {
+        "A2": "DESCARTES_FISICOS_INTERNET",
+        "B2": "VALIDACION DE CONEXIONES"
+      }
+    ],
+    [
+      "3",
+      {
+        "A3": "DESCARTES_FISICOS_INTERNET",
+        "B3": "REINICIO MANUAL"
+      }
+    ],
+    [
+      "4",
+      {
+        "A4": "DESCARTES_FISICOS_INTERNET",
+        "B4": "VALIDACION TOMAS ELECTRICAS"
+      }
+    ],
+    [
+      "5",
+      {
+        "A5": "DESCARTES_REMOTOS_INTERNET",
+        "B5": "BAJA Y ALTA"
+      }
+    ],
+    [
+      "6",
+      {
+        "A6": "DESCARTES_REMOTOS_INTERNET",
+        "B6": "CAMBIO SSID"
+      }
+    ],
+    [
+      "7",
+      {
+        "A7": "DESCARTES_REMOTOS_INTERNET",
+        "B7": "ACTUALIZACION FIRMWARE"
+      }
+    ],
+    [
+      "8",
+      {
+        "A8": "DESCARTES_REMOTOS_IPTV",
+        "B8": "ACTUALIZACION CLARO TV"
+      }
+    ],
+    [
+      "9",
+      {
+        "A9": "DESCARTES_REMOTOS_IPTV",
+        "B9": "RESET CONTROL REMOTO"
+      }
+    ]
+  ]
+}

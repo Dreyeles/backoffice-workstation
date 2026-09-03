@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorkStation | Plantillas</title>
+    <meta name="description" content="Sistema de gestión y generación rápida de plantillas corporativas para Back Office Técnica HITSS / América Móvil.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- APP HEADER -->
+    <header class="app-header">
+        <div class="brand">
+            <div>
+                <div class="brand-title">WORKSTATION BACKOFFICE <span id="btnChangelog" style="display: inline-flex; align-items: center; border-radius: 4px; overflow: hidden; vertical-align: middle; margin-left: 0.5rem; font-size: 0.55em; letter-spacing: normal; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">6.0</span></span></div>
+                <div class="brand-subtitle">PLATAFORMA LOCAL DE PLANTILLAS Y SEGUIMIENTO PARA BO-FIJA</div>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <button id="themeToggleBtn" class="theme-toggle-btn" title="Cambiar Tema (Oscuro/Claro)">🌙</button>
+        </div>
+    </header>
+
+    <!-- NAVIGATION TABS -->
+    <div class="nav-tabs-container">
+        <ul class="nav-tabs">
+            <li>
+                <button class="nav-tab-btn active" data-tab="tab-generator">
+                    ⚡ Plantillas
+                </button>
+            </li>
+            <li>
+                <button class="nav-tab-btn" data-tab="tab-tracker">
+                    📚 Ayuda y Seguimiento 
+                    <span id="navTrackerCount" style="background:var(--primary); color:white; padding:0.1rem 0.5rem; border-radius:12px; font-size:0.75rem; font-weight:bold; margin-left:0.3rem;">0</span>
+                </button>
+            </li>
+            <li>
+                <button class="nav-tab-btn" data-tab="tab-custom">
+                    🎨 Mis Plantillas Personalizadas
+                </button>
+            </li>
+            <li>
+                <button class="nav-tab-btn" data-tab="tab-history">
+                    📜 Historial y Respaldos
+                </button>
+            </li>
+        </ul>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-container">
+
+        <!-- ===================================================================
+             TAB 1: GENERADOR RÁPIDO (PLANTILLEITOR)
+             =================================================================== -->
+        <section id="tab-generator" class="tab-pane active">
+            <div class="grid-2col">
+                
+                <!-- Left Column: Form Inputs -->
+                <div>
+                    <!-- Case Data Card -->
+                    <div class="card">
+                        <div class="card-title">
+                            <div class="card-title-text">🛠️ Datos del Caso & Servicio</div>
+                            <button id="btnClearForm" class="btn" style="color:var(--danger); border-color:var(--danger); padding: 0.75rem 1.5rem; font-size: 1.1rem; font-weight: bold;" title="Limpiar campos">🗑️ Limpiar</button>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label" for="genTelefono">Número de Contacto</label>
+                                <input type="text" id="genTelefono" class="form-input" placeholder="Ej: 987654321">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="genContactId">ID Llamada / Chat ID</label>
+                                <input type="text" id="genContactId" class="form-input" placeholder="Ej: 1787747820-730926">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="genSot">SOT / REMEDY</label>
+                                <input type="text" id="genSot" class="form-input" placeholder="Ej: 19874523">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="genServicio">Servicio</label>
+                                <select id="genServicio" class="form-select">
+                                    <option value="INTERNET" selected>INTERNET</option>
+                                    <option value="TELEFONIA">TELEFONÍA</option>
+                                    <option value="IPTV">IPTV</option>
+                                    <option value="CABLE">CABLE DIGITAL</option>
+                                    <option value="APPS">APPS / CLARO VIDEO</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label class="form-label">Problema Detectado</label>
+                                <div class="custom-select-wrapper" id="problemaWrapper">
+                                    <div class="custom-select-trigger" id="genProblemaTrigger">Seleccionar problema...</div>
+                                    <div class="custom-select-dropdown" id="problemaDropdown">
+                                        <input type="text" class="custom-select-search" id="genProblemaSearch" placeholder="Escribe para buscar...">
+                                        <div class="custom-select-options" id="genProblemaOptions"></div>
+                                    </div>
+                                    <input type="hidden" id="genProblema">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Solution Section -->
+                        <div class="form-group">
+                            <label class="form-label" for="genSolucion">Solución del Caso</label>
+                            <input type="text" id="genSolucion" class="form-input" placeholder="Describe la solución aplicada...">
+                        </div>
+
+
+
+                        <!-- Descartes Section -->
+                        <div class="form-group">
+                            <label class="form-label" for="genDescartes">Descartes Realizados</label>
+                            <textarea id="genDescartes" class="form-textarea" placeholder="Descartes técnicos realizados..."></textarea>
+                            
+                            <span class="form-label" style="margin-top:0.4rem; font-size:0.75rem;">Descartes Rápida Selección:</span>
+                            <div id="quickDescartesContainer" class="chips-container"></div>
+                        </div>
+
+                        <!-- Hashtags Section -->
+                        <div class="form-group" style="margin-top:1rem;">
+                            <label class="form-label">Etiquetas / Hashtags</label>
+                            <div id="hashtagsContainer" class="chips-container"></div>
+                        </div>
+
+                        <!-- Categorías Section -->
+                        <div class="form-group" style="margin-top:1.5rem; padding-top:1rem; border-top:1px solid var(--border-color);">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem;">
+                                <label class="form-label" style="font-weight: bold; margin:0; display:flex; align-items:center; gap:0.4rem;">
+                                    Categorías de Cierre
+                                    <div class="beta-popover-wrapper">
+                                        <span id="btnBetaInfo" class="beta-badge">BETA</span>
+                                        <div id="betaInfoPopover" class="beta-popover">
+                                            <div class="beta-popover-header">
+                                                <span>🧪 Función en Fase Experimental</span>
+                                                <button type="button" class="beta-popover-close" id="btnCloseBetaInfoPopover" title="Cerrar">✕</button>
+                                            </div>
+                                            <div class="beta-popover-body">
+                                                El autocompletado es predictivo y se encuentra en <strong>fase experimental</strong> de prueba.
+                                                <div class="beta-popover-warning">
+                                                    ⚠️ <strong>Aviso Importante:</strong> Valida siempre que las categorías correspondan a la atención real antes de guardar en SIAC / Helix.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <button id="btnPredictCategory" class="btn btn-sm btn-primary" title="Autocompletar categoría basado en los datos del caso" style="font-size:0.75rem; padding: 0.2rem 0.5rem;">🪄 Autocompletar</button>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label" for="genCatResolucion">Categoría de Resolución</label>
+                                    <input type="text" id="genCatResolucion" class="form-input" placeholder="Ej: Configuración de equipo">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="genCatCausa">Categoría de Causa Raíz</label>
+                                    <input type="text" id="genCatCausa" class="form-input" placeholder="Ej: Desalineación de parámetros">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Right Column: Live Previews (2 Plantillas) -->
+                <div class="preview-sticky-col">
+                    <!-- Preview SIAC / Helix / Ciclo -->
+                    <div class="card">
+                        <div class="card-title">
+                            <div class="card-title-text" id="titleSiacCard">Plantilla SIAC / Helix</div>
+                            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                <button type="button" id="btnToggleCiclo" class="btn-toggle-ciclo" title="Alternar formato normal o ciclo de llamada">
+                                    <span class="ciclo-indicator-dot"></span>
+                                    <span id="labelCicloToggle">Ciclo: Auto</span>
+                                </button>
+                                <button id="btnCopySiac" class="btn btn-sm btn-primary">Copiar</button>
+                            </div>
+                        </div>
+                        <div id="previewSiac" class="preview-box">Cargando vista previa...</div>
+                    </div>
+
+                    <!-- Preview Mantenimiento -->
+                    <div class="card">
+                        <div class="card-title">
+                            <div class="card-title-text">Plantilla Mantenimiento</div>
+                            <button id="btnCopyManto" class="btn btn-sm btn-primary">Copiar</button>
+                        </div>
+                        <div id="previewManto" class="preview-box">Cargando vista previa...</div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===================================================================
+             TAB 2: AYUDA Y SEGUIMIENTO (TRACKER)
+             =================================================================== -->
+        <section id="tab-tracker" class="tab-pane">
+            <div class="grid-2col">
+                
+                <!-- Left Column: Daily Tracker -->
+                <div style="overflow-y:auto; height: calc(100vh - 130px); padding-right:1rem;">
+                    <div class="card">
+                        <div class="card-title">
+                            <div class="card-title-text" style="display:flex; align-items:center; gap:0.5rem;">
+                                📝 Registro Diario de Casos
+                                <span id="trackerCount" style="background:var(--primary); color:white; padding:0.1rem 0.6rem; border-radius:12px; font-size:0.75rem; font-weight:bold;">0</span>
+                            </div>
+                            <button id="btnClearTracker" class="btn btn-sm" style="color:var(--danger); border-color:var(--danger);" title="Limpiar Día">🗑️ Limpiar Día</button>
+                        </div>
+                        
+                        <div style="display:flex; gap:0.5rem; margin-bottom:1.5rem;">
+                            <input type="text" id="trackerCaseInput" class="form-input" placeholder="Código de Caso..." style="flex:1;">
+                            <button id="btnTrackerAdd" class="btn btn-primary">➕ Registrar</button>
+                        </div>
+
+                        <div id="trackerTimeline" class="timeline-container">
+                            <!-- Timeline injected via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Speeches & Resources -->
+                <div class="preview-sticky-col" style="overflow-y:auto;">
+
+                    <!-- Validador de Niveles (HFC / FTTH) -->
+                    <div class="card">
+                        <div class="card-title">
+                            <div class="card-title-text" style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
+                                <span>Validador de Niveles</span>
+                                <div class="tech-toggle-group">
+                                    <button type="button" class="btn-tech active" id="btnTechHfc">HFC</button>
+                                    <button type="button" class="btn-tech" id="btnTechFtth">FTTH</button>
+                                </div>
+                            </div>
+                            <button id="btnClearHygeia" class="btn btn-sm" style="color:var(--danger); border-color:var(--danger);" title="Limpiar campos">🗑️ Limpiar</button>
+                        </div>
+                        <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;" id="hygeiaHelpText">
+                            Pega los valores de cada parámetro para validar si están en rango.
+                        </div>
+
+                        <!-- Panel HFC (Coaxial) -->
+                        <div id="hygeiaHfcPanel">
+                            <div class="form-group">
+                                <label class="form-label" style="font-size:0.75rem;">U/S SNR (Mín: 28 dB)</label>
+                                <textarea id="incInputUsSnr" class="form-textarea" style="min-height:40px; font-size:0.8rem;" placeholder="Ej: 40.6"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" style="font-size:0.75rem;">D/S SNR (Mín: 33.5 dB)</label>
+                                <textarea id="incInputDwsSnr" class="form-textarea" style="min-height:40px; font-size:0.8rem;" placeholder="Ej: 35.6, 34.3..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" style="font-size:0.75rem;">Potencia Downstream Rx (-15 a 20.9 dBmV)</label>
+                                <textarea id="incInputDwsPot" class="form-textarea" style="min-height:40px; font-size:0.8rem;" placeholder="Ej: 0.7, 0.4, 0.1..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" style="font-size:0.75rem;">Potencia Upstream Tx (35 a 57 dBmV)</label>
+                                <textarea id="incInputUsPot" class="form-textarea" style="min-height:40px; font-size:0.8rem;" placeholder="Ej: 41.5"></textarea>
+                            </div>
+                            
+                            <div id="incognitoResults" style="background:var(--bg-main); padding:1rem; border-radius:8px; border:1px solid var(--border-color); margin-bottom:1rem;">
+                                <div style="font-weight:bold; margin-bottom:0.5rem; text-align:center;">Resultados HFC (Hygeia)</div>
+                                <div id="incResultUsSnr" style="margin-bottom:0.4rem; padding:0.4rem; border-radius:4px; font-size:0.85rem;">U/S SNR: Esperando datos...</div>
+                                <div id="incResultDwsSnr" style="margin-bottom:0.4rem; padding:0.4rem; border-radius:4px; font-size:0.85rem;">D/S SNR: Esperando datos...</div>
+                                <div id="incResultDwsPot" style="margin-bottom:0.4rem; padding:0.4rem; border-radius:4px; font-size:0.85rem;">Potencia Downstream: Esperando datos...</div>
+                                <div id="incResultUsPot" style="margin-bottom:0.4rem; padding:0.4rem; border-radius:4px; font-size:0.85rem;">Potencia Upstream: Esperando datos...</div>
+                            </div>
+                        </div>
+
+                        <!-- Panel FTTH (Fibra Óptica) -->
+                        <div id="hygeiaFtthPanel" style="display:none;">
+                            <div class="form-group">
+                                <label class="form-label" style="font-size:0.75rem;">Transmission Power Tx (0.5 a 5.0 dBm)</label>
+                                <textarea id="ftthInputTx" class="form-textarea" style="min-height:40px; font-size:0.8rem;" placeholder="Ej: 2.5"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" style="font-size:0.75rem;">Receiving Power Rx (-24.9 a -6.1 dBm)</label>
+                                <textarea id="ftthInputRx" class="form-textarea" style="min-height:40px; font-size:0.8rem;" placeholder="Ej: -18.2"></textarea>
+                            </div>
+                            
+                            <div id="ftthResults" style="background:var(--bg-main); padding:1rem; border-radius:8px; border:1px solid var(--border-color); margin-bottom:1rem;">
+                                <div style="font-weight:bold; margin-bottom:0.5rem; text-align:center;">Resultados FTTH (Fibra)</div>
+                                <div id="ftthResultTx" style="margin-bottom:0.4rem; padding:0.4rem; border-radius:4px; font-size:0.85rem;">Transmission Power (Tx): Esperando datos...</div>
+                                <div id="ftthResultRx" style="margin-bottom:0.4rem; padding:0.4rem; border-radius:4px; font-size:0.85rem;">Receiving Power (Rx): Esperando datos...</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Identificador de Equipos -->
+                    <div class="card">
+                        <div class="card-title">
+                            <div class="card-title-text" style="display:flex; align-items:center; gap:0.5rem;">
+                                📡 Identificador de Equipos
+                                <div class="beta-popover-wrapper">
+                                    <span id="btnBetaEquipos" class="beta-badge">BETA</span>
+                                    <div id="betaEquiposPopover" class="beta-popover">
+                                        <div class="beta-popover-header">
+                                            <span>🧪 Función en Fase Experimental</span>
+                                            <button type="button" class="beta-popover-close" id="btnCloseBetaEquiposPopover" title="Cerrar">✕</button>
+                                        </div>
+                                        <div class="beta-popover-body">
+                                            El catálogo e identificador de equipos se encuentra en <strong>fase experimental</strong> de prueba.
+                                            <div class="beta-popover-warning">
+                                                ⚠️ <strong>Aviso Importante:</strong> El catálogo de modelos, fotos y credenciales técnicas se actualiza constantemente.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">
+                            Ingresa el modelo o código del equipo para verificar su estado y apariencia.
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="eqSearchInput" class="form-input" placeholder="Buscar equipo (Ej. CGA2121)...">
+                        </div>
+                        
+                        <div id="eqResultContainer" style="display:none; background:var(--bg-main); padding:1rem; border-radius:8px; border:1px solid var(--border-color); text-align:center;">
+                            <div style="width:100%; height:120px; background-color:var(--bg-card); border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:1rem; overflow:hidden; border:1px dashed var(--border-color);">
+                                <img id="eqImage" src="" alt="Imagen del equipo" style="max-height:100%; max-width:100%; display:none;">
+                                <span id="eqImagePlaceholder" style="color:var(--text-muted); font-size:0.8rem;">Sin imagen</span>
+                            </div>
+                            <div id="eqName" style="font-weight:bold; font-size:1.1rem; margin-bottom:0.2rem;">--</div>
+                            <div id="eqType" style="color:var(--text-muted); font-size:0.85rem; margin-bottom:0.8rem;">--</div>
+                            <div id="eqStatus" style="display:inline-block; padding:0.3rem 0.8rem; border-radius:15px; font-size:0.75rem; font-weight:bold; margin-bottom:0.5rem;">--</div>
+                            <div id="eqCredentials" style="display:none; font-family:monospace; background:rgba(0,0,0,0.2); padding:0.5rem; border-radius:6px; font-size:0.8rem; margin-top:0.5rem; color:var(--text-color); border:1px solid rgba(255,255,255,0.1);"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-title">
+                            <div class="card-title-text">🗣️ Speeches de Ayuda</div>
+                        </div>
+                        <div class="speech-grid">
+                            <div class="speech-card">
+                                <strong>Bienvenida</strong>
+                                <p class="speech-text">Hola, buenos días. Le saluda Drey del soporte técnico de Claro. ¿Me comunico con [Nombre del Cliente] o algún familiar?</p>
+                                <button class="btn btn-sm copy-speech-btn">📋 Copiar</button>
+                            </div>
+                            <div class="speech-card">
+                                <strong>Validar Domicilio</strong>
+                                <p class="speech-text">¿Se encuentra en su domicilio en este momento para poder realizar unas pruebas y descartes con sus equipos?</p>
+                                <button class="btn btn-sm copy-speech-btn">📋 Copiar</button>
+                            </div>
+                            <div class="speech-card">
+                                <strong>Despedida</strong>
+                                <p class="speech-text">¿Hay algo más en lo que le pueda ayudar? Recuerde que estamos para servirle. Que tenga un excelente día.</p>
+                                <button class="btn btn-sm copy-speech-btn">📋 Copiar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">
+                            <div class="card-title-text">📄 Manuales y Procedimientos (PDF)</div>
+                        </div>
+                        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">Asegúrate de colocar tus archivos PDF en la carpeta "manuales" junto a este archivo para poder abrirlos.</p>
+                        <div style="display:flex; flex-direction:column; gap:0.5rem;">
+                            <a href="manuales/Procedimiento_FTTH.pdf" target="_blank" class="btn" style="text-align:left; background:var(--bg-main);">📕 Procedimiento FTTH</a>
+                            <a href="manuales/Manual_HFC.pdf" target="_blank" class="btn" style="text-align:left; background:var(--bg-main);">📕 Manual HFC y Descartes</a>
+                            <a href="manuales/Politicas_Reemplazo.pdf" target="_blank" class="btn" style="text-align:left; background:var(--bg-main);">📕 Políticas de Reemplazo (Mesh)</a>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================================
+             TAB 3: MIS PLANTILLAS PERSONALIZADAS
+             =================================================================== -->
+        <section id="tab-custom" class="tab-pane">
+            <div style="overflow-y:auto; padding:1.5rem; flex:1;">
+                <div class="card">
+                    <div class="card-title">
+                        <div class="card-title-text">Plantillas Personalizadas</div>
+                        <button id="btnNewTemplate" class="btn btn-sm btn-primary">➕ Nueva Plantilla</button>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" id="customSearch" class="form-input" placeholder="🔍 Buscar por nombre, categoría o contenido...">
+                    </div>
+
+                    <div id="customTemplatesList" class="template-grid" style="margin-top:1rem;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================================
+             TAB 4: HISTORIAL Y RESPALDOS
+             =================================================================== -->
+        <section id="tab-history" class="tab-pane">
+            <div style="overflow-y:auto; padding:1.5rem; flex:1;">
+            <div class="card">
+                <div class="card-title">
+                    <div class="card-title-text">📜 Historial de Casos Generados</div>
+                    <button id="btnClearHistory" class="btn btn-sm" style="color:var(--danger);">🗑️ Limpiar Historial</button>
+                </div>
+
+                <div style="overflow-x:auto;">
+                    <table style="width:100%; border-collapse:collapse; text-align:left;">
+                        <thead>
+                            <tr style="border-bottom:1px solid var(--border-color); color:var(--text-muted); font-size:0.8rem; text-transform:uppercase;">
+                                <th style="padding:0.6rem;">Hora</th>
+                                <th style="padding:0.6rem;">Tipo</th>
+                                <th style="padding:0.6rem;">Servicio</th>
+                                <th style="padding:0.6rem;">Resumen</th>
+                                <th style="padding:0.6rem;">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <div class="card-title-text">💾 Respaldar & Importar Configuración</div>
+                </div>
+
+                <div style="display:flex; gap:1.5rem; flex-wrap:wrap; align-items:center;">
+                    <div>
+                        <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:0.5rem;">
+                            Exporta tu historial y plantillas a un archivo de texto (.txt).
+                        </p>
+                        <button id="btnExportJson" class="btn btn-primary">⬇️ Descargar Respaldo (.txt)</button>
+                    </div>
+
+                    <div style="border-left:1px solid var(--border-color); padding-left:1.5rem;">
+                        <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:0.5rem;">
+                            Importar respaldo (selecciona tu archivo .txt o .json):
+                        </p>
+                        <input type="file" id="importJsonInput" accept=".json,.txt,*/*" class="form-input" style="max-width:300px;">
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL FOR CUSTOM TEMPLATE CREATION / EDIT -->
+    <div id="templateModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="card-title">
+                <div id="modalTitle" class="card-title-text">Nueva Plantilla Personalizada</div>
+                <button id="modalClose" class="btn btn-sm">✕</button>
+            </div>
+
+            <input type="hidden" id="templateIdInput">
+
+            <div class="form-group">
+                <label class="form-label" for="tmplTitleInput">Título de la Plantilla</label>
+                <input type="text" id="tmplTitleInput" class="form-input" placeholder="Ej: Confirmación de Visita Técnica">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="tmplCategoryInput">Categoría</label>
+                <input type="text" id="tmplCategoryInput" class="form-input" placeholder="Ej: Coordinación, Averías, Minutas">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="tmplContentInput">Contenido (Usa {variable} para campos dinámicos)</label>
+                <textarea id="tmplContentInput" class="form-textarea" style="min-height:180px;" placeholder="Ej: ESTIMADO {cliente}, SE GENERA TICKET {ticket} PARA EL SERVICIO DE {servicio}. ASESOR: {asesor}"></textarea>
+                <span style="font-size:0.75rem; color:var(--text-muted); margin-top:0.3rem;">
+                    💡 Tip: Las variables entre llaves <code>{nombre}</code>, <code>{ticket}</code>, <code>{fecha}</code> generarán campos automáticos de llenado.
+                </span>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; gap:0.75rem; margin-top:1.5rem;">
+                <button id="modalCancel" class="btn">Cancelar</button>
+                <button id="modalSave" class="btn btn-primary">💾 Guardar Plantilla</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL FOR CHANGELOG -->
+    <div id="changelogModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 530px;">
+            <div class="card-title">
+                <div class="card-title-text">🚀 Novedades de la Versión 6.0</div>
+                <button id="changelogModalClose" class="btn btn-sm">✕</button>
+            </div>
+            <div style="font-size: 0.93rem; line-height: 1.6; color: var(--text-main); margin-top: 1rem;">
+                <ul style="padding-left: 1.4rem; margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem;">
+                    <li><strong>2 Plantillas Inteligentes:</strong> Unificación en 2 vistas (SIAC / Helix y Mantenimiento). La plantilla SIAC detecta automáticamente ciclos de llamada (modo cian) con opción de forzar manual/auto.</li>
+                    <li><strong>Pegado Continuo y Concatenación de Contactos:</strong> El sistema identifica automáticamente si pegas un ID de llamada o Chat ID (UUID), permitiendo pegar múltiples IDs consecutivos sin borrar y concatenándolos ordenadamente con <code> / </code>.</li>
+                    <li><strong>Validador Dual HFC / FTTH:</strong> Nuevo soporte de validación para tecnología de Fibra Óptica (Transmission Power de 0.5 a 5.0 dBm y Receiving Power de -24.9 a -6.1 dBm) con selector switch interactivo HFC/FTTH.</li>
+                    <li><strong>SOT Condicional en SIAC:</strong> La línea de SOT solo se añade a la plantilla SIAC cuando el campo está completado.</li>
+                    <li><strong>Hashtags Estandarizados:</strong> Cuando no se seleccionan hashtags en la plantilla de mantenimiento, se muestra <code>HASHTAGS: N/A</code>.</li>
+                    <li><strong>Aviso Informativo BETA:</strong> Modal explicativo de validación y control de calidad al consultar el botón BETA o autocompletar categorías de cierre.</li>
+                    <li><strong>Descarte Rápido SGA:</strong> Se actualizó el descarte rápido para registrar <em>"SE VALIDA DATOS DE SOT E HISTORIAL EN SGA"</em>.</li>
+                </ul>
+                <p style="color: var(--text-muted); font-size: 0.85rem; border-top: 1px dashed var(--border-color); padding-top: 1rem; text-align: center;">
+                    ¡Desarrollado para hacer tu gestión más rápida, precisa y eficiente!
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+        Creado por Drey E. Aymituma &copy; 2026 &bull; Aplicación Local Offline de Plantillas Back Office &bull; Inmune a Proxies
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="dataset.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Matriz Operativa y de Tipificación - WorkStation BackOffice</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 15mm 12mm 15mm 12mm;
+            @bottom-right {
+                content: "Página " counter(page);
+                font-size: 8pt;
+                color: #64748b;
+            }
+        }
+        
+        * {
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #1e293b;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+            font-size: 9.5pt;
+            line-height: 1.45;
+        }
+
+        /* Header / Hero */
+        .doc-header {
+            border-bottom: 3px solid #dc2626;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .doc-header .title-area h1 {
+            margin: 0;
+            font-size: 18pt;
+            color: #0f172a;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+        }
+
+        .doc-header .title-area h2 {
+            margin: 3px 0 0 0;
+            font-size: 10.5pt;
+            color: #dc2626;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .doc-header .meta-area {
+            text-align: right;
+            font-size: 8pt;
+            color: #64748b;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 7.5pt;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .badge-red { background: #fee2e2; color: #991b1b; border: 1px solid #f87171; }
+        .badge-blue { background: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; }
+        .badge-green { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+        .badge-amber { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+        .badge-purple { background: #f3e8ff; color: #6b21a8; border: 1px solid #d8b4fe; }
+        .badge-slate { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
+
+        /* Stats bar */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+        .stat-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 8px 12px;
+            text-align: center;
+        }
+        .stat-val {
+            font-size: 15pt;
+            font-weight: 800;
+            color: #0f172a;
+        }
+        .stat-label {
+            font-size: 7.5pt;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        /* Section Headings */
+        .section-title {
+            font-size: 12pt;
+            font-weight: 800;
+            color: #0f172a;
+            border-left: 4px solid #dc2626;
+            padding-left: 8px;
+            margin: 22px 0 10px 0;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .section-desc {
+            font-size: 8.5pt;
+            color: #475569;
+            margin-bottom: 12px;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 16px;
+            font-size: 8.5pt;
+        }
+
+        th {
+            background: #0f172a;
+            color: #ffffff;
+            text-align: left;
+            padding: 6px 9px;
+            font-size: 8pt;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 5px 9px;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
+        }
+
+        tr:nth-child(even) td {
+            background: #f8fafc;
+        }
+
+        .service-badge {
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 7.5pt;
+            display: inline-block;
+        }
+
+        /* Category Card Grid */
+        .cat-card {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-left: 4px solid #0284c7;
+            border-radius: 4px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+            page-break-inside: avoid;
+        }
+
+        .cat-card.procedente {
+            border-left-color: #16a34a;
+        }
+
+        .cat-card.no-procedente {
+            border-left-color: #dc2626;
+        }
+
+        .cat-card.en-tramite {
+            border-left-color: #d97706;
+        }
+
+        .cat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 6px;
+        }
+
+        .cat-title {
+            font-size: 10pt;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .motivos-list {
+            margin: 6px 0 0 0;
+            padding-left: 18px;
+            font-size: 8pt;
+            color: #334155;
+            column-count: 2;
+            column-gap: 15px;
+        }
+
+        .motivos-list li {
+            margin-bottom: 3px;
+            break-inside: avoid;
+        }
+
+        .plantilla-box {
+            background: #f1f5f9;
+            border: 1px dashed #94a3b8;
+            border-radius: 4px;
+            padding: 6px 9px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 7.5pt;
+            color: #1e293b;
+            white-space: pre-wrap;
+            margin-top: 6px;
+        }
+
+        .page-break {
+            page-break-before: always;
+        }
+
+        .chip-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 4px;
+        }
+
+        .chip {
+            background: #e2e8f0;
+            color: #1e293b;
+            border-radius: 3px;
+            padding: 2px 6px;
+            font-size: 7.5pt;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        .doc-footer {
+            margin-top: 25px;
+            padding-top: 10px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            font-size: 7.5pt;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PORTADA / ENCABEZADO PRINCIPAL -->
+    <div class="doc-header">
+        <div class="title-area">
+            <h1>Matriz Operativa & de Tipificación</h1>
+            <h2>Back Office Técnica Fija · HITSS / América Móvil Perú</h2>
+        </div>
+        <div class="meta-area">
+            <div><strong>Plataforma:</strong> WorkStation BackOffice v6.0</div>
+            <div><strong>Documento:</strong> Especificación de Comboboxes & Variantes</div>
+            <div><strong>Fecha:</strong> Septiembre 2026</div>
+        </div>
+    </div>
+
+    <!-- RESUMEN EJECUTIVO / STATS -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-val">5</div>
+            <div class="stat-label">Servicios Principales</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val">217</div>
+            <div class="stat-label">Problemas / Tipificaciones</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val">27</div>
+            <div class="stat-label">Categorías SIAC / Helix</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val">101</div>
+            <div class="stat-label">Motivos de Cierre Mapeados</div>
+        </div>
+    </div>
+
+    <!-- SECCIÓN 1: COMBOBOX SERVICIOS Y PROBLEMAS DETECTADOS -->
+    <div class="section-title">
+        <span>1. Matriz de Combobox: Servicios y Problemas Detectados</span>
+        <span class="badge badge-red">Combobox Principal + Búsqueda</span>
+    </div>
+    <div class="section-desc">
+        Relación completa de los 5 servicios integrados y los problemas técnicos asociados seleccionables en el menú desplegable principal con búsqueda en tiempo real:
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 18%;">Servicio</th>
+                <th style="width: 12%;">Cant. Fallas</th>
+                <th style="width: 70%;">Problemas Tipificados Disponibles (Variantes)</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td><span class="badge badge-blue">INTERNET</span></td>
+                <td><strong>35</strong> problemas</td>
+                <td>
+                    <div class="chip-grid">
+    <span class="chip">INT - BAJA VELOCIDAD VIA CABLEADO (LENTITUD)</span><span class="chip">INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)</span><span class="chip">INT - BAJA VELOCIDAD VIA CABLEADO Y WIFI (LENTITUD)</span><span class="chip">INT - NAVEGACION LENTA EN TODAS LAS PAGINAS</span><span class="chip">INT - INTERMITENCIA EN RANGOS HORARIOS CABLEADO</span><span class="chip">INT - INTERMITENCIA EN RANGOS HORARIOS WIFI</span><span class="chip">INT - DESCONEXIONES FRECUENTES</span><span class="chip">INT - SIN SERVICIO</span><span class="chip">INT - INTERNET NO FUNCIONA EN UN SOLO EQUIPO</span><span class="chip">INT - COBERTURA WIFI</span><span class="chip">INT - PROBLEMAS CON CONEXIONES CLARO</span><span class="chip">INT - PROBLEMAS CON PAGINAS</span><span class="chip">INT - REINICIOS CONSTANTES</span><span class="chip">INT - NIVELES FUERA DE RANGO</span><span class="chip">INT - WIFI NO LLEGA A DETERMINADAS ZONAS</span><span class="chip">INT - PROBLEMAS CON WIFI 2.4 GHZ</span><span class="chip">INT - PROBLEMAS CON  WIFI 5 GHZ</span><span class="chip">INT - PROBLEMAS CON APLICACIONES</span><span class="chip">INT - ERROR DNS</span><span class="chip">INT - LATENCIA ALTA (PING ELEVADO)</span><span class="chip">INT - PERDIDA DE PAQUETES</span><span class="chip">INT - REPETIDOR MESH</span><span class="chip">INT - PLUME DESALINEADO</span><span class="chip">INT - PROBLEMAS CON PLUME</span><span class="chip">INT - MODEM NO ENCIENDE</span><span class="chip">INT - MODEM CON LUCES ANORMALES</span><span class="chip">INT - FALLA EN PUERTOS LAN</span><span class="chip">INT -  USO INADECUADO DE EQUIPOS</span><span class="chip">INT - LENTITUD E INTERMITENCIA EN VIDEOJUEGOS</span><span class="chip">INT - CORTES EN VIDEOLLAMADAS</span><span class="chip">INT - BAJA CALIDAD DE VIDEO</span><span class="chip">INT - CAMBIO DE CLAVE WIFI Y NOMBRE WIFI (SSID)</span><span class="chip">INT - DISPOSITIVOS NO SE CONECTAN AL WIFI</span><span class="chip">INT - LOS EN ROJO</span><span class="chip">INT - INFORMACION DE USO</span>
+                    </div>
+                </td>
+            </tr>
+    
+            <tr>
+                <td><span class="badge badge-purple">TELEFONIA</span></td>
+                <td><strong>22</strong> problemas</td>
+                <td>
+                    <div class="chip-grid">
+    <span class="chip">TEL - SIN TONO</span><span class="chip">TEL - NO PUEDE REALIZAR LLAMADAS</span><span class="chip">TEL - NO PUEDE RECIBIR LLAMADAS</span><span class="chip">TEL - RUIDO/INTERFERENCIA</span><span class="chip">TEL - BOLSA DE MINUTOS DESCONFIGURADA</span><span class="chip">TEL - NO PUEDE REALIZAR LLAMADAS INTERNACIONALES</span><span class="chip">TEL - NO PUEDE RECIBIR LLAMADAS INTERNACIONALES</span><span class="chip">TEL - INTERLOCUCION</span><span class="chip">TEL - INFORMACION DE USO</span><span class="chip">TEL - CONEXIONES</span><span class="chip">TEL - NO REGISTRADO EN LA CBIO</span><span class="chip">TEL - SERVICIO INTERMITENTE</span><span class="chip">TEL - LINEA OCUPADA</span><span class="chip">TEL - ECO EN LLAMADAS</span><span class="chip">TEL - BAJO VOLUMEN</span><span class="chip">TEL - CABLE TELEFONICO DAÑADO</span><span class="chip">TEL - PROBLEMAS EN ROSETA TELEFONICA</span><span class="chip">TEL - FALLA EN PUERTO TELEFONICO</span><span class="chip">TEL - IDENTIFICADOR DE LLAMADAS</span><span class="chip">TEL - BUZON DE VOZ</span><span class="chip">TEL - PORTABILIDAD EN PROCESO</span><span class="chip">TEL - SUSPENSION DEL SERVICIO</span>
+                    </div>
+                </td>
+            </tr>
+    
+            <tr>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>30</strong> problemas</td>
+                <td>
+                    <div class="chip-grid">
+    <span class="chip">IPTV - SIN CANALES</span><span class="chip">IPTV - NO VISUALIZA ALGUNOS CANALES</span><span class="chip">IPTV - DESALINEADO EN SISTEMAS</span><span class="chip">IPTV - PARAMETROS DESALINEADOS EN SKYWAY</span><span class="chip">IPTV - RESOLUCION BAJA</span><span class="chip">IPTV - SIN VOLUMEN</span><span class="chip">IPTV - CONTROL DESINCRONIZADO</span><span class="chip">IPTV - CONTROL REMOTO NO FUNCIONA</span><span class="chip">IPTV - CALIDAD PROBLEMA CON CANALES</span><span class="chip">IPTV - CANALES PIXELADOS</span><span class="chip">IPTV - CANAL BLOQUEADO</span><span class="chip">IPTV - PROBLEMAS FISICOS CON DECODIFICADOR</span><span class="chip">IPTV - CONEXIONES/TOMACORRIENTE</span><span class="chip">IPTV - HDMI DESCONFIGURADO</span><span class="chip">IPTV - PANTALLA NEGRA</span><span class="chip">IPTV - SERVICIO INTERMITENTE</span><span class="chip">IPTV - CANALES FUERA DE LA GRILLA</span><span class="chip">IPTV - DESFASE ENTRE AUDIO Y VIDEO</span><span class="chip">IPTV - PANTALLA AZUL</span><span class="chip">IPTV - PANTALLA VERDE</span><span class="chip">IPTV - AUDIO DISTORSIONADO</span><span class="chip">IPTV - AUDIO EN OTRO IDIOMA</span><span class="chip">IPTV - REAPROVISIONAMIENTO DEL SERVICIO</span><span class="chip">IPTV - YOUTUBE NO FUNCIONA</span><span class="chip">IPTV - NETFLIX NO FUNCIONA</span><span class="chip">IPTV - ERROR DE INICIO DE SESION</span><span class="chip">IPTV - CANAL 2 Y 4 NO EXISTEN</span><span class="chip">IPTV - RETORNA A CANAL 1</span><span class="chip">IPTV - PROBLEMAS CON LA GUIA DE CANALES</span><span class="chip">IPTV - SINCRONIZACION DE VOLUMEN</span>
+                    </div>
+                </td>
+            </tr>
+    
+            <tr>
+                <td><span class="badge badge-amber">CABLE</span></td>
+                <td><strong>16</strong> problemas</td>
+                <td>
+                    <div class="chip-grid">
+    <span class="chip">CABLE - PANTALLA DE CARGA</span><span class="chip">CABLE - PANTALLA NEGRA</span><span class="chip">CABLE - PROBLEMAS CON CONTROL REMOTO</span><span class="chip">CABLE - SIN CANALES</span><span class="chip">CABLE - CALIDAD PROBLEMAS CON CANALES</span><span class="chip">CABLE - SIN VOLUMEN</span><span class="chip">CABLE - RESOLUCION DE CANALES</span><span class="chip">CABLE - CONEXIONES/TOMACORRIENTE</span><span class="chip">CABLE - PROBLEMAS CON DECODIFICADOR</span><span class="chip">CABLE - AV/HDMI DESCONFIGURADO</span><span class="chip">CABLE - CANALES FUERA DE GRILLA</span><span class="chip">CABLE - IMAGEN PIXELADA</span><span class="chip">CABLE - PANTALLA AZUL</span><span class="chip">CABLE - PANTALLA VERDE</span><span class="chip">CABLE - DESFASE AUDIO/VIDEO</span><span class="chip">CABLE - PROBLEMAS CON ADAPTADOR</span>
+                    </div>
+                </td>
+            </tr>
+    
+            <tr>
+                <td><span class="badge badge-red">APPS</span></td>
+                <td><strong>114</strong> problemas</td>
+                <td>
+                    <div class="chip-grid">
+    <span class="chip">CLARO VIDEO - NO REGISTRADO</span><span class="chip">CLARO VIDEO - NO PUEDE ACCEDER A CLARO VIDEO - DISPOSITIVO</span><span class="chip">CLARO VIDEO - NO PUEDE ACCEDER A CLARO VIDEO - AMCO</span><span class="chip">CLARO VIDEO - CORREO MAL ASOCIADO</span><span class="chip">CLARO VIDEO - DESALINEADO EN BASE MEXICO</span><span class="chip">CLARO VIDEO - DESALINEADO EN BASE PERU</span><span class="chip">CLARO VIDEO - PROBLEMAS CON CORREO DEL CLIENTE</span><span class="chip">CLARO VIDEO - L1 MAX NO ACTIVADO</span><span class="chip">CLARO VIDEO - HBO NO ACTIVO/REGISTRADO</span><span class="chip">CLARO VIDEO - TV EN VIVO:CANAL NO DISONIBLE</span><span class="chip">CLARO VIDEO - PANTALLA NEGRA</span><span class="chip">CLARO VIDEO - REGISTRO FALLIDO</span><span class="chip">CLARO VIDEO - SUSCRIPCION NO REFLEJADA</span><span class="chip">CLARO VIDEO - USUARIO O CONTRASEÑA INCORRECTOS</span><span class="chip">CLARO VIDEO - OLVIDO DE CONTRASEÑA</span><span class="chip">CLARO VIDEO - CUENTA BLOQUEADA</span><span class="chip">CLARO VIDEO - ERROR DE INICIO DE SESION</span><span class="chip">CLARO VIDEO - CORREO NO RECIBE RESTABLECIMIENTO DE CONTRASEÑA</span><span class="chip">CLARO VIDEO - ERROR DE REPRODUCCION</span><span class="chip">CLARO VIDEO - VIDEO NO CARGA</span><span class="chip">CLARO VIDEO - CATALOGO INCOMPLETO</span><span class="chip">CLARO VIDEO - CONTENIDO NO DISPONIBLE EN LA REGION</span><span class="chip">CLARO VIDEO - LIMITE DE DISPOSITIVOS ALCANZADO</span><span class="chip">CLARO VIDEO - DISPOSITIVO NO COMPATIBLE</span><span class="chip">CLARO VIDEO - ERROR AL ACTUALIZAR APLICACION</span><span class="chip">CLARO VIDEO - COBRO INCORRECTO</span><span class="chip">CLARO VIDEO - BENEFICIO NO REFLEJADO</span><span class="chip">SMARTHOME - NO PUEDE INICIAR SESION</span><span class="chip">SMARTHOME - USUARIO NO REGISTRADO</span><span class="chip">SMARTHOME - OLVIDO DE CONTRASEÑA</span><span class="chip">SMARTHOME - CUENTA BLOQUEADA</span><span class="chip">SMARTHOME - ERROR DE AUTENTICACION</span><span class="chip">SMARTHOME - NO PUEDE DESCARGAR LA APLICACION</span><span class="chip">SMARTHOME - ERROR AL INSTALAR LA APLICACION</span><span class="chip">SMARTHOME - DISPOSITIVO NO COMPATIBLE</span><span class="chip">SMARTHOME - NO PUEDE CAMBIAR NOMBRE WIFI</span><span class="chip">SMARTHOME - NO PUEDE CAMBIAR CLAVE WIFI</span><span class="chip">SMARTHOME - NO PUEDE APAGAR/ENCENDER WIFI</span><span class="chip">SMARTHOME - NO VISUALIZA DISPOSITIVOS CONECTADOS</span><span class="chip">SMARTHOME - NO PUEDE REINICIAR ROUTER</span><span class="chip">SMARTHOME - NO FUNCIONAN LOS DESCARTES TECNICOS</span><span class="chip">SMARTHOME - NO VISUALIZA LOS DECODIFICADORES</span><span class="chip">SMARTHOME - NO PUEDE REINICIAR EL DECODIFICADOR</span><span class="chip">SMARTHOME - NO PUEDE CAMBIAR EL NOMBRE DEL DECO</span><span class="chip">SMARTHOME - NO CARGAN LOS DESCARTES DE TV</span><span class="chip">SMARTHOME - GUIA DE CANALES NO DISPONIBLE</span><span class="chip">SMARTHOME - CONTROL REMOTO NO DISPONIBLE</span><span class="chip">SMARTHOME - NO CARGAN DESCARTES DE TELEFONIA</span><span class="chip">SMARTHOME - NO VISUALIZA GUIA DE TELEFONIA</span><span class="chip">SMARTHOME - NO MUESTRA CABLEADO TELEFONICO</span><span class="chip">SMARTHOME - NO VISUALIZA VISITA TECNICA</span><span class="chip">SMARTHOME - NO PUEDE REPROGRAMAR VISITA</span><span class="chip">SMARTHOME - NO PUEDE CANCELAR VISITA</span><span class="chip">SMARTHOME - TRACKING NO DISPONIBLE</span><span class="chip">SMARTHOME - TECNICO NO FIGURA EN LA APLICACION</span><span class="chip">SMARTHOME - SERVICIO FIGURA NO CONECTADO</span><span class="chip">SMARTHOME - SERVICIO FIGURA SUSPENDIDO</span><span class="chip">SMARTHOME - SERVICIO FIGURA CON AVERIA MASIVA</span><span class="chip">SMARTHOME - ESTADO DEL SERVICIO NO ACTUALIZA</span><span class="chip">SMARTHOME - NO PUEDE ESCANEAR SERIAL</span><span class="chip">SMARTHOME - ERROR AL ESCANEAR CODIGO QR/SERIAL</span><span class="chip">SMARTHOME - NO HABILITA OPCIONES DEL ROUTER</span><span class="chip">SMARTHOME - SERVICIO DEGRADADO</span><span class="chip">SMARTHOME - NO PUEDE CAMBIAR CLAVE WIFI DESDE APP</span><span class="chip">SMARTHOME - APLICACION LENTA</span><span class="chip">SMARTHOME - APLICACION SE CIERRA</span><span class="chip">SMARTHOME - ERROR DE CARGA</span><span class="chip">SMARTHOME - INFORMACION DESACTUALIZADA</span><span class="chip">SMARTHOME - NOTIFICACIONES NO DISPONIBLES</span><span class="chip">SMARTHOME - VIDEOS TUTORIALES NO CARGAN</span><span class="chip">SMARTHOME - GUIA PDF NO DISPONIBLE</span><span class="chip">MI CLARO WEB - NO PUEDE REGISTRARSE</span><span class="chip">MI CLARO WEB - NO PUEDE INICIAR SESION</span><span class="chip">MI CLARO WEB - OLVIDO DE CONTRASEÑA</span><span class="chip">MI CLARO WEB - NO RECIBE CORREO DE RECUPERACION</span><span class="chip">MI CLARO WEB - CUENTA BLOQUEADA</span><span class="chip">MI CLARO WEB - ERROR DE AUTENTICACION</span><span class="chip">MI CLARO WEB - NO RECONOCE DNI</span><span class="chip">MI CLARO WEB - ERROR AL REGISTRAR CUENTA</span><span class="chip">MI CLARO WEB - NO VISUALIZA SERVICIOS CONTRATADOS</span><span class="chip">MI CLARO WEB - INFORMACION DESACTUALIZADA</span><span class="chip">MI CLARO WEB - NO VISUALIZA DETALLE DEL PLAN</span><span class="chip">MI CLARO WEB - NO MUESTRA ESTADO DEL SERVICIO</span><span class="chip">MI CLARO WEB - NO VISUALIZA SALDOS</span><span class="chip">MI CLARO WEB - NO VISUALIZA CONSUMOS</span><span class="chip">MI CLARO WEB - NO VISUALIZA DETALLE DE CONSUMOS</span><span class="chip">MI CLARO WEB - NO PUEDE DESCARGAR REPORTE</span><span class="chip">MI CLARO WEB - NO PUEDE ENVIAR REPORTE POR CORREO</span><span class="chip">MI CLARO WEB - NO VISUALIZA RECIBOS</span><span class="chip">MI CLARO WEB - RECIBO NO DISPONIBLE</span><span class="chip">MI CLARO WEB - ERROR AL PAGAR RECIBO</span><span class="chip">MI CLARO WEB - NO PUEDE DESCARGAR RECIBO PDF</span><span class="chip">MI CLARO WEB - NO VISUALIZA HISTORIAL DE PAGOS</span><span class="chip">MI CLARO WEB - ERROR EN DEBITO AUTOMATICO</span><span class="chip">MI CLARO WEB - NO PUEDE AFILIARSE A DEBITO AUTOMATICO</span><span class="chip">MI CLARO WEB - NO PUEDE CAMBIAR DE PLAN</span><span class="chip">MI CLARO WEB - PLANES NO DISPONIBLES</span><span class="chip">MI CLARO WEB - ERROR AL SOLICITAR CAMBIO DE PLAN</span><span class="chip">MI CLARO WEB - CAMBIO DE PLAN NO REFLEJADO</span><span class="chip">MI CLARO WEB - NO PUEDE SOLICITAR DECO ADICIONAL</span><span class="chip">MI CLARO WEB - NO PUEDE CONTRATAR PAQUETE TV</span><span class="chip">MI CLARO WEB - NO PUEDE SUSPENDER TEMPORALMENTE</span><span class="chip">MI CLARO WEB - NO PUEDE CAMBIAR NUMERO</span><span class="chip">MI CLARO WEB - NO PUEDE REGISTRAR DIRECTORIO TELEFONICO</span><span class="chip">MI CLARO WEB - NO VISUALIZA ESTADO DE SOLICITUDES</span><span class="chip">MI CLARO WEB - OPERACION PENDIENTE</span><span class="chip">MI CLARO WEB - NO PUEDE APROBAR OPERACION</span><span class="chip">MI CLARO WEB - ERROR AL CONFIRMAR IDENTIDAD</span><span class="chip">MI CLARO WEB - OPERACION NO FINALIZA</span><span class="chip">MI CLARO WEB - TRANSACCION NO EXITOSA</span><span class="chip">MI CLARO WEB - NO VISUALIZA CLARO PUNTOS</span><span class="chip">MI CLARO WEB - ERROR AL CANJEAR PUNTOS</span><span class="chip">MI CLARO WEB - NO PUEDE CONVERTIR A MILLAS</span><span class="chip">MI CLARO WEB - PUNTOS NO ACTUALIZADOS</span>
+                    </div>
+                </td>
+            </tr>
+    
+        </tbody>
+    </table>
+
+    <div class="page-break"></div>
+
+    <!-- SECCIÓN 2: DESCARTES RÁPIDOS Y SOLUCIONES -->
+    <div class="section-title">
+        <span>2. Matriz de Descartes Técnicos y Acciones Rápidas</span>
+        <span class="badge badge-blue">Chips Dinámicos</span>
+    </div>
+    <div class="section-desc">
+        Descartes preconfigurados de 1-clic para inyección inmediata en el campo de descarte técnico de la plantilla:
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 35%;">Tipo de Descarte / Solución</th>
+                <th style="width: 65%;">Tipificación / Detalle Técnico</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td><strong>DESCARTES_FISICOS_INTERNET</strong></td>
+                <td><span class="chip">VALIDACION DE CONEXIONES</span></td>
+            </tr>
+    
+            <tr>
+                <td><strong>DESCARTES_FISICOS_INTERNET</strong></td>
+                <td><span class="chip">REINICIO MANUAL</span></td>
+            </tr>
+    
+            <tr>
+                <td><strong>DESCARTES_FISICOS_INTERNET</strong></td>
+                <td><span class="chip">VALIDACION TOMAS ELECTRICAS</span></td>
+            </tr>
+    
+            <tr>
+                <td><strong>DESCARTES_REMOTOS_INTERNET</strong></td>
+                <td><span class="chip">BAJA Y ALTA</span></td>
+            </tr>
+    
+            <tr>
+                <td><strong>DESCARTES_REMOTOS_INTERNET</strong></td>
+                <td><span class="chip">CAMBIO SSID</span></td>
+            </tr>
+    
+            <tr>
+                <td><strong>DESCARTES_REMOTOS_INTERNET</strong></td>
+                <td><span class="chip">ACTUALIZACION FIRMWARE</span></td>
+            </tr>
+    
+            <tr>
+                <td><strong>DESCARTES_REMOTOS_IPTV</strong></td>
+                <td><span class="chip">ACTUALIZACION CLARO TV</span></td>
+            </tr>
+    
+            <tr>
+                <td><strong>DESCARTES_REMOTOS_IPTV</strong></td>
+                <td><span class="chip">RESET CONTROL REMOTO</span></td>
+            </tr>
+    
+            <tr>
+                <td><span class="badge badge-slate">Acción Rápida</span></td>
+                <td>SE VALIDA SIN CONSUMO EN TRACER, DESCARTES FISICOS, REINICIO SIN EXITO</td>
+            </tr>
+    
+            <tr>
+                <td><span class="badge badge-slate">Acción Rápida</span></td>
+                <td>SE REALIZA REINICIO MANUAL DE ONT/EMTA, SERVICIO OK EN LINEA</td>
+            </tr>
+    
+            <tr>
+                <td><span class="badge badge-slate">Acción Rápida</span></td>
+                <td>VALIDACION DE TOMAS ELECTRICAS Y CABLEADO FISICO CONFORME</td>
+            </tr>
+    
+            <tr>
+                <td><span class="badge badge-slate">Acción Rápida</span></td>
+                <td>BAJA Y ALTA EN SGA PROCESADO CORRECTAMENTE</td>
+            </tr>
+    
+            <tr>
+                <td><span class="badge badge-slate">Acción Rápida</span></td>
+                <td>CAMBIO DE CANAL Y SSID WIFI REALIZADO</td>
+            </tr>
+    
+            <tr>
+                <td><span class="badge badge-slate">Acción Rápida</span></td>
+                <td>ACTUALIZACION DE FIRMWARE Y REBOOT PROCESADO CON SKYWAY</td>
+            </tr>
+    
+            <tr>
+                <td><span class="badge badge-slate">Acción Rápida</span></td>
+                <td>SE PROCESO CLEAR DATA Y ALINEACION DE FICHAS EN SGA</td>
+            </tr>
+    
+            <tr>
+                <td><span class="badge badge-slate">Acción Rápida</span></td>
+                <td>ALINEACION DE BOLSA DE MINUTOS Y PORTADORAS CONFORME</td>
+            </tr>
+    
+            <tr>
+                <td><span class="badge badge-slate">Acción Rápida</span></td>
+                <td>CLIENTE CONFIRMA SOLUCION Y BRINDA CONFORMIDAD</td>
+            </tr>
+    
+        </tbody>
+    </table>
+
+    <!-- SECCIÓN 3: CATEGORÍAS SIAC, ESTADOS Y MOTIVOS DE CIERRE -->
+    <div class="section-title">
+        <span>3. Matriz de Categorías SIAC / Helix & Motivos de Cierre</span>
+        <span class="badge badge-green">Motor de Cierre</span>
+    </div>
+    <div class="section-desc">
+        Estructura de categorización de cierre de casos, estado del formulario (Procedente, No Procedente, En Trámite), estado SIAC, y sus motivos asociados:
+    </div>
+
+    <div class="cat-card procedente">
+        <div class="cat-header">
+            <span class="cat-title">Solucionado/Cliente brinda Conformidad</span>
+            <div>
+                <span class="badge badge-green">Form: PROCEDENTE</span>
+                <span class="badge badge-slate">SIAC: CERRADO-NO APLICA-PROCEDENTE</span>
+                <span class="badge badge-red">#SINSERVICIOPRIORIDADAM#</span>
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (21):</strong></div>
+        <ul class="motivos-list">
+    <li>SOLUCIONADO ACCESO ACTIVAR BOUQUETS</li><li>SOLUCIONADO ACCESO ALTA Y BAJA INCOGNITO > Instalar ONT/CM</li><li>SOLUCIONADO ACCESO CAMBIO DE RESOLUCIÓN SKYWAY</li><li>SOLUCIONADO ACCESO CLEAN DATA SKYWAY</li><li>SOLUCIONADO ACCESO FIJACIÓN DE IP</li><li>SOLUCIONADO ACCESO PREFERENCES SKYWAY</li><li>SOLUCIONADO ACCESO PROVISIÓN FIJA + CLEAN DATA SKYWAY</li><li>SOLUCIONADO ACCESO PROVISIÓN FIJA > ActivarGPONTV</li><li>SOLUCIONADO ACCESO PROVISIÓN FIJA > Instalar serialNumber STB</li><li>SOLUCIONADO ACCESO PROVISIÓN FIJA > REGENERAR IPTV</li><li>SOLUCIONADO DESCARTES TÉCNICOS CAMBIO DE PILAS CONTROL REMOTO</li><li>SOLUCIONADO DESCARTES TÉCNICOS CONEXIONES</li><li>SOLUCIONADO DESCARTES TÉCNICOS PROBLEMAS EQUIPOS DEL CLIENTE</li><li>SOLUCIONADO DESCARTES TÉCNICOS RESET FACTORY</li><li>SOLUCIONADO DESCARTES TÉCNICOS RESET FACTORY + CLEAN DATA SKYWAY</li><li>SOLUCIONADO DESCARTES TÉCNICOS VELOCIDAD MÍNIMA 70%</li><li>SOLUCIONADO INFORMACIÓN PRODUCTO PLAN TV DIGITAL</li><li>SOLUCIONADO INFORMACIÓN COMERCIAL SOLICITUD FAST TRACK</li><li>SOLUCIONADO INFORMACIÓN GRILLA DE CANALES TV DIGITAL</li><li>SOLUCIONADO INFORMACIÓN SIN SALDO PARA LLAMADAS</li><li>SOLUCIONADO OK EN LÍNEA</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Solucionado/Cliente brinda Conformidad
+Problema/Solución:
+Persona de Contacto:
+Numero de Contacto:
+ID Llamada/Chat ID:
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card procedente">
+        <div class="cat-header">
+            <span class="cat-title">Con Visita Técnica</span>
+            <div>
+                <span class="badge badge-green">Form: PROCEDENTE</span>
+                <span class="badge badge-slate">SIAC: CERRADO-NO APLICA-PROCEDENTE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (5):</strong></div>
+        <ul class="motivos-list">
+    <li>BO ATC - SOT DE MANTTO A SOLICITUD CLARO - CONMUTACIÓN</li><li>BO ATC - SOT DE MANTTO A SOLICITUD CLARO - RED</li><li>BO ATC - SOT DE MANTTO A SOLICITUD DEL CLIENTE</li><li>BO ATC - SOT DE MANTTO NO FUNCIONA CONTROL REMOTO</li><li>BO ATC - SOT DE MANTTO SIN SERVICIO GENERAL</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Con Visita Técnica
+Sot:
+Fecha Confirmada:
+Problema:
+Motivo:
+Persona de Contacto:
+Numero de Contacto:
+ID Llamada/Chat ID:
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card procedente">
+        <div class="cat-header">
+            <span class="cat-title">Ciclo Cumplido/Sin Contacto</span>
+            <div>
+                <span class="badge badge-green">Form: PROCEDENTE</span>
+                <span class="badge badge-slate">SIAC: CERRADO-NO APLICA-PROCEDENTE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (2):</strong></div>
+        <ul class="motivos-list">
+    <li>MENSAJE BUZÓN DE VOZ</li><li>NO CONTACTO SIN CASILLA DE VOZ</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Ciclo Cumplido/Sin Contacto
+Problema/Solución:
+Persona de Contacto:
+Numero de Contacto:
+Intentos de Llamada:3
+Buzón de voz: ->OBLIGATORIO DEJAR MENSAJE DE VOZ
+ID Llamada/Chat ID:
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card no-procedente">
+        <div class="cat-header">
+            <span class="cat-title">Informativo/Avería Masiva</span>
+            <div>
+                <span class="badge badge-red">Form: NO PROCEDENTE</span>
+                <span class="badge badge-slate">SIAC: CERRADO-NO APLICA-PROCEDENTE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (2):</strong></div>
+        <ul class="motivos-list">
+    <li>BO ATC - AVERÍA MASIVA EN EJECUCIÓN POST-CREACIÓN CASO</li><li>BO ATC - AVERÍA MASIVA EN EJECUCIÓN PRE-CREACIÓN CASO</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Informativo/Avería Masiva
+Persona de Contacto:
+Numero de Contacto:
+Contesta: SI/NO
+Buzón de voz: SI/NO
+ID Llamada/Chat ID:
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card no-procedente">
+        <div class="cat-header">
+            <span class="cat-title">Cliente con suspensión de servicios</span>
+            <div>
+                <span class="badge badge-red">Form: NO PROCEDENTE</span>
+                <span class="badge badge-slate">SIAC: CERRADO-NO APLICA-PROCEDENTE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (2):</strong></div>
+        <ul class="motivos-list">
+    <li>BO ATC - SERVICIO SUSPENDIDO POST-CREACIÓN CASO</li><li>BO ATC - SERVICIO SUSPENDIDO PRE-CREACIÓN CASO</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Cliente con suspensión de servicios
+ID Llamada/Chat ID: N/A
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card no-procedente">
+        <div class="cat-header">
+            <span class="cat-title">Cliente dara de baja el servicio</span>
+            <div>
+                <span class="badge badge-red">Form: NO PROCEDENTE</span>
+                <span class="badge badge-slate">SIAC: CERRADO-NO APLICA-PROCEDENTE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (1):</strong></div>
+        <ul class="motivos-list">
+    <li>BO ATC - CLIENTE DARÁ DE BAJA SERVICIO</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Cliente dara de baja el servicio
+ID Llamada/Chat ID: N/A
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card no-procedente">
+        <div class="cat-header">
+            <span class="cat-title">Numero no existe/Numero errado/Mal creado</span>
+            <div>
+                <span class="badge badge-red">Form: NO PROCEDENTE</span>
+                <span class="badge badge-slate">SIAC: CERRADO-NO APLICA-PROCEDENTE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (1):</strong></div>
+        <ul class="motivos-list">
+    <li>BO ATC - DERIVACIÓN INCORRECTA                                                                                       BO ATC - EMTA/ONT NO HOMOLOGADO EN SMARTHOME                                                                                          BO ATC - DUPLICIDAD DE CASO                                                                                                                          BO ATC - TIPIFICACIÓN INCORRECTA                                                                                                           BO ATC - PÁGINAS WEB BLOQUEADAS POR INDECOPI</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Numero no existe/Numero errado/Mal creado
+Contacto:
+N° Telefónico:
+ID Llamada/Chat ID:
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card no-procedente">
+        <div class="cat-header">
+            <span class="cat-title">Cliente desiste de la atención</span>
+            <div>
+                <span class="badge badge-red">Form: NO PROCEDENTE</span>
+                <span class="badge badge-slate">SIAC: CERRADO-NO APLICA-PROCEDENTE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (2):</strong></div>
+        <ul class="motivos-list">
+    <li>BO ATC - CLIENTE NO BRINDA FACILIDADES TÉCNICAS</li><li>BO ATC - SIN RECEPCIÓN PRUEBAS CLIENTE</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Cliente desiste de la atención
+Persona de Contacto:
+Numero de Contacto:
+Motivo:
+ID Llamada/Chat ID:
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card en-tramite">
+        <div class="cat-header">
+            <span class="cat-title">Ciclo de llamada</span>
+            <div>
+                <span class="badge badge-amber">Form: EN TRAMITE</span>
+                <span class="badge badge-slate">SIAC: RECUPERADO-EN TRAMITE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (7):</strong></div>
+        <ul class="motivos-list">
+    <li>BO ATC - 1ER INTENTO COMUNICACIÓN SIN BUZÓN DE VOZ</li><li>BO ATC - 1ER INTENTO COMUNICACIÓN MENSAJE EN EL BUZÓN DE VOZ</li><li>BO ATC - 2DO INTENTO COMUNICACIÓN SIN BUZÓN DE VOZ</li><li>BO ATC - 2DO INTENTO COMUNICACIÓN MENSAJE EN EL BUZÓN DE VOZ</li><li>BO ATC - FALLA SOLUCIONADA / CONTACTO CLIENTE</li><li>BO ATC - DIAGNÓSTICO PROVISIÓN TÉCNICA</li><li>BO ATC - CASO DERIVADO CON SUPERVISIÓN BOT</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Ciclo de llamada
+Intentos de Llamada:1/2/3
+Problema/Solución:
+Persona de Contacto:
+Numero de Contacto:
+Buzón de voz: ->OBLIGATORIO DEJAR MENSAJE DE VOZ
+ID Llamada/Chat ID:
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card en-tramite">
+        <div class="cat-header">
+            <span class="cat-title">Cliente solicita devolución de llamada</span>
+            <div>
+                <span class="badge badge-amber">Form: EN TRAMITE</span>
+                <span class="badge badge-slate">SIAC: RECUPERADO-EN TRAMITE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (1):</strong></div>
+        <ul class="motivos-list">
+    <li>BO ATC - CLIENTE SOLICITA DEVOLUCIÓN DE LLAMADA                                                      BO ATC - LLAMADA PROGRAMADA POR DISPONIBILIDAD CLIENTE</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Cliente solicita devolución de llamada
+Fecha/Hora:
+Problema/Solución:
+Persona de Contacto:
+Numero de Contacto:
+ID Llamada/Chat ID:
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card en-tramite">
+        <div class="cat-header">
+            <span class="cat-title">Derivado a conmutación-Correo                  (ADJUNTAR)</span>
+            <div>
+                <span class="badge badge-amber">Form: EN TRAMITE</span>
+                <span class="badge badge-slate">SIAC: RECUPERADO-EN TRAMITE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (1):</strong></div>
+        <ul class="motivos-list">
+    <li>BO ATC - DERIVADO A CONMUTACIÓN</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Derivado a conmutación-Correo                  (ADJUNTAR)
+Persona de Contacto:
+Numero de Contacto:
+ID Llamada/Chat ID:
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card en-tramite">
+        <div class="cat-header">
+            <span class="cat-title">Derivado a TI-Remedy</span>
+            <div>
+                <span class="badge badge-amber">Form: EN TRAMITE</span>
+                <span class="badge badge-slate">SIAC: RECUPERADO-EN TRAMITE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (14):</strong></div>
+        <ul class="motivos-list">
+    <li>IPTV - PAQUETES NO PROVISIONADOS EN IOTDB</li><li>IPTV - EQUIPOS NO PROVISIONADOS EN IOTDB</li><li>BO ATC - MIGRACION A CBIO FALLO / SGA MUESTRA MENSAJE DE ERROR</li><li>BO ATC - LÍNEA NO REGISTRADA EN CBIO</li><li>BO ATC - DESALINEACION OCSI</li><li>APP SMART HOME - DISPOSITIVOS CONECTADOS - ERROR AL CARGAR LOS DISPOSITIVOS CONECTADOS</li><li>BO ATC - SUSCRIPCIONES INCOMPLETAS</li><li>BO ATC - SIN E. INCOGNITO / ACTIVO SIAC (SGA TRANSLATOR)</li><li>IPTV - EQUIPOS Y PAQUETES NO PROVISIONADOS EN IOTDB</li><li>BO ATC - SUSCRIPCIONES INCORRECTAS</li><li>BO ATC - ERROR CON ACTIVACIÓN DE BOUQUETS</li><li>BO ATC - SERVICIO CON TECNOLOGIA ERRADA</li><li>BO CN - INCOGNITO SUSPENDIDO / SGA ACTIVO</li><li>BO ATC - LÍNEA CON BOLSA INCORRECTA EN CBIO</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Derivado a TI-Remedy
+Motivo:
+Remedy:
+Persona de Contacto:
+Numero de Contacto:
+ID Llamada/Chat ID:
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card en-tramite">
+        <div class="cat-header">
+            <span class="cat-title">Pendiente de envió de pruebas</span>
+            <div>
+                <span class="badge badge-amber">Form: EN TRAMITE</span>
+                <span class="badge badge-slate">SIAC: RECUPERADO-EN TRAMITE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (1):</strong></div>
+        <ul class="motivos-list">
+    <li>BO ATC - ENVÍO PRUEBAS CLIENTE</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Pendiente de envió de pruebas
+Problema:
+Motivo: **Derivación en Curso**
+Persona de Contacto:
+Numero de Contacto:
+ID Llamada/Chat ID:
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card en-tramite">
+        <div class="cat-header">
+            <span class="cat-title">Descarte cambio de IP</span>
+            <div>
+                <span class="badge badge-amber">Form: EN TRAMITE</span>
+                <span class="badge badge-slate">SIAC: RECUPERADO-EN TRAMITE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (1):</strong></div>
+        <ul class="motivos-list">
+    <li>BO ATC - EJECUCIÓN BAJA Y ALTA INCOGNITO - INSTALAR                                          BO ATC - EJECUCIÓN BAJA Y ALTA INCOGNITO - DESACTIVAR</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Descarte cambio de IP
+Problema: Relance de Servicios - Validar en 10 minutos</div>
+    </div>
+    
+    <div class="cat-card procedente">
+        <div class="cat-header">
+            <span class="cat-title">Con Visita Técnica</span>
+            <div>
+                <span class="badge badge-green">Form: PROCEDENTE</span>
+                <span class="badge badge-slate">SIAC: CERRADO-NO APLICA-PROCEDENTE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (5):</strong></div>
+        <ul class="motivos-list">
+    <li>BO ATC - SOT DE MANTTO A SOLICITUD CLARO - CONMUTACIÓN</li><li>BO ATC - SOT DE MANTTO A SOLICITUD CLARO - RED</li><li>BO ATC - SOT DE MANTTO A SOLICITUD DEL CLIENTE</li><li>BO ATC - SOT DE MANTTO NO FUNCIONA CONTROL REMOTO</li><li>BO ATC - SOT DE MANTTO SIN SERVICIO GENERAL</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Con Visita Técnica
+Sot:
+Fecha Confirmada:
+Problema:
+Motivo:
+Persona de Contacto:
+Numero de Contacto:
+ID Llamada/Chat ID:
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card procedente">
+        <div class="cat-header">
+            <span class="cat-title">Ciclo Cumplido/Sin Contacto</span>
+            <div>
+                <span class="badge badge-green">Form: PROCEDENTE</span>
+                <span class="badge badge-slate">SIAC: CERRADO-NO APLICA-PROCEDENTE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (2):</strong></div>
+        <ul class="motivos-list">
+    <li>MENSAJE BUZÓN DE VOZ</li><li>NO CONTACTO SIN CASILLA DE VOZ</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Ciclo Cumplido/Sin Contacto
+Problema/Solución:
+Persona de Contacto:
+Numero de Contacto:
+Intentos de Llamada:3
+Buzón de voz: ->OBLIGATORIO DEJAR MENSAJE DE VOZ
+ID Llamada/Chat ID:
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card no-procedente">
+        <div class="cat-header">
+            <span class="cat-title">Informativo/Avería Masiva</span>
+            <div>
+                <span class="badge badge-red">Form: NO PROCEDENTE</span>
+                <span class="badge badge-slate">SIAC: CERRADO-NO APLICA-PROCEDENTE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (2):</strong></div>
+        <ul class="motivos-list">
+    <li>BO ATC - AVERÍA MASIVA EN EJECUCIÓN POST-CREACIÓN CASO</li><li>BO ATC - AVERÍA MASIVA EN EJECUCIÓN PRE-CREACIÓN CASO</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Informativo/Avería Masiva
+Persona de Contacto:
+Numero de Contacto:
+Contesta: SI/NO
+Buzón de voz: SI/NO
+ID Llamada/Chat ID:
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card no-procedente">
+        <div class="cat-header">
+            <span class="cat-title">Cliente con suspensión de servicios</span>
+            <div>
+                <span class="badge badge-red">Form: NO PROCEDENTE</span>
+                <span class="badge badge-slate">SIAC: CERRADO-NO APLICA-PROCEDENTE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (2):</strong></div>
+        <ul class="motivos-list">
+    <li>BO ATC - SERVICIO SUSPENDIDO POST-CREACIÓN CASO</li><li>BO ATC - SERVICIO SUSPENDIDO PRE-CREACIÓN CASO</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Cliente con suspensión de servicios
+ID Llamada/Chat ID: N/A
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card no-procedente">
+        <div class="cat-header">
+            <span class="cat-title">Cliente dara de baja el servicio</span>
+            <div>
+                <span class="badge badge-red">Form: NO PROCEDENTE</span>
+                <span class="badge badge-slate">SIAC: CERRADO-NO APLICA-PROCEDENTE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (1):</strong></div>
+        <ul class="motivos-list">
+    <li>BO ATC - CLIENTE DARÁ DE BAJA SERVICIO</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Cliente dara de baja el servicio
+ID Llamada/Chat ID: N/A
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card no-procedente">
+        <div class="cat-header">
+            <span class="cat-title">Numero no existe/Numero errado/Mal creado</span>
+            <div>
+                <span class="badge badge-red">Form: NO PROCEDENTE</span>
+                <span class="badge badge-slate">SIAC: CERRADO-NO APLICA-PROCEDENTE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (1):</strong></div>
+        <ul class="motivos-list">
+    <li>BO ATC - DERIVACIÓN INCORRECTA                                                                                       BO ATC - EMTA/ONT NO HOMOLOGADO EN SMARTHOME                                                                                          BO ATC - DUPLICIDAD DE CASO                                                                                                                          BO ATC - TIPIFICACIÓN INCORRECTA                                                                                                           BO ATC - PÁGINAS WEB BLOQUEADAS POR INDECOPI</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Numero no existe/Numero errado/Mal creado
+Contacto:
+N° Telefónico:
+ID Llamada/Chat ID:
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card no-procedente">
+        <div class="cat-header">
+            <span class="cat-title">Cliente desiste de la atención</span>
+            <div>
+                <span class="badge badge-red">Form: NO PROCEDENTE</span>
+                <span class="badge badge-slate">SIAC: CERRADO-NO APLICA-PROCEDENTE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (2):</strong></div>
+        <ul class="motivos-list">
+    <li>BO ATC - CLIENTE NO BRINDA FACILIDADES TÉCNICAS</li><li>BO ATC - SIN RECEPCIÓN PRUEBAS CLIENTE</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Cliente desiste de la atención
+Persona de Contacto:
+Numero de Contacto:
+Motivo:
+ID Llamada/Chat ID:
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card en-tramite">
+        <div class="cat-header">
+            <span class="cat-title">Ciclo de llamada</span>
+            <div>
+                <span class="badge badge-amber">Form: EN TRAMITE</span>
+                <span class="badge badge-slate">SIAC: RECUPERADO-EN TRAMITE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (7):</strong></div>
+        <ul class="motivos-list">
+    <li>BO ATC - 1ER INTENTO COMUNICACIÓN SIN BUZÓN DE VOZ</li><li>BO ATC - 1ER INTENTO COMUNICACIÓN MENSAJE EN EL BUZÓN DE VOZ</li><li>BO ATC - 2DO INTENTO COMUNICACIÓN SIN BUZÓN DE VOZ</li><li>BO ATC - 2DO INTENTO COMUNICACIÓN MENSAJE EN EL BUZÓN DE VOZ</li><li>BO ATC - FALLA SOLUCIONADA / CONTACTO CLIENTE</li><li>BO ATC - DIAGNÓSTICO PROVISIÓN TÉCNICA</li><li>BO ATC - CASO DERIVADO CON SUPERVISIÓN BOT</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Ciclo de llamada
+Intentos de Llamada:1/2/3
+Problema/Solución:
+Persona de Contacto:
+Numero de Contacto:
+Buzón de voz: ->OBLIGATORIO DEJAR MENSAJE DE VOZ
+ID Llamada/Chat ID:
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card en-tramite">
+        <div class="cat-header">
+            <span class="cat-title">Cliente solicita devolución de llamada</span>
+            <div>
+                <span class="badge badge-amber">Form: EN TRAMITE</span>
+                <span class="badge badge-slate">SIAC: RECUPERADO-EN TRAMITE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (1):</strong></div>
+        <ul class="motivos-list">
+    <li>BO ATC - CLIENTE SOLICITA DEVOLUCIÓN DE LLAMADA                                                      BO ATC - LLAMADA PROGRAMADA POR DISPONIBILIDAD CLIENTE</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Cliente solicita devolución de llamada
+Fecha/Hora:
+Problema/Solución:
+Persona de Contacto:
+Numero de Contacto:
+ID Llamada/Chat ID:
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card en-tramite">
+        <div class="cat-header">
+            <span class="cat-title">Derivado a conmutación-Correo                  (ADJUNTAR)</span>
+            <div>
+                <span class="badge badge-amber">Form: EN TRAMITE</span>
+                <span class="badge badge-slate">SIAC: RECUPERADO-EN TRAMITE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (1):</strong></div>
+        <ul class="motivos-list">
+    <li>BO ATC - DERIVADO A CONMUTACIÓN</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Derivado a conmutación-Correo                  (ADJUNTAR)
+Persona de Contacto:
+Numero de Contacto:
+ID Llamada/Chat ID:
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card en-tramite">
+        <div class="cat-header">
+            <span class="cat-title">Derivado a TI-Remedy</span>
+            <div>
+                <span class="badge badge-amber">Form: EN TRAMITE</span>
+                <span class="badge badge-slate">SIAC: RECUPERADO-EN TRAMITE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (14):</strong></div>
+        <ul class="motivos-list">
+    <li>IPTV - PAQUETES NO PROVISIONADOS EN IOTDB</li><li>IPTV - EQUIPOS NO PROVISIONADOS EN IOTDB</li><li>BO ATC - MIGRACION A CBIO FALLO / SGA MUESTRA MENSAJE DE ERROR</li><li>BO ATC - LÍNEA NO REGISTRADA EN CBIO</li><li>BO ATC - DESALINEACION OCSI</li><li>APP SMART HOME - DISPOSITIVOS CONECTADOS - ERROR AL CARGAR LOS DISPOSITIVOS CONECTADOS</li><li>BO ATC - SUSCRIPCIONES INCOMPLETAS</li><li>BO ATC - SIN E. INCOGNITO / ACTIVO SIAC (SGA TRANSLATOR)</li><li>IPTV - EQUIPOS Y PAQUETES NO PROVISIONADOS EN IOTDB</li><li>BO ATC - SUSCRIPCIONES INCORRECTAS</li><li>BO ATC - ERROR CON ACTIVACIÓN DE BOUQUETS</li><li>BO ATC - SERVICIO CON TECNOLOGIA ERRADA</li><li>BO CN - INCOGNITO SUSPENDIDO / SGA ACTIVO</li><li>BO ATC - LÍNEA CON BOLSA INCORRECTA EN CBIO</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Derivado a TI-Remedy
+Motivo:
+Remedy:
+Persona de Contacto:
+Numero de Contacto:
+ID Llamada/Chat ID:
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card en-tramite">
+        <div class="cat-header">
+            <span class="cat-title">Pendiente de envió de pruebas</span>
+            <div>
+                <span class="badge badge-amber">Form: EN TRAMITE</span>
+                <span class="badge badge-slate">SIAC: RECUPERADO-EN TRAMITE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (1):</strong></div>
+        <ul class="motivos-list">
+    <li>BO ATC - ENVÍO PRUEBAS CLIENTE</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Pendiente de envió de pruebas
+Problema:
+Motivo: **Derivación en Curso**
+Persona de Contacto:
+Numero de Contacto:
+ID Llamada/Chat ID:
+Asesor:</div>
+    </div>
+    
+    <div class="cat-card en-tramite">
+        <div class="cat-header">
+            <span class="cat-title">Descarte cambio de IP</span>
+            <div>
+                <span class="badge badge-amber">Form: EN TRAMITE</span>
+                <span class="badge badge-slate">SIAC: RECUPERADO-EN TRAMITE</span>
+                
+            </div>
+        </div>
+        
+        <div><strong>Motivos de Cierre Asociados (1):</strong></div>
+        <ul class="motivos-list">
+    <li>BO ATC - EJECUCIÓN BAJA Y ALTA INCOGNITO - INSTALAR                                          BO ATC - EJECUCIÓN BAJA Y ALTA INCOGNITO - DESACTIVAR</li>
+        </ul>
+        
+        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div class="plantilla-box">BACK OFFICE FIJA HITSS
+Descarte cambio de IP
+Problema: Relance de Servicios - Validar en 10 minutos</div>
+    </div>
+    
+    <div class="page-break"></div>
+
+    <div class="section-title">
+        <span>4. Parámetros Técnicos & Equipos Homologados</span>
+        <span class="badge badge-purple">Validador Hygeia</span>
+    </div>
+    <div class="section-desc">
+        Límites operativos de niveles RF (HFC) y potencia óptica (FTTH) implementados en el validador automático:
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 25%;">Tecnología</th>
+                <th style="width: 30%;">Parámetro</th>
+                <th style="width: 45%;">Rango Aceptable / Umbral</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td rowspan="4"><strong>HFC (Coaxial)</strong></td>
+                <td>U/S SNR (Upstream SNR)</td>
+                <td>Mínimo: <strong>28.0 dB</strong></td>
+            </tr>
+            <tr>
+                <td>D/S SNR (Downstream SNR)</td>
+                <td>Mínimo: <strong>33.5 dB</strong></td>
+            </tr>
+            <tr>
+                <td>Potencia Downstream (Rx)</td>
+                <td>Rango: <strong>-15.0 dBmV a +20.9 dBmV</strong></td>
+            </tr>
+            <tr>
+                <td>Potencia Upstream (Tx)</td>
+                <td>Rango: <strong>+35.0 dBmV a +57.0 dBmV</strong></td>
+            </tr>
+            <tr>
+                <td><strong>FTTH (Fibra Óptica)</strong></td>
+                <td>Rx Optical Power</td>
+                <td>Rango Óptimo: <strong>-8.0 dBm a -27.0 dBm</strong></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="margin-top:14px;"><strong>Equipos / Modelos Registrados:</strong></div>
+    <table>
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Nombre del Equipo</th>
+                <th>Tecnología</th>
+                <th>Estado Homologación</th>
+                <th>Notas / Accesos</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td><strong>CGA2121</strong></td>
+                <td>Technicolor CGA2121</td>
+                <td>Router HFC</td>
+                <td><span class="badge badge-green">Homologado</span></td>
+                <td><small>-</small></td>
+            </tr>
+    
+            <tr>
+                <td><strong>F680</strong></td>
+                <td>ZTE F680</td>
+                <td>Router FTTH</td>
+                <td><span class="badge badge-green">Homologado</span></td>
+                <td><small>-</small></td>
+            </tr>
+    
+            <tr>
+                <td><strong>HG8145V5</strong></td>
+                <td>Huawei HG8145V5</td>
+                <td>Router FTTH</td>
+                <td><span class="badge badge-green">Homologado</span></td>
+                <td><small>-</small></td>
+            </tr>
+    
+            <tr>
+                <td><strong>TC7300</strong></td>
+                <td>Technicolor TC7300</td>
+                <td>Router HFC</td>
+                <td><span class="badge badge-red">No Homologado</span></td>
+                <td><small>-</small></td>
+            </tr>
+    
+            <tr>
+                <td><strong>PLUME</strong></td>
+                <td>Plume SuperPod</td>
+                <td>Repetidor Mesh</td>
+                <td><span class="badge badge-green">Homologado</span></td>
+                <td><small>-</small></td>
+            </tr>
+    
+            <tr>
+                <td><strong>INFINITY601</strong></td>
+                <td>Infinity601 CM</td>
+                <td>Router HFC</td>
+                <td><span class="badge badge-green">Homologado</span></td>
+                <td><small>User: Expert | Pass: c14r02024@@@</small></td>
+            </tr>
+    
+        </tbody>
+    </table>
+
+    <div class="doc-footer">
+        <div>WorkStation BackOffice v6.0 · Plataforma de Soporte Técnico HITSS / Claro</div>
+        <div>Generado automáticamente para auditoría y validación de matriz</div>
+    </div>
+
+</body>
+</html>
