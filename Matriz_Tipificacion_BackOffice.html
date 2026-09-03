@@ -2,11 +2,11 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Matriz Operativa y de Tipificación - WorkStation BackOffice</title>
+    <title>Matriz Operativa y de Tipificación - BackOffice WorkStation</title>
     <style>
         @page {
             size: A4;
-            margin: 15mm 12mm 15mm 12mm;
+            margin: 12mm 10mm 12mm 10mm;
             @bottom-right {
                 content: "Página " counter(page);
                 font-size: 8pt;
@@ -26,15 +26,15 @@
             background-color: #ffffff;
             margin: 0;
             padding: 0;
-            font-size: 9.5pt;
-            line-height: 1.45;
+            font-size: 8.5pt;
+            line-height: 1.4;
         }
 
         /* Header / Hero */
         .doc-header {
             border-bottom: 3px solid #dc2626;
-            padding-bottom: 12px;
-            margin-bottom: 20px;
+            padding-bottom: 10px;
+            margin-bottom: 14px;
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
@@ -42,7 +42,7 @@
 
         .doc-header .title-area h1 {
             margin: 0;
-            font-size: 18pt;
+            font-size: 16pt;
             color: #0f172a;
             font-weight: 800;
             letter-spacing: -0.5px;
@@ -50,126 +50,130 @@
         }
 
         .doc-header .title-area h2 {
-            margin: 3px 0 0 0;
-            font-size: 10.5pt;
+            margin: 2px 0 0 0;
+            font-size: 9.5pt;
             color: #dc2626;
             font-weight: 700;
             letter-spacing: 0.5px;
         }
 
-        .doc-header .meta-area {
+        .meta-area {
             text-align: right;
-            font-size: 8pt;
-            color: #64748b;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 2px 7px;
-            border-radius: 4px;
             font-size: 7.5pt;
-            font-weight: 700;
-            text-transform: uppercase;
+            color: #64748b;
+            line-height: 1.35;
         }
-        .badge-red { background: #fee2e2; color: #991b1b; border: 1px solid #f87171; }
-        .badge-blue { background: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; }
-        .badge-green { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
-        .badge-amber { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
-        .badge-purple { background: #f3e8ff; color: #6b21a8; border: 1px solid #d8b4fe; }
-        .badge-slate { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
 
-        /* Stats bar */
+        /* Summary Stats Cards */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 22px;
+            gap: 8px;
+            margin-bottom: 16px;
         }
+
         .stat-card {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
             border-radius: 6px;
-            padding: 8px 12px;
+            padding: 8px 10px;
             text-align: center;
         }
+
         .stat-val {
-            font-size: 15pt;
+            font-size: 14pt;
             font-weight: 800;
-            color: #0f172a;
+            color: #0284c7;
         }
+
         .stat-label {
             font-size: 7.5pt;
-            font-weight: 600;
             color: #64748b;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.4px;
         }
 
         /* Section Headings */
         .section-title {
-            font-size: 12pt;
+            background: #0f172a;
+            color: #ffffff;
+            font-size: 9.5pt;
             font-weight: 800;
-            color: #0f172a;
-            border-left: 4px solid #dc2626;
-            padding-left: 8px;
-            margin: 22px 0 10px 0;
-            text-transform: uppercase;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-top: 16px;
+            margin-bottom: 8px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            page-break-after: avoid;
         }
 
         .section-desc {
-            font-size: 8.5pt;
+            font-size: 8pt;
             color: #475569;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
+            line-height: 1.35;
         }
 
         /* Tables */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 16px;
-            font-size: 8.5pt;
+            margin-bottom: 12px;
+            font-size: 8pt;
         }
 
         th {
-            background: #0f172a;
-            color: #ffffff;
-            text-align: left;
-            padding: 6px 9px;
-            font-size: 8pt;
+            background: #f1f5f9;
+            color: #334155;
             font-weight: 700;
-            letter-spacing: 0.3px;
+            text-align: left;
+            padding: 5px 8px;
+            border: 1px solid #cbd5e1;
+            font-size: 7.5pt;
             text-transform: uppercase;
         }
 
         td {
-            padding: 5px 9px;
-            border-bottom: 1px solid #e2e8f0;
-            vertical-align: top;
+            padding: 5px 8px;
+            border: 1px solid #e2e8f0;
+            vertical-align: middle;
         }
 
-        tr:nth-child(even) td {
-            background: #f8fafc;
+        tr:nth-child(even) {
+            background-color: #f8fafc;
         }
 
-        .service-badge {
-            font-weight: 700;
+        /* Badges */
+        .badge {
             padding: 2px 6px;
             border-radius: 3px;
-            font-size: 7.5pt;
+            font-size: 7pt;
+            font-weight: 700;
             display: inline-block;
+            text-transform: uppercase;
+            white-space: nowrap;
         }
 
-        /* Category Card Grid */
+        .badge-blue { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+        .badge-purple { background: #f3e8ff; color: #7e22ce; border: 1px solid #e9d5ff; }
+        .badge-green { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+        .badge-amber { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+        .badge-red { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+        .badge-slate { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+        .badge-indigo { background: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe; }
+
+        /* Category Card */
         .cat-card {
             background: #ffffff;
             border: 1px solid #cbd5e1;
             border-left: 4px solid #0284c7;
             border-radius: 4px;
-            padding: 10px 12px;
-            margin-bottom: 12px;
+            padding: 8px 10px;
+            margin-bottom: 10px;
             page-break-inside: avoid;
         }
 
@@ -189,26 +193,26 @@
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
 
         .cat-title {
-            font-size: 10pt;
+            font-size: 9pt;
             font-weight: 800;
             color: #0f172a;
         }
 
         .motivos-list {
-            margin: 6px 0 0 0;
-            padding-left: 18px;
-            font-size: 8pt;
+            margin: 4px 0 0 0;
+            padding-left: 16px;
+            font-size: 7.5pt;
             color: #334155;
             column-count: 2;
-            column-gap: 15px;
+            column-gap: 12px;
         }
 
         .motivos-list li {
-            margin-bottom: 3px;
+            margin-bottom: 2px;
             break-inside: avoid;
         }
 
@@ -216,12 +220,13 @@
             background: #f1f5f9;
             border: 1px dashed #94a3b8;
             border-radius: 4px;
-            padding: 6px 9px;
+            padding: 5px 8px;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 7.5pt;
+            font-size: 7pt;
             color: #1e293b;
             white-space: pre-wrap;
-            margin-top: 6px;
+            margin-top: 5px;
+            line-height: 1.35;
         }
 
         .page-break {
@@ -231,27 +236,27 @@
         .chip-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 5px;
-            margin-top: 4px;
+            gap: 4px;
+            margin-top: 2px;
         }
 
         .chip {
             background: #e2e8f0;
             color: #1e293b;
             border-radius: 3px;
-            padding: 2px 6px;
-            font-size: 7.5pt;
+            padding: 2px 5px;
+            font-size: 7pt;
             font-weight: 500;
         }
 
         /* Footer */
         .doc-footer {
-            margin-top: 25px;
-            padding-top: 10px;
+            margin-top: 20px;
+            padding-top: 8px;
             border-top: 1px solid #e2e8f0;
             display: flex;
             justify-content: space-between;
-            font-size: 7.5pt;
+            font-size: 7pt;
             color: #94a3b8;
         }
     </style>
@@ -266,8 +271,8 @@
         </div>
         <div class="meta-area">
             <div><strong>Plataforma:</strong> WorkStation BackOffice v6.0</div>
-            <div><strong>Documento:</strong> Especificación de Comboboxes & Variantes</div>
-            <div><strong>Fecha:</strong> Septiembre 2026</div>
+            <div><strong>Especialidad:</strong> Comboboxes de Fallas & Categorías de Cierre</div>
+            <div><strong>Actualización:</strong> Septiembre 2026</div>
         </div>
     </div>
 
@@ -275,11 +280,11 @@
     <div class="stats-grid">
         <div class="stat-card">
             <div class="stat-val">5</div>
-            <div class="stat-label">Servicios Principales</div>
+            <div class="stat-label">Servicios Analizados</div>
         </div>
         <div class="stat-card">
             <div class="stat-val">217</div>
-            <div class="stat-label">Problemas / Tipificaciones</div>
+            <div class="stat-label">Problemas Tipificados</div>
         </div>
         <div class="stat-card">
             <div class="stat-val">27</div>
@@ -287,197 +292,1520 @@
         </div>
         <div class="stat-card">
             <div class="stat-val">101</div>
-            <div class="stat-label">Motivos de Cierre Mapeados</div>
+            <div class="stat-label">Motivos de Cierre</div>
         </div>
     </div>
 
-    <!-- SECCIÓN 1: COMBOBOX SERVICIOS Y PROBLEMAS DETECTADOS -->
+    <!-- SECCIÓN 1: COMBOBOX DE SERVICIOS Y VARIANTES DE PROBLEMA DETECTADO -->
     <div class="section-title">
-        <span>1. Matriz de Combobox: Servicios y Problemas Detectados</span>
-        <span class="badge badge-red">Combobox Principal + Búsqueda</span>
+        <span>1. Matriz de Combobox: Problemas Detectados por Servicio</span>
+        <span class="badge badge-red">Combobox Principal</span>
     </div>
     <div class="section-desc">
-        Relación completa de los 5 servicios integrados y los problemas técnicos asociados seleccionables en el menú desplegable principal con búsqueda en tiempo real:
+        Detalle de todas las opciones seleccionables en el combobox de <strong>Problema Detectado</strong> organizadas por tipo de servicio técnico y su prefijo operativo:
     </div>
 
+    <div style="margin-top: 10px; margin-bottom: 4px;">
+        <span class="badge badge-blue" style="font-size:8pt; padding:3px 8px;">Servicio: INTERNET (35 problemas)</span>
+    </div>
     <table>
         <thead>
             <tr>
-                <th style="width: 18%;">Servicio</th>
-                <th style="width: 12%;">Cant. Fallas</th>
-                <th style="width: 70%;">Problemas Tipificados Disponibles (Variantes)</th>
+                <th style="width: 8%; text-align:center;">#</th>
+                <th style="width: 22%;">Código / Prefijo</th>
+                <th style="width: 70%;">Problema Detectado (Texto del Combobox)</th>
             </tr>
         </thead>
         <tbody>
-
-            <tr>
-                <td><span class="badge badge-blue">INTERNET</span></td>
-                <td><strong>35</strong> problemas</td>
-                <td>
-                    <div class="chip-grid">
-    <span class="chip">INT - BAJA VELOCIDAD VIA CABLEADO (LENTITUD)</span><span class="chip">INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)</span><span class="chip">INT - BAJA VELOCIDAD VIA CABLEADO Y WIFI (LENTITUD)</span><span class="chip">INT - NAVEGACION LENTA EN TODAS LAS PAGINAS</span><span class="chip">INT - INTERMITENCIA EN RANGOS HORARIOS CABLEADO</span><span class="chip">INT - INTERMITENCIA EN RANGOS HORARIOS WIFI</span><span class="chip">INT - DESCONEXIONES FRECUENTES</span><span class="chip">INT - SIN SERVICIO</span><span class="chip">INT - INTERNET NO FUNCIONA EN UN SOLO EQUIPO</span><span class="chip">INT - COBERTURA WIFI</span><span class="chip">INT - PROBLEMAS CON CONEXIONES CLARO</span><span class="chip">INT - PROBLEMAS CON PAGINAS</span><span class="chip">INT - REINICIOS CONSTANTES</span><span class="chip">INT - NIVELES FUERA DE RANGO</span><span class="chip">INT - WIFI NO LLEGA A DETERMINADAS ZONAS</span><span class="chip">INT - PROBLEMAS CON WIFI 2.4 GHZ</span><span class="chip">INT - PROBLEMAS CON  WIFI 5 GHZ</span><span class="chip">INT - PROBLEMAS CON APLICACIONES</span><span class="chip">INT - ERROR DNS</span><span class="chip">INT - LATENCIA ALTA (PING ELEVADO)</span><span class="chip">INT - PERDIDA DE PAQUETES</span><span class="chip">INT - REPETIDOR MESH</span><span class="chip">INT - PLUME DESALINEADO</span><span class="chip">INT - PROBLEMAS CON PLUME</span><span class="chip">INT - MODEM NO ENCIENDE</span><span class="chip">INT - MODEM CON LUCES ANORMALES</span><span class="chip">INT - FALLA EN PUERTOS LAN</span><span class="chip">INT -  USO INADECUADO DE EQUIPOS</span><span class="chip">INT - LENTITUD E INTERMITENCIA EN VIDEOJUEGOS</span><span class="chip">INT - CORTES EN VIDEOLLAMADAS</span><span class="chip">INT - BAJA CALIDAD DE VIDEO</span><span class="chip">INT - CAMBIO DE CLAVE WIFI Y NOMBRE WIFI (SSID)</span><span class="chip">INT - DISPOSITIVOS NO SE CONECTAN AL WIFI</span><span class="chip">INT - LOS EN ROJO</span><span class="chip">INT - INFORMACION DE USO</span>
-                    </div>
-                </td>
-            </tr>
     
             <tr>
-                <td><span class="badge badge-purple">TELEFONIA</span></td>
-                <td><strong>22</strong> problemas</td>
-                <td>
-                    <div class="chip-grid">
-    <span class="chip">TEL - SIN TONO</span><span class="chip">TEL - NO PUEDE REALIZAR LLAMADAS</span><span class="chip">TEL - NO PUEDE RECIBIR LLAMADAS</span><span class="chip">TEL - RUIDO/INTERFERENCIA</span><span class="chip">TEL - BOLSA DE MINUTOS DESCONFIGURADA</span><span class="chip">TEL - NO PUEDE REALIZAR LLAMADAS INTERNACIONALES</span><span class="chip">TEL - NO PUEDE RECIBIR LLAMADAS INTERNACIONALES</span><span class="chip">TEL - INTERLOCUCION</span><span class="chip">TEL - INFORMACION DE USO</span><span class="chip">TEL - CONEXIONES</span><span class="chip">TEL - NO REGISTRADO EN LA CBIO</span><span class="chip">TEL - SERVICIO INTERMITENTE</span><span class="chip">TEL - LINEA OCUPADA</span><span class="chip">TEL - ECO EN LLAMADAS</span><span class="chip">TEL - BAJO VOLUMEN</span><span class="chip">TEL - CABLE TELEFONICO DAÑADO</span><span class="chip">TEL - PROBLEMAS EN ROSETA TELEFONICA</span><span class="chip">TEL - FALLA EN PUERTO TELEFONICO</span><span class="chip">TEL - IDENTIFICADOR DE LLAMADAS</span><span class="chip">TEL - BUZON DE VOZ</span><span class="chip">TEL - PORTABILIDAD EN PROCESO</span><span class="chip">TEL - SUSPENSION DEL SERVICIO</span>
-                    </div>
-                </td>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">1</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - BAJA VELOCIDAD VIA CABLEADO (LENTITUD)</strong></td>
             </tr>
-    
+        
             <tr>
-                <td><span class="badge badge-green">IPTV</span></td>
-                <td><strong>30</strong> problemas</td>
-                <td>
-                    <div class="chip-grid">
-    <span class="chip">IPTV - SIN CANALES</span><span class="chip">IPTV - NO VISUALIZA ALGUNOS CANALES</span><span class="chip">IPTV - DESALINEADO EN SISTEMAS</span><span class="chip">IPTV - PARAMETROS DESALINEADOS EN SKYWAY</span><span class="chip">IPTV - RESOLUCION BAJA</span><span class="chip">IPTV - SIN VOLUMEN</span><span class="chip">IPTV - CONTROL DESINCRONIZADO</span><span class="chip">IPTV - CONTROL REMOTO NO FUNCIONA</span><span class="chip">IPTV - CALIDAD PROBLEMA CON CANALES</span><span class="chip">IPTV - CANALES PIXELADOS</span><span class="chip">IPTV - CANAL BLOQUEADO</span><span class="chip">IPTV - PROBLEMAS FISICOS CON DECODIFICADOR</span><span class="chip">IPTV - CONEXIONES/TOMACORRIENTE</span><span class="chip">IPTV - HDMI DESCONFIGURADO</span><span class="chip">IPTV - PANTALLA NEGRA</span><span class="chip">IPTV - SERVICIO INTERMITENTE</span><span class="chip">IPTV - CANALES FUERA DE LA GRILLA</span><span class="chip">IPTV - DESFASE ENTRE AUDIO Y VIDEO</span><span class="chip">IPTV - PANTALLA AZUL</span><span class="chip">IPTV - PANTALLA VERDE</span><span class="chip">IPTV - AUDIO DISTORSIONADO</span><span class="chip">IPTV - AUDIO EN OTRO IDIOMA</span><span class="chip">IPTV - REAPROVISIONAMIENTO DEL SERVICIO</span><span class="chip">IPTV - YOUTUBE NO FUNCIONA</span><span class="chip">IPTV - NETFLIX NO FUNCIONA</span><span class="chip">IPTV - ERROR DE INICIO DE SESION</span><span class="chip">IPTV - CANAL 2 Y 4 NO EXISTEN</span><span class="chip">IPTV - RETORNA A CANAL 1</span><span class="chip">IPTV - PROBLEMAS CON LA GUIA DE CANALES</span><span class="chip">IPTV - SINCRONIZACION DE VOLUMEN</span>
-                    </div>
-                </td>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">2</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)</strong></td>
             </tr>
-    
+        
             <tr>
-                <td><span class="badge badge-amber">CABLE</span></td>
-                <td><strong>16</strong> problemas</td>
-                <td>
-                    <div class="chip-grid">
-    <span class="chip">CABLE - PANTALLA DE CARGA</span><span class="chip">CABLE - PANTALLA NEGRA</span><span class="chip">CABLE - PROBLEMAS CON CONTROL REMOTO</span><span class="chip">CABLE - SIN CANALES</span><span class="chip">CABLE - CALIDAD PROBLEMAS CON CANALES</span><span class="chip">CABLE - SIN VOLUMEN</span><span class="chip">CABLE - RESOLUCION DE CANALES</span><span class="chip">CABLE - CONEXIONES/TOMACORRIENTE</span><span class="chip">CABLE - PROBLEMAS CON DECODIFICADOR</span><span class="chip">CABLE - AV/HDMI DESCONFIGURADO</span><span class="chip">CABLE - CANALES FUERA DE GRILLA</span><span class="chip">CABLE - IMAGEN PIXELADA</span><span class="chip">CABLE - PANTALLA AZUL</span><span class="chip">CABLE - PANTALLA VERDE</span><span class="chip">CABLE - DESFASE AUDIO/VIDEO</span><span class="chip">CABLE - PROBLEMAS CON ADAPTADOR</span>
-                    </div>
-                </td>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">3</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - BAJA VELOCIDAD VIA CABLEADO Y WIFI (LENTITUD)</strong></td>
             </tr>
-    
+        
             <tr>
-                <td><span class="badge badge-red">APPS</span></td>
-                <td><strong>114</strong> problemas</td>
-                <td>
-                    <div class="chip-grid">
-    <span class="chip">CLARO VIDEO - NO REGISTRADO</span><span class="chip">CLARO VIDEO - NO PUEDE ACCEDER A CLARO VIDEO - DISPOSITIVO</span><span class="chip">CLARO VIDEO - NO PUEDE ACCEDER A CLARO VIDEO - AMCO</span><span class="chip">CLARO VIDEO - CORREO MAL ASOCIADO</span><span class="chip">CLARO VIDEO - DESALINEADO EN BASE MEXICO</span><span class="chip">CLARO VIDEO - DESALINEADO EN BASE PERU</span><span class="chip">CLARO VIDEO - PROBLEMAS CON CORREO DEL CLIENTE</span><span class="chip">CLARO VIDEO - L1 MAX NO ACTIVADO</span><span class="chip">CLARO VIDEO - HBO NO ACTIVO/REGISTRADO</span><span class="chip">CLARO VIDEO - TV EN VIVO:CANAL NO DISONIBLE</span><span class="chip">CLARO VIDEO - PANTALLA NEGRA</span><span class="chip">CLARO VIDEO - REGISTRO FALLIDO</span><span class="chip">CLARO VIDEO - SUSCRIPCION NO REFLEJADA</span><span class="chip">CLARO VIDEO - USUARIO O CONTRASEÑA INCORRECTOS</span><span class="chip">CLARO VIDEO - OLVIDO DE CONTRASEÑA</span><span class="chip">CLARO VIDEO - CUENTA BLOQUEADA</span><span class="chip">CLARO VIDEO - ERROR DE INICIO DE SESION</span><span class="chip">CLARO VIDEO - CORREO NO RECIBE RESTABLECIMIENTO DE CONTRASEÑA</span><span class="chip">CLARO VIDEO - ERROR DE REPRODUCCION</span><span class="chip">CLARO VIDEO - VIDEO NO CARGA</span><span class="chip">CLARO VIDEO - CATALOGO INCOMPLETO</span><span class="chip">CLARO VIDEO - CONTENIDO NO DISPONIBLE EN LA REGION</span><span class="chip">CLARO VIDEO - LIMITE DE DISPOSITIVOS ALCANZADO</span><span class="chip">CLARO VIDEO - DISPOSITIVO NO COMPATIBLE</span><span class="chip">CLARO VIDEO - ERROR AL ACTUALIZAR APLICACION</span><span class="chip">CLARO VIDEO - COBRO INCORRECTO</span><span class="chip">CLARO VIDEO - BENEFICIO NO REFLEJADO</span><span class="chip">SMARTHOME - NO PUEDE INICIAR SESION</span><span class="chip">SMARTHOME - USUARIO NO REGISTRADO</span><span class="chip">SMARTHOME - OLVIDO DE CONTRASEÑA</span><span class="chip">SMARTHOME - CUENTA BLOQUEADA</span><span class="chip">SMARTHOME - ERROR DE AUTENTICACION</span><span class="chip">SMARTHOME - NO PUEDE DESCARGAR LA APLICACION</span><span class="chip">SMARTHOME - ERROR AL INSTALAR LA APLICACION</span><span class="chip">SMARTHOME - DISPOSITIVO NO COMPATIBLE</span><span class="chip">SMARTHOME - NO PUEDE CAMBIAR NOMBRE WIFI</span><span class="chip">SMARTHOME - NO PUEDE CAMBIAR CLAVE WIFI</span><span class="chip">SMARTHOME - NO PUEDE APAGAR/ENCENDER WIFI</span><span class="chip">SMARTHOME - NO VISUALIZA DISPOSITIVOS CONECTADOS</span><span class="chip">SMARTHOME - NO PUEDE REINICIAR ROUTER</span><span class="chip">SMARTHOME - NO FUNCIONAN LOS DESCARTES TECNICOS</span><span class="chip">SMARTHOME - NO VISUALIZA LOS DECODIFICADORES</span><span class="chip">SMARTHOME - NO PUEDE REINICIAR EL DECODIFICADOR</span><span class="chip">SMARTHOME - NO PUEDE CAMBIAR EL NOMBRE DEL DECO</span><span class="chip">SMARTHOME - NO CARGAN LOS DESCARTES DE TV</span><span class="chip">SMARTHOME - GUIA DE CANALES NO DISPONIBLE</span><span class="chip">SMARTHOME - CONTROL REMOTO NO DISPONIBLE</span><span class="chip">SMARTHOME - NO CARGAN DESCARTES DE TELEFONIA</span><span class="chip">SMARTHOME - NO VISUALIZA GUIA DE TELEFONIA</span><span class="chip">SMARTHOME - NO MUESTRA CABLEADO TELEFONICO</span><span class="chip">SMARTHOME - NO VISUALIZA VISITA TECNICA</span><span class="chip">SMARTHOME - NO PUEDE REPROGRAMAR VISITA</span><span class="chip">SMARTHOME - NO PUEDE CANCELAR VISITA</span><span class="chip">SMARTHOME - TRACKING NO DISPONIBLE</span><span class="chip">SMARTHOME - TECNICO NO FIGURA EN LA APLICACION</span><span class="chip">SMARTHOME - SERVICIO FIGURA NO CONECTADO</span><span class="chip">SMARTHOME - SERVICIO FIGURA SUSPENDIDO</span><span class="chip">SMARTHOME - SERVICIO FIGURA CON AVERIA MASIVA</span><span class="chip">SMARTHOME - ESTADO DEL SERVICIO NO ACTUALIZA</span><span class="chip">SMARTHOME - NO PUEDE ESCANEAR SERIAL</span><span class="chip">SMARTHOME - ERROR AL ESCANEAR CODIGO QR/SERIAL</span><span class="chip">SMARTHOME - NO HABILITA OPCIONES DEL ROUTER</span><span class="chip">SMARTHOME - SERVICIO DEGRADADO</span><span class="chip">SMARTHOME - NO PUEDE CAMBIAR CLAVE WIFI DESDE APP</span><span class="chip">SMARTHOME - APLICACION LENTA</span><span class="chip">SMARTHOME - APLICACION SE CIERRA</span><span class="chip">SMARTHOME - ERROR DE CARGA</span><span class="chip">SMARTHOME - INFORMACION DESACTUALIZADA</span><span class="chip">SMARTHOME - NOTIFICACIONES NO DISPONIBLES</span><span class="chip">SMARTHOME - VIDEOS TUTORIALES NO CARGAN</span><span class="chip">SMARTHOME - GUIA PDF NO DISPONIBLE</span><span class="chip">MI CLARO WEB - NO PUEDE REGISTRARSE</span><span class="chip">MI CLARO WEB - NO PUEDE INICIAR SESION</span><span class="chip">MI CLARO WEB - OLVIDO DE CONTRASEÑA</span><span class="chip">MI CLARO WEB - NO RECIBE CORREO DE RECUPERACION</span><span class="chip">MI CLARO WEB - CUENTA BLOQUEADA</span><span class="chip">MI CLARO WEB - ERROR DE AUTENTICACION</span><span class="chip">MI CLARO WEB - NO RECONOCE DNI</span><span class="chip">MI CLARO WEB - ERROR AL REGISTRAR CUENTA</span><span class="chip">MI CLARO WEB - NO VISUALIZA SERVICIOS CONTRATADOS</span><span class="chip">MI CLARO WEB - INFORMACION DESACTUALIZADA</span><span class="chip">MI CLARO WEB - NO VISUALIZA DETALLE DEL PLAN</span><span class="chip">MI CLARO WEB - NO MUESTRA ESTADO DEL SERVICIO</span><span class="chip">MI CLARO WEB - NO VISUALIZA SALDOS</span><span class="chip">MI CLARO WEB - NO VISUALIZA CONSUMOS</span><span class="chip">MI CLARO WEB - NO VISUALIZA DETALLE DE CONSUMOS</span><span class="chip">MI CLARO WEB - NO PUEDE DESCARGAR REPORTE</span><span class="chip">MI CLARO WEB - NO PUEDE ENVIAR REPORTE POR CORREO</span><span class="chip">MI CLARO WEB - NO VISUALIZA RECIBOS</span><span class="chip">MI CLARO WEB - RECIBO NO DISPONIBLE</span><span class="chip">MI CLARO WEB - ERROR AL PAGAR RECIBO</span><span class="chip">MI CLARO WEB - NO PUEDE DESCARGAR RECIBO PDF</span><span class="chip">MI CLARO WEB - NO VISUALIZA HISTORIAL DE PAGOS</span><span class="chip">MI CLARO WEB - ERROR EN DEBITO AUTOMATICO</span><span class="chip">MI CLARO WEB - NO PUEDE AFILIARSE A DEBITO AUTOMATICO</span><span class="chip">MI CLARO WEB - NO PUEDE CAMBIAR DE PLAN</span><span class="chip">MI CLARO WEB - PLANES NO DISPONIBLES</span><span class="chip">MI CLARO WEB - ERROR AL SOLICITAR CAMBIO DE PLAN</span><span class="chip">MI CLARO WEB - CAMBIO DE PLAN NO REFLEJADO</span><span class="chip">MI CLARO WEB - NO PUEDE SOLICITAR DECO ADICIONAL</span><span class="chip">MI CLARO WEB - NO PUEDE CONTRATAR PAQUETE TV</span><span class="chip">MI CLARO WEB - NO PUEDE SUSPENDER TEMPORALMENTE</span><span class="chip">MI CLARO WEB - NO PUEDE CAMBIAR NUMERO</span><span class="chip">MI CLARO WEB - NO PUEDE REGISTRAR DIRECTORIO TELEFONICO</span><span class="chip">MI CLARO WEB - NO VISUALIZA ESTADO DE SOLICITUDES</span><span class="chip">MI CLARO WEB - OPERACION PENDIENTE</span><span class="chip">MI CLARO WEB - NO PUEDE APROBAR OPERACION</span><span class="chip">MI CLARO WEB - ERROR AL CONFIRMAR IDENTIDAD</span><span class="chip">MI CLARO WEB - OPERACION NO FINALIZA</span><span class="chip">MI CLARO WEB - TRANSACCION NO EXITOSA</span><span class="chip">MI CLARO WEB - NO VISUALIZA CLARO PUNTOS</span><span class="chip">MI CLARO WEB - ERROR AL CANJEAR PUNTOS</span><span class="chip">MI CLARO WEB - NO PUEDE CONVERTIR A MILLAS</span><span class="chip">MI CLARO WEB - PUNTOS NO ACTUALIZADOS</span>
-                    </div>
-                </td>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">4</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - NAVEGACION LENTA EN TODAS LAS PAGINAS</strong></td>
             </tr>
-    
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">5</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - INTERMITENCIA EN RANGOS HORARIOS CABLEADO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">6</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - INTERMITENCIA EN RANGOS HORARIOS WIFI</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">7</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - DESCONEXIONES FRECUENTES</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">8</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - SIN SERVICIO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">9</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - INTERNET NO FUNCIONA EN UN SOLO EQUIPO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">10</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - COBERTURA WIFI</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">11</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - PROBLEMAS CON CONEXIONES CLARO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">12</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - PROBLEMAS CON PAGINAS</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">13</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - REINICIOS CONSTANTES</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">14</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - NIVELES FUERA DE RANGO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">15</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - WIFI NO LLEGA A DETERMINADAS ZONAS</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">16</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - PROBLEMAS CON WIFI 2.4 GHZ</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">17</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - PROBLEMAS CON  WIFI 5 GHZ</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">18</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - PROBLEMAS CON APLICACIONES</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">19</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - ERROR DNS</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">20</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - LATENCIA ALTA (PING ELEVADO)</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">21</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - PERDIDA DE PAQUETES</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">22</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - REPETIDOR MESH</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">23</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - PLUME DESALINEADO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">24</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - PROBLEMAS CON PLUME</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">25</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - MODEM NO ENCIENDE</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">26</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - MODEM CON LUCES ANORMALES</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">27</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - FALLA EN PUERTOS LAN</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">28</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT -  USO INADECUADO DE EQUIPOS</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">29</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - LENTITUD E INTERMITENCIA EN VIDEOJUEGOS</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">30</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - CORTES EN VIDEOLLAMADAS</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">31</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - BAJA CALIDAD DE VIDEO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">32</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - CAMBIO DE CLAVE WIFI Y NOMBRE WIFI (SSID)</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">33</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - DISPOSITIVOS NO SE CONECTAN AL WIFI</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">34</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - LOS EN ROJO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">35</td>
+                <td><span class="badge badge-blue">INT</span></td>
+                <td><strong>INT - INFORMACION DE USO</strong></td>
+            </tr>
+        
         </tbody>
     </table>
-
+    
+    <div style="margin-top: 10px; margin-bottom: 4px;">
+        <span class="badge badge-purple" style="font-size:8pt; padding:3px 8px;">Servicio: TELEFONIA (22 problemas)</span>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 8%; text-align:center;">#</th>
+                <th style="width: 22%;">Código / Prefijo</th>
+                <th style="width: 70%;">Problema Detectado (Texto del Combobox)</th>
+            </tr>
+        </thead>
+        <tbody>
+    
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">1</td>
+                <td><span class="badge badge-purple">TEL</span></td>
+                <td><strong>TEL - SIN TONO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">2</td>
+                <td><span class="badge badge-purple">TEL</span></td>
+                <td><strong>TEL - NO PUEDE REALIZAR LLAMADAS</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">3</td>
+                <td><span class="badge badge-purple">TEL</span></td>
+                <td><strong>TEL - NO PUEDE RECIBIR LLAMADAS</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">4</td>
+                <td><span class="badge badge-purple">TEL</span></td>
+                <td><strong>TEL - RUIDO/INTERFERENCIA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">5</td>
+                <td><span class="badge badge-purple">TEL</span></td>
+                <td><strong>TEL - BOLSA DE MINUTOS DESCONFIGURADA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">6</td>
+                <td><span class="badge badge-purple">TEL</span></td>
+                <td><strong>TEL - NO PUEDE REALIZAR LLAMADAS INTERNACIONALES</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">7</td>
+                <td><span class="badge badge-purple">TEL</span></td>
+                <td><strong>TEL - NO PUEDE RECIBIR LLAMADAS INTERNACIONALES</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">8</td>
+                <td><span class="badge badge-purple">TEL</span></td>
+                <td><strong>TEL - INTERLOCUCION</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">9</td>
+                <td><span class="badge badge-purple">TEL</span></td>
+                <td><strong>TEL - INFORMACION DE USO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">10</td>
+                <td><span class="badge badge-purple">TEL</span></td>
+                <td><strong>TEL - CONEXIONES</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">11</td>
+                <td><span class="badge badge-purple">TEL</span></td>
+                <td><strong>TEL - NO REGISTRADO EN LA CBIO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">12</td>
+                <td><span class="badge badge-purple">TEL</span></td>
+                <td><strong>TEL - SERVICIO INTERMITENTE</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">13</td>
+                <td><span class="badge badge-purple">TEL</span></td>
+                <td><strong>TEL - LINEA OCUPADA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">14</td>
+                <td><span class="badge badge-purple">TEL</span></td>
+                <td><strong>TEL - ECO EN LLAMADAS</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">15</td>
+                <td><span class="badge badge-purple">TEL</span></td>
+                <td><strong>TEL - BAJO VOLUMEN</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">16</td>
+                <td><span class="badge badge-purple">TEL</span></td>
+                <td><strong>TEL - CABLE TELEFONICO DAÑADO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">17</td>
+                <td><span class="badge badge-purple">TEL</span></td>
+                <td><strong>TEL - PROBLEMAS EN ROSETA TELEFONICA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">18</td>
+                <td><span class="badge badge-purple">TEL</span></td>
+                <td><strong>TEL - FALLA EN PUERTO TELEFONICO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">19</td>
+                <td><span class="badge badge-purple">TEL</span></td>
+                <td><strong>TEL - IDENTIFICADOR DE LLAMADAS</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">20</td>
+                <td><span class="badge badge-purple">TEL</span></td>
+                <td><strong>TEL - BUZON DE VOZ</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">21</td>
+                <td><span class="badge badge-purple">TEL</span></td>
+                <td><strong>TEL - PORTABILIDAD EN PROCESO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">22</td>
+                <td><span class="badge badge-purple">TEL</span></td>
+                <td><strong>TEL - SUSPENSION DEL SERVICIO</strong></td>
+            </tr>
+        
+        </tbody>
+    </table>
+    
+    <div style="margin-top: 10px; margin-bottom: 4px;">
+        <span class="badge badge-green" style="font-size:8pt; padding:3px 8px;">Servicio: IPTV (30 problemas)</span>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 8%; text-align:center;">#</th>
+                <th style="width: 22%;">Código / Prefijo</th>
+                <th style="width: 70%;">Problema Detectado (Texto del Combobox)</th>
+            </tr>
+        </thead>
+        <tbody>
+    
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">1</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - SIN CANALES</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">2</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - NO VISUALIZA ALGUNOS CANALES</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">3</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - DESALINEADO EN SISTEMAS</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">4</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - PARAMETROS DESALINEADOS EN SKYWAY</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">5</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - RESOLUCION BAJA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">6</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - SIN VOLUMEN</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">7</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - CONTROL DESINCRONIZADO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">8</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - CONTROL REMOTO NO FUNCIONA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">9</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - CALIDAD PROBLEMA CON CANALES</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">10</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - CANALES PIXELADOS</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">11</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - CANAL BLOQUEADO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">12</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - PROBLEMAS FISICOS CON DECODIFICADOR</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">13</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - CONEXIONES/TOMACORRIENTE</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">14</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - HDMI DESCONFIGURADO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">15</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - PANTALLA NEGRA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">16</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - SERVICIO INTERMITENTE</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">17</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - CANALES FUERA DE LA GRILLA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">18</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - DESFASE ENTRE AUDIO Y VIDEO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">19</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - PANTALLA AZUL</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">20</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - PANTALLA VERDE</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">21</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - AUDIO DISTORSIONADO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">22</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - AUDIO EN OTRO IDIOMA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">23</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - REAPROVISIONAMIENTO DEL SERVICIO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">24</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - YOUTUBE NO FUNCIONA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">25</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - NETFLIX NO FUNCIONA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">26</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - ERROR DE INICIO DE SESION</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">27</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - CANAL 2 Y 4 NO EXISTEN</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">28</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - RETORNA A CANAL 1</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">29</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - PROBLEMAS CON LA GUIA DE CANALES</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">30</td>
+                <td><span class="badge badge-green">IPTV</span></td>
+                <td><strong>IPTV - SINCRONIZACION DE VOLUMEN</strong></td>
+            </tr>
+        
+        </tbody>
+    </table>
+    
+    <div style="margin-top: 10px; margin-bottom: 4px;">
+        <span class="badge badge-amber" style="font-size:8pt; padding:3px 8px;">Servicio: CABLE (16 problemas)</span>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 8%; text-align:center;">#</th>
+                <th style="width: 22%;">Código / Prefijo</th>
+                <th style="width: 70%;">Problema Detectado (Texto del Combobox)</th>
+            </tr>
+        </thead>
+        <tbody>
+    
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">1</td>
+                <td><span class="badge badge-amber">CABLE</span></td>
+                <td><strong>CABLE - PANTALLA DE CARGA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">2</td>
+                <td><span class="badge badge-amber">CABLE</span></td>
+                <td><strong>CABLE - PANTALLA NEGRA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">3</td>
+                <td><span class="badge badge-amber">CABLE</span></td>
+                <td><strong>CABLE - PROBLEMAS CON CONTROL REMOTO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">4</td>
+                <td><span class="badge badge-amber">CABLE</span></td>
+                <td><strong>CABLE - SIN CANALES</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">5</td>
+                <td><span class="badge badge-amber">CABLE</span></td>
+                <td><strong>CABLE - CALIDAD PROBLEMAS CON CANALES</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">6</td>
+                <td><span class="badge badge-amber">CABLE</span></td>
+                <td><strong>CABLE - SIN VOLUMEN</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">7</td>
+                <td><span class="badge badge-amber">CABLE</span></td>
+                <td><strong>CABLE - RESOLUCION DE CANALES</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">8</td>
+                <td><span class="badge badge-amber">CABLE</span></td>
+                <td><strong>CABLE - CONEXIONES/TOMACORRIENTE</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">9</td>
+                <td><span class="badge badge-amber">CABLE</span></td>
+                <td><strong>CABLE - PROBLEMAS CON DECODIFICADOR</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">10</td>
+                <td><span class="badge badge-amber">CABLE</span></td>
+                <td><strong>CABLE - AV/HDMI DESCONFIGURADO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">11</td>
+                <td><span class="badge badge-amber">CABLE</span></td>
+                <td><strong>CABLE - CANALES FUERA DE GRILLA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">12</td>
+                <td><span class="badge badge-amber">CABLE</span></td>
+                <td><strong>CABLE - IMAGEN PIXELADA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">13</td>
+                <td><span class="badge badge-amber">CABLE</span></td>
+                <td><strong>CABLE - PANTALLA AZUL</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">14</td>
+                <td><span class="badge badge-amber">CABLE</span></td>
+                <td><strong>CABLE - PANTALLA VERDE</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">15</td>
+                <td><span class="badge badge-amber">CABLE</span></td>
+                <td><strong>CABLE - DESFASE AUDIO/VIDEO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">16</td>
+                <td><span class="badge badge-amber">CABLE</span></td>
+                <td><strong>CABLE - PROBLEMAS CON ADAPTADOR</strong></td>
+            </tr>
+        
+        </tbody>
+    </table>
+    
+    <div style="margin-top: 10px; margin-bottom: 4px;">
+        <span class="badge badge-red" style="font-size:8pt; padding:3px 8px;">Servicio: APPS (114 problemas)</span>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 8%; text-align:center;">#</th>
+                <th style="width: 22%;">Código / Prefijo</th>
+                <th style="width: 70%;">Problema Detectado (Texto del Combobox)</th>
+            </tr>
+        </thead>
+        <tbody>
+    
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">1</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - NO REGISTRADO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">2</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - NO PUEDE ACCEDER A CLARO VIDEO - DISPOSITIVO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">3</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - NO PUEDE ACCEDER A CLARO VIDEO - AMCO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">4</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - CORREO MAL ASOCIADO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">5</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - DESALINEADO EN BASE MEXICO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">6</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - DESALINEADO EN BASE PERU</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">7</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - PROBLEMAS CON CORREO DEL CLIENTE</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">8</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - L1 MAX NO ACTIVADO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">9</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - HBO NO ACTIVO/REGISTRADO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">10</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - TV EN VIVO:CANAL NO DISONIBLE</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">11</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - PANTALLA NEGRA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">12</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - REGISTRO FALLIDO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">13</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - SUSCRIPCION NO REFLEJADA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">14</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - USUARIO O CONTRASEÑA INCORRECTOS</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">15</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - OLVIDO DE CONTRASEÑA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">16</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - CUENTA BLOQUEADA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">17</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - ERROR DE INICIO DE SESION</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">18</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - CORREO NO RECIBE RESTABLECIMIENTO DE CONTRASEÑA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">19</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - ERROR DE REPRODUCCION</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">20</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - VIDEO NO CARGA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">21</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - CATALOGO INCOMPLETO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">22</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - CONTENIDO NO DISPONIBLE EN LA REGION</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">23</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - LIMITE DE DISPOSITIVOS ALCANZADO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">24</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - DISPOSITIVO NO COMPATIBLE</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">25</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - ERROR AL ACTUALIZAR APLICACION</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">26</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - COBRO INCORRECTO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">27</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>CLARO VIDEO - BENEFICIO NO REFLEJADO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">28</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - NO PUEDE INICIAR SESION</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">29</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - USUARIO NO REGISTRADO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">30</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - OLVIDO DE CONTRASEÑA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">31</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - CUENTA BLOQUEADA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">32</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - ERROR DE AUTENTICACION</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">33</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - NO PUEDE DESCARGAR LA APLICACION</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">34</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - ERROR AL INSTALAR LA APLICACION</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">35</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - DISPOSITIVO NO COMPATIBLE</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">36</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - NO PUEDE CAMBIAR NOMBRE WIFI</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">37</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - NO PUEDE CAMBIAR CLAVE WIFI</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">38</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - NO PUEDE APAGAR/ENCENDER WIFI</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">39</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - NO VISUALIZA DISPOSITIVOS CONECTADOS</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">40</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - NO PUEDE REINICIAR ROUTER</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">41</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - NO FUNCIONAN LOS DESCARTES TECNICOS</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">42</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - NO VISUALIZA LOS DECODIFICADORES</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">43</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - NO PUEDE REINICIAR EL DECODIFICADOR</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">44</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - NO PUEDE CAMBIAR EL NOMBRE DEL DECO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">45</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - NO CARGAN LOS DESCARTES DE TV</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">46</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - GUIA DE CANALES NO DISPONIBLE</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">47</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - CONTROL REMOTO NO DISPONIBLE</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">48</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - NO CARGAN DESCARTES DE TELEFONIA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">49</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - NO VISUALIZA GUIA DE TELEFONIA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">50</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - NO MUESTRA CABLEADO TELEFONICO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">51</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - NO VISUALIZA VISITA TECNICA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">52</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - NO PUEDE REPROGRAMAR VISITA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">53</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - NO PUEDE CANCELAR VISITA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">54</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - TRACKING NO DISPONIBLE</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">55</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - TECNICO NO FIGURA EN LA APLICACION</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">56</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - SERVICIO FIGURA NO CONECTADO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">57</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - SERVICIO FIGURA SUSPENDIDO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">58</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - SERVICIO FIGURA CON AVERIA MASIVA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">59</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - ESTADO DEL SERVICIO NO ACTUALIZA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">60</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - NO PUEDE ESCANEAR SERIAL</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">61</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - ERROR AL ESCANEAR CODIGO QR/SERIAL</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">62</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - NO HABILITA OPCIONES DEL ROUTER</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">63</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - SERVICIO DEGRADADO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">64</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - NO PUEDE CAMBIAR CLAVE WIFI DESDE APP</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">65</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - APLICACION LENTA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">66</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - APLICACION SE CIERRA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">67</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - ERROR DE CARGA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">68</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - INFORMACION DESACTUALIZADA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">69</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - NOTIFICACIONES NO DISPONIBLES</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">70</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - VIDEOS TUTORIALES NO CARGAN</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">71</td>
+                <td><span class="badge badge-red">SMARTHOME</span></td>
+                <td><strong>SMARTHOME - GUIA PDF NO DISPONIBLE</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">72</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO PUEDE REGISTRARSE</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">73</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO PUEDE INICIAR SESION</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">74</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - OLVIDO DE CONTRASEÑA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">75</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO RECIBE CORREO DE RECUPERACION</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">76</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - CUENTA BLOQUEADA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">77</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - ERROR DE AUTENTICACION</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">78</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO RECONOCE DNI</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">79</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - ERROR AL REGISTRAR CUENTA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">80</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO VISUALIZA SERVICIOS CONTRATADOS</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">81</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - INFORMACION DESACTUALIZADA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">82</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO VISUALIZA DETALLE DEL PLAN</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">83</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO MUESTRA ESTADO DEL SERVICIO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">84</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO VISUALIZA SALDOS</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">85</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO VISUALIZA CONSUMOS</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">86</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO VISUALIZA DETALLE DE CONSUMOS</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">87</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO PUEDE DESCARGAR REPORTE</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">88</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO PUEDE ENVIAR REPORTE POR CORREO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">89</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO VISUALIZA RECIBOS</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">90</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - RECIBO NO DISPONIBLE</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">91</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - ERROR AL PAGAR RECIBO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">92</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO PUEDE DESCARGAR RECIBO PDF</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">93</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO VISUALIZA HISTORIAL DE PAGOS</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">94</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - ERROR EN DEBITO AUTOMATICO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">95</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO PUEDE AFILIARSE A DEBITO AUTOMATICO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">96</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO PUEDE CAMBIAR DE PLAN</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">97</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - PLANES NO DISPONIBLES</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">98</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - ERROR AL SOLICITAR CAMBIO DE PLAN</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">99</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - CAMBIO DE PLAN NO REFLEJADO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">100</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO PUEDE SOLICITAR DECO ADICIONAL</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">101</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO PUEDE CONTRATAR PAQUETE TV</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">102</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO PUEDE SUSPENDER TEMPORALMENTE</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">103</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO PUEDE CAMBIAR NUMERO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">104</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO PUEDE REGISTRAR DIRECTORIO TELEFONICO</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">105</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO VISUALIZA ESTADO DE SOLICITUDES</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">106</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - OPERACION PENDIENTE</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">107</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO PUEDE APROBAR OPERACION</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">108</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - ERROR AL CONFIRMAR IDENTIDAD</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">109</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - OPERACION NO FINALIZA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">110</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - TRANSACCION NO EXITOSA</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">111</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO VISUALIZA CLARO PUNTOS</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">112</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - ERROR AL CANJEAR PUNTOS</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">113</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - NO PUEDE CONVERTIR A MILLAS</strong></td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">114</td>
+                <td><span class="badge badge-red">APP</span></td>
+                <td><strong>MI CLARO WEB - PUNTOS NO ACTUALIZADOS</strong></td>
+            </tr>
+        
+        </tbody>
+    </table>
+    
     <div class="page-break"></div>
 
-    <!-- SECCIÓN 2: DESCARTES RÁPIDOS Y SOLUCIONES -->
+    <!-- SECCIÓN 2: DESCARTES RÁPIDOS, CICLO DE LLAMADA Y ACCIONES -->
     <div class="section-title">
-        <span>2. Matriz de Descartes Técnicos y Acciones Rápidas</span>
-        <span class="badge badge-blue">Chips Dinámicos</span>
+        <span>2. Matriz de Descartes Técnicos & Ciclo de Llamada</span>
+        <span class="badge badge-blue">Descartes Rápidos</span>
     </div>
     <div class="section-desc">
-        Descartes preconfigurados de 1-clic para inyección inmediata en el campo de descarte técnico de la plantilla:
+        Descartes preconfigurados de 1-clic y soluciones técnicas implementadas para agilizar el llenado de la plantilla técnica:
     </div>
 
     <table>
         <thead>
             <tr>
-                <th style="width: 35%;">Tipo de Descarte / Solución</th>
-                <th style="width: 65%;">Tipificación / Detalle Técnico</th>
+                <th style="width: 30%;">Acción / Descarte Rápido</th>
+                <th style="width: 70%;">Texto Exacto Inyectado en Plantilla</th>
             </tr>
         </thead>
         <tbody>
+            <tr style="background:#fef2f2;">
+                <td><span class="badge badge-red">Ciclo de Llamada (Actualizado)</span></td>
+                <td><strong>CLIENTE NO CONTESTA, SE ENVIA MENSAJE POR LIVE CHAT Y SE DEJA MENSAJE EN BUZON DE VOZ, SE GENERA CICLO</strong></td>
+            </tr>
 
             <tr>
                 <td><strong>DESCARTES_FISICOS_INTERNET</strong></td>
-                <td><span class="chip">VALIDACION DE CONEXIONES</span></td>
+                <td>VALIDACION DE CONEXIONES</td>
             </tr>
     
             <tr>
                 <td><strong>DESCARTES_FISICOS_INTERNET</strong></td>
-                <td><span class="chip">REINICIO MANUAL</span></td>
+                <td>REINICIO MANUAL</td>
             </tr>
     
             <tr>
                 <td><strong>DESCARTES_FISICOS_INTERNET</strong></td>
-                <td><span class="chip">VALIDACION TOMAS ELECTRICAS</span></td>
+                <td>VALIDACION TOMAS ELECTRICAS</td>
             </tr>
     
             <tr>
                 <td><strong>DESCARTES_REMOTOS_INTERNET</strong></td>
-                <td><span class="chip">BAJA Y ALTA</span></td>
+                <td>BAJA Y ALTA</td>
             </tr>
     
             <tr>
                 <td><strong>DESCARTES_REMOTOS_INTERNET</strong></td>
-                <td><span class="chip">CAMBIO SSID</span></td>
+                <td>CAMBIO SSID</td>
             </tr>
     
             <tr>
                 <td><strong>DESCARTES_REMOTOS_INTERNET</strong></td>
-                <td><span class="chip">ACTUALIZACION FIRMWARE</span></td>
+                <td>ACTUALIZACION FIRMWARE</td>
             </tr>
     
             <tr>
                 <td><strong>DESCARTES_REMOTOS_IPTV</strong></td>
-                <td><span class="chip">ACTUALIZACION CLARO TV</span></td>
+                <td>ACTUALIZACION CLARO TV</td>
             </tr>
     
             <tr>
                 <td><strong>DESCARTES_REMOTOS_IPTV</strong></td>
-                <td><span class="chip">RESET CONTROL REMOTO</span></td>
+                <td>RESET CONTROL REMOTO</td>
             </tr>
     
             <tr>
-                <td><span class="badge badge-slate">Acción Rápida</span></td>
+                <td><span class="badge badge-slate">Descarte Rápido</span></td>
                 <td>SE VALIDA SIN CONSUMO EN TRACER, DESCARTES FISICOS, REINICIO SIN EXITO</td>
             </tr>
-    
+        
             <tr>
-                <td><span class="badge badge-slate">Acción Rápida</span></td>
+                <td><span class="badge badge-slate">Descarte Rápido</span></td>
                 <td>SE REALIZA REINICIO MANUAL DE ONT/EMTA, SERVICIO OK EN LINEA</td>
             </tr>
-    
+        
             <tr>
-                <td><span class="badge badge-slate">Acción Rápida</span></td>
+                <td><span class="badge badge-slate">Descarte Rápido</span></td>
                 <td>VALIDACION DE TOMAS ELECTRICAS Y CABLEADO FISICO CONFORME</td>
             </tr>
-    
+        
             <tr>
-                <td><span class="badge badge-slate">Acción Rápida</span></td>
+                <td><span class="badge badge-slate">Descarte Rápido</span></td>
                 <td>BAJA Y ALTA EN SGA PROCESADO CORRECTAMENTE</td>
             </tr>
-    
+        
             <tr>
-                <td><span class="badge badge-slate">Acción Rápida</span></td>
+                <td><span class="badge badge-slate">Descarte Rápido</span></td>
                 <td>CAMBIO DE CANAL Y SSID WIFI REALIZADO</td>
             </tr>
-    
+        
             <tr>
-                <td><span class="badge badge-slate">Acción Rápida</span></td>
+                <td><span class="badge badge-slate">Descarte Rápido</span></td>
                 <td>ACTUALIZACION DE FIRMWARE Y REBOOT PROCESADO CON SKYWAY</td>
             </tr>
-    
+        
             <tr>
-                <td><span class="badge badge-slate">Acción Rápida</span></td>
+                <td><span class="badge badge-slate">Descarte Rápido</span></td>
                 <td>SE PROCESO CLEAR DATA Y ALINEACION DE FICHAS EN SGA</td>
             </tr>
-    
+        
             <tr>
-                <td><span class="badge badge-slate">Acción Rápida</span></td>
+                <td><span class="badge badge-slate">Descarte Rápido</span></td>
                 <td>ALINEACION DE BOLSA DE MINUTOS Y PORTADORAS CONFORME</td>
             </tr>
-    
+        
             <tr>
-                <td><span class="badge badge-slate">Acción Rápida</span></td>
+                <td><span class="badge badge-slate">Descarte Rápido</span></td>
                 <td>CLIENTE CONFIRMA SOLUCION Y BRINDA CONFORMIDAD</td>
             </tr>
-    
+        
         </tbody>
     </table>
 
-    <!-- SECCIÓN 3: CATEGORÍAS SIAC, ESTADOS Y MOTIVOS DE CIERRE -->
+    <!-- SECCIÓN 3: MATRIZ DE CATEGORÍAS DE CIERRE SIAC / HELIX -->
     <div class="section-title">
-        <span>3. Matriz de Categorías SIAC / Helix & Motivos de Cierre</span>
-        <span class="badge badge-green">Motor de Cierre</span>
+        <span>3. Matriz Exhaustiva de Categorías de Cierre & Motivos</span>
+        <span class="badge badge-green">Categorías SIAC / Helix</span>
     </div>
     <div class="section-desc">
-        Estructura de categorización de cierre de casos, estado del formulario (Procedente, No Procedente, En Trámite), estado SIAC, y sus motivos asociados:
+        Mapeo completo de las categorías de cierre, estado del formulario (Procedente, No Procedente, En Trámite), estado SIAC, etiquetas y su desglose de motivos:
     </div>
 
     <div class="cat-card procedente">
@@ -490,12 +1818,12 @@
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (21):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (21):</strong></div>
         <ul class="motivos-list">
     <li>SOLUCIONADO ACCESO ACTIVAR BOUQUETS</li><li>SOLUCIONADO ACCESO ALTA Y BAJA INCOGNITO > Instalar ONT/CM</li><li>SOLUCIONADO ACCESO CAMBIO DE RESOLUCIÓN SKYWAY</li><li>SOLUCIONADO ACCESO CLEAN DATA SKYWAY</li><li>SOLUCIONADO ACCESO FIJACIÓN DE IP</li><li>SOLUCIONADO ACCESO PREFERENCES SKYWAY</li><li>SOLUCIONADO ACCESO PROVISIÓN FIJA + CLEAN DATA SKYWAY</li><li>SOLUCIONADO ACCESO PROVISIÓN FIJA > ActivarGPONTV</li><li>SOLUCIONADO ACCESO PROVISIÓN FIJA > Instalar serialNumber STB</li><li>SOLUCIONADO ACCESO PROVISIÓN FIJA > REGENERAR IPTV</li><li>SOLUCIONADO DESCARTES TÉCNICOS CAMBIO DE PILAS CONTROL REMOTO</li><li>SOLUCIONADO DESCARTES TÉCNICOS CONEXIONES</li><li>SOLUCIONADO DESCARTES TÉCNICOS PROBLEMAS EQUIPOS DEL CLIENTE</li><li>SOLUCIONADO DESCARTES TÉCNICOS RESET FACTORY</li><li>SOLUCIONADO DESCARTES TÉCNICOS RESET FACTORY + CLEAN DATA SKYWAY</li><li>SOLUCIONADO DESCARTES TÉCNICOS VELOCIDAD MÍNIMA 70%</li><li>SOLUCIONADO INFORMACIÓN PRODUCTO PLAN TV DIGITAL</li><li>SOLUCIONADO INFORMACIÓN COMERCIAL SOLICITUD FAST TRACK</li><li>SOLUCIONADO INFORMACIÓN GRILLA DE CANALES TV DIGITAL</li><li>SOLUCIONADO INFORMACIÓN SIN SALDO PARA LLAMADAS</li><li>SOLUCIONADO OK EN LÍNEA</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Solucionado/Cliente brinda Conformidad
 Problema/Solución:
@@ -515,12 +1843,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (5):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (5):</strong></div>
         <ul class="motivos-list">
     <li>BO ATC - SOT DE MANTTO A SOLICITUD CLARO - CONMUTACIÓN</li><li>BO ATC - SOT DE MANTTO A SOLICITUD CLARO - RED</li><li>BO ATC - SOT DE MANTTO A SOLICITUD DEL CLIENTE</li><li>BO ATC - SOT DE MANTTO NO FUNCIONA CONTROL REMOTO</li><li>BO ATC - SOT DE MANTTO SIN SERVICIO GENERAL</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Con Visita Técnica
 Sot:
@@ -543,12 +1871,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (2):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (2):</strong></div>
         <ul class="motivos-list">
     <li>MENSAJE BUZÓN DE VOZ</li><li>NO CONTACTO SIN CASILLA DE VOZ</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Ciclo Cumplido/Sin Contacto
 Problema/Solución:
@@ -570,12 +1898,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (2):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (2):</strong></div>
         <ul class="motivos-list">
     <li>BO ATC - AVERÍA MASIVA EN EJECUCIÓN POST-CREACIÓN CASO</li><li>BO ATC - AVERÍA MASIVA EN EJECUCIÓN PRE-CREACIÓN CASO</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Informativo/Avería Masiva
 Persona de Contacto:
@@ -596,12 +1924,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (2):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (2):</strong></div>
         <ul class="motivos-list">
     <li>BO ATC - SERVICIO SUSPENDIDO POST-CREACIÓN CASO</li><li>BO ATC - SERVICIO SUSPENDIDO PRE-CREACIÓN CASO</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Cliente con suspensión de servicios
 ID Llamada/Chat ID: N/A
@@ -618,12 +1946,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (1):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (1):</strong></div>
         <ul class="motivos-list">
     <li>BO ATC - CLIENTE DARÁ DE BAJA SERVICIO</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Cliente dara de baja el servicio
 ID Llamada/Chat ID: N/A
@@ -640,12 +1968,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (1):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (1):</strong></div>
         <ul class="motivos-list">
     <li>BO ATC - DERIVACIÓN INCORRECTA                                                                                       BO ATC - EMTA/ONT NO HOMOLOGADO EN SMARTHOME                                                                                          BO ATC - DUPLICIDAD DE CASO                                                                                                                          BO ATC - TIPIFICACIÓN INCORRECTA                                                                                                           BO ATC - PÁGINAS WEB BLOQUEADAS POR INDECOPI</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Numero no existe/Numero errado/Mal creado
 Contacto:
@@ -664,12 +1992,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (2):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (2):</strong></div>
         <ul class="motivos-list">
     <li>BO ATC - CLIENTE NO BRINDA FACILIDADES TÉCNICAS</li><li>BO ATC - SIN RECEPCIÓN PRUEBAS CLIENTE</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Cliente desiste de la atención
 Persona de Contacto:
@@ -689,12 +2017,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (7):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (7):</strong></div>
         <ul class="motivos-list">
     <li>BO ATC - 1ER INTENTO COMUNICACIÓN SIN BUZÓN DE VOZ</li><li>BO ATC - 1ER INTENTO COMUNICACIÓN MENSAJE EN EL BUZÓN DE VOZ</li><li>BO ATC - 2DO INTENTO COMUNICACIÓN SIN BUZÓN DE VOZ</li><li>BO ATC - 2DO INTENTO COMUNICACIÓN MENSAJE EN EL BUZÓN DE VOZ</li><li>BO ATC - FALLA SOLUCIONADA / CONTACTO CLIENTE</li><li>BO ATC - DIAGNÓSTICO PROVISIÓN TÉCNICA</li><li>BO ATC - CASO DERIVADO CON SUPERVISIÓN BOT</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Ciclo de llamada
 Intentos de Llamada:1/2/3
@@ -716,12 +2044,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (1):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (1):</strong></div>
         <ul class="motivos-list">
     <li>BO ATC - CLIENTE SOLICITA DEVOLUCIÓN DE LLAMADA                                                      BO ATC - LLAMADA PROGRAMADA POR DISPONIBILIDAD CLIENTE</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Cliente solicita devolución de llamada
 Fecha/Hora:
@@ -742,12 +2070,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (1):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (1):</strong></div>
         <ul class="motivos-list">
     <li>BO ATC - DERIVADO A CONMUTACIÓN</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Derivado a conmutación-Correo                  (ADJUNTAR)
 Persona de Contacto:
@@ -766,12 +2094,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (14):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (14):</strong></div>
         <ul class="motivos-list">
     <li>IPTV - PAQUETES NO PROVISIONADOS EN IOTDB</li><li>IPTV - EQUIPOS NO PROVISIONADOS EN IOTDB</li><li>BO ATC - MIGRACION A CBIO FALLO / SGA MUESTRA MENSAJE DE ERROR</li><li>BO ATC - LÍNEA NO REGISTRADA EN CBIO</li><li>BO ATC - DESALINEACION OCSI</li><li>APP SMART HOME - DISPOSITIVOS CONECTADOS - ERROR AL CARGAR LOS DISPOSITIVOS CONECTADOS</li><li>BO ATC - SUSCRIPCIONES INCOMPLETAS</li><li>BO ATC - SIN E. INCOGNITO / ACTIVO SIAC (SGA TRANSLATOR)</li><li>IPTV - EQUIPOS Y PAQUETES NO PROVISIONADOS EN IOTDB</li><li>BO ATC - SUSCRIPCIONES INCORRECTAS</li><li>BO ATC - ERROR CON ACTIVACIÓN DE BOUQUETS</li><li>BO ATC - SERVICIO CON TECNOLOGIA ERRADA</li><li>BO CN - INCOGNITO SUSPENDIDO / SGA ACTIVO</li><li>BO ATC - LÍNEA CON BOLSA INCORRECTA EN CBIO</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Derivado a TI-Remedy
 Motivo:
@@ -792,12 +2120,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (1):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (1):</strong></div>
         <ul class="motivos-list">
     <li>BO ATC - ENVÍO PRUEBAS CLIENTE</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Pendiente de envió de pruebas
 Problema:
@@ -818,12 +2146,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (1):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (1):</strong></div>
         <ul class="motivos-list">
     <li>BO ATC - EJECUCIÓN BAJA Y ALTA INCOGNITO - INSTALAR                                          BO ATC - EJECUCIÓN BAJA Y ALTA INCOGNITO - DESACTIVAR</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Descarte cambio de IP
 Problema: Relance de Servicios - Validar en 10 minutos</div>
@@ -839,12 +2167,12 @@ Problema: Relance de Servicios - Validar en 10 minutos</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (5):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (5):</strong></div>
         <ul class="motivos-list">
     <li>BO ATC - SOT DE MANTTO A SOLICITUD CLARO - CONMUTACIÓN</li><li>BO ATC - SOT DE MANTTO A SOLICITUD CLARO - RED</li><li>BO ATC - SOT DE MANTTO A SOLICITUD DEL CLIENTE</li><li>BO ATC - SOT DE MANTTO NO FUNCIONA CONTROL REMOTO</li><li>BO ATC - SOT DE MANTTO SIN SERVICIO GENERAL</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Con Visita Técnica
 Sot:
@@ -867,12 +2195,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (2):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (2):</strong></div>
         <ul class="motivos-list">
     <li>MENSAJE BUZÓN DE VOZ</li><li>NO CONTACTO SIN CASILLA DE VOZ</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Ciclo Cumplido/Sin Contacto
 Problema/Solución:
@@ -894,12 +2222,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (2):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (2):</strong></div>
         <ul class="motivos-list">
     <li>BO ATC - AVERÍA MASIVA EN EJECUCIÓN POST-CREACIÓN CASO</li><li>BO ATC - AVERÍA MASIVA EN EJECUCIÓN PRE-CREACIÓN CASO</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Informativo/Avería Masiva
 Persona de Contacto:
@@ -920,12 +2248,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (2):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (2):</strong></div>
         <ul class="motivos-list">
     <li>BO ATC - SERVICIO SUSPENDIDO POST-CREACIÓN CASO</li><li>BO ATC - SERVICIO SUSPENDIDO PRE-CREACIÓN CASO</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Cliente con suspensión de servicios
 ID Llamada/Chat ID: N/A
@@ -942,12 +2270,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (1):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (1):</strong></div>
         <ul class="motivos-list">
     <li>BO ATC - CLIENTE DARÁ DE BAJA SERVICIO</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Cliente dara de baja el servicio
 ID Llamada/Chat ID: N/A
@@ -964,12 +2292,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (1):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (1):</strong></div>
         <ul class="motivos-list">
     <li>BO ATC - DERIVACIÓN INCORRECTA                                                                                       BO ATC - EMTA/ONT NO HOMOLOGADO EN SMARTHOME                                                                                          BO ATC - DUPLICIDAD DE CASO                                                                                                                          BO ATC - TIPIFICACIÓN INCORRECTA                                                                                                           BO ATC - PÁGINAS WEB BLOQUEADAS POR INDECOPI</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Numero no existe/Numero errado/Mal creado
 Contacto:
@@ -988,12 +2316,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (2):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (2):</strong></div>
         <ul class="motivos-list">
     <li>BO ATC - CLIENTE NO BRINDA FACILIDADES TÉCNICAS</li><li>BO ATC - SIN RECEPCIÓN PRUEBAS CLIENTE</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Cliente desiste de la atención
 Persona de Contacto:
@@ -1013,12 +2341,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (7):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (7):</strong></div>
         <ul class="motivos-list">
     <li>BO ATC - 1ER INTENTO COMUNICACIÓN SIN BUZÓN DE VOZ</li><li>BO ATC - 1ER INTENTO COMUNICACIÓN MENSAJE EN EL BUZÓN DE VOZ</li><li>BO ATC - 2DO INTENTO COMUNICACIÓN SIN BUZÓN DE VOZ</li><li>BO ATC - 2DO INTENTO COMUNICACIÓN MENSAJE EN EL BUZÓN DE VOZ</li><li>BO ATC - FALLA SOLUCIONADA / CONTACTO CLIENTE</li><li>BO ATC - DIAGNÓSTICO PROVISIÓN TÉCNICA</li><li>BO ATC - CASO DERIVADO CON SUPERVISIÓN BOT</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Ciclo de llamada
 Intentos de Llamada:1/2/3
@@ -1040,12 +2368,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (1):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (1):</strong></div>
         <ul class="motivos-list">
     <li>BO ATC - CLIENTE SOLICITA DEVOLUCIÓN DE LLAMADA                                                      BO ATC - LLAMADA PROGRAMADA POR DISPONIBILIDAD CLIENTE</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Cliente solicita devolución de llamada
 Fecha/Hora:
@@ -1066,12 +2394,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (1):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (1):</strong></div>
         <ul class="motivos-list">
     <li>BO ATC - DERIVADO A CONMUTACIÓN</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Derivado a conmutación-Correo                  (ADJUNTAR)
 Persona de Contacto:
@@ -1090,12 +2418,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (14):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (14):</strong></div>
         <ul class="motivos-list">
     <li>IPTV - PAQUETES NO PROVISIONADOS EN IOTDB</li><li>IPTV - EQUIPOS NO PROVISIONADOS EN IOTDB</li><li>BO ATC - MIGRACION A CBIO FALLO / SGA MUESTRA MENSAJE DE ERROR</li><li>BO ATC - LÍNEA NO REGISTRADA EN CBIO</li><li>BO ATC - DESALINEACION OCSI</li><li>APP SMART HOME - DISPOSITIVOS CONECTADOS - ERROR AL CARGAR LOS DISPOSITIVOS CONECTADOS</li><li>BO ATC - SUSCRIPCIONES INCOMPLETAS</li><li>BO ATC - SIN E. INCOGNITO / ACTIVO SIAC (SGA TRANSLATOR)</li><li>IPTV - EQUIPOS Y PAQUETES NO PROVISIONADOS EN IOTDB</li><li>BO ATC - SUSCRIPCIONES INCORRECTAS</li><li>BO ATC - ERROR CON ACTIVACIÓN DE BOUQUETS</li><li>BO ATC - SERVICIO CON TECNOLOGIA ERRADA</li><li>BO CN - INCOGNITO SUSPENDIDO / SGA ACTIVO</li><li>BO ATC - LÍNEA CON BOLSA INCORRECTA EN CBIO</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Derivado a TI-Remedy
 Motivo:
@@ -1116,12 +2444,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (1):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (1):</strong></div>
         <ul class="motivos-list">
     <li>BO ATC - ENVÍO PRUEBAS CLIENTE</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Pendiente de envió de pruebas
 Problema:
@@ -1142,12 +2470,12 @@ Asesor:</div>
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados (1):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados (1):</strong></div>
         <ul class="motivos-list">
     <li>BO ATC - EJECUCIÓN BAJA Y ALTA INCOGNITO - INSTALAR                                          BO ATC - EJECUCIÓN BAJA Y ALTA INCOGNITO - DESACTIVAR</li>
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">BACK OFFICE FIJA HITSS
 Descarte cambio de IP
 Problema: Relance de Servicios - Validar en 10 minutos</div>
@@ -1156,18 +2484,18 @@ Problema: Relance de Servicios - Validar en 10 minutos</div>
     <div class="page-break"></div>
 
     <div class="section-title">
-        <span>4. Parámetros Técnicos & Equipos Homologados</span>
-        <span class="badge badge-purple">Validador Hygeia</span>
+        <span>4. Parámetros Técnicos (Hygeia) & Catálogo de Hardware</span>
+        <span class="badge badge-purple">Validador Técnico</span>
     </div>
     <div class="section-desc">
-        Límites operativos de niveles RF (HFC) y potencia óptica (FTTH) implementados en el validador automático:
+        Rangos de tolerancia para el validador automático de niveles y catálogo de equipos homologados por Claro:
     </div>
 
     <table>
         <thead>
             <tr>
                 <th style="width: 25%;">Tecnología</th>
-                <th style="width: 30%;">Parámetro</th>
+                <th style="width: 30%;">Parámetro Técnico</th>
                 <th style="width: 45%;">Rango Aceptable / Umbral</th>
             </tr>
         </thead>
@@ -1190,22 +2518,26 @@ Problema: Relance de Servicios - Validar en 10 minutos</div>
                 <td>Rango: <strong>+35.0 dBmV a +57.0 dBmV</strong></td>
             </tr>
             <tr>
-                <td><strong>FTTH (Fibra Óptica)</strong></td>
-                <td>Rx Optical Power</td>
-                <td>Rango Óptimo: <strong>-8.0 dBm a -27.0 dBm</strong></td>
+                <td rowspan="2"><strong>FTTH (Fibra Óptica)</strong></td>
+                <td>Tx Optical Power (Transmisión)</td>
+                <td>Rango: <strong>+0.5 dBm a +5.0 dBm</strong></td>
+            </tr>
+            <tr>
+                <td>Rx Optical Power (Recepción)</td>
+                <td>Rango: <strong>-24.9 dBm a -6.1 dBm</strong></td>
             </tr>
         </tbody>
     </table>
 
-    <div style="margin-top:14px;"><strong>Equipos / Modelos Registrados:</strong></div>
+    <div style="margin-top:12px; margin-bottom:4px;"><strong>Catálogo de Equipos y Credenciales Registradas:</strong></div>
     <table>
         <thead>
             <tr>
-                <th>Código</th>
-                <th>Nombre del Equipo</th>
-                <th>Tecnología</th>
-                <th>Estado Homologación</th>
-                <th>Notas / Accesos</th>
+                <th style="width: 15%;">Código</th>
+                <th style="width: 25%;">Nombre del Equipo</th>
+                <th style="width: 15%;">Tecnología</th>
+                <th style="width: 15%;">Estado Homologación</th>
+                <th style="width: 30%;">Notas / Accesos Técnicos</th>
             </tr>
         </thead>
         <tbody>
@@ -1263,7 +2595,7 @@ Problema: Relance de Servicios - Validar en 10 minutos</div>
 
     <div class="doc-footer">
         <div>WorkStation BackOffice v6.0 · Plataforma de Soporte Técnico HITSS / Claro</div>
-        <div>Generado automáticamente para auditoría y validación de matriz</div>
+        <div>Generado automáticamente para auditoría, supervisión y validación operativa</div>
     </div>
 
 </body>

@@ -38,16 +38,16 @@ solutions = BO_DATASET.get('solutions', [])
 quick_descartes = BO_DATASET.get('quickDescartes', [])
 hashtags = BO_DATASET.get('hashtags', [])
 
-# Build HTML
+# Build HTML with rich styling and deep focus on Comboboxes & Categorías de Cierre
 html = f"""<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Matriz Operativa y de Tipificación - WorkStation BackOffice</title>
+    <title>Matriz Operativa y de Tipificación - BackOffice WorkStation</title>
     <style>
         @page {{
             size: A4;
-            margin: 15mm 12mm 15mm 12mm;
+            margin: 12mm 10mm 12mm 10mm;
             @bottom-right {{
                 content: "Página " counter(page);
                 font-size: 8pt;
@@ -67,15 +67,15 @@ html = f"""<!DOCTYPE html>
             background-color: #ffffff;
             margin: 0;
             padding: 0;
-            font-size: 9.5pt;
-            line-height: 1.45;
+            font-size: 8.5pt;
+            line-height: 1.4;
         }}
 
         /* Header / Hero */
         .doc-header {{
             border-bottom: 3px solid #dc2626;
-            padding-bottom: 12px;
-            margin-bottom: 20px;
+            padding-bottom: 10px;
+            margin-bottom: 14px;
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
@@ -83,7 +83,7 @@ html = f"""<!DOCTYPE html>
 
         .doc-header .title-area h1 {{
             margin: 0;
-            font-size: 18pt;
+            font-size: 16pt;
             color: #0f172a;
             font-weight: 800;
             letter-spacing: -0.5px;
@@ -91,126 +91,130 @@ html = f"""<!DOCTYPE html>
         }}
 
         .doc-header .title-area h2 {{
-            margin: 3px 0 0 0;
-            font-size: 10.5pt;
+            margin: 2px 0 0 0;
+            font-size: 9.5pt;
             color: #dc2626;
             font-weight: 700;
             letter-spacing: 0.5px;
         }}
 
-        .doc-header .meta-area {{
+        .meta-area {{
             text-align: right;
-            font-size: 8pt;
-            color: #64748b;
-        }}
-
-        .badge {{
-            display: inline-block;
-            padding: 2px 7px;
-            border-radius: 4px;
             font-size: 7.5pt;
-            font-weight: 700;
-            text-transform: uppercase;
+            color: #64748b;
+            line-height: 1.35;
         }}
-        .badge-red {{ background: #fee2e2; color: #991b1b; border: 1px solid #f87171; }}
-        .badge-blue {{ background: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; }}
-        .badge-green {{ background: #dcfce7; color: #166534; border: 1px solid #86efac; }}
-        .badge-amber {{ background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }}
-        .badge-purple {{ background: #f3e8ff; color: #6b21a8; border: 1px solid #d8b4fe; }}
-        .badge-slate {{ background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }}
 
-        /* Stats bar */
+        /* Summary Stats Cards */
         .stats-grid {{
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 22px;
+            gap: 8px;
+            margin-bottom: 16px;
         }}
+
         .stat-card {{
             background: #f8fafc;
             border: 1px solid #e2e8f0;
             border-radius: 6px;
-            padding: 8px 12px;
+            padding: 8px 10px;
             text-align: center;
         }}
+
         .stat-val {{
-            font-size: 15pt;
+            font-size: 14pt;
             font-weight: 800;
-            color: #0f172a;
+            color: #0284c7;
         }}
+
         .stat-label {{
             font-size: 7.5pt;
-            font-weight: 600;
             color: #64748b;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.4px;
         }}
 
         /* Section Headings */
         .section-title {{
-            font-size: 12pt;
+            background: #0f172a;
+            color: #ffffff;
+            font-size: 9.5pt;
             font-weight: 800;
-            color: #0f172a;
-            border-left: 4px solid #dc2626;
-            padding-left: 8px;
-            margin: 22px 0 10px 0;
-            text-transform: uppercase;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-top: 16px;
+            margin-bottom: 8px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            page-break-after: avoid;
         }}
 
         .section-desc {{
-            font-size: 8.5pt;
+            font-size: 8pt;
             color: #475569;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
+            line-height: 1.35;
         }}
 
         /* Tables */
         table {{
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 16px;
-            font-size: 8.5pt;
+            margin-bottom: 12px;
+            font-size: 8pt;
         }}
 
         th {{
-            background: #0f172a;
-            color: #ffffff;
-            text-align: left;
-            padding: 6px 9px;
-            font-size: 8pt;
+            background: #f1f5f9;
+            color: #334155;
             font-weight: 700;
-            letter-spacing: 0.3px;
+            text-align: left;
+            padding: 5px 8px;
+            border: 1px solid #cbd5e1;
+            font-size: 7.5pt;
             text-transform: uppercase;
         }}
 
         td {{
-            padding: 5px 9px;
-            border-bottom: 1px solid #e2e8f0;
-            vertical-align: top;
+            padding: 5px 8px;
+            border: 1px solid #e2e8f0;
+            vertical-align: middle;
         }}
 
-        tr:nth-child(even) td {{
-            background: #f8fafc;
+        tr:nth-child(even) {{
+            background-color: #f8fafc;
         }}
 
-        .service-badge {{
-            font-weight: 700;
+        /* Badges */
+        .badge {{
             padding: 2px 6px;
             border-radius: 3px;
-            font-size: 7.5pt;
+            font-size: 7pt;
+            font-weight: 700;
             display: inline-block;
+            text-transform: uppercase;
+            white-space: nowrap;
         }}
 
-        /* Category Card Grid */
+        .badge-blue {{ background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }}
+        .badge-purple {{ background: #f3e8ff; color: #7e22ce; border: 1px solid #e9d5ff; }}
+        .badge-green {{ background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }}
+        .badge-amber {{ background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }}
+        .badge-red {{ background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }}
+        .badge-slate {{ background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }}
+        .badge-indigo {{ background: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe; }}
+
+        /* Category Card */
         .cat-card {{
             background: #ffffff;
             border: 1px solid #cbd5e1;
             border-left: 4px solid #0284c7;
             border-radius: 4px;
-            padding: 10px 12px;
-            margin-bottom: 12px;
+            padding: 8px 10px;
+            margin-bottom: 10px;
             page-break-inside: avoid;
         }}
 
@@ -230,26 +234,26 @@ html = f"""<!DOCTYPE html>
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }}
 
         .cat-title {{
-            font-size: 10pt;
+            font-size: 9pt;
             font-weight: 800;
             color: #0f172a;
         }}
 
         .motivos-list {{
-            margin: 6px 0 0 0;
-            padding-left: 18px;
-            font-size: 8pt;
+            margin: 4px 0 0 0;
+            padding-left: 16px;
+            font-size: 7.5pt;
             color: #334155;
             column-count: 2;
-            column-gap: 15px;
+            column-gap: 12px;
         }}
 
         .motivos-list li {{
-            margin-bottom: 3px;
+            margin-bottom: 2px;
             break-inside: avoid;
         }}
 
@@ -257,12 +261,13 @@ html = f"""<!DOCTYPE html>
             background: #f1f5f9;
             border: 1px dashed #94a3b8;
             border-radius: 4px;
-            padding: 6px 9px;
+            padding: 5px 8px;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 7.5pt;
+            font-size: 7pt;
             color: #1e293b;
             white-space: pre-wrap;
-            margin-top: 6px;
+            margin-top: 5px;
+            line-height: 1.35;
         }}
 
         .page-break {{
@@ -272,27 +277,27 @@ html = f"""<!DOCTYPE html>
         .chip-grid {{
             display: flex;
             flex-wrap: wrap;
-            gap: 5px;
-            margin-top: 4px;
+            gap: 4px;
+            margin-top: 2px;
         }}
 
         .chip {{
             background: #e2e8f0;
             color: #1e293b;
             border-radius: 3px;
-            padding: 2px 6px;
-            font-size: 7.5pt;
+            padding: 2px 5px;
+            font-size: 7pt;
             font-weight: 500;
         }}
 
         /* Footer */
         .doc-footer {{
-            margin-top: 25px;
-            padding-top: 10px;
+            margin-top: 20px;
+            padding-top: 8px;
             border-top: 1px solid #e2e8f0;
             display: flex;
             justify-content: space-between;
-            font-size: 7.5pt;
+            font-size: 7pt;
             color: #94a3b8;
         }}
     </style>
@@ -307,20 +312,20 @@ html = f"""<!DOCTYPE html>
         </div>
         <div class="meta-area">
             <div><strong>Plataforma:</strong> WorkStation BackOffice v6.0</div>
-            <div><strong>Documento:</strong> Especificación de Comboboxes & Variantes</div>
-            <div><strong>Fecha:</strong> Septiembre 2026</div>
+            <div><strong>Especialidad:</strong> Comboboxes de Fallas & Categorías de Cierre</div>
+            <div><strong>Actualización:</strong> Septiembre 2026</div>
         </div>
     </div>
 
     <!-- RESUMEN EJECUTIVO / STATS -->
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="stat-val">5</div>
-            <div class="stat-label">Servicios Principales</div>
+            <div class="stat-val">{len(problems)}</div>
+            <div class="stat-label">Servicios Analizados</div>
         </div>
         <div class="stat-card">
             <div class="stat-val">{sum(len(v) for v in problems.values())}</div>
-            <div class="stat-label">Problemas / Tipificaciones</div>
+            <div class="stat-label">Problemas Tipificados</div>
         </div>
         <div class="stat-card">
             <div class="stat-val">{len(categories)}</div>
@@ -328,28 +333,18 @@ html = f"""<!DOCTYPE html>
         </div>
         <div class="stat-card">
             <div class="stat-val">{sum(len(c.get('motivos', [])) for c in categories)}</div>
-            <div class="stat-label">Motivos de Cierre Mapeados</div>
+            <div class="stat-label">Motivos de Cierre</div>
         </div>
     </div>
 
-    <!-- SECCIÓN 1: COMBOBOX SERVICIOS Y PROBLEMAS DETECTADOS -->
+    <!-- SECCIÓN 1: COMBOBOX DE SERVICIOS Y VARIANTES DE PROBLEMA DETECTADO -->
     <div class="section-title">
-        <span>1. Matriz de Combobox: Servicios y Problemas Detectados</span>
-        <span class="badge badge-red">Combobox Principal + Búsqueda</span>
+        <span>1. Matriz de Combobox: Problemas Detectados por Servicio</span>
+        <span class="badge badge-red">Combobox Principal</span>
     </div>
     <div class="section-desc">
-        Relación completa de los 5 servicios integrados y los problemas técnicos asociados seleccionables en el menú desplegable principal con búsqueda en tiempo real:
+        Detalle de todas las opciones seleccionables en el combobox de <strong>Problema Detectado</strong> organizadas por tipo de servicio técnico y su prefijo operativo:
     </div>
-
-    <table>
-        <thead>
-            <tr>
-                <th style="width: 18%;">Servicio</th>
-                <th style="width: 12%;">Cant. Fallas</th>
-                <th style="width: 70%;">Problemas Tipificados Disponibles (Variantes)</th>
-            </tr>
-        </thead>
-        <tbody>
 """
 
 service_badges = {
@@ -363,72 +358,92 @@ service_badges = {
 for srv, items in problems.items():
     badge_cls = service_badges.get(srv, "badge-slate")
     html += f"""
+    <div style="margin-top: 10px; margin-bottom: 4px;">
+        <span class="badge {badge_cls}" style="font-size:8pt; padding:3px 8px;">Servicio: {srv} ({len(items)} problemas)</span>
+    </div>
+    <table>
+        <thead>
             <tr>
-                <td><span class="badge {badge_cls}">{srv}</span></td>
-                <td><strong>{len(items)}</strong> problemas</td>
-                <td>
-                    <div class="chip-grid">
-    """
-    for it in items:
-        html += f'<span class="chip">{it}</span>'
-    html += """
-                    </div>
-                </td>
+                <th style="width: 8%; text-align:center;">#</th>
+                <th style="width: 22%;">Código / Prefijo</th>
+                <th style="width: 70%;">Problema Detectado (Texto del Combobox)</th>
             </tr>
+        </thead>
+        <tbody>
+    """
+    for idx, it in enumerate(items, 1):
+        prefix_match = re.match(r'^([A-Z0-9]+)\s*-\s*(.+)$', it)
+        if prefix_match:
+            prefix, desc = prefix_match.groups()
+        else:
+            prefix, desc = srv[:3], it
+        
+        html += f"""
+            <tr>
+                <td style="text-align:center; font-weight:bold; color:#64748b;">{idx}</td>
+                <td><span class="badge {badge_cls}">{prefix}</span></td>
+                <td><strong>{it}</strong></td>
+            </tr>
+        """
+    html += """
+        </tbody>
+    </table>
     """
 
 html += """
-        </tbody>
-    </table>
-
     <div class="page-break"></div>
 
-    <!-- SECCIÓN 2: DESCARTES RÁPIDOS Y SOLUCIONES -->
+    <!-- SECCIÓN 2: DESCARTES RÁPIDOS, CICLO DE LLAMADA Y ACCIONES -->
     <div class="section-title">
-        <span>2. Matriz de Descartes Técnicos y Acciones Rápidas</span>
-        <span class="badge badge-blue">Chips Dinámicos</span>
+        <span>2. Matriz de Descartes Técnicos & Ciclo de Llamada</span>
+        <span class="badge badge-blue">Descartes Rápidos</span>
     </div>
     <div class="section-desc">
-        Descartes preconfigurados de 1-clic para inyección inmediata en el campo de descarte técnico de la plantilla:
+        Descartes preconfigurados de 1-clic y soluciones técnicas implementadas para agilizar el llenado de la plantilla técnica:
     </div>
 
     <table>
         <thead>
             <tr>
-                <th style="width: 35%;">Tipo de Descarte / Solución</th>
-                <th style="width: 65%;">Tipificación / Detalle Técnico</th>
+                <th style="width: 30%;">Acción / Descarte Rápido</th>
+                <th style="width: 70%;">Texto Exacto Inyectado en Plantilla</th>
             </tr>
         </thead>
         <tbody>
+            <tr style="background:#fef2f2;">
+                <td><span class="badge badge-red">Ciclo de Llamada (Actualizado)</span></td>
+                <td><strong>CLIENTE NO CONTESTA, SE ENVIA MENSAJE POR LIVE CHAT Y SE DEJA MENSAJE EN BUZON DE VOZ, SE GENERA CICLO</strong></td>
+            </tr>
 """
 
 for sol in solutions:
     html += f"""
             <tr>
                 <td><strong>{sol.get('solucion')}</strong></td>
-                <td><span class="chip">{sol.get('tipificacion')}</span></td>
+                <td>{sol.get('tipificacion')}</td>
             </tr>
     """
 
 for q in quick_descartes:
-    html += f"""
+    if "CICLO" not in q.upper():
+        html += f"""
             <tr>
-                <td><span class="badge badge-slate">Acción Rápida</span></td>
+                <td><span class="badge badge-slate">Descarte Rápido</span></td>
                 <td>{q}</td>
             </tr>
-    """
+        """
 
 html += """
         </tbody>
     </table>
 
-    <!-- SECCIÓN 3: CATEGORÍAS SIAC, ESTADOS Y MOTIVOS DE CIERRE -->
+    <!-- SECCIÓN 3: MATRIZ DE CATEGORÍAS DE CIERRE SIAC / HELIX -->
     <div class="section-title">
-        <span>3. Matriz de Categorías SIAC / Helix & Motivos de Cierre</span>
-        <span class="badge badge-green">Motor de Cierre</span>
+        <span>3. Matriz Exhaustiva de Categorías de Cierre & Motivos</span>
+        <span class="badge badge-green">Categorías SIAC / Helix</span>
     </div>
     <div class="section-desc">
-        Estructura de categorización de cierre de casos, estado del formulario (Procedente, No Procedente, En Trámite), estado SIAC, y sus motivos asociados:
+        Mapeo completo de las categorías de cierre, estado del formulario (Procedente, No Procedente, En Trámite), estado SIAC, etiquetas y su desglose de motivos:
     </div>
 """
 
@@ -460,7 +475,7 @@ for cat in categories:
             </div>
         </div>
         
-        <div><strong>Motivos de Cierre Asociados ({len(motivos)}):</strong></div>
+        <div style="margin-top:3px;"><strong>Motivos de Cierre Mapeados ({len(motivos)}):</strong></div>
         <ul class="motivos-list">
     """
     for m in motivos:
@@ -468,28 +483,28 @@ for cat in categories:
     html += """
         </ul>
         
-        <div style="margin-top: 6px;"><strong>Plantilla Estándar:</strong></div>
+        <div style="margin-top: 5px;"><strong>Plantilla Estándar Asociada:</strong></div>
         <div class="plantilla-box">""" + raw_plantilla.strip() + """</div>
     </div>
     """
 
-# Section 4: Equipos Homologados y Niveles
+# Section 4: Equipos Homologados y Niveles Hygeia
 html += f"""
     <div class="page-break"></div>
 
     <div class="section-title">
-        <span>4. Parámetros Técnicos & Equipos Homologados</span>
-        <span class="badge badge-purple">Validador Hygeia</span>
+        <span>4. Parámetros Técnicos (Hygeia) & Catálogo de Hardware</span>
+        <span class="badge badge-purple">Validador Técnico</span>
     </div>
     <div class="section-desc">
-        Límites operativos de niveles RF (HFC) y potencia óptica (FTTH) implementados en el validador automático:
+        Rangos de tolerancia para el validador automático de niveles y catálogo de equipos homologados por Claro:
     </div>
 
     <table>
         <thead>
             <tr>
                 <th style="width: 25%;">Tecnología</th>
-                <th style="width: 30%;">Parámetro</th>
+                <th style="width: 30%;">Parámetro Técnico</th>
                 <th style="width: 45%;">Rango Aceptable / Umbral</th>
             </tr>
         </thead>
@@ -512,22 +527,26 @@ html += f"""
                 <td>Rango: <strong>+35.0 dBmV a +57.0 dBmV</strong></td>
             </tr>
             <tr>
-                <td><strong>FTTH (Fibra Óptica)</strong></td>
-                <td>Rx Optical Power</td>
-                <td>Rango Óptimo: <strong>-8.0 dBm a -27.0 dBm</strong></td>
+                <td rowspan="2"><strong>FTTH (Fibra Óptica)</strong></td>
+                <td>Tx Optical Power (Transmisión)</td>
+                <td>Rango: <strong>+0.5 dBm a +5.0 dBm</strong></td>
+            </tr>
+            <tr>
+                <td>Rx Optical Power (Recepción)</td>
+                <td>Rango: <strong>-24.9 dBm a -6.1 dBm</strong></td>
             </tr>
         </tbody>
     </table>
 
-    <div style="margin-top:14px;"><strong>Equipos / Modelos Registrados:</strong></div>
+    <div style="margin-top:12px; margin-bottom:4px;"><strong>Catálogo de Equipos y Credenciales Registradas:</strong></div>
     <table>
         <thead>
             <tr>
-                <th>Código</th>
-                <th>Nombre del Equipo</th>
-                <th>Tecnología</th>
-                <th>Estado Homologación</th>
-                <th>Notas / Accesos</th>
+                <th style="width: 15%;">Código</th>
+                <th style="width: 25%;">Nombre del Equipo</th>
+                <th style="width: 15%;">Tecnología</th>
+                <th style="width: 15%;">Estado Homologación</th>
+                <th style="width: 30%;">Notas / Accesos Técnicos</th>
             </tr>
         </thead>
         <tbody>
@@ -552,7 +571,7 @@ html += """
 
     <div class="doc-footer">
         <div>WorkStation BackOffice v6.0 · Plataforma de Soporte Técnico HITSS / Claro</div>
-        <div>Generado automáticamente para auditoría y validación de matriz</div>
+        <div>Generado automáticamente para auditoría, supervisión y validación operativa</div>
     </div>
 
 </body>
