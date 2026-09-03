@@ -1021,13 +1021,13 @@ HASHTAGS: ${tagsStr}`.toUpperCase();
                     if (deltaExceeded) {
                         return { 
                             status: 'ERROR', 
-                            text: `⚠️ Variación Excesiva: Δ ${delta} ${unit} (Máx: ${maxVal}, Mín: ${minVal}) [Máx permitido: 4.0 ${unit}]` 
+                            text: `⚠️ Variación Excesiva en Bloque: Δ ${delta} ${unit} (Máx: ${maxVal}, Mín: ${minVal} - Supera límite de 4.0 ${unit})` 
                         };
                     }
 
                     return { 
                         status: 'OK', 
-                        text: `Dentro del Rango (Δ: ${delta} ${unit} [Máx: ${maxVal}, Mín: ${minVal}] - Variación OK)` 
+                        text: `Dentro del Rango (${displayVals} ${unit})` 
                     };
                 }
 
