@@ -1330,6 +1330,7 @@ HASHTAGS: ${tagsStr}`.toUpperCase();
         const remedyImagesContainer = document.getElementById('remedyImagesContainer');
         const btnClearRemedyImages = document.getElementById('btnClearRemedyImages');
         const remedyPreviewBox = document.getElementById('remedyPreviewBox');
+        const btnExportRemedyPdf = document.getElementById('btnExportRemedyPdf');
         const btnCopyRemedyWord = document.getElementById('btnCopyRemedyWord');
         const btnCopyRemedyText = document.getElementById('btnCopyRemedyText');
 
@@ -1529,6 +1530,106 @@ HASHTAGS: ${tagsStr}`.toUpperCase();
                     // Fallback to text copy
                     copyToClipboard(plainText, 'Texto Remedy copiado');
                 }
+            });
+        }
+
+        // Action: Export directly to PDF
+        if (btnExportRemedyPdf) {
+            btnExportRemedyPdf.addEventListener('click', () => {
+                const falla = remedyInputFalla?.value.trim() || 'Sin especificar';
+                const id = remedyInputId?.value.trim() || 'N/A';
+                const dni = remedyInputDni?.value.trim() || 'N/A';
+                const cliente = remedyInputCliente?.value.trim() || 'N/A';
+                const detalle = remedyInputDetalle?.value.trim() || '';
+
+                const docTitle = `Remedy_${id}_${cliente.replace(/\s+/g, '_')}`;
+
+                const printWindow = window.open('', '_blank');
+                if (!printWindow) {
+                    showToast('Por favor permite ventanas emergentes para generar el PDF');
+                    return;
+                }
+
+                let html = `<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>${docTitle}</title>
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 22mm 20mm 20mm 20mm;
+        }
+        * {
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            color: #000000;
+            background: #ffffff;
+            margin: 0;
+            padding: 0;
+            font-size: 11pt;
+            line-height: 1.5;
+        }
+        .falla-title {
+            font-size: 11.5pt;
+            margin-bottom: 16px;
+            line-height: 1.45;
+        }
+        .meta-list {
+            margin: 0 0 24px 20px;
+            padding: 0;
+            font-size: 11pt;
+        }
+        .meta-list li {
+            margin-bottom: 5px;
+        }
+        .evidence-section {
+            margin-top: 20px;
+        }
+        .evidence-img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto 16px auto;
+            border: 1px solid #9ca3af;
+            border-radius: 4px;
+            page-break-inside: avoid;
+        }
+    </style>
+</head>
+<body>
+    <div class="falla-title"><strong>FALLA:</strong> ${falla}</div>
+    
+    <ul class="meta-list">
+        <li><strong>ID:</strong> ${id}</li>
+        <li><strong>DNI:</strong> ${dni}</li>
+        <li><strong>CLIENTE:</strong> ${cliente}</li>
+        ${detalle ? `<li>${detalle}</li>` : ''}
+    </ul>
+
+    <div class="evidence-section">
+        ${remedyImagesList.map(img => `<p style="margin: 0 0 16px 0; text-align:center;"><img class="evidence-img" src="${img}" alt="Evidencia Remedy" /></p>`).join('')}
+    </div>
+
+    <script>
+        window.onload = function() {
+            setTimeout(function() {
+                window.print();
+            }, 300);
+        };
+    </script>
+</body>
+</html>`;
+
+                printWindow.document.open();
+                printWindow.document.write(html);
+                printWindow.document.close();
+                showToast('Generando vista de impresión PDF...');
+                addHistoryRecord('Remedy', 'PDF Escalamiento', `FALLA: ${falla} | ID: ${id} | CLIENTE: ${cliente}`);
             });
         }
 
