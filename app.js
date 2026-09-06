@@ -366,6 +366,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // ==========================================================================
         // MOTOR DE AUTOCORRECCIÓN ORTOGRÁFICA & ABREVIATURAS TELECOM
         // ==========================================================================
+        // ==========================================================================
+        // MOTOR DE AUTOCORRECCIÓN ORTOGRÁFICA & ABREVIATURAS TELECOM
+        // ==========================================================================
         function autoCorrectText(text, preserveTrailingSpaces = true) {
             if (!text) return '';
             
@@ -376,15 +379,70 @@ document.addEventListener('DOMContentLoaded', () => {
             let cleaned = text;
 
             const corrections = [
+                // Verbos comunes de atención en pasado (3ra persona singular con tilde)
+                { regex: /\b(educo)\b/gi, replacement: 'educó' },
+                { regex: /\b(informo)\b/gi, replacement: 'informó' },
+                { regex: /\b(valido)\b/gi, replacement: 'validó' },
+                { regex: /\b(realizo)\b/gi, replacement: 'realizó' },
+                { regex: /\b(coordino)\b/gi, replacement: 'coordinó' },
+                { regex: /\b(genero)\b/gi, replacement: 'generó' },
+                { regex: /\b(soluciono)\b/gi, replacement: 'solucionó' },
+                { regex: /\b(indico)\b/gi, replacement: 'indicó' },
+                { regex: /\b(atendio)\b/gi, replacement: 'atendió' },
+                { regex: /\b(comunico)\b/gi, replacement: 'comunicó' },
+                { regex: /\b(confirmo)\b/gi, replacement: 'confirmó' },
+                { regex: /\b(cancelo)\b/gi, replacement: 'canceló' },
+                { regex: /\b(reporto)\b/gi, replacement: 'reportó' },
+                { regex: /\b(envio)\b/gi, replacement: 'envió' },
+                { regex: /\b(ingreso)\b/gi, replacement: 'ingresó' },
+                { regex: /\b(verifico)\b/gi, replacement: 'verificó' },
+                { regex: /\b(conecto)\b/gi, replacement: 'conectó' },
+                { regex: /\b(desconecto)\b/gi, replacement: 'desconectó' },
+                { regex: /\b(solicito)\b/gi, replacement: 'solicitó' },
+                { regex: /\b(explico)\b/gi, replacement: 'explicó' },
+                { regex: /\b(asistio)\b/gi, replacement: 'asistió' },
+                { regex: /\b(acudio)\b/gi, replacement: 'acudió' },
+
+                // Errores tipográficos por tipeo veloz y letras omitidas
+                { regex: /\b(deconectar|desconectar)\b/gi, replacement: 'desconectar' },
+                { regex: /\b(deconecta|desconecta)\b/gi, replacement: 'desconecta' },
+                { regex: /\b(deconectado|desconectado)\b/gi, replacement: 'desconectado' },
+                { regex: /\b(nches|nche)\b/gi, replacement: 'noches' },
+                { regex: /\b(ruter|rotuer)\b/gi, replacement: 'router' },
+                { regex: /\b(modem|modems)\b/gi, replacement: 'módem' },
+                { regex: /\b(cabledo|cablado|cabliado)\b/gi, replacement: 'cableado' },
+                { regex: /\b(servcio|servico|servisios)\b/gi, replacement: 'servicio' },
+                { regex: /\b(coneccion|conexiion|conecion)\b/gi, replacement: 'conexión' },
+                { regex: /\b(conexion)\b/gi, replacement: 'conexión' },
+                { regex: /\b(instalacion)\b/gi, replacement: 'instalación' },
+                { regex: /\b(verificacion)\b/gi, replacement: 'verificación' },
+                { regex: /\b(atencion)\b/gi, replacement: 'atención' },
+                { regex: /\b(operacion)\b/gi, replacement: 'operación' },
+                { regex: /\b(dia)\b/gi, replacement: 'día' },
+                { regex: /\b(dias)\b/gi, replacement: 'días' },
+                { regex: /\b(tecnico)\b/gi, replacement: 'técnico' },
+                { regex: /\b(tecnicos)\b/gi, replacement: 'técnicos' },
+                { regex: /\b(parametros)\b/gi, replacement: 'parámetros' },
+                { regex: /\b(informacion)\b/gi, replacement: 'información' },
+                { regex: /\b(comunicacion)\b/gi, replacement: 'comunicación' },
+                { regex: /\b(numero)\b/gi, replacement: 'número' },
+                { regex: /\b(numeros)\b/gi, replacement: 'números' },
+                { regex: /\b(senial|senales)\b/gi, replacement: 'señal' },
+                { regex: /\b(solucion)\b/gi, replacement: 'solución' },
+                { regex: /\b(revision)\b/gi, replacement: 'revisión' },
+                { regex: /\b(configuracion)\b/gi, replacement: 'configuración' },
+                { regex: /\b(provision)\b/gi, replacement: 'provisión' },
+                { regex: /\b(validacion)\b/gi, replacement: 'validación' },
+
                 // Abreviaturas y errores comunes de asesores
                 { regex: /\b(cli|clie)\b/gi, replacement: 'cliente' },
                 { regex: /\b(serv|srv)\b/gi, replacement: 'servicio' },
-                { regex: /\b(prov|provision)\b/gi, replacement: 'provisión' },
-                { regex: /\b(config|configuracion)\b/gi, replacement: 'configuración' },
-                { regex: /\b(verif|verificacion)\b/gi, replacement: 'verificación' },
-                { regex: /\b(reini|reinicio)\b/gi, replacement: 'reinicio' },
-                { regex: /\b(soluc|solucion)\b/gi, replacement: 'solución' },
-                { regex: /\b(telef|tlf|telefono)\b/gi, replacement: 'teléfono' },
+                { regex: /\b(prov)\b/gi, replacement: 'provisión' },
+                { regex: /\b(config)\b/gi, replacement: 'configuración' },
+                { regex: /\b(verif)\b/gi, replacement: 'verificación' },
+                { regex: /\b(reini)\b/gi, replacement: 'reinicio' },
+                { regex: /\b(soluc)\b/gi, replacement: 'solución' },
+                { regex: /\b(telef|tlf)\b/gi, replacement: 'teléfono' },
                 { regex: /\b(buzon)\b/gi, replacement: 'buzón' },
                 { regex: /\b(linea)\b/gi, replacement: 'línea' },
                 { regex: /\b(veloc|velocid)\b/gi, replacement: 'velocidad' },
@@ -392,8 +450,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 { regex: /\b(conect)\b/gi, replacement: 'conectado' },
                 { regex: /\b(cablead)\b/gi, replacement: 'cableado' },
                 { regex: /\b(equip|eq)\b/gi, replacement: 'equipo' },
-                { regex: /\b(nocontesta|no cont)\b/gi, replacement: 'no contesta' },
-                { regex: /\b(wsp|wa|wha|whatsapp)\b/gi, replacement: 'WhatsApp' },
+                { regex: /\b(nocontesta)\b/gi, replacement: 'no contesta' },
+                { regex: /\b(wsp|wa|wha)\b/gi, replacement: 'WhatsApp' },
                 { regex: /\b(msj|msg)\b/gi, replacement: 'mensaje' },
                 
                 // Nombres de herramientas y plataformas
@@ -429,23 +487,37 @@ document.addEventListener('DOMContentLoaded', () => {
         const attachAutoCorrect = (inputEl, btnEl) => {
             if (!inputEl) return;
 
-            // 1. Al presionar Espacio, Coma o Enter, autocorregir respetando posición del cursor y espacios
+            // 1. Al presionar Espacio, Coma o Enter, autocorregir respetando diferencia de longitud del cursor
             inputEl.addEventListener('keyup', (e) => {
                 if ([' ', ',', 'Enter'].includes(e.key)) {
                     const original = inputEl.value;
                     const startPos = inputEl.selectionStart;
                     const corrected = autoCorrectText(original, true);
                     if (original !== corrected) {
+                        const lenDiff = corrected.length - original.length;
                         inputEl.value = corrected;
                         if (typeof startPos === 'number') {
-                            inputEl.setSelectionRange(startPos, startPos);
+                            const newPos = Math.max(0, startPos + lenDiff);
+                            inputEl.setSelectionRange(newPos, newPos);
                         }
                         renderGeneratorPreviews();
                     }
                 }
             });
 
-            // 2. Al perder el foco (blur), autocorregir todo el texto
+            // 2. Al pegar texto (paste)
+            inputEl.addEventListener('paste', () => {
+                setTimeout(() => {
+                    const original = inputEl.value;
+                    const corrected = autoCorrectText(original, false);
+                    if (original !== corrected) {
+                        inputEl.value = corrected;
+                        renderGeneratorPreviews();
+                    }
+                }, 20);
+            });
+
+            // 3. Al perder el foco (blur), autocorregir todo el texto
             inputEl.addEventListener('blur', () => {
                 const original = inputEl.value;
                 const corrected = autoCorrectText(original, false);
@@ -455,7 +527,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            // 3. Botón 🪄 Auto-corregir manual
+            // 4. Botón 🪄 Auto-corregir manual
             if (btnEl) {
                 btnEl.addEventListener('click', () => {
                     const original = inputEl.value;
@@ -939,9 +1011,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const telefono = (elements.genTelefono.value || 'N/A').trim();
         const sot = (elements.genSot.value || 'N/A').trim();
         
-        const solucion = ((elements.genSolucion && elements.genSolucion.value) ? elements.genSolucion.value.trim() : 'N/A');
-        const rawDescartes = (elements.genDescartes.value || 'Se realizan descartes de protocolo').trim();
-        const descartesFormatted = formatDescartesLines(rawDescartes);
+        const rawSolucion = ((elements.genSolucion && elements.genSolucion.value) ? elements.genSolucion.value.trim() : 'N/A');
+        const solucion = rawSolucion !== 'N/A' ? autoCorrectText(rawSolucion, false) : 'N/A';
+
+        const rawDescartesInput = (elements.genDescartes ? elements.genDescartes.value : '');
+        const rawDescartes = (rawDescartesInput || 'Se realizan descartes de protocolo').trim();
+        const correctedDescartes = autoCorrectText(rawDescartes, false);
+        const descartesFormatted = formatDescartesLines(correctedDescartes);
         const tagsStr = state.selectedHashtags.size > 0 ? Array.from(state.selectedHashtags).join(' ') : 'N/A';
 
         const contactLines = getFormattedContactLines();
@@ -999,7 +1075,7 @@ ${contactLines}`;
         }
 
         // Template Mantenimiento (MANTO) - Formato de Plataforma para Técnicos
-        const rawDescartesManto = (elements.genDescartes.value || 'Se realizan descartes de protocolo').trim();
+        const rawDescartesManto = autoCorrectText((elements.genDescartes.value || 'Se realizan descartes de protocolo').trim(), false);
         const contactIdVal = (Array.from(state.callIds).concat(Array.from(state.chatIds)).join(' / ') || (elements.genContactId ? elements.genContactId.value.trim() : '') || 'N/A');
         
         let tagManto = '';
@@ -1059,6 +1135,15 @@ ${contactLines}`;
     }
 
     function executeCopyTemplate(previewElement, successMsg, logType) {
+        // Auto-corregir campos de texto antes de la validación y del copiado
+        if (elements.genSolucion && elements.genSolucion.value) {
+            elements.genSolucion.value = autoCorrectText(elements.genSolucion.value, false);
+        }
+        if (elements.genDescartes && elements.genDescartes.value) {
+            elements.genDescartes.value = autoCorrectText(elements.genDescartes.value, false);
+        }
+        renderGeneratorPreviews();
+
         const validation = validateTemplateRequirements();
         if (!validation.isValid) {
             // Animar campos faltantes con vibración roja
