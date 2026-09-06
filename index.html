@@ -18,7 +18,8 @@
             </div>
         </div>
 
-        <div class="header-actions">
+        <div class="header-actions" style="display:flex; gap:0.5rem; align-items:center;">
+            <button id="btnOpenLinksSidebar" class="header-circle-btn" title="Plataformas & Enlaces de Trabajo (Alt+L)">🌐</button>
             <button id="themeToggleBtn" class="theme-toggle-btn" title="Cambiar Tema (Oscuro/Claro)">🌙</button>
         </div>
     </header>
@@ -601,6 +602,54 @@
     <footer class="app-footer">
         Creado por Drey E. Aymituma &copy; 2026 &bull; Aplicación Local Offline de Plantillas Back Office &bull; Inmune a Proxies
     </footer>
+
+    <!-- SIDEBAR DE ENLACES & PLATAFORMAS DE TRABAJO -->
+    <div id="linksSidebarOverlay" class="sidebar-overlay"></div>
+    <aside id="linksSidebar" class="links-sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-title">🌐 Plataformas & Links de Trabajo</div>
+            <button type="button" id="btnCloseLinksSidebar" class="sidebar-close-btn" title="Cerrar (Esc)">✕</button>
+        </div>
+
+        <div class="sidebar-search-box">
+            <input type="text" id="sidebarLinkSearch" class="form-input" placeholder="🔍 Buscar plataforma (ej. Hygeia, Incógnito, SGA)...">
+        </div>
+
+        <div class="sidebar-body">
+            <!-- Sección 1: Accesos Rápidos más Utilizados -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">⚡ Accesos Rápidos (Más Utilizados)</div>
+                <div id="sidebarQuickLinks" class="sidebar-quick-grid"></div>
+            </div>
+
+            <!-- Sección 2: Catálogo Completo por Categorías -->
+            <div class="sidebar-section" style="margin-top: 1.2rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem;">
+                    <div class="sidebar-section-title" style="margin:0;">📚 Catálogo Completo de Links</div>
+                    <button type="button" id="btnAddCustomLinkBtn" class="btn btn-sm btn-primary" style="font-size:0.75rem; padding:0.2rem 0.5rem;">+ Agregar Link</button>
+                </div>
+
+                <!-- Formulario desplegable para agregar link personalizado -->
+                <div id="addCustomLinkForm" class="add-link-card" style="display:none;">
+                    <div style="font-weight:bold; font-size:0.82rem; margin-bottom:0.5rem; color:var(--text-main);">Añadir Enlace Personalizado</div>
+                    <input type="text" id="newLinkName" class="form-input" placeholder="Nombre (ej. Mi Portal)" style="margin-bottom:0.4rem; font-size:0.8rem;">
+                    <input type="text" id="newLinkUrl" class="form-input" placeholder="URL (ej. https://...)" style="margin-bottom:0.4rem; font-size:0.8rem;">
+                    <select id="newLinkCategory" class="form-select" style="margin-bottom:0.5rem; font-size:0.8rem;">
+                        <option value="Diagnóstico & Niveles">Diagnóstico & Niveles</option>
+                        <option value="Sistemas & Gestión">Sistemas & Gestión</option>
+                        <option value="Canales & Comunicación">Canales & Comunicación</option>
+                        <option value="Otros Enlaces">Otros Enlaces</option>
+                    </select>
+                    <div style="display:flex; gap:0.4rem; justify-content:flex-end;">
+                        <button type="button" id="btnCancelAddLink" class="btn btn-sm">Cancelar</button>
+                        <button type="button" id="btnSaveCustomLink" class="btn btn-sm btn-primary">Guardar</button>
+                    </div>
+                </div>
+
+                <div id="sidebarFullLinksContainer"></div>
+            </div>
+        </div>
+    </aside>
 
     <!-- SCRIPTS -->
     <script src="dataset.js"></script>

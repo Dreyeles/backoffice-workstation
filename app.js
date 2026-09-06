@@ -2099,7 +2099,281 @@ ${contactLines}`;
         }
     }
 
+    // ==========================================================================
+    // MODULE: PLATAFORMAS & LINKS DE TRABAJO (SIDEBAR OFF-CANVAS)
+    // ==========================================================================
+    function initLinksSidebar() {
+        const defaultWorkLinks = [
+            { id: 'lnk_1', name: 'Hygeia (Niveles HFC)', url: 'https://hygeia.claro.com.pe/', category: 'Diagnóstico & Niveles', icon: '⚡', isQuick: true },
+            { id: 'lnk_2', name: 'Incógnito Provisión', url: 'https://incognito.claro.com.pe/', category: 'Diagnóstico & Niveles', icon: '🌐', isQuick: true },
+            { id: 'lnk_3', name: 'Schaman Diagnóstico', url: 'https://schaman.claro.com.pe/', category: 'Diagnóstico & Niveles', icon: '📊', isQuick: true },
+            { id: 'lnk_4', name: 'SGA Operativo', url: 'https://sga.claro.com.pe/', category: 'Sistemas & Gestión', icon: '📋', isQuick: true },
+            { id: 'lnk_5', name: 'SIAC Único', url: 'https://siacunico.claro.com.pe/', category: 'Sistemas & Gestión', icon: '🖥️', isQuick: true },
+            { id: 'lnk_6', name: 'Helix / Remedy', url: 'https://helix.remedy.claro.com.pe/', category: 'Sistemas & Gestión', icon: '🛠️', isQuick: true },
+            { id: 'lnk_7', name: 'Tracer Consumo', url: 'https://tracer.claro.com.pe/', category: 'Diagnóstico & Niveles', icon: '📈', isQuick: false },
+            { id: 'lnk_8', name: 'Plume Portal Admin', url: 'https://plume.claro.com.pe/', category: 'Diagnóstico & Niveles', icon: '📡', isQuick: false },
+            { id: 'lnk_9', name: 'LiveChat Corporativo', url: 'https://livechat.claro.com.pe/', category: 'Canales & Comunicación', icon: '💬', isQuick: false },
+            { id: 'lnk_10', name: 'WhatsApp Web', url: 'https://web.whatsapp.com/', category: 'Canales & Comunicación', icon: '📱', isQuick: false }
+        ];
+
+        let workLinks = JSON.parse(localStorage.getItem('bo_work_links') || 'null');
+        if (!workLinks || !Array.isArray(workLinks) || workLinks.length === 0) {
+            workLinks = defaultWorkLinks;
+            localStorage.setItem('bo_work_links', JSON.stringify(workLinks));
+        }
+
+        const sidebar = document.getElementById('linksSidebar');
+        const overlay = document.getElementById('linksSidebarOverlay');
+        const openBtn = document.getElementById('btnOpenLinksSidebar');
+        const closeBtn = document.getElementById('btnCloseLinksSidebar');
+        const searchInput = document.getElementById('sidebarLinkSearch');
+        
+        const quickGrid = document.getElementById('sidebarQuickLinks');
+        const fullContainer = document.getElementById('sidebarFullLinksContainer');
+        
+        const addBtn = document.getElementById('btnAddCustomLinkBtn');
+        const addForm = document.getElementById('addCustomLinkForm');
+        const cancelAddBtn = document.getElementById('btnCancelAddLink');
+        const saveAddBtn = document.getElementById('btnSaveCustomLink');
+
+        const newNameInput = document.getElementById('newLinkName');
+        const newUrlInput = document.getElementById('newLinkUrl');
+        const newCatSelect = document.getElementById('newLinkCategory');
+
+        function openSidebar() {
+            if (sidebar) sidebar.classList.add('open');
+            if (overlay) overlay.classList.add('active');
+            if (searchInput) {
+                searchInput.value = '';
+                renderSidebarLinks();
+                setTimeout(() => searchInput.focus(), 150);
+            }
+        }
+
+        function closeSidebar() {
+            if (sidebar) sidebar.classList.remove('open');
+            if (overlay) overlay.classList.remove('active');
+            if (addForm) addForm.style.display = 'none';
+        }
+
+        if (openBtn) openBtn.addEventListener('click', openSidebar);
+        if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+        if (overlay) overlay.addEventListener('click', closeSidebar);
+
+        // Atajo global: Alt + L para abrir/cerrar sidebar
+        document.addEventListener('keydown', (e) => {
+            if (e.altKey && (e.key === 'l' || e.key === 'L')) {
+                e.preventDefault();
+                if (sidebar && sidebar.classList.contains('open')) {
+                    closeSidebar();
+                } else {
+                    openSidebar();
+                }
+            } else if (e.key === 'Escape' && sidebar && sidebar.classList.contains('open')) {
+                closeSidebar();
+            }
+        });
+
+        // Búsqueda en tiempo real
+        if (searchInput) {
+            searchInput.addEventListener('input', renderSidebarLinks);
+        }
+
+        // Agregar Link Form Toggle
+        if (addBtn) {
+            addBtn.addEventListener('click', () => {
+                if (addForm) {
+                    const isHidden = addForm.style.display === 'none';
+                    addForm.style.display = isHidden ? 'block' : 'none';
+                    if (isHidden && newNameInput) newNameInput.focus();
+                }
+            });
+        }
+
+        if (cancelAddBtn) {
+            cancelAddBtn.addEventListener('click', () => {
+                if (addForm) addForm.style.display = 'none';
+            });
+        }
+
+        if (saveAddBtn) {
+            saveAddBtn.addEventListener('click', () => {
+                const name = (newNameInput.value || '').trim();
+                let url = (newUrlInput.value || '').trim();
+                const category = newCatSelect.value;
+
+                if (!name || !url) {
+                    showToast('⚠️ Ingresa un nombre y URL válidos', 'warning');
+                    return;
+                }
+
+                if (!/^https?:\/\//i.test(url)) {
+                    url = 'https://' + url;
+                }
+
+                const newLink = {
+                    id: 'lnk_' + Date.now(),
+                    name,
+                    url,
+                    category,
+                    icon: '🔗',
+                    isQuick: true,
+                    isCustom: true
+                };
+
+                workLinks.push(newLink);
+                localStorage.setItem('bo_work_links', JSON.stringify(workLinks));
+                
+                newNameInput.value = '';
+                newUrlInput.value = '';
+                if (addForm) addForm.style.display = 'none';
+
+                renderSidebarLinks();
+                showToast(`🔗 Enlace "${name}" guardado`);
+            });
+        }
+
+        function toggleQuickStatus(id) {
+            const index = workLinks.findIndex(l => l.id === id);
+            if (index >= 0) {
+                workLinks[index].isQuick = !workLinks[index].isQuick;
+                localStorage.setItem('bo_work_links', JSON.stringify(workLinks));
+                renderSidebarLinks();
+            }
+        }
+
+        function deleteCustomLink(id) {
+            if (confirm('¿Desea eliminar este enlace personalizado?')) {
+                workLinks = workLinks.filter(l => l.id !== id);
+                localStorage.setItem('bo_work_links', JSON.stringify(workLinks));
+                renderSidebarLinks();
+                showToast('Enlace eliminado');
+            }
+        }
+
+        function renderSidebarLinks() {
+            const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
+
+            const filtered = workLinks.filter(l => 
+                l.name.toLowerCase().includes(query) ||
+                l.category.toLowerCase().includes(query) ||
+                l.url.toLowerCase().includes(query)
+            );
+
+            // 1. Render Accesos Rápidos
+            if (quickGrid) {
+                quickGrid.innerHTML = '';
+                const quickList = filtered.filter(l => l.isQuick);
+                
+                if (quickList.length === 0) {
+                    quickGrid.innerHTML = '<div style="font-size:0.78rem; color:var(--text-muted); grid-column:1/-1;">No hay accesos rápidos marcados.</div>';
+                } else {
+                    quickList.forEach(lnk => {
+                        const card = document.createElement('a');
+                        card.className = 'quick-link-card';
+                        card.href = lnk.url;
+                        card.target = '_blank';
+                        card.rel = 'noopener noreferrer';
+                        card.title = `Abrir ${lnk.name}\n${lnk.url}`;
+                        card.innerHTML = `
+                            <span>${lnk.icon || '🔗'} ${lnk.name}</span>
+                            <span style="font-size:0.75rem; color:var(--primary);">↗</span>
+                        `;
+                        quickGrid.appendChild(card);
+                    });
+                }
+            }
+
+            // 2. Render Catálogo Completo por Categorías
+            if (fullContainer) {
+                fullContainer.innerHTML = '';
+                
+                if (filtered.length === 0) {
+                    fullContainer.innerHTML = '<div style="font-size:0.85rem; color:var(--text-muted); padding:1rem 0;">No se encontraron enlaces con ese término.</div>';
+                    return;
+                }
+
+                // Agrupar por Categorías
+                const categoriesMap = {};
+                filtered.forEach(lnk => {
+                    const cat = lnk.category || 'Otros Enlaces';
+                    if (!categoriesMap[cat]) categoriesMap[cat] = [];
+                    categoriesMap[cat].push(lnk);
+                });
+
+                Object.keys(categoriesMap).forEach(catName => {
+                    const groupDiv = document.createElement('div');
+                    groupDiv.style.marginBottom = '1.1rem';
+
+                    const groupTitle = document.createElement('div');
+                    groupTitle.className = 'sidebar-section-title';
+                    groupTitle.style.cssText = 'color:var(--primary); margin-bottom:0.4rem; font-size:0.78rem;';
+                    groupTitle.textContent = catName;
+                    groupDiv.appendChild(groupTitle);
+
+                    categoriesMap[catName].forEach(lnk => {
+                        const row = document.createElement('div');
+                        row.className = 'link-item-row';
+
+                        const starIcon = lnk.isQuick ? '⭐' : '☆';
+                        const starTitle = lnk.isQuick ? 'Quitar de accesos rápidos' : 'Marcar como acceso rápido';
+
+                        let deleteBtnHtml = '';
+                        if (lnk.isCustom) {
+                            deleteBtnHtml = `<button class="btn-link-action btn-del-link" title="Eliminar enlace personalizado" style="color:var(--danger);">🗑️</button>`;
+                        }
+
+                        row.innerHTML = `
+                            <div class="link-item-info">
+                                <div class="link-item-name">${lnk.icon || '🔗'} ${lnk.name}</div>
+                                <div class="link-item-url">${lnk.url}</div>
+                            </div>
+                            <div class="link-actions">
+                                <button class="btn-link-action btn-star-link" title="${starTitle}">${starIcon}</button>
+                                <button class="btn-link-action btn-copy-url" title="Copiar URL">📋</button>
+                                <a href="${lnk.url}" target="_blank" rel="noopener noreferrer" class="btn-link-action" title="Abrir portal en nueva pestaña" style="font-weight:bold; color:var(--primary);">Abrir ↗</a>
+                                ${deleteBtnHtml}
+                            </div>
+                        `;
+
+                        // Event Listeners para las acciones de cada fila
+                        const btnStar = row.querySelector('.btn-star-link');
+                        if (btnStar) {
+                            btnStar.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                toggleQuickStatus(lnk.id);
+                            });
+                        }
+
+                        const btnCopy = row.querySelector('.btn-copy-url');
+                        if (btnCopy) {
+                            btnCopy.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                copyToClipboard(lnk.url, `URL copiada: ${lnk.name}`);
+                            });
+                        }
+
+                        const btnDel = row.querySelector('.btn-del-link');
+                        if (btnDel) {
+                            btnDel.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                deleteCustomLink(lnk.id);
+                            });
+                        }
+
+                        groupDiv.appendChild(row);
+                    });
+
+                    fullContainer.appendChild(groupDiv);
+                });
+            }
+        }
+
+        renderSidebarLinks();
+    }
+
     // Initialize all modules
+    initLinksSidebar();
     initGeneratorTab();
     initTrackerTab();
 });
