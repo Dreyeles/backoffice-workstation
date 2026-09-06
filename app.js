@@ -2104,23 +2104,35 @@ ${contactLines}`;
     // ==========================================================================
     function initLinksSidebar() {
         const defaultWorkLinks = [
-            { id: 'lnk_1', name: 'Hygeia (Niveles HFC)', url: 'https://hygeia.claro.com.pe/', category: 'Diagnóstico & Niveles', icon: '⚡', isQuick: true },
-            { id: 'lnk_2', name: 'Incógnito Provisión', url: 'https://incognito.claro.com.pe/', category: 'Diagnóstico & Niveles', icon: '🌐', isQuick: true },
-            { id: 'lnk_3', name: 'Schaman Diagnóstico', url: 'https://schaman.claro.com.pe/', category: 'Diagnóstico & Niveles', icon: '📊', isQuick: true },
-            { id: 'lnk_4', name: 'SGA Operativo', url: 'https://sga.claro.com.pe/', category: 'Sistemas & Gestión', icon: '📋', isQuick: true },
-            { id: 'lnk_5', name: 'SIAC Único', url: 'https://siacunico.claro.com.pe/', category: 'Sistemas & Gestión', icon: '🖥️', isQuick: true },
-            { id: 'lnk_6', name: 'Helix / Remedy', url: 'https://helix.remedy.claro.com.pe/', category: 'Sistemas & Gestión', icon: '🛠️', isQuick: true },
-            { id: 'lnk_7', name: 'Tracer Consumo', url: 'https://tracer.claro.com.pe/', category: 'Diagnóstico & Niveles', icon: '📈', isQuick: false },
-            { id: 'lnk_8', name: 'Plume Portal Admin', url: 'https://plume.claro.com.pe/', category: 'Diagnóstico & Niveles', icon: '📡', isQuick: false },
-            { id: 'lnk_9', name: 'LiveChat Corporativo', url: 'https://livechat.claro.com.pe/', category: 'Canales & Comunicación', icon: '💬', isQuick: false },
-            { id: 'lnk_10', name: 'WhatsApp Web', url: 'https://web.whatsapp.com/', category: 'Canales & Comunicación', icon: '📱', isQuick: false }
+            { id: 'lnk_incognito', name: 'Incógnito', url: 'https://incognito.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '🌐', isQuick: true },
+            { id: 'lnk_dashboard', name: 'Dashboard', url: 'https://dashboard.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '📊', isQuick: true },
+            { id: 'lnk_tr69', name: 'TR69', url: 'https://tr69.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '📡', isQuick: true },
+            { id: 'lnk_schaman', name: 'Schaman', url: 'https://schaman.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '🔍', isQuick: true },
+            { id: 'lnk_remotedesktop', name: 'Escritorio Remoto', url: 'https://remotedesktop.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '🖥️', isQuick: true },
+            { id: 'lnk_tracer', name: 'Tracer', url: 'https://tracer.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '📈', isQuick: true },
+            { id: 'lnk_tracerplano', name: 'Tracer por Plano', url: 'https://tracerplano.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '🗺️', isQuick: true },
+            
+            { id: 'lnk_hygeia', name: 'Hygeia (Niveles HFC/FTTH)', url: 'https://hygeia.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '⚡', isQuick: false },
+            { id: 'lnk_siac', name: 'SIAC Único', url: 'https://siacunico.claro.com.pe/', category: 'Sistemas & Gestión', icon: '💻', isQuick: false },
+            { id: 'lnk_sga', name: 'SGA Operativo', url: 'https://sga.claro.com.pe/', category: 'Sistemas & Gestión', icon: '📋', isQuick: false },
+            { id: 'lnk_remedy', name: 'Helix / Remedy', url: 'https://helix.remedy.claro.com.pe/', category: 'Sistemas & Gestión', icon: '🛠️', isQuick: false },
+            { id: 'lnk_plume', name: 'Plume Admin', url: 'https://plume.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '📶', isQuick: false },
+            { id: 'lnk_livechat', name: 'LiveChat Corporativo', url: 'https://livechat.claro.com.pe/', category: 'Canales & Comunicación', icon: '💬', isQuick: false },
+            { id: 'lnk_wsp', name: 'WhatsApp Web', url: 'https://web.whatsapp.com/', category: 'Canales & Comunicación', icon: '📱', isQuick: false }
         ];
 
         let workLinks = JSON.parse(localStorage.getItem('bo_work_links') || 'null');
         if (!workLinks || !Array.isArray(workLinks) || workLinks.length === 0) {
             workLinks = defaultWorkLinks;
-            localStorage.setItem('bo_work_links', JSON.stringify(workLinks));
+        } else {
+            // Fusión inteligente: asegurar que las nuevas herramientas por defecto existan
+            defaultWorkLinks.forEach(defLnk => {
+                if (!workLinks.some(l => l.id === defLnk.id || l.name.toLowerCase() === defLnk.name.toLowerCase())) {
+                    workLinks.push(defLnk);
+                }
+            });
         }
+        localStorage.setItem('bo_work_links', JSON.stringify(workLinks));
 
         const sidebar = document.getElementById('linksSidebar');
         const overlay = document.getElementById('linksSidebarOverlay');
