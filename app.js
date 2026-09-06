@@ -366,8 +366,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // ==========================================================================
         // MOTOR DE AUTOCORRECCIÓN ORTOGRÁFICA & ABREVIATURAS TELECOM
         // ==========================================================================
-        function autoCorrectText(text) {
+        function autoCorrectText(text, preserveTrailingSpaces = true) {
             if (!text) return '';
+            
+            // Capturar espacios o saltos de línea al final para preservarlos intactos durante el tipeo
+            const trailingMatch = text.match(/\s*$/);
+            const trailingWhitespace = preserveTrailingSpaces && trailingMatch ? trailingMatch[0] : '';
+            
             let cleaned = text;
 
             const corrections = [
@@ -399,22 +404,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 { regex: /\b(tracer)\b/gi, replacement: 'Tracer' },
                 { regex: /\b(remedy)\b/gi, replacement: 'Remedy' },
                 { regex: /\b(siac)\b/gi, replacement: 'SIAC' },
-                { regex: /\b(sga)\b/gi, replacement: 'SGA' },
-                
-                // Limpieza de espacios dobles
-                { regex: /[ \t]+/g, replacement: ' ' }
+                { regex: /\b(sga)\b/gi, replacement: 'SGA' }
             ];
 
             corrections.forEach(c => {
                 cleaned = cleaned.replace(c.regex, c.replacement);
             });
 
-            // Asegurar mayúscula al inicio de cada oración / línea
+            // Asegurar mayúscula inicial en cada línea sin borrar espacios
             cleaned = cleaned.split('\n').map(line => {
-                const trimmed = line.trim();
-                if (!trimmed) return '';
-                return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+                if (!line) return '';
+                const firstNonSpace = line.search(/\S/);
+                if (firstNonSpace === -1) return line;
+                return line.slice(0, firstNonSpace) + line.charAt(firstNonSpace).toUpperCase() + line.slice(firstNonSpace + 1);
             }).join('\n');
+
+            if (preserveTrailingSpaces && trailingWhitespace && !cleaned.endsWith(trailingWhitespace)) {
+                cleaned = cleaned.replace(/\s*$/, '') + trailingWhitespace;
+            }
 
             return cleaned;
         }
@@ -422,13 +429,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const attachAutoCorrect = (inputEl, btnEl) => {
             if (!inputEl) return;
 
-            // 1. Al presionar Espacio, Coma o Enter, autocorregir palabra previa
+            // 1. Al presionar Espacio, Coma o Enter, autocorregir respetando posición del cursor y espacios
             inputEl.addEventListener('keyup', (e) => {
                 if ([' ', ',', 'Enter'].includes(e.key)) {
                     const original = inputEl.value;
-                    const corrected = autoCorrectText(original);
+                    const startPos = inputEl.selectionStart;
+                    const corrected = autoCorrectText(original, true);
                     if (original !== corrected) {
                         inputEl.value = corrected;
+                        if (typeof startPos === 'number') {
+                            inputEl.setSelectionRange(startPos, startPos);
+                        }
                         renderGeneratorPreviews();
                     }
                 }
@@ -437,7 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // 2. Al perder el foco (blur), autocorregir todo el texto
             inputEl.addEventListener('blur', () => {
                 const original = inputEl.value;
-                const corrected = autoCorrectText(original);
+                const corrected = autoCorrectText(original, false);
                 if (original !== corrected) {
                     inputEl.value = corrected;
                     renderGeneratorPreviews();
@@ -448,12 +459,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (btnEl) {
                 btnEl.addEventListener('click', () => {
                     const original = inputEl.value;
-                    const corrected = autoCorrectText(original);
+                    const corrected = autoCorrectText(original, false);
                     inputEl.value = corrected;
                     renderGeneratorPreviews();
-                    if (original && original !== corrected) {
+                    if (original && original.trim() !== corrected.trim()) {
                         showToast('🪄 Ortografía y abreviaturas corregidas', 'info');
-                    } else if (original) {
+                    } else if (original.trim()) {
                         showToast('✓ Texto sin errores corregido', 'info');
                     } else {
                         showToast('⚠️ Ingresa texto primero para corregir', 'warning');
