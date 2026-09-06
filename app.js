@@ -885,16 +885,28 @@ Solución: ${solucion}${sotSiacLine}
 ${contactLines}`;
         }
 
-        // Template Mantenimiento (MANTO)
-        const mantoText = `BACK OFFICE 2N HITSS:
-************************
-Teléfono: ${telefono}
-Problema: ${cleanProblema}
-${descartesFormatted}
-Solución: ${solucion}
-SOT / REMEDY: ${sot}
-${contactLines}
-Hashtags: ${tagsStr}`;
+        // Template Mantenimiento (MANTO) - Formato de Plataforma para Técnicos
+        const rawDescartesManto = (elements.genDescartes.value || 'Se realizan descartes de protocolo').trim();
+        const contactIdVal = (Array.from(state.callIds).concat(Array.from(state.chatIds)).join(' / ') || (elements.genContactId ? elements.genContactId.value.trim() : '') || 'N/A');
+        
+        let tagManto = '';
+        if (state.selectedHashtags.size > 0) {
+            tagManto = Array.from(state.selectedHashtags).map(t => {
+                const clean = t.replace(/^#+/, '').replace(/#+$/, '');
+                return `#${clean}#`;
+            }).join(' ');
+        }
+
+        const mantoLines = [
+            rawDescartesManto,
+            `contacto: ${telefono}`,
+            `ID llamada ${contactIdVal}`
+        ];
+        if (tagManto) {
+            mantoLines.push(tagManto);
+        }
+
+        const mantoText = mantoLines.join('\n');
 
         if (elements.previewSiac) elements.previewSiac.textContent = siacText;
         if (elements.previewManto) elements.previewManto.textContent = mantoText;
