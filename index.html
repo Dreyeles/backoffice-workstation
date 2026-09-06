@@ -69,9 +69,10 @@
                         </div>
 
                         <div class="form-grid">
-                            <div class="form-group">
-                                <label class="form-label" for="genTelefono">Número de Contacto</label>
-                                <input type="text" id="genTelefono" class="form-input" placeholder="Ej: 987654321">
+                            <div class="form-group" style="position: relative;">
+                                <label class="form-label" for="genTelefono">Número de Contacto <span style="color:var(--danger); font-weight:bold;">*</span></label>
+                                <input type="text" id="genTelefono" class="form-input" placeholder="Ej: 987654321" inputmode="numeric" pattern="[0-9]*" maxlength="15" autocomplete="tel">
+                                <div id="genTelefonoWarning" class="input-inline-warning" style="display:none;">⚠️ Solo se permiten números</div>
                             </div>
 
                             <div class="form-group">
@@ -96,7 +97,7 @@
                             </div>
 
                             <div class="form-group full-width">
-                                <label class="form-label">Problema Detectado</label>
+                                <label class="form-label">Problema Detectado / Descripción del Cliente <span style="color:var(--danger); font-weight:bold;">*</span></label>
                                 <div class="custom-select-wrapper" id="problemaWrapper">
                                     <div class="custom-select-trigger" id="genProblemaTrigger">Seleccionar problema...</div>
                                     <div class="custom-select-dropdown" id="problemaDropdown">
@@ -118,7 +119,7 @@
 
                         <!-- Descartes Section -->
                         <div class="form-group">
-                            <label class="form-label" for="genDescartes">Descartes Realizados</label>
+                            <label class="form-label" for="genDescartes">Descartes Realizados <span style="color:var(--danger); font-weight:bold;">*</span> <span style="font-size:0.75rem; text-transform:none; font-weight:normal; color:var(--text-muted);">(Mínimo 1 descarte)</span></label>
                             <textarea id="genDescartes" class="form-textarea" placeholder="Descartes técnicos realizados..."></textarea>
                             
                             <span class="form-label" style="margin-top:0.4rem; font-size:0.75rem;">Descartes Rápida Selección:</span>

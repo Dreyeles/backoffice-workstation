@@ -524,7 +524,6 @@ body {
   max-height: 260px;
   overflow-y: auto;
   position: relative;
-  text-transform: uppercase;
 }
 
 /* Custom Preview Box Colors */
@@ -839,9 +838,92 @@ body {
   animation: slideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+.toast.toast-warning {
+  border-color: #f59e0b;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);
+}
+
+.toast.toast-danger {
+  border-color: #ef4444;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+}
+
+/* Input Validation Feedback */
+.input-invalid {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25) !important;
+  animation: inputShake 0.35s ease-in-out !important;
+}
+
+@keyframes inputShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-4px); }
+  40%, 80% { transform: translateX(4px); }
+}
+
+.input-inline-warning {
+  color: #f87171;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 0.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  animation: slideUp 0.2s ease;
+}
+
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Validation Status Banner in Preview Column */
+.val-status-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.95rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 1rem;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(10px);
+}
+
+.val-status-banner.val-incomplete {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+}
+
+.val-status-banner.val-complete {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #86efac;
+}
+
+.val-status-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.val-status-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.val-status-banner.val-incomplete .val-status-title {
+  color: #ef4444;
+}
+
+.val-status-banner.val-complete .val-status-title {
+  color: #10b981;
+}
+
+.val-status-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.1rem;
 }
 
 /* Custom Template Cards */

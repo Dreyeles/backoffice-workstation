@@ -206,17 +206,95 @@ document.addEventListener('DOMContentLoaded', () => {
         // 4. Render Hashtags Chips
         renderHashtagChips();
 
-        // 5. Input change listeners
+        // 5. Input change listeners (Limpian resaltados de error al escribir)
         [
             elements.genProblema, elements.genTelefono, elements.genSot,
             elements.genDescartes, elements.genCatResolucion,
             elements.genCatCausa
         ].forEach(input => {
             if (input) {
-                input.addEventListener('input', renderGeneratorPreviews);
+                input.addEventListener('input', (e) => {
+                    e.target.classList.remove('input-invalid');
+                    renderGeneratorPreviews();
+                });
                 input.addEventListener('change', renderGeneratorPreviews);
             }
         });
+
+        // Validación Inteligente: Número de Contacto (Solo dígitos numéricos)
+        if (elements.genTelefono) {
+            const telefonoWarning = document.getElementById('genTelefonoWarning');
+            let warningTimeout = null;
+
+            const triggerPhoneWarning = (msg = '⚠️ Solo se permiten números en el teléfono') => {
+                elements.genTelefono.classList.remove('input-invalid');
+                void elements.genTelefono.offsetWidth; // Forzar reflow para reiniciar animación
+                elements.genTelefono.classList.add('input-invalid');
+
+                if (telefonoWarning) {
+                    telefonoWarning.textContent = msg;
+                    telefonoWarning.style.display = 'flex';
+                }
+
+                if (warningTimeout) clearTimeout(warningTimeout);
+                warningTimeout = setTimeout(() => {
+                    elements.genTelefono.classList.remove('input-invalid');
+                    if (telefonoWarning) telefonoWarning.style.display = 'none';
+                }, 2000);
+
+                showToast(msg, 'warning');
+            };
+
+            // 1. Bloquear teclas no numéricas al tipear
+            elements.genTelefono.addEventListener('keydown', (e) => {
+                // Permitir teclas de control y navegación
+                const allowedControlKeys = [
+                    'Backspace', 'Tab', 'Enter', 'Delete', 'Escape',
+                    'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
+                    'Home', 'End'
+                ];
+                if (allowedControlKeys.includes(e.key) || e.ctrlKey || e.metaKey || e.altKey) {
+                    return;
+                }
+
+                // Si no es un dígito entre 0 y 9, cancelar y avisar
+                if (!/^[0-9]$/.test(e.key)) {
+                    e.preventDefault();
+                    triggerPhoneWarning('⚠️ Solo se permiten números en el teléfono');
+                }
+            });
+
+            // 2. Filtrado y sanitizado al pegar texto (Paste)
+            elements.genTelefono.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pastedText = (e.clipboardData || window.clipboardData).getData('text') || '';
+                const digitsOnly = pastedText.replace(/\D/g, '');
+
+                if (!digitsOnly) {
+                    triggerPhoneWarning('⚠️ El texto pegado no contiene números válidos');
+                    return;
+                }
+
+                if (digitsOnly !== pastedText.trim()) {
+                    triggerPhoneWarning('⚠️ Solo números: Se eliminaron letras y caracteres especiales');
+                }
+
+                elements.genTelefono.value = digitsOnly;
+                renderGeneratorPreviews();
+            });
+
+            // 3. Listener reactivo para limpiar caracteres residuales y actualizar vista previa
+            elements.genTelefono.addEventListener('input', () => {
+                const currentVal = elements.genTelefono.value;
+                if (/\D/.test(currentVal)) {
+                    elements.genTelefono.value = currentVal.replace(/\D/g, '');
+                    triggerPhoneWarning('⚠️ Solo se permiten números en este campo');
+                }
+                renderGeneratorPreviews();
+            });
+
+            elements.genTelefono.addEventListener('change', renderGeneratorPreviews);
+        }
 
         // Gestión Inteligente de ID Llamada y Chat ID (Pegar continuo sin borrar)
         if (elements.genContactId) {
@@ -380,6 +458,11 @@ document.addEventListener('DOMContentLoaded', () => {
             state.cicloOverride = null;
             state.callIds.clear();
             state.chatIds.clear();
+
+            // Limpiar resaltados de error por validación
+            document.querySelectorAll('.input-invalid').forEach(el => el.classList.remove('input-invalid'));
+            const telefonoWarning = document.getElementById('genTelefonoWarning');
+            if (telefonoWarning) telefonoWarning.style.display = 'none';
 
             renderGeneratorPreviews();
             showToast('Campos del Caso 1 limpiados');
@@ -695,33 +778,62 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 10);
     }
 
+    function formatDescartesLines(rawText) {
+        if (!rawText || !rawText.trim()) return 'Descartes: N/A';
+        
+        let items = [];
+        if (rawText.includes('\n')) {
+            // Si tiene saltos de línea manuales, respetar cada línea
+            items = rawText.split(/\r?\n/)
+                .map(s => s.trim())
+                .filter(s => s.length > 0);
+        } else {
+            // Si es una sola línea con comas (como los chips rápidos)
+            items = rawText.split(/,/)
+                .map(s => s.trim())
+                .filter(s => s.length > 0);
+        }
+        
+        if (items.length === 0) return 'Descartes: N/A';
+        
+        const prefix = 'Descartes: ';
+        const indent = '           '; // 11 espacios para alinear bajo el primer descarte
+        
+        return prefix + items[0] + (items.length > 1 ? '\n' + items.slice(1).map(l => indent + l).join('\n') : '');
+    }
+
     function getFormattedContactLines() {
-        const lines = [];
+        const all = [];
         if (state.callIds.size > 0) {
-            lines.push(`ID LLAMADA: ${Array.from(state.callIds).join(' / ').toUpperCase()}`);
+            all.push(...Array.from(state.callIds));
         }
         if (state.chatIds.size > 0) {
-            lines.push(`CHAT ID: ${Array.from(state.chatIds).join(' / ').toUpperCase()}`);
+            all.push(...Array.from(state.chatIds));
         }
-        if (lines.length === 0) {
-            return 'ID LLAMADA: N/A';
+        if (all.length === 0) {
+            const manual = (elements.genContactId && elements.genContactId.value) ? elements.genContactId.value.trim() : '';
+            if (manual && manual.toUpperCase() !== 'N/A') return `ID call/live: ${manual}`;
+            return 'ID call/live: N/A';
         }
-        return lines.join('\n');
+        return `ID call/live: ${all.join(' / ')}`;
     }
 
     function renderGeneratorPreviews() {
-        const servicio = (elements.genServicio.value || 'INTERNET').toUpperCase();
-        const problema = (elements.genProblema.value || 'INT - BAJA VELOCIDAD VIA CABLEADO').toUpperCase();
-        const telefono = (elements.genTelefono.value || 'N/A').toUpperCase();
-        const sot = (elements.genSot.value || 'N/A').toUpperCase();
+        const rawProblema = (elements.genProblema.value || 'INT - BAJA VELOCIDAD VIA CABLEADO').trim();
+        let cleanProblema = rawProblema.replace(/^(INT|TEL|IPTV|CABLE|APPS)\s*-\s*/i, '').trim();
+        if (!cleanProblema) cleanProblema = rawProblema;
+
+        const telefono = (elements.genTelefono.value || 'N/A').trim();
+        const sot = (elements.genSot.value || 'N/A').trim();
         
-        const solucion = ((elements.genSolucion && elements.genSolucion.value) ? elements.genSolucion.value : 'N/A').toUpperCase();
-        const descartes = (elements.genDescartes.value || 'SE REALIZAN DESCARTES DE PROTOCOLO').toUpperCase();
-        const tagsStr = state.selectedHashtags.size > 0 ? Array.from(state.selectedHashtags).join(' ').toUpperCase() : 'N/A';
+        const solucion = ((elements.genSolucion && elements.genSolucion.value) ? elements.genSolucion.value.trim() : 'N/A');
+        const rawDescartes = (elements.genDescartes.value || 'Se realizan descartes de protocolo').trim();
+        const descartesFormatted = formatDescartesLines(rawDescartes);
+        const tagsStr = state.selectedHashtags.size > 0 ? Array.from(state.selectedHashtags).join(' ') : 'N/A';
 
         const contactLines = getFormattedContactLines();
 
-        const isAutoCiclo = checkIsCiclo(descartes);
+        const isAutoCiclo = checkIsCiclo(rawDescartes);
         const isCiclo = state.cicloOverride !== null ? state.cicloOverride : isAutoCiclo;
 
         // Actualizar UI del Switch / Badge de Ciclo
@@ -753,36 +865,101 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const sotRaw = (elements.genSot.value || '').trim();
-        const sotSiacLine = sotRaw ? `\nSOT / REMEDY: ${sotRaw.toUpperCase()}` : '';
+        const sotSiacLine = (sotRaw && sotRaw.toUpperCase() !== 'N/A') ? `\nSOT / REMEDY: ${sotRaw}` : '';
 
         // Template SIAC (Standard or Ciclo de Llamada)
         let siacText = '';
         if (isCiclo) {
-            siacText = `BACKOFFICE HITSS - CICLO DE LLAMADA
-TELEFONO: ${telefono}
-DESCARTES REALIZADOS: ${descartes}${sotSiacLine}
-${contactLines}`.toUpperCase();
+            siacText = `BACK OFFICE 2N HITSS - CICLO DE LLAMADA:
+************************
+Teléfono: ${telefono}
+${descartesFormatted}${sotSiacLine}
+${contactLines}`;
         } else {
-            siacText = `BACKOFFICE HITSS
-TELEFONO: ${telefono}
-PROBLEMA DETECTADO: ${servicio} - ${problema}
-DESCARTES REALIZADOS: ${descartes}
-SOLUCION: ${solucion}${sotSiacLine}
-${contactLines}`.toUpperCase();
+            siacText = `BACK OFFICE 2N HITSS:
+************************
+Teléfono: ${telefono}
+Problema: ${cleanProblema}
+${descartesFormatted}
+Solución: ${solucion}${sotSiacLine}
+${contactLines}`;
         }
 
         // Template Mantenimiento (MANTO)
-        const mantoText = `BACKOFFICE HITSS
-TELEFONO: ${telefono}
-PROBLEMA DETECTADO: ${servicio} - ${problema}
-DESCARTES REALIZADOS: ${descartes}
-SOLUCION: ${solucion}
+        const mantoText = `BACK OFFICE 2N HITSS:
+************************
+Teléfono: ${telefono}
+Problema: ${cleanProblema}
+${descartesFormatted}
+Solución: ${solucion}
 SOT / REMEDY: ${sot}
 ${contactLines}
-HASHTAGS: ${tagsStr}`.toUpperCase();
+Hashtags: ${tagsStr}`;
 
         if (elements.previewSiac) elements.previewSiac.textContent = siacText;
         if (elements.previewManto) elements.previewManto.textContent = mantoText;
+    }
+
+    function validateTemplateRequirements() {
+        const missingFieldNames = [];
+        const missingElements = [];
+
+        // 1. Número de Contacto
+        const telefono = (elements.genTelefono ? elements.genTelefono.value : '').trim();
+        if (!telefono || telefono.length < 6 || telefono.toUpperCase() === 'N/A') {
+            missingFieldNames.push('Número de Contacto');
+            if (elements.genTelefono) missingElements.push(elements.genTelefono);
+        }
+
+        // 2. Descripción / Problema del Cliente
+        const problema = (elements.genProblema ? elements.genProblema.value : '').trim();
+        if (!problema || problema.toUpperCase() === 'N/A') {
+            missingFieldNames.push('Descripción del Cliente / Problema');
+            const trigger = document.getElementById('genProblemaTrigger');
+            if (trigger) missingElements.push(trigger);
+        }
+
+        // 3. Descartes Realizados (Al menos 1 descarte)
+        const descartes = (elements.genDescartes ? elements.genDescartes.value : '').trim();
+        if (!descartes || descartes.toUpperCase() === 'N/A' || descartes.length < 3) {
+            missingFieldNames.push('Descartes Realizados (Mín. 1)');
+            if (elements.genDescartes) missingElements.push(elements.genDescartes);
+        }
+
+        return {
+            isValid: missingFieldNames.length === 0,
+            missingFieldNames,
+            missingElements
+        };
+    }
+
+    function executeCopyTemplate(previewElement, successMsg, logType) {
+        const validation = validateTemplateRequirements();
+        if (!validation.isValid) {
+            // Animar campos faltantes con vibración roja
+            validation.missingElements.forEach(el => {
+                el.classList.remove('input-invalid');
+                void el.offsetWidth;
+                el.classList.add('input-invalid');
+            });
+
+            // Enfocar o hacer scroll al primer elemento que falta
+            if (validation.missingElements.length > 0) {
+                const firstEl = validation.missingElements[0];
+                if (typeof firstEl.focus === 'function') {
+                    firstEl.focus();
+                } else if (firstEl.scrollIntoView) {
+                    firstEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+
+            showToast(`❌ Error: Plantilla incompleta.\nDebes completar:\n• ${validation.missingFieldNames.join('\n• ')}`, 'danger');
+            return false;
+        }
+
+        copyToClipboard(previewElement.textContent, successMsg);
+        addHistoryRecord(logType, elements.genServicio.value, previewElement.textContent);
+        return true;
     }
 
     // Toggle manual para Modo Ciclo
@@ -800,7 +977,7 @@ HASHTAGS: ${tagsStr}`.toUpperCase();
         });
     }
 
-    // Copy Buttons for Generator
+    // Copy Buttons for Generator con Validación Estricta
     if (elements.btnCopySiac) {
         elements.btnCopySiac.addEventListener('click', () => {
             const isAutoCiclo = checkIsCiclo(elements.genDescartes.value || '');
@@ -808,15 +985,13 @@ HASHTAGS: ${tagsStr}`.toUpperCase();
             const msg = isCiclo ? 'Plantilla Ciclo de Llamada copiada' : 'Plantilla SIAC/SGA copiada';
             const logType = isCiclo ? 'Generador Ciclo' : 'Generador SIAC';
 
-            copyToClipboard(elements.previewSiac.textContent, msg);
-            addHistoryRecord(logType, elements.genServicio.value, elements.previewSiac.textContent);
+            executeCopyTemplate(elements.previewSiac, msg, logType);
         });
     }
 
     if (elements.btnCopyManto) {
         elements.btnCopyManto.addEventListener('click', () => {
-            copyToClipboard(elements.previewManto.textContent, 'Plantilla Mantenimiento copiada');
-            addHistoryRecord('Generador Manto', elements.genServicio.value, elements.previewManto.textContent);
+            executeCopyTemplate(elements.previewManto, 'Plantilla Mantenimiento copiada', 'Generador Manto');
         });
     }
 
@@ -1896,17 +2071,20 @@ HASHTAGS: ${tagsStr}`.toUpperCase();
         document.body.removeChild(textarea);
     }
 
-    function showToast(message) {
+    function showToast(message, type = 'success') {
         const toast = document.createElement('div');
-        toast.className = 'toast';
-        toast.innerHTML = `<span>✅</span> <span>${message}</span>`;
-        elements.toastContainer.appendChild(toast);
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            toast.style.transform = 'translateY(10px)';
-            toast.style.transition = 'all 0.3s ease';
-            setTimeout(() => toast.remove(), 300);
-        }, 2500);
+        toast.className = `toast ${type === 'warning' ? 'toast-warning' : (type === 'danger' ? 'toast-danger' : '')}`;
+        const icon = type === 'warning' ? '⚠️' : (type === 'danger' ? '❌' : (type === 'info' ? 'ℹ️' : '✅'));
+        toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+        if (elements.toastContainer) {
+            elements.toastContainer.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(10px)';
+                toast.style.transition = 'all 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
     }
 
     // Initialize all modules
