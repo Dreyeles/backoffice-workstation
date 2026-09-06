@@ -112,16 +112,22 @@
 
                         <!-- Solution Section -->
                         <div class="form-group">
-                            <label class="form-label" for="genSolucion">Solución del Caso</label>
-                            <input type="text" id="genSolucion" class="form-input" placeholder="Describe la solución aplicada...">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <label class="form-label" for="genSolucion">Solución del Caso</label>
+                                <button type="button" id="btnAutoCorrectSolucion" class="btn btn-sm" style="font-size:0.72rem; padding:0.15rem 0.4rem;" title="Corregir ortografía y abreviaturas en Solución">🪄 Auto-corregir</button>
+                            </div>
+                            <input type="text" id="genSolucion" class="form-input" placeholder="Describe la solución aplicada..." spellcheck="true" autocomplete="on">
                         </div>
 
 
 
                         <!-- Descartes Section -->
                         <div class="form-group">
-                            <label class="form-label" for="genDescartes">Descartes Realizados <span style="color:var(--danger); font-weight:bold;">*</span> <span style="font-size:0.75rem; text-transform:none; font-weight:normal; color:var(--text-muted);">(Mínimo 1 descarte)</span></label>
-                            <textarea id="genDescartes" class="form-textarea" placeholder="Descartes técnicos realizados..."></textarea>
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <label class="form-label" for="genDescartes">Descartes Realizados <span style="color:var(--danger); font-weight:bold;">*</span> <span style="font-size:0.75rem; text-transform:none; font-weight:normal; color:var(--text-muted);">(Mínimo 1 descarte)</span></label>
+                                <button type="button" id="btnAutoCorrectDescartes" class="btn btn-sm" style="font-size:0.72rem; padding:0.15rem 0.4rem;" title="Corregir ortografía y abreviaturas en Descartes">🪄 Auto-corregir</button>
+                            </div>
+                            <textarea id="genDescartes" class="form-textarea" placeholder="Descartes técnicos realizados..." spellcheck="true" autocomplete="on"></textarea>
                             
                             <span class="form-label" style="margin-top:0.4rem; font-size:0.75rem;">Descartes Rápida Selección:</span>
                             <div id="quickDescartesContainer" class="chips-container"></div>

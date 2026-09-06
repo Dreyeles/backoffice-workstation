@@ -363,6 +363,108 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        // ==========================================================================
+        // MOTOR DE AUTOCORRECCIÓN ORTOGRÁFICA & ABREVIATURAS TELECOM
+        // ==========================================================================
+        function autoCorrectText(text) {
+            if (!text) return '';
+            let cleaned = text;
+
+            const corrections = [
+                // Abreviaturas y errores comunes de asesores
+                { regex: /\b(cli|clie)\b/gi, replacement: 'cliente' },
+                { regex: /\b(serv|srv)\b/gi, replacement: 'servicio' },
+                { regex: /\b(prov|provision)\b/gi, replacement: 'provisión' },
+                { regex: /\b(config|configuracion)\b/gi, replacement: 'configuración' },
+                { regex: /\b(verif|verificacion)\b/gi, replacement: 'verificación' },
+                { regex: /\b(reini|reinicio)\b/gi, replacement: 'reinicio' },
+                { regex: /\b(soluc|solucion)\b/gi, replacement: 'solución' },
+                { regex: /\b(telef|tlf|telefono)\b/gi, replacement: 'teléfono' },
+                { regex: /\b(buzon)\b/gi, replacement: 'buzón' },
+                { regex: /\b(linea)\b/gi, replacement: 'línea' },
+                { regex: /\b(veloc|velocid)\b/gi, replacement: 'velocidad' },
+                { regex: /\b(descon)\b/gi, replacement: 'desconectado' },
+                { regex: /\b(conect)\b/gi, replacement: 'conectado' },
+                { regex: /\b(cablead)\b/gi, replacement: 'cableado' },
+                { regex: /\b(equip|eq)\b/gi, replacement: 'equipo' },
+                { regex: /\b(nocontesta|no cont)\b/gi, replacement: 'no contesta' },
+                { regex: /\b(wsp|wa|wha|whatsapp)\b/gi, replacement: 'WhatsApp' },
+                { regex: /\b(msj|msg)\b/gi, replacement: 'mensaje' },
+                
+                // Nombres de herramientas y plataformas
+                { regex: /\b(incognito|incog)\b/gi, replacement: 'Incógnito' },
+                { regex: /\b(schaman)\b/gi, replacement: 'Schaman' },
+                { regex: /\b(tr069|tr69)\b/gi, replacement: 'TR69' },
+                { regex: /\b(hygeia)\b/gi, replacement: 'Hygeia' },
+                { regex: /\b(tracer)\b/gi, replacement: 'Tracer' },
+                { regex: /\b(remedy)\b/gi, replacement: 'Remedy' },
+                { regex: /\b(siac)\b/gi, replacement: 'SIAC' },
+                { regex: /\b(sga)\b/gi, replacement: 'SGA' },
+                
+                // Limpieza de espacios dobles
+                { regex: /[ \t]+/g, replacement: ' ' }
+            ];
+
+            corrections.forEach(c => {
+                cleaned = cleaned.replace(c.regex, c.replacement);
+            });
+
+            // Asegurar mayúscula al inicio de cada oración / línea
+            cleaned = cleaned.split('\n').map(line => {
+                const trimmed = line.trim();
+                if (!trimmed) return '';
+                return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+            }).join('\n');
+
+            return cleaned;
+        }
+
+        const attachAutoCorrect = (inputEl, btnEl) => {
+            if (!inputEl) return;
+
+            // 1. Al presionar Espacio, Coma o Enter, autocorregir palabra previa
+            inputEl.addEventListener('keyup', (e) => {
+                if ([' ', ',', 'Enter'].includes(e.key)) {
+                    const original = inputEl.value;
+                    const corrected = autoCorrectText(original);
+                    if (original !== corrected) {
+                        inputEl.value = corrected;
+                        renderGeneratorPreviews();
+                    }
+                }
+            });
+
+            // 2. Al perder el foco (blur), autocorregir todo el texto
+            inputEl.addEventListener('blur', () => {
+                const original = inputEl.value;
+                const corrected = autoCorrectText(original);
+                if (original !== corrected) {
+                    inputEl.value = corrected;
+                    renderGeneratorPreviews();
+                }
+            });
+
+            // 3. Botón 🪄 Auto-corregir manual
+            if (btnEl) {
+                btnEl.addEventListener('click', () => {
+                    const original = inputEl.value;
+                    const corrected = autoCorrectText(original);
+                    inputEl.value = corrected;
+                    renderGeneratorPreviews();
+                    if (original && original !== corrected) {
+                        showToast('🪄 Ortografía y abreviaturas corregidas', 'info');
+                    } else if (original) {
+                        showToast('✓ Texto sin errores corregido', 'info');
+                    } else {
+                        showToast('⚠️ Ingresa texto primero para corregir', 'warning');
+                    }
+                });
+            }
+        };
+
+        attachAutoCorrect(elements.genSolucion, document.getElementById('btnAutoCorrectSolucion'));
+        attachAutoCorrect(elements.genDescartes, document.getElementById('btnAutoCorrectDescartes'));
+
         // 6. Custom Select Dropdown Logic for Problema Detectado
         const problemaTrigger = document.getElementById('genProblemaTrigger');
         const problemaDropdown = document.getElementById('problemaDropdown');
