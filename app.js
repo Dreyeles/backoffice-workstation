@@ -1493,8 +1493,8 @@ ${contactLines}`;
 
                     if (deltaExceeded) {
                         return { 
-                            status: 'ERROR', 
-                            text: `⚠️ Variación Excesiva en Bloque: Δ ${delta} ${unit} (Máx: ${maxVal}, Mín: ${minVal} - Supera límite de 4.0 ${unit})` 
+                            status: 'WARNING', 
+                            text: `⚠️ Observación - Variación en Bloque: Δ ${delta} ${unit} (Máx: ${maxVal}, Mín: ${minVal} - Diferencia > 4.0 ${unit})` 
                         };
                     }
 
@@ -1517,6 +1517,10 @@ ${contactLines}`;
                     element.style.backgroundColor = 'rgba(40, 167, 69, 0.2)';
                     element.style.color = '#28a745';
                     element.style.border = '1px solid #28a745';
+                } else if (result.status === 'WARNING' || result.status === 'WARN') {
+                    element.style.backgroundColor = 'rgba(245, 158, 11, 0.2)';
+                    element.style.color = '#f59e0b';
+                    element.style.border = '1px solid #f59e0b';
                 } else if (result.status === 'ERROR') {
                     element.style.backgroundColor = 'rgba(220, 53, 69, 0.2)';
                     element.style.color = '#dc3545';
@@ -1575,6 +1579,10 @@ ${contactLines}`;
                     element.style.backgroundColor = 'rgba(40, 167, 69, 0.2)';
                     element.style.color = '#28a745';
                     element.style.border = '1px solid #28a745';
+                } else if (result.status === 'WARNING' || result.status === 'WARN') {
+                    element.style.backgroundColor = 'rgba(245, 158, 11, 0.2)';
+                    element.style.color = '#f59e0b';
+                    element.style.border = '1px solid #f59e0b';
                 } else if (result.status === 'ERROR') {
                     element.style.backgroundColor = 'rgba(220, 53, 69, 0.2)';
                     element.style.color = '#dc3545';
