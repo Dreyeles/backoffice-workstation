@@ -775,16 +775,16 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderQuickDescartes() {
         if (!elements.quickDescartesContainer) return;
         const quickDescartesList = [
-            { label: "Consumo Tracer",       states: ["SE VALIDA CONSUMO EN TRACER", "SIN CONSUMO EN TRACER"] },
-            { label: "Provisión e Incógnito", states: ["SE VALIDA PROVISIÓN Y ONLINE EN INCÓGNITO", "SIN PROVISIÓN / NO CARGA EN INCÓGNITO"] },
-            { label: "Dashboard OK",          states: ["SE VALIDA DASHBOARD OK", "DASHBOARD CON AVERÍA"] },
-            { label: "TR69 Todo OK",           states: ["SE VALIDA TR69 TODO OK", "TR69 CON ERRORES"] },
-            { label: "Schaman OK",             states: ["SE VALIDA SCHAMAN OK", "SCHAMAN CON AVERÍA"] },
-            { label: "Plume",                  states: ["SE VALIDA CLIENTE PLUME", "SE VALIDA CLIENTE PLUME DESALINEADO CON ALERTAS"] },
-            { label: "Escritorio Remoto",      states: ["SE HACE REINICIO DE FABRICA DESDE ESCRITORIO REMOTO", "SIN ACCESO AL ESCRITORIO REMOTO"] },
-            { label: "SGA OK",                 states: ["SE VALIDA DATOS DE SOT E HISTORIAL EN SGA", "SE VALIDA PROVISION INCORRECTA EN SGA"] },
-            { label: "SGA SOT",                states: ["SE VALIDA DATOS DE SOT E HISTORIAL OK", "SE VALIDA SIN SOT Y SIN NOTAS EN SGA"] },
-            { label: "Ciclo de Llamada",       states: ["CLIENTE NO CONTESTA, SE ENVIA MENSAJE POR LIVE CHAT Y SE DEJA MENSAJE EN BUZON DE VOZ, SE GENERA CICLO"], icon: '📞 ' }
+            { label: "Consumo Tracer",       states: ["Se valida consumo en Tracer", "Sin consumo en Tracer"] },
+            { label: "Provisión e Incógnito", states: ["Se valida provisión y online en Incógnito", "Sin provisión / no carga en Incógnito"] },
+            { label: "Dashboard OK",          states: ["Se valida Dashboard OK", "Dashboard con avería"] },
+            { label: "TR69 Todo OK",           states: ["Se valida TR69 todo OK", "TR69 con errores"] },
+            { label: "Schaman OK",             states: ["Se valida Schaman OK", "Schaman con avería"] },
+            { label: "Plume",                  states: ["Se valida cliente Plume", "Se valida cliente Plume desalineado con alertas"] },
+            { label: "Escritorio Remoto",      states: ["Se hace reinicio de fábrica desde Escritorio Remoto", "Sin acceso al Escritorio Remoto"] },
+            { label: "SGA OK",                 states: ["Se valida datos de SOT e historial en SGA", "Se valida provisión incorrecta en SGA"] },
+            { label: "SGA SOT",                states: ["Se valida datos de SOT e historial OK", "Se valida sin SOT y sin notas en SGA"] },
+            { label: "Ciclo de Llamada",       states: ["Cliente no contesta, se envía mensaje por LiveChat y se deja mensaje en buzón de voz, se genera ciclo"], icon: '📞 ' }
         ];
 
         if (!state.selectedDescartes) state.selectedDescartes = new Map();
@@ -797,7 +797,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const curState = state.selectedDescartes.get(item.label) || 0;
                     if (curState > 0) {
                         const expectedText = item.states[curState - 1];
-                        if (!currentText.includes(expectedText)) {
+                        if (!currentText.toLowerCase().includes(expectedText.toLowerCase())) {
                             state.selectedDescartes.set(item.label, 0);
                             changed = true;
                         }
