@@ -787,6 +787,89 @@ document.addEventListener('DOMContentLoaded', () => {
             { label: "Ciclo de Llamada",       states: ["Cliente no contesta, se envía mensaje por LiveChat y se deja mensaje en buzón de voz, se genera ciclo"], icon: '📞 ' }
         ];
 
+        const tooltipEl = document.getElementById('chipPreviewTooltip');
+
+        const showChipTooltip = (e, item, currentState) => {
+            if (!tooltipEl) return;
+            const nextState = (currentState + 1) % (item.states.length + 1);
+            
+            let nextTextHTML = '';
+            let nextBoxClass = '';
+            
+            if (nextState === 0) {
+                nextTextHTML = `<strong>⚪ Próximo Clic:</strong> Desactivar / Quitar descarte`;
+                nextBoxClass = 'tooltip-next-box is-reset';
+            } else if (nextState === 1) {
+                nextTextHTML = `<strong>✅ Próximo Clic (Paso 1):</strong><br>"${item.states[0]}"`;
+                nextBoxClass = 'tooltip-next-box is-ok';
+            } else {
+                nextTextHTML = `<strong>❌ Próximo Clic (Paso 2):</strong><br>"${item.states[1]}"`;
+                nextBoxClass = 'tooltip-next-box is-fail';
+            }
+
+            let statesHTML = '';
+            item.states.forEach((st, idx) => {
+                const stepNum = idx + 1;
+                const isCurrent = currentState === stepNum;
+                const isNext = nextState === stepNum;
+                const icon = idx === 0 ? '✅' : '❌';
+                statesHTML += `
+                    <div class="tooltip-state-item ${isCurrent ? 'is-current' : ''} ${isNext ? 'is-next-target' : ''}">
+                        <span>${icon} Clic ${stepNum}:</span>
+                        <span>"${st}"</span>
+                    </div>
+                `;
+            });
+
+            statesHTML += `
+                <div class="tooltip-state-item ${currentState === 0 ? 'is-current' : ''} ${nextState === 0 ? 'is-next-target' : ''}">
+                    <span>⚪ Clic ${item.states.length + 1}:</span>
+                    <span>Quitar descarte</span>
+                </div>
+            `;
+
+            tooltipEl.innerHTML = `
+                <div class="tooltip-header">
+                    <span>${item.icon || '⚡'} ${item.label}</span>
+                    <span style="font-size:0.7rem; opacity:0.8;">${currentState > 0 ? `Estado ${currentState}/${item.states.length}` : 'Inactivo'}</span>
+                </div>
+                <div class="${nextBoxClass}">${nextTextHTML}</div>
+                <div class="tooltip-variants-title">Ciclo completo de variantes:</div>
+                <div class="tooltip-states-list">${statesHTML}</div>
+            `;
+
+            positionTooltip(e);
+            tooltipEl.classList.add('active');
+        };
+
+        const positionTooltip = (e) => {
+            if (!tooltipEl) return;
+            const x = e.clientX + 14;
+            const y = e.clientY + 14;
+            
+            let posX = x;
+            let posY = y;
+            
+            const tooltipWidth = 330;
+            const tooltipHeight = tooltipEl.offsetHeight || 160;
+
+            if (posX + tooltipWidth > window.innerWidth) {
+                posX = e.clientX - tooltipWidth - 10;
+            }
+            if (posY + tooltipHeight > window.innerHeight) {
+                posY = e.clientY - tooltipHeight - 10;
+            }
+
+            tooltipEl.style.left = `${Math.max(10, posX)}px`;
+            tooltipEl.style.top = `${Math.max(10, posY)}px`;
+        };
+
+        const hideChipTooltip = () => {
+            if (tooltipEl) {
+                tooltipEl.classList.remove('active');
+            }
+        };
+
         if (!state.selectedDescartes) state.selectedDescartes = new Map();
 
         if (!elements.genDescartes.dataset.syncBound) {
@@ -828,17 +911,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 let labelText = item.label;
 
                 chip.innerHTML = `${chipIcon}${labelText}`;
-                chip.title = s > 0 ? item.states[s - 1] : item.states[0];
-                chip.addEventListener('click', () => {
+                
+                // Eventos para previsualización dinámica al pasar el mouse (hover)
+                chip.addEventListener('mouseenter', (e) => showChipTooltip(e, item, s));
+                chip.addEventListener('mousemove', (e) => positionTooltip(e));
+                chip.addEventListener('mouseleave', hideChipTooltip);
+
+                chip.addEventListener('click', (e) => {
                     const cur = state.selectedDescartes.get(item.label) || 0;
                     const next = (cur + 1) % (item.states.length + 1);
                     
                     let currentVal = elements.genDescartes.value;
                     if (cur > 0) {
                         const toRemove = item.states[cur - 1];
-                        currentVal = currentVal.replace(new RegExp(`, \\b${toRemove.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'g'), '');
-                        currentVal = currentVal.replace(new RegExp(`\\b${toRemove.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b, ?`, 'g'), '');
-                        currentVal = currentVal.replace(new RegExp(`\\b${toRemove.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'g'), '');
+                        currentVal = currentVal.replace(new RegExp(`, \\b${toRemove.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi'), '');
+                        currentVal = currentVal.replace(new RegExp(`\\b${toRemove.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b, ?`, 'gi'), '');
+                        currentVal = currentVal.replace(new RegExp(`\\b${toRemove.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi'), '');
                     }
                     
                     currentVal = currentVal.trim();
@@ -853,6 +941,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     state.selectedDescartes.set(item.label, next);
                     renderGeneratorPreviews();
                     rebuild();
+
+                    // Actualizar el tooltip inmediatamente después de cambiar estado
+                    const newS = state.selectedDescartes.get(item.label) || 0;
+                    showChipTooltip(e, item, newS);
                 });
                 elements.quickDescartesContainer.appendChild(chip);
             });
