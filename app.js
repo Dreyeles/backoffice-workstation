@@ -183,8 +183,122 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================================================
-    // TAB 1: GENERADOR RÁPIDO (PLANTILLEITOR)
+    // MOTOR DE AUTOCORRECCIÓN ORTOGRÁFICA & ABREVIATURAS TELECOM (Ámbito Global)
     // ==========================================================================
+    function autoCorrectText(text, preserveTrailingSpaces = true) {
+        if (!text) return '';
+        
+        // Capturar espacios o saltos de línea al final para preservarlos intactos durante el tipeo
+        const trailingMatch = text.match(/\s*$/);
+        const trailingWhitespace = preserveTrailingSpaces && trailingMatch ? trailingMatch[0] : '';
+        
+        let cleaned = text;
+
+        const corrections = [
+            // Verbos comunes de atención en pasado (3ra persona singular con tilde)
+            { regex: /\b(educo)\b/gi, replacement: 'educó' },
+            { regex: /\b(informo)\b/gi, replacement: 'informó' },
+            { regex: /\b(valido)\b/gi, replacement: 'validó' },
+            { regex: /\b(realizo)\b/gi, replacement: 'realizó' },
+            { regex: /\b(coordino)\b/gi, replacement: 'coordinó' },
+            { regex: /\b(genero)\b/gi, replacement: 'generó' },
+            { regex: /\b(soluciono)\b/gi, replacement: 'solucionó' },
+            { regex: /\b(indico)\b/gi, replacement: 'indicó' },
+            { regex: /\b(atendio)\b/gi, replacement: 'atendió' },
+            { regex: /\b(comunico)\b/gi, replacement: 'comunicó' },
+            { regex: /\b(confirmo)\b/gi, replacement: 'confirmó' },
+            { regex: /\b(cancelo)\b/gi, replacement: 'canceló' },
+            { regex: /\b(reporto)\b/gi, replacement: 'reportó' },
+            { regex: /\b(envio)\b/gi, replacement: 'envió' },
+            { regex: /\b(ingreso)\b/gi, replacement: 'ingresó' },
+            { regex: /\b(verifico)\b/gi, replacement: 'verificó' },
+            { regex: /\b(conecto)\b/gi, replacement: 'conectó' },
+            { regex: /\b(desconecto)\b/gi, replacement: 'desconectó' },
+            { regex: /\b(solicito)\b/gi, replacement: 'solicitó' },
+            { regex: /\b(explico)\b/gi, replacement: 'explicó' },
+            { regex: /\b(asistio)\b/gi, replacement: 'asistió' },
+            { regex: /\b(acudio)\b/gi, replacement: 'acudió' },
+
+            // Errores tipográficos por tipeo veloz y letras omitidas
+            { regex: /\b(deconectar|desconectar)\b/gi, replacement: 'desconectar' },
+            { regex: /\b(deconecta|desconecta)\b/gi, replacement: 'desconecta' },
+            { regex: /\b(deconectado|desconectado)\b/gi, replacement: 'desconectado' },
+            { regex: /\b(nches|nche)\b/gi, replacement: 'noches' },
+            { regex: /\b(ruter|rotuer)\b/gi, replacement: 'router' },
+            { regex: /\b(modem|modems)\b/gi, replacement: 'módem' },
+            { regex: /\b(cabledo|cablado|cabliado)\b/gi, replacement: 'cableado' },
+            { regex: /\b(servcio|servico|servisios)\b/gi, replacement: 'servicio' },
+            { regex: /\b(coneccion|conexiion|conecion)\b/gi, replacement: 'conexión' },
+            { regex: /\b(conexion)\b/gi, replacement: 'conexión' },
+            { regex: /\b(instalacion)\b/gi, replacement: 'instalación' },
+            { regex: /\b(verificacion)\b/gi, replacement: 'verificación' },
+            { regex: /\b(atencion)\b/gi, replacement: 'atención' },
+            { regex: /\b(operacion)\b/gi, replacement: 'operación' },
+            { regex: /\b(dia)\b/gi, replacement: 'día' },
+            { regex: /\b(dias)\b/gi, replacement: 'días' },
+            { regex: /\b(tecnico)\b/gi, replacement: 'técnico' },
+            { regex: /\b(tecnicos)\b/gi, replacement: 'técnicos' },
+            { regex: /\b(parametros)\b/gi, replacement: 'parámetros' },
+            { regex: /\b(informacion)\b/gi, replacement: 'información' },
+            { regex: /\b(comunicacion)\b/gi, replacement: 'comunicación' },
+            { regex: /\b(numero)\b/gi, replacement: 'número' },
+            { regex: /\b(numeros)\b/gi, replacement: 'números' },
+            { regex: /\b(senial|senales)\b/gi, replacement: 'señal' },
+            { regex: /\b(solucion)\b/gi, replacement: 'solución' },
+            { regex: /\b(revision)\b/gi, replacement: 'revisión' },
+            { regex: /\b(configuracion)\b/gi, replacement: 'configuración' },
+            { regex: /\b(provision)\b/gi, replacement: 'provisión' },
+            { regex: /\b(validacion)\b/gi, replacement: 'validación' },
+
+            // Abreviaturas y errores comunes de asesores
+            { regex: /\b(cli|clie)\b/gi, replacement: 'cliente' },
+            { regex: /\b(serv|srv)\b/gi, replacement: 'servicio' },
+            { regex: /\b(prov)\b/gi, replacement: 'provisión' },
+            { regex: /\b(config)\b/gi, replacement: 'configuración' },
+            { regex: /\b(verif)\b/gi, replacement: 'verificación' },
+            { regex: /\b(reini)\b/gi, replacement: 'reinicio' },
+            { regex: /\b(soluc)\b/gi, replacement: 'solución' },
+            { regex: /\b(telef|tlf)\b/gi, replacement: 'teléfono' },
+            { regex: /\b(buzon)\b/gi, replacement: 'buzón' },
+            { regex: /\b(linea)\b/gi, replacement: 'línea' },
+            { regex: /\b(veloc|velocid)\b/gi, replacement: 'velocidad' },
+            { regex: /\b(descon)\b/gi, replacement: 'desconectado' },
+            { regex: /\b(conect)\b/gi, replacement: 'conectado' },
+            { regex: /\b(cablead)\b/gi, replacement: 'cableado' },
+            { regex: /\b(equip|eq)\b/gi, replacement: 'equipo' },
+            { regex: /\b(nocontesta)\b/gi, replacement: 'no contesta' },
+            { regex: /\b(wsp|wa|wha)\b/gi, replacement: 'WhatsApp' },
+            { regex: /\b(msj|msg)\b/gi, replacement: 'mensaje' },
+            
+            // Nombres de herramientas y plataformas
+            { regex: /\b(incognito|incog)\b/gi, replacement: 'Incógnito' },
+            { regex: /\b(schaman)\b/gi, replacement: 'Schaman' },
+            { regex: /\b(tr069|tr69)\b/gi, replacement: 'TR69' },
+            { regex: /\b(hygeia)\b/gi, replacement: 'Hygeia' },
+            { regex: /\b(tracer)\b/gi, replacement: 'Tracer' },
+            { regex: /\b(remedy)\b/gi, replacement: 'Remedy' },
+            { regex: /\b(siac)\b/gi, replacement: 'SIAC' },
+            { regex: /\b(sga)\b/gi, replacement: 'SGA' }
+        ];
+
+        corrections.forEach(c => {
+            cleaned = cleaned.replace(c.regex, c.replacement);
+        });
+
+        // Asegurar mayúscula inicial en cada línea sin borrar espacios
+        cleaned = cleaned.split('\n').map(line => {
+            if (!line) return '';
+            const firstNonSpace = line.search(/\S/);
+            if (firstNonSpace === -1) return line;
+            return line.slice(0, firstNonSpace) + line.charAt(firstNonSpace).toUpperCase() + line.slice(firstNonSpace + 1);
+        }).join('\n');
+
+        if (preserveTrailingSpaces && trailingWhitespace && !cleaned.endsWith(trailingWhitespace)) {
+            cleaned = cleaned.replace(/\s*$/, '') + trailingWhitespace;
+        }
+
+        return cleaned;
+    }
 
     function initGeneratorTab() {
         // 1. Populate Problems based on initial Service
@@ -363,126 +477,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // ==========================================================================
-        // MOTOR DE AUTOCORRECCIÓN ORTOGRÁFICA & ABREVIATURAS TELECOM
-        // ==========================================================================
-        // ==========================================================================
-        // MOTOR DE AUTOCORRECCIÓN ORTOGRÁFICA & ABREVIATURAS TELECOM
-        // ==========================================================================
-        function autoCorrectText(text, preserveTrailingSpaces = true) {
-            if (!text) return '';
-            
-            // Capturar espacios o saltos de línea al final para preservarlos intactos durante el tipeo
-            const trailingMatch = text.match(/\s*$/);
-            const trailingWhitespace = preserveTrailingSpaces && trailingMatch ? trailingMatch[0] : '';
-            
-            let cleaned = text;
 
-            const corrections = [
-                // Verbos comunes de atención en pasado (3ra persona singular con tilde)
-                { regex: /\b(educo)\b/gi, replacement: 'educó' },
-                { regex: /\b(informo)\b/gi, replacement: 'informó' },
-                { regex: /\b(valido)\b/gi, replacement: 'validó' },
-                { regex: /\b(realizo)\b/gi, replacement: 'realizó' },
-                { regex: /\b(coordino)\b/gi, replacement: 'coordinó' },
-                { regex: /\b(genero)\b/gi, replacement: 'generó' },
-                { regex: /\b(soluciono)\b/gi, replacement: 'solucionó' },
-                { regex: /\b(indico)\b/gi, replacement: 'indicó' },
-                { regex: /\b(atendio)\b/gi, replacement: 'atendió' },
-                { regex: /\b(comunico)\b/gi, replacement: 'comunicó' },
-                { regex: /\b(confirmo)\b/gi, replacement: 'confirmó' },
-                { regex: /\b(cancelo)\b/gi, replacement: 'canceló' },
-                { regex: /\b(reporto)\b/gi, replacement: 'reportó' },
-                { regex: /\b(envio)\b/gi, replacement: 'envió' },
-                { regex: /\b(ingreso)\b/gi, replacement: 'ingresó' },
-                { regex: /\b(verifico)\b/gi, replacement: 'verificó' },
-                { regex: /\b(conecto)\b/gi, replacement: 'conectó' },
-                { regex: /\b(desconecto)\b/gi, replacement: 'desconectó' },
-                { regex: /\b(solicito)\b/gi, replacement: 'solicitó' },
-                { regex: /\b(explico)\b/gi, replacement: 'explicó' },
-                { regex: /\b(asistio)\b/gi, replacement: 'asistió' },
-                { regex: /\b(acudio)\b/gi, replacement: 'acudió' },
-
-                // Errores tipográficos por tipeo veloz y letras omitidas
-                { regex: /\b(deconectar|desconectar)\b/gi, replacement: 'desconectar' },
-                { regex: /\b(deconecta|desconecta)\b/gi, replacement: 'desconecta' },
-                { regex: /\b(deconectado|desconectado)\b/gi, replacement: 'desconectado' },
-                { regex: /\b(nches|nche)\b/gi, replacement: 'noches' },
-                { regex: /\b(ruter|rotuer)\b/gi, replacement: 'router' },
-                { regex: /\b(modem|modems)\b/gi, replacement: 'módem' },
-                { regex: /\b(cabledo|cablado|cabliado)\b/gi, replacement: 'cableado' },
-                { regex: /\b(servcio|servico|servisios)\b/gi, replacement: 'servicio' },
-                { regex: /\b(coneccion|conexiion|conecion)\b/gi, replacement: 'conexión' },
-                { regex: /\b(conexion)\b/gi, replacement: 'conexión' },
-                { regex: /\b(instalacion)\b/gi, replacement: 'instalación' },
-                { regex: /\b(verificacion)\b/gi, replacement: 'verificación' },
-                { regex: /\b(atencion)\b/gi, replacement: 'atención' },
-                { regex: /\b(operacion)\b/gi, replacement: 'operación' },
-                { regex: /\b(dia)\b/gi, replacement: 'día' },
-                { regex: /\b(dias)\b/gi, replacement: 'días' },
-                { regex: /\b(tecnico)\b/gi, replacement: 'técnico' },
-                { regex: /\b(tecnicos)\b/gi, replacement: 'técnicos' },
-                { regex: /\b(parametros)\b/gi, replacement: 'parámetros' },
-                { regex: /\b(informacion)\b/gi, replacement: 'información' },
-                { regex: /\b(comunicacion)\b/gi, replacement: 'comunicación' },
-                { regex: /\b(numero)\b/gi, replacement: 'número' },
-                { regex: /\b(numeros)\b/gi, replacement: 'números' },
-                { regex: /\b(senial|senales)\b/gi, replacement: 'señal' },
-                { regex: /\b(solucion)\b/gi, replacement: 'solución' },
-                { regex: /\b(revision)\b/gi, replacement: 'revisión' },
-                { regex: /\b(configuracion)\b/gi, replacement: 'configuración' },
-                { regex: /\b(provision)\b/gi, replacement: 'provisión' },
-                { regex: /\b(validacion)\b/gi, replacement: 'validación' },
-
-                // Abreviaturas y errores comunes de asesores
-                { regex: /\b(cli|clie)\b/gi, replacement: 'cliente' },
-                { regex: /\b(serv|srv)\b/gi, replacement: 'servicio' },
-                { regex: /\b(prov)\b/gi, replacement: 'provisión' },
-                { regex: /\b(config)\b/gi, replacement: 'configuración' },
-                { regex: /\b(verif)\b/gi, replacement: 'verificación' },
-                { regex: /\b(reini)\b/gi, replacement: 'reinicio' },
-                { regex: /\b(soluc)\b/gi, replacement: 'solución' },
-                { regex: /\b(telef|tlf)\b/gi, replacement: 'teléfono' },
-                { regex: /\b(buzon)\b/gi, replacement: 'buzón' },
-                { regex: /\b(linea)\b/gi, replacement: 'línea' },
-                { regex: /\b(veloc|velocid)\b/gi, replacement: 'velocidad' },
-                { regex: /\b(descon)\b/gi, replacement: 'desconectado' },
-                { regex: /\b(conect)\b/gi, replacement: 'conectado' },
-                { regex: /\b(cablead)\b/gi, replacement: 'cableado' },
-                { regex: /\b(equip|eq)\b/gi, replacement: 'equipo' },
-                { regex: /\b(nocontesta)\b/gi, replacement: 'no contesta' },
-                { regex: /\b(wsp|wa|wha)\b/gi, replacement: 'WhatsApp' },
-                { regex: /\b(msj|msg)\b/gi, replacement: 'mensaje' },
-                
-                // Nombres de herramientas y plataformas
-                { regex: /\b(incognito|incog)\b/gi, replacement: 'Incógnito' },
-                { regex: /\b(schaman)\b/gi, replacement: 'Schaman' },
-                { regex: /\b(tr069|tr69)\b/gi, replacement: 'TR69' },
-                { regex: /\b(hygeia)\b/gi, replacement: 'Hygeia' },
-                { regex: /\b(tracer)\b/gi, replacement: 'Tracer' },
-                { regex: /\b(remedy)\b/gi, replacement: 'Remedy' },
-                { regex: /\b(siac)\b/gi, replacement: 'SIAC' },
-                { regex: /\b(sga)\b/gi, replacement: 'SGA' }
-            ];
-
-            corrections.forEach(c => {
-                cleaned = cleaned.replace(c.regex, c.replacement);
-            });
-
-            // Asegurar mayúscula inicial en cada línea sin borrar espacios
-            cleaned = cleaned.split('\n').map(line => {
-                if (!line) return '';
-                const firstNonSpace = line.search(/\S/);
-                if (firstNonSpace === -1) return line;
-                return line.slice(0, firstNonSpace) + line.charAt(firstNonSpace).toUpperCase() + line.slice(firstNonSpace + 1);
-            }).join('\n');
-
-            if (preserveTrailingSpaces && trailingWhitespace && !cleaned.endsWith(trailingWhitespace)) {
-                cleaned = cleaned.replace(/\s*$/, '') + trailingWhitespace;
-            }
-
-            return cleaned;
-        }
 
         const attachAutoCorrect = (inputEl, btnEl) => {
             if (!inputEl) return;
