@@ -1,8 +1,8 @@
-# 🚀 BackOffice WorkStation Suite (v7.0)
+# 🚀 BackOffice WorkStation Suite (v8.0)
 
 Plataforma web integral de productividad, diagnóstico técnico y automatización operativa diseñada para asesores de **BackOffice Telecom** (HFC / FTTH / SIAC / Manto / Helix / Remedy).
 
-![Versión](https://img.shields.io/badge/Versi%C3%B3n-7.0-brightgreen?style=for-the-badge)
+![Versión](https://img.shields.io/badge/Versi%C3%B3n-8.0-brightgreen?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
@@ -10,13 +10,14 @@ Plataforma web integral de productividad, diagnóstico técnico y automatizació
 
 ---
 
-## 🌟 Novedades de la Versión 7.0
+## 🌟 Novedades de la Versión 8.0
 
-- **🛠️ Estructurador de Escalamientos Remedy:** Generador de reportes para incidencias de sistema con soporte para pegar capturas de pantalla con `Ctrl+V`, prellenado automático de datos del cliente, copiado enriquecido para Word y **exportación directa a PDF en 1-clic**.
-- **⚡ Diagnóstico de Variación de Niveles HFC ($\Delta \le 4.0\text{ dB}$):** Algoritmo inteligente que evalúa la diferencia en bloque (Máx - Mín) en D/S SNR y Potencia Downstream Rx, emitiendo alertas de degradación de planta.
-- **📚 Gestor Rápido de Plantillas & Snippets:** Rediseño a 1-clic con vista previa fluida al pasar el mouse (*Hover preview* expandible sin barras de scroll).
-- **🎈 Globos Contextuales de Advertencia (Popovers):** Notificaciones flotantes directas para funciones predictivas en Categorías de Cierre e Identificador de Equipos.
-- **📞 Ciclo de Llamada Estandarizado:** Formato unificado para casos sin contacto del cliente.
+- **👁️ Popover Flotante de Previsualización en Vivo:** Previsualización instantánea con estilo *glassmorphism* al pasar el cursor sobre los botones de descartes rápidos, mostrando con exactitud el texto que se insertará antes de hacer clic.
+- **🔤 Motor de Autocorrección y Abreviaturas en Tiempo Real:** Corrección inteligente de ortografía, tildes y términos técnicos en tiempo real durante la escritura o el pegado (`Ctrl+V`), preservando el cursor y espacios naturales.
+- **🌐 Sidebar de Accesos Directos & Plataformas (`Alt+L`):** Panel lateral retráctil con accesos directos rápidos a las herramientas de Internet y plataformas de gestión operativas.
+- **📋 Formato Estandarizado de Plantilla Mantenimiento:** Alineación completa con el estándar de plataforma para técnicos en Mantenimiento y SIAC.
+- **✨ Ergonomía y Formato Tipo Oración:** Botones de descarte rápido estilizados en minúsculas con inicial mayúscula para una lectura más cómoda.
+- **🛠️ Estructurador Remedy & Diagnóstico HFC:** Generador de reportes con captura vía `Ctrl+V`, exportación a PDF en 1-clic y validación de variación en bloque ($\Delta \le 4.0\text{ dB}$).
 
 ---
 
