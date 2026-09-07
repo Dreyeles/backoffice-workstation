@@ -838,26 +838,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="tooltip-states-list">${statesHTML}</div>
             `;
 
-            positionTooltip(e);
             tooltipEl.classList.add('active');
+            positionTooltip(e);
         };
 
         const positionTooltip = (e) => {
-            if (!tooltipEl) return;
-            const x = e.clientX + 14;
-            const y = e.clientY + 14;
+            if (!tooltipEl || !e) return;
+            const mouseX = e.clientX || 0;
+            const mouseY = e.clientY || 0;
             
-            let posX = x;
-            let posY = y;
+            let posX = mouseX + 14;
+            let posY = mouseY + 14;
             
-            const tooltipWidth = 330;
-            const tooltipHeight = tooltipEl.offsetHeight || 160;
+            const rect = tooltipEl.getBoundingClientRect();
+            const tooltipWidth = rect.width || 310;
+            const tooltipHeight = rect.height || 180;
 
-            if (posX + tooltipWidth > window.innerWidth) {
-                posX = e.clientX - tooltipWidth - 10;
+            if (posX + tooltipWidth > window.innerWidth - 10) {
+                posX = mouseX - tooltipWidth - 10;
             }
-            if (posY + tooltipHeight > window.innerHeight) {
-                posY = e.clientY - tooltipHeight - 10;
+            if (posY + tooltipHeight > window.innerHeight - 10) {
+                posY = mouseY - tooltipHeight - 10;
             }
 
             tooltipEl.style.left = `${Math.max(10, posX)}px`;
