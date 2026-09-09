@@ -3448,6 +3448,21 @@ ${contactLines}`;
         const newUrlInput = document.getElementById('newLinkUrl');
         const newCatSelect = document.getElementById('newLinkCategory');
 
+        const btnCopyRdpIp = document.getElementById('btnCopyRdpIp');
+        const btnCopyRdpDomain = document.getElementById('btnCopyRdpDomain');
+
+        if (btnCopyRdpIp) {
+            btnCopyRdpIp.addEventListener('click', () => {
+                copyToClipboard('172.29.0.101', '📋 IP 172.29.0.101 copiada al portapapeles');
+            });
+        }
+
+        if (btnCopyRdpDomain) {
+            btnCopyRdpDomain.addEventListener('click', () => {
+                copyToClipboard('TIM\\', '📋 Prefijo TIM\\ copiado al portapapeles');
+            });
+        }
+
         function openSidebar() {
             if (sidebar) sidebar.classList.add('open');
             if (overlay) overlay.classList.add('active');
