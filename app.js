@@ -3446,24 +3446,55 @@ ${contactLines}`;
         const newUrlInput = document.getElementById('newLinkUrl');
         const newCatSelect = document.getElementById('newLinkCategory');
 
-        function triggerRdpConnection(targetIp = '172.29.0.101') {
-            // 1. Copiar IP automáticamente al portapapeles
+        const rdpModal = document.getElementById('rdpModal');
+        const rdpModalClose = document.getElementById('rdpModalClose');
+        const rdpModalCancel = document.getElementById('rdpModalCancel');
+        const btnRdpOpenDirect = document.getElementById('btnRdpOpenDirect');
+        const btnRdpCopyIpModal = document.getElementById('btnRdpCopyIpModal');
+        const rdpModalIp = document.getElementById('rdpModalIp');
+        let currentRdpIp = '172.29.0.101';
+
+        function openRdpModal(targetIp = '172.29.0.101') {
+            currentRdpIp = targetIp;
+            if (rdpModalIp) rdpModalIp.textContent = targetIp;
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(targetIp).catch(() => {});
             }
+            if (rdpModal) rdpModal.classList.add('active');
+            showToast(`🖥️ IP ${targetIp} copiada al portapapeles`, 'info');
+        }
 
-            // 2. Disparar protocolo nativo URI para que el navegador muestre el cuadro emergente "¿Abrir mstsc.exe?"
-            const rdpUri = `rdp://${targetIp}`;
-            const tempA = document.createElement('a');
-            tempA.href = rdpUri;
-            tempA.style.display = 'none';
-            document.body.appendChild(tempA);
-            tempA.click();
-            setTimeout(() => {
-                if (tempA.parentNode) tempA.parentNode.removeChild(tempA);
-            }, 600);
+        function closeRdpModal() {
+            if (rdpModal) rdpModal.classList.remove('active');
+        }
 
-            showToast(`🖥️ Abriendo Escritorio Remoto (${targetIp}) • IP copiada al portapapeles`, 'info');
+        if (rdpModalClose) rdpModalClose.addEventListener('click', closeRdpModal);
+        if (rdpModalCancel) rdpModalCancel.addEventListener('click', closeRdpModal);
+        if (rdpModal) {
+            rdpModal.addEventListener('click', (e) => {
+                if (e.target === rdpModal) closeRdpModal();
+            });
+        }
+
+        if (btnRdpCopyIpModal) {
+            btnRdpCopyIpModal.addEventListener('click', () => {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(currentRdpIp).then(() => {
+                        showToast(`📋 IP copiada: ${currentRdpIp}`, 'success');
+                    });
+                }
+            });
+        }
+
+        if (btnRdpOpenDirect) {
+            btnRdpOpenDirect.addEventListener('click', () => {
+                downloadRdpFile(currentRdpIp);
+                closeRdpModal();
+            });
+        }
+
+        function triggerRdpConnection(targetIp = '172.29.0.101') {
+            openRdpModal(targetIp);
         }
 
         function downloadRdpFile(targetIp = '172.29.0.101') {
@@ -3496,7 +3527,7 @@ ${contactLines}`;
                 URL.revokeObjectURL(blobUrl);
             }, 1000);
 
-            showToast(`💾 Archivo .rdp descargado para ${targetIp}`, 'info');
+            showToast(`⚡ Abriendo Escritorio Remoto (${targetIp})...`, 'info');
         }
 
         function openSidebar() {
