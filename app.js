@@ -3397,6 +3397,7 @@ ${contactLines}`;
             { id: 'lnk_tr69', name: 'TR69 (ACS)', url: 'http://172.17.27.238:8080/auth/login', category: 'Internet & Diagnóstico', icon: '📡', isQuick: true },
             { id: 'lnk_schaman', name: 'Schaman', url: 'https://atc-clperu.schaman.com/schaman-sso/login?callback=AAAADDfLhTpFXbSJETw3QhDILl0NLOiLN0QoI8dU3SWwSKTvrjlJU4lSPMmuHTIXFb5Ctr09Tz2H8Se6pOTmA6e2Qww%3D&app=AAAADGMbhcwoHsi4O778tEhNo5SvofJD%2FIcQCFAyhlXeSZE6Mg5jbA%3D%3D&customer=AAAADAcU2Ikxs028MO8BAUqzICiPfU1bCdWstG2p6BMKi4wqtw%3D%3D', category: 'Internet & Diagnóstico', icon: '🔍', isQuick: true },
             { id: 'lnk_plume', name: 'Plume (Frontline Tier 1)', url: 'https://gamma.central.plume.com/', category: 'Internet & Diagnóstico', icon: '📶', isQuick: true },
+            { id: 'lnk_remotedesktop', name: 'Escritorio Remoto (RDP)', url: '172.29.0.101', category: 'Internet & Diagnóstico', icon: '🖥️', isQuick: true, isRdpInfo: true },
             { id: 'lnk_tracer', name: 'Tracer', url: 'https://tracer.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '📈', isQuick: true },
             { id: 'lnk_tracerplano', name: 'Tracer por Plano', url: 'https://tracerplano.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '🗺️', isQuick: true },
             
@@ -3412,16 +3413,15 @@ ${contactLines}`;
         if (!workLinks || !Array.isArray(workLinks) || workLinks.length === 0) {
             workLinks = defaultWorkLinks;
         } else {
-            // Eliminar links de rdp si quedaron cacheados
-            workLinks = workLinks.filter(l => l.id !== 'lnk_remotedesktop' && !l.name.toLowerCase().includes('escritorio'));
             // Fusión y actualización inteligente de URLs por defecto
             defaultWorkLinks.forEach(defLnk => {
-                const existing = workLinks.find(l => l.id === defLnk.id || l.name.toLowerCase() === defLnk.name.toLowerCase() || (defLnk.id === 'lnk_livechat' && l.name.toLowerCase().includes('livechat')) || (defLnk.id === 'lnk_remedy' && (l.name.toLowerCase().includes('remedy') || l.name.toLowerCase().includes('helix'))) || (defLnk.id === 'lnk_schaman' && l.name.toLowerCase().includes('schaman')) || (defLnk.id === 'lnk_plume' && l.name.toLowerCase().includes('plume')) || (defLnk.id === 'lnk_tr69' && (l.name.toLowerCase().includes('tr69') || l.name.toLowerCase().includes('tr-69'))));
+                const existing = workLinks.find(l => l.id === defLnk.id || l.name.toLowerCase() === defLnk.name.toLowerCase() || (defLnk.id === 'lnk_livechat' && l.name.toLowerCase().includes('livechat')) || (defLnk.id === 'lnk_remedy' && (l.name.toLowerCase().includes('remedy') || l.name.toLowerCase().includes('helix'))) || (defLnk.id === 'lnk_schaman' && l.name.toLowerCase().includes('schaman')) || (defLnk.id === 'lnk_plume' && l.name.toLowerCase().includes('plume')) || (defLnk.id === 'lnk_tr69' && (l.name.toLowerCase().includes('tr69') || l.name.toLowerCase().includes('tr-69'))) || (defLnk.id === 'lnk_remotedesktop' && l.name.toLowerCase().includes('escritorio')));
                 if (existing) {
-                    if (defLnk.id === 'lnk_incognito' || defLnk.id === 'lnk_livechat' || defLnk.id === 'lnk_remedy' || defLnk.id === 'lnk_schaman' || defLnk.id === 'lnk_plume' || defLnk.id === 'lnk_tr69') {
+                    if (defLnk.id === 'lnk_incognito' || defLnk.id === 'lnk_livechat' || defLnk.id === 'lnk_remedy' || defLnk.id === 'lnk_schaman' || defLnk.id === 'lnk_plume' || defLnk.id === 'lnk_tr69' || defLnk.id === 'lnk_remotedesktop') {
                         existing.url = defLnk.url;
                         existing.name = defLnk.name;
                         existing.isQuick = defLnk.isQuick;
+                        if (defLnk.isRdpInfo) existing.isRdpInfo = true;
                     }
                 } else if (!workLinks.some(l => l.id === defLnk.id)) {
                     workLinks.push(defLnk);
@@ -3448,17 +3448,43 @@ ${contactLines}`;
         const newUrlInput = document.getElementById('newLinkUrl');
         const newCatSelect = document.getElementById('newLinkCategory');
 
-        const btnCopyRdpIp = document.getElementById('btnCopyRdpIp');
-        const btnCopyRdpDomain = document.getElementById('btnCopyRdpDomain');
+        const rdpInfoModal = document.getElementById('rdpInfoModal');
+        const rdpInfoModalClose = document.getElementById('rdpInfoModalClose');
+        const rdpInfoModalCancel = document.getElementById('rdpInfoModalCancel');
+        const btnModalCopyRdpIp = document.getElementById('btnModalCopyRdpIp');
+        const btnModalCopyRdpDomain = document.getElementById('btnModalCopyRdpDomain');
+        const rdpModalDisplayIp = document.getElementById('rdpModalDisplayIp');
 
-        if (btnCopyRdpIp) {
-            btnCopyRdpIp.addEventListener('click', () => {
-                copyToClipboard('172.29.0.101', '📋 IP 172.29.0.101 copiada al portapapeles');
+        function openRdpInfoModal(ip = '172.29.0.101') {
+            if (rdpModalDisplayIp) rdpModalDisplayIp.textContent = ip;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(ip).catch(() => {});
+            }
+            if (rdpInfoModal) rdpInfoModal.classList.add('active');
+            showToast(`🖥️ IP ${ip} copiada al portapapeles`, 'info');
+        }
+
+        function closeRdpInfoModal() {
+            if (rdpInfoModal) rdpInfoModal.classList.remove('active');
+        }
+
+        if (rdpInfoModalClose) rdpInfoModalClose.addEventListener('click', closeRdpInfoModal);
+        if (rdpInfoModalCancel) rdpInfoModalCancel.addEventListener('click', closeRdpInfoModal);
+        if (rdpInfoModal) {
+            rdpInfoModal.addEventListener('click', (e) => {
+                if (e.target === rdpInfoModal) closeRdpInfoModal();
             });
         }
 
-        if (btnCopyRdpDomain) {
-            btnCopyRdpDomain.addEventListener('click', () => {
+        if (btnModalCopyRdpIp) {
+            btnModalCopyRdpIp.addEventListener('click', () => {
+                const ip = rdpModalDisplayIp ? rdpModalDisplayIp.textContent : '172.29.0.101';
+                copyToClipboard(ip, `📋 IP ${ip} copiada al portapapeles`);
+            });
+        }
+
+        if (btnModalCopyRdpDomain) {
+            btnModalCopyRdpDomain.addEventListener('click', () => {
                 copyToClipboard('TIM\\', '📋 Prefijo TIM\\ copiado al portapapeles');
             });
         }
@@ -3594,14 +3620,28 @@ ${contactLines}`;
                     quickList.forEach(lnk => {
                         const card = document.createElement('a');
                         card.className = 'quick-link-card';
-                        card.href = lnk.url;
-                        card.target = '_blank';
-                        card.rel = 'noopener noreferrer';
-                        card.title = `Abrir ${lnk.name}\n${lnk.url}`;
-                        card.innerHTML = `
-                            <span>${lnk.icon || '🔗'} ${lnk.name}</span>
-                            <span style="font-size:0.75rem; color:var(--primary);">↗</span>
-                        `;
+                        
+                        if (lnk.isRdpInfo) {
+                            card.href = '#';
+                            card.title = `Escritorio Remoto (${lnk.url})\nClic para ver datos de acceso y copiar`;
+                            card.innerHTML = `
+                                <span>${lnk.icon || '🖥️'} ${lnk.name}</span>
+                                <span style="font-size:0.75rem; color:var(--primary);">📋</span>
+                            `;
+                            card.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                openRdpInfoModal(lnk.url);
+                            });
+                        } else {
+                            card.href = lnk.url;
+                            card.target = '_blank';
+                            card.rel = 'noopener noreferrer';
+                            card.title = `Abrir ${lnk.name}\n${lnk.url}`;
+                            card.innerHTML = `
+                                <span>${lnk.icon || '🔗'} ${lnk.name}</span>
+                                <span style="font-size:0.75rem; color:var(--primary);">↗</span>
+                            `;
+                        }
                         quickGrid.appendChild(card);
                     });
                 }
@@ -3646,15 +3686,22 @@ ${contactLines}`;
                             deleteBtnHtml = `<button class="btn-link-action btn-del-link" title="Eliminar enlace personalizado" style="color:var(--danger);">🗑️</button>`;
                         }
 
+                        let openActionHtml = '';
+                        if (lnk.isRdpInfo) {
+                            openActionHtml = `<button class="btn-link-action btn-open-rdp-info" title="Ver datos de conexión" style="font-weight:bold; color:var(--primary);">Ver datos 📋</button>`;
+                        } else {
+                            openActionHtml = `<a href="${lnk.url}" target="_blank" rel="noopener noreferrer" class="btn-link-action" title="Abrir portal en nueva pestaña" style="font-weight:bold; color:var(--primary);">Abrir ↗</a>`;
+                        }
+
                         row.innerHTML = `
-                            <div class="link-item-info">
+                            <div class="link-item-info" style="${lnk.isRdpInfo ? 'cursor:pointer;' : ''}">
                                 <div class="link-item-name">${lnk.icon || '🔗'} ${lnk.name}</div>
-                                <div class="link-item-url">${lnk.url}</div>
+                                <div class="link-item-url">${lnk.isRdpInfo ? `IP: ${lnk.url} • Dominio: TIM\\` : lnk.url}</div>
                             </div>
                             <div class="link-actions">
                                 <button class="btn-link-action btn-star-link" title="${starTitle}">${starIcon}</button>
-                                <button class="btn-link-action btn-copy-url" title="Copiar URL">📋</button>
-                                <a href="${lnk.url}" target="_blank" rel="noopener noreferrer" class="btn-link-action" title="Abrir portal en nueva pestaña" style="font-weight:bold; color:var(--primary);">Abrir ↗</a>
+                                <button class="btn-link-action btn-copy-url" title="${lnk.isRdpInfo ? 'Copiar IP' : 'Copiar URL'}">📋</button>
+                                ${openActionHtml}
                                 ${deleteBtnHtml}
                             </div>
                         `;
@@ -3672,8 +3719,25 @@ ${contactLines}`;
                         if (btnCopy) {
                             btnCopy.addEventListener('click', (e) => {
                                 e.stopPropagation();
-                                copyToClipboard(lnk.url, `URL copiada: ${lnk.name}`);
+                                copyToClipboard(lnk.url, lnk.isRdpInfo ? `IP copiada: ${lnk.url}` : `URL copiada: ${lnk.name}`);
                             });
+                        }
+
+                        const btnOpenRdp = row.querySelector('.btn-open-rdp-info');
+                        if (btnOpenRdp) {
+                            btnOpenRdp.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                openRdpInfoModal(lnk.url);
+                            });
+                        }
+
+                        if (lnk.isRdpInfo) {
+                            const infoDiv = row.querySelector('.link-item-info');
+                            if (infoDiv) {
+                                infoDiv.addEventListener('click', () => {
+                                    openRdpInfoModal(lnk.url);
+                                });
+                            }
                         }
 
                         const btnDel = row.querySelector('.btn-del-link');
