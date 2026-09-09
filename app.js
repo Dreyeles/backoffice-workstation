@@ -3406,16 +3406,17 @@ ${contactLines}`;
             { id: 'lnk_linktrabajo', name: 'Link de Trabajo', url: 'https://forms.cloud.microsoft/pages/responsepage.aspx?id=CkbVXyW03kmb0PzSYnDTDItamkezRqRIvBJVVnC0d0pUQkEyRTRHM1dWOFNTMTAzUEI0ODQySThXVi4u&route=shorturl', category: 'Sistemas & Gestión', icon: '📝', isQuick: true },
             { id: 'lnk_livechat', name: 'LiveChat (Aivo)', url: 'https://live-us.aivo.co/chat', category: 'Canales & Comunicación', icon: '💬', isQuick: true },
             { id: 'lnk_aicc', name: 'AICC (Huawei)', url: 'https://10.189.8.188:28090/service-cloud/aicc-web/index/index.html#/ManualAppointWorkbenchDetails?taskId=1061244585&orgId=1752727161880235604&appointId=175435461525835224677465120200&eventType=AgentEvent_Customer_Release&updateCallId=1754354624-11840&isFirst=true&AgentEvent_Call_Out_Fail=true', category: 'Canales & Comunicación', icon: '🎧', isQuick: true },
-            { id: 'lnk_hygeia', name: 'Hygeia (Niveles HFC/FTTH)', url: 'https://hygeia.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '⚡', isQuick: false },
-            { id: 'lnk_siac', name: 'SIAC Único', url: 'https://siacunico.claro.com.pe/', category: 'Sistemas & Gestión', icon: '💻', isQuick: false },
-            { id: 'lnk_sga', name: 'SGA Operativo', url: 'https://sga.claro.com.pe/', category: 'Sistemas & Gestión', icon: '📋', isQuick: false },
-            { id: 'lnk_wsp', name: 'WhatsApp Web', url: 'https://web.whatsapp.com/', category: 'Canales & Comunicación', icon: '📱', isQuick: false }
+            { id: 'lnk_siac', name: 'SIAC Único', url: 'https://siacunico.claro.com.pe/', category: 'Sistemas & Gestión', icon: '💻', isQuick: false }
         ];
 
         let workLinks = JSON.parse(localStorage.getItem('bo_work_links') || 'null');
         if (!workLinks || !Array.isArray(workLinks) || workLinks.length === 0) {
             workLinks = defaultWorkLinks;
         } else {
+            // Eliminar enlaces obsoletos o retirados
+            const removedIds = ['lnk_hygeia', 'lnk_sga', 'lnk_wsp'];
+            workLinks = workLinks.filter(l => !removedIds.includes(l.id) && !l.name.toLowerCase().includes('hygeia') && !l.name.toLowerCase().includes('sga') && !l.name.toLowerCase().includes('whatsapp'));
+
             // Fusión y actualización inteligente de URLs por defecto
             defaultWorkLinks.forEach(defLnk => {
                 const existing = workLinks.find(l => l.id === defLnk.id || l.name.toLowerCase() === defLnk.name.toLowerCase() || (defLnk.id === 'lnk_dashboard' && l.name.toLowerCase().includes('dashboard')) || (defLnk.id === 'lnk_linktrabajo' && l.name.toLowerCase().includes('trabajo')) || (defLnk.id === 'lnk_livechat' && l.name.toLowerCase().includes('livechat')) || (defLnk.id === 'lnk_aicc' && l.name.toLowerCase().includes('aicc')) || (defLnk.id === 'lnk_remedy_helix' && (l.name.toLowerCase().includes('helix') || l.id === 'lnk_remedy')) || (defLnk.id === 'lnk_remedy_dwp' && (l.name.toLowerCase().includes('dwp') || l.id === 'lnk_remedy_dwp')) || (defLnk.id === 'lnk_schaman' && l.name.toLowerCase().includes('schaman')) || (defLnk.id === 'lnk_plume' && l.name.toLowerCase().includes('plume')) || (defLnk.id === 'lnk_tr69' && (l.name.toLowerCase().includes('tr69') || l.name.toLowerCase().includes('tr-69'))) || (defLnk.id === 'lnk_tracer' && l.name.toLowerCase() === 'tracer') || (defLnk.id === 'lnk_tracerplano' && l.name.toLowerCase().includes('plano')) || (defLnk.id === 'lnk_remotedesktop' && l.name.toLowerCase().includes('escritorio')));
