@@ -3399,7 +3399,7 @@ ${contactLines}`;
             { id: 'lnk_plume', name: 'Plume (Frontline Tier 1)', url: 'https://gamma.central.plume.com/', category: 'Internet & Diagnóstico', icon: '📶', isQuick: true },
             { id: 'lnk_remotedesktop', name: 'Escritorio Remoto (RDP)', url: '172.29.0.101', category: 'Internet & Diagnóstico', icon: '🖥️', isQuick: true, isRdpInfo: true },
             { id: 'lnk_tracer', name: 'Tracer', url: 'http://172.19.112.62/generador/', category: 'Internet & Diagnóstico', icon: '📈', isQuick: true },
-            { id: 'lnk_tracerplano', name: 'Tracer por Plano', url: 'https://tracerplano.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '🗺️', isQuick: true },
+            { id: 'lnk_tracerplano', name: 'Tracer - Cliente por Plano', url: 'http://172.19.112.62/generador/hfc/ConexionesPlano', category: 'Internet & Diagnóstico', icon: '🗺️', isQuick: true },
             
             { id: 'lnk_remedy', name: 'BMC Helix / Remedy', url: 'https://clarop-smartit.claro.pe/smartit/app/#/ticket-consoleStudio', category: 'Sistemas & Gestión', icon: '🛠️', isQuick: true },
             { id: 'lnk_livechat', name: 'LiveChat (Aivo)', url: 'https://live-us.aivo.co/chat', category: 'Canales & Comunicación', icon: '💬', isQuick: true },
@@ -3415,9 +3415,9 @@ ${contactLines}`;
         } else {
             // Fusión y actualización inteligente de URLs por defecto
             defaultWorkLinks.forEach(defLnk => {
-                const existing = workLinks.find(l => l.id === defLnk.id || l.name.toLowerCase() === defLnk.name.toLowerCase() || (defLnk.id === 'lnk_dashboard' && l.name.toLowerCase().includes('dashboard')) || (defLnk.id === 'lnk_livechat' && l.name.toLowerCase().includes('livechat')) || (defLnk.id === 'lnk_remedy' && (l.name.toLowerCase().includes('remedy') || l.name.toLowerCase().includes('helix'))) || (defLnk.id === 'lnk_schaman' && l.name.toLowerCase().includes('schaman')) || (defLnk.id === 'lnk_plume' && l.name.toLowerCase().includes('plume')) || (defLnk.id === 'lnk_tr69' && (l.name.toLowerCase().includes('tr69') || l.name.toLowerCase().includes('tr-69'))) || (defLnk.id === 'lnk_tracer' && l.name.toLowerCase() === 'tracer') || (defLnk.id === 'lnk_remotedesktop' && l.name.toLowerCase().includes('escritorio')));
+                const existing = workLinks.find(l => l.id === defLnk.id || l.name.toLowerCase() === defLnk.name.toLowerCase() || (defLnk.id === 'lnk_dashboard' && l.name.toLowerCase().includes('dashboard')) || (defLnk.id === 'lnk_livechat' && l.name.toLowerCase().includes('livechat')) || (defLnk.id === 'lnk_remedy' && (l.name.toLowerCase().includes('remedy') || l.name.toLowerCase().includes('helix'))) || (defLnk.id === 'lnk_schaman' && l.name.toLowerCase().includes('schaman')) || (defLnk.id === 'lnk_plume' && l.name.toLowerCase().includes('plume')) || (defLnk.id === 'lnk_tr69' && (l.name.toLowerCase().includes('tr69') || l.name.toLowerCase().includes('tr-69'))) || (defLnk.id === 'lnk_tracer' && l.name.toLowerCase() === 'tracer') || (defLnk.id === 'lnk_tracerplano' && l.name.toLowerCase().includes('plano')) || (defLnk.id === 'lnk_remotedesktop' && l.name.toLowerCase().includes('escritorio')));
                 if (existing) {
-                    if (defLnk.id === 'lnk_incognito' || defLnk.id === 'lnk_dashboard' || defLnk.id === 'lnk_livechat' || defLnk.id === 'lnk_remedy' || defLnk.id === 'lnk_schaman' || defLnk.id === 'lnk_plume' || defLnk.id === 'lnk_tr69' || defLnk.id === 'lnk_tracer' || defLnk.id === 'lnk_remotedesktop' || existing.url.includes('clarop-rsso')) {
+                    if (defLnk.id === 'lnk_incognito' || defLnk.id === 'lnk_dashboard' || defLnk.id === 'lnk_livechat' || defLnk.id === 'lnk_remedy' || defLnk.id === 'lnk_schaman' || defLnk.id === 'lnk_plume' || defLnk.id === 'lnk_tr69' || defLnk.id === 'lnk_tracer' || defLnk.id === 'lnk_tracerplano' || defLnk.id === 'lnk_remotedesktop' || existing.url.includes('clarop-rsso')) {
                         existing.url = defLnk.url;
                         existing.name = defLnk.name;
                         existing.isQuick = defLnk.isQuick;
