@@ -3452,7 +3452,19 @@ ${contactLines}`;
                 navigator.clipboard.writeText(targetIp).catch(() => {});
             }
 
-            // 2. Generar archivo oficial de conexión RDP (Microsoft Remote Desktop nativo)
+            // 2. Intento de protocolo URI directo (Abre diálogo nativo del navegador si está disponible)
+            try {
+                const directLink = document.createElement('a');
+                directLink.href = `rdp://${targetIp}`;
+                directLink.style.display = 'none';
+                document.body.appendChild(directLink);
+                directLink.click();
+                setTimeout(() => directLink.remove(), 100);
+            } catch (e) {
+                // Silently fallback to .rdp file
+            }
+
+            // 3. Generar archivo oficial de conexión RDP (Microsoft Remote Desktop nativo)
             const rdpContent = [
                 `full address:s:${targetIp}`,
                 'prompt for credentials:i:1',
@@ -3482,7 +3494,7 @@ ${contactLines}`;
                 URL.revokeObjectURL(blobUrl);
             }, 1000);
 
-            showToast(`🖥️ Abriendo Escritorio Remoto (${targetIp}) • IP copiada al portapapeles`, 'info');
+            showToast(`🖥️ IP ${targetIp} copiada. Haz clic en la descarga y marca "Abrir siempre" para apertura directa.`, 'info');
         }
 
         function openSidebar() {
