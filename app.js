@@ -3417,7 +3417,7 @@ ${contactLines}`;
             defaultWorkLinks.forEach(defLnk => {
                 const existing = workLinks.find(l => l.id === defLnk.id || l.name.toLowerCase() === defLnk.name.toLowerCase() || (defLnk.id === 'lnk_dashboard' && l.name.toLowerCase().includes('dashboard')) || (defLnk.id === 'lnk_livechat' && l.name.toLowerCase().includes('livechat')) || (defLnk.id === 'lnk_remedy' && (l.name.toLowerCase().includes('remedy') || l.name.toLowerCase().includes('helix'))) || (defLnk.id === 'lnk_schaman' && l.name.toLowerCase().includes('schaman')) || (defLnk.id === 'lnk_plume' && l.name.toLowerCase().includes('plume')) || (defLnk.id === 'lnk_tr69' && (l.name.toLowerCase().includes('tr69') || l.name.toLowerCase().includes('tr-69'))) || (defLnk.id === 'lnk_remotedesktop' && l.name.toLowerCase().includes('escritorio')));
                 if (existing) {
-                    if (defLnk.id === 'lnk_incognito' || defLnk.id === 'lnk_dashboard' || defLnk.id === 'lnk_livechat' || defLnk.id === 'lnk_remedy' || defLnk.id === 'lnk_schaman' || defLnk.id === 'lnk_plume' || defLnk.id === 'lnk_tr69' || defLnk.id === 'lnk_remotedesktop') {
+                    if (defLnk.id === 'lnk_incognito' || defLnk.id === 'lnk_dashboard' || defLnk.id === 'lnk_livechat' || defLnk.id === 'lnk_remedy' || defLnk.id === 'lnk_schaman' || defLnk.id === 'lnk_plume' || defLnk.id === 'lnk_tr69' || defLnk.id === 'lnk_remotedesktop' || existing.url.includes('clarop-rsso')) {
                         existing.url = defLnk.url;
                         existing.name = defLnk.name;
                         existing.isQuick = defLnk.isQuick;
