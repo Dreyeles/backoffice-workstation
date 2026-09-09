@@ -500,54 +500,6 @@
         </div>
     </div>
 
-    <!-- MODAL FOR REMOTE DESKTOP (RDP) -->
-    <div id="rdpModal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 520px;">
-            <div class="card-title">
-                <div class="card-title-text">🖥️ Conexión a Escritorio Remoto</div>
-                <button id="rdpModalClose" class="btn btn-sm">✕</button>
-            </div>
-            
-            <div style="margin-top: 1rem;">
-                <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 8px; padding: 0.9rem; margin-bottom: 1.2rem; display: flex; align-items: center; justify-content: space-between;">
-                    <div>
-                        <div style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Servidor / IP Destino</div>
-                        <div style="font-size: 1.3rem; font-weight: 700; color: #10b981; font-family: monospace; letter-spacing: 1px;" id="rdpModalIp">172.29.0.101</div>
-                    </div>
-                    <button id="btnRdpCopyIpModal" class="btn btn-sm" style="border-color: rgba(16, 185, 129, 0.4); color: #10b981;">
-                        📋 Copiar IP
-                    </button>
-                </div>
-
-                <p style="font-size: 0.88rem; color: var(--text-main); margin-bottom: 1rem; line-height: 1.45;">
-                    Selecciona cómo deseas abrir la sesión de Escritorio Remoto en tu estación de trabajo Claro:
-                </p>
-
-                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                    <button id="btnRdpOpenDirect" class="btn btn-primary" style="display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1rem; font-size: 0.92rem;">
-                        <span style="display: flex; align-items: center; gap: 0.6rem;">
-                            <span style="font-size: 1.2rem;">⚡</span>
-                            <span style="text-align: left;">
-                                <strong>Abrir Sesión mstsc.exe (.rdp)</strong><br>
-                                <small style="font-weight: normal; opacity: 0.85;">Abre directamente Conexión a Escritorio Remoto</small>
-                            </span>
-                        </span>
-                        <span>➔</span>
-                    </button>
-
-                    <div style="background: var(--bg-hover, rgba(255,255,255,0.03)); border: 1px dashed var(--border-color); border-radius: 8px; padding: 0.85rem; font-size: 0.82rem; color: var(--text-muted); line-height: 1.5;">
-                        <div style="font-weight: 600; color: var(--text-main); margin-bottom: 0.25rem;">⌨️ Método Rápido con Teclado (Windows):</div>
-                        Presiona <kbd style="background:var(--bg-card); padding:2px 6px; border-radius:4px; border:1px solid var(--border-color);">Win + R</kbd> ➔ escribe <code style="color:var(--primary);">mstsc</code> ➔ <kbd style="background:var(--bg-card); padding:2px 6px; border-radius:4px; border:1px solid var(--border-color);">Enter</kbd> ➔ Pega la IP con <kbd style="background:var(--bg-card); padding:2px 6px; border-radius:4px; border:1px solid var(--border-color);">Ctrl + V</kbd>.
-                    </div>
-                </div>
-
-                <div style="margin-top: 1.2rem; display: flex; justify-content: flex-end;">
-                    <button id="rdpModalCancel" class="btn">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- MODAL FOR CHANGELOG -->
     <div id="changelogModal" class="modal-overlay">
         <div class="modal-content" style="max-width: 580px;">
