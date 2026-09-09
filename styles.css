@@ -1453,3 +1453,191 @@ body {
   font-weight: bold;
 }
 
+/* Remedy Modal Split Layout & Visual Previewer */
+.remedy-modal-content {
+  max-width: 1180px !important;
+  width: 95vw !important;
+  max-height: 92vh !important;
+  padding: 1.25rem !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.remedy-split-container {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 1.2rem;
+  overflow: hidden;
+  flex: 1;
+}
+
+@media (max-width: 960px) {
+  .remedy-split-container {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+}
+
+.remedy-form-column {
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  max-height: calc(88vh - 120px);
+}
+
+.remedy-preview-column {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.9rem;
+  overflow: hidden;
+  max-height: calc(88vh - 120px);
+}
+
+.remedy-preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.remedy-visual-sheet {
+  flex: 1;
+  overflow-y: auto;
+  background: #334155;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.25rem 0.85rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+[data-theme="light"] .remedy-visual-sheet {
+  background: #cbd5e1;
+  border-color: #94a3b8;
+}
+
+/* Hoja Blanca Estilo Microsoft Word */
+.remedy-word-page {
+  background: #ffffff !important;
+  color: #1f2937 !important;
+  width: 100%;
+  max-width: 580px;
+  min-height: 480px;
+  padding: 26px 30px;
+  border-radius: 3px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  font-family: Calibri, 'Segoe UI', Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.remedy-word-title {
+  color: #b91c1c;
+  font-size: 15px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 0 0 12px 0;
+  padding-bottom: 6px;
+  border-bottom: 2px solid #b91c1c;
+}
+
+.remedy-word-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 14px;
+  font-size: 12.5px;
+}
+
+.remedy-word-table tr:nth-child(odd) {
+  background: #f8fafc;
+}
+
+.remedy-word-table td {
+  padding: 5px 8px;
+  border: 1px solid #e2e8f0;
+  vertical-align: top;
+}
+
+.remedy-word-table td.label-cell {
+  font-weight: bold;
+  color: #334155;
+  width: 44%;
+}
+
+.remedy-word-table td.value-cell {
+  color: #0f172a;
+}
+
+.remedy-word-section-title {
+  font-weight: bold;
+  color: #1f2937;
+  font-size: 13px;
+  margin: 12px 0 4px 0;
+}
+
+.remedy-word-list {
+  margin: 0 0 12px 18px;
+  padding: 0;
+  color: #475569;
+  font-size: 12px;
+}
+
+.remedy-word-list li {
+  margin-bottom: 2px;
+}
+
+.remedy-word-images {
+  margin-top: 14px;
+}
+
+.remedy-word-img-wrapper {
+  margin-bottom: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  padding: 6px;
+  background: #fafafa;
+}
+
+.remedy-word-img-label {
+  font-size: 11px;
+  font-weight: bold;
+  color: #475569;
+  margin-bottom: 4px;
+}
+
+.remedy-word-img {
+  width: 100%;
+  height: auto;
+  border-radius: 3px;
+  cursor: pointer;
+  display: block;
+  transition: opacity 0.2s;
+}
+
+.remedy-word-img:hover {
+  opacity: 0.92;
+}
+
+.remedy-plain-preview {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 0.75rem;
+}
+
+.remedy-preview-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--border-color);
+  flex-wrap: wrap;
+}
+
+
+

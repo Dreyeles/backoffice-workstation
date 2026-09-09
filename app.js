@@ -194,7 +194,26 @@ document.addEventListener('DOMContentLoaded', () => {
         
         let cleaned = text;
 
+        // 1. Normalización de espacios y comas múltiples
+        cleaned = cleaned.replace(/\s+,/g, ','); // Quitar espacios antes de la coma
+        cleaned = cleaned.replace(/,([^\s,])/g, ', $1'); // Asegurar espacio tras la coma si le sigue un texto
+        cleaned = cleaned.replace(/,{2,}/g, ','); // Limpiar comas duplicadas
+
         const corrections = [
+            // Verbos y combinaciones contextuales comunes
+            { regex: /\b(se reinicio)\b/gi, replacement: 'se reinició' },
+            { regex: /\b(se cambio)\b/gi, replacement: 'se cambió' },
+            { regex: /\b(se realizo)\b/gi, replacement: 'se realizó' },
+            { regex: /\b(se valido)\b/gi, replacement: 'se validó' },
+            { regex: /\b(se efectuo)\b/gi, replacement: 'se efectuó' },
+            { regex: /\b(se configuro)\b/gi, replacement: 'se configuró' },
+            { regex: /\b(se verifico)\b/gi, replacement: 'se verificó' },
+            { regex: /\b(se apago)\b/gi, replacement: 'se apagó' },
+            { regex: /\b(se encendio)\b/gi, replacement: 'se encendió' },
+            { regex: /\b(se derivo)\b/gi, replacement: 'se derivó' },
+            { regex: /\b(se conecto)\b/gi, replacement: 'se conectó' },
+            { regex: /\b(se desconecto)\b/gi, replacement: 'se desconectó' },
+
             // Verbos comunes de atención en pasado (3ra persona singular con tilde)
             { regex: /\b(educo)\b/gi, replacement: 'educó' },
             { regex: /\b(informo)\b/gi, replacement: 'informó' },
@@ -216,10 +235,39 @@ document.addEventListener('DOMContentLoaded', () => {
             { regex: /\b(desconecto)\b/gi, replacement: 'desconectó' },
             { regex: /\b(solicito)\b/gi, replacement: 'solicitó' },
             { regex: /\b(explico)\b/gi, replacement: 'explicó' },
-            { regex: /\b(asistio)\b/gi, replacement: 'asistió' },
-            { regex: /\b(acudio)\b/gi, replacement: 'acudió' },
+            { regex: /\b(respondio)\b/gi, replacement: 'respondió' },
+            { regex: /\b(apago)\b/gi, replacement: 'apagó' },
+            { regex: /\b(encendio)\b/gi, replacement: 'encendió' },
+            { regex: /\b(derivo)\b/gi, replacement: 'derivó' },
+            { regex: /\b(probo)\b/gi, replacement: 'probó' },
+            { regex: /\b(configuro)\b/gi, replacement: 'configuró' },
 
-            // Errores tipográficos por tipeo veloz y letras omitidas
+            // Acrónimos estándar en telecomunicaciones y redes
+            { regex: /\b(ont|onts)\b/gi, replacement: 'ONT' },
+            { regex: /\b(stb|stbs)\b/gi, replacement: 'STB' },
+            { regex: /\b(gpon)\b/gi, replacement: 'GPON' },
+            { regex: /\b(ftth)\b/gi, replacement: 'FTTH' },
+            { regex: /\b(hfc)\b/gi, replacement: 'HFC' },
+            { regex: /\b(cpe|cpes)\b/gi, replacement: 'CPE' },
+            { regex: /\b(snr)\b/gi, replacement: 'SNR' },
+            { regex: /\b(dns)\b/gi, replacement: 'DNS' },
+            { regex: /\b(dhcp)\b/gi, replacement: 'DHCP' },
+            { regex: /\b(sot)\b/gi, replacement: 'SOT' },
+            { regex: /\b(ip|ips)\b/gi, replacement: 'IP' },
+            { regex: /\b(mac)\b/gi, replacement: 'MAC' },
+            { regex: /\b(tx)\b/gi, replacement: 'TX' },
+            { regex: /\b(rx)\b/gi, replacement: 'RX' },
+            { regex: /\b(dbm)\b/gi, replacement: 'dBm' },
+            { regex: /\b(ssid)\b/gi, replacement: 'SSID' },
+            { regex: /\b(wan)\b/gi, replacement: 'WAN' },
+            { regex: /\b(lan)\b/gi, replacement: 'LAN' },
+            { regex: /\b(catv)\b/gi, replacement: 'CATV' },
+            { regex: /\b(iptv)\b/gi, replacement: 'IPTV' },
+            { regex: /\b(voip)\b/gi, replacement: 'VoIP' },
+            { regex: /\b(skyway)\b/gi, replacement: 'Skyway' },
+            { regex: /\b(youbora)\b/gi, replacement: 'Youbora' },
+
+            // Errores tipográficos por tipeo veloz y palabras técnicas
             { regex: /\b(deconectar|desconectar)\b/gi, replacement: 'desconectar' },
             { regex: /\b(deconecta|desconecta)\b/gi, replacement: 'desconecta' },
             { regex: /\b(deconectado|desconectado)\b/gi, replacement: 'desconectado' },
@@ -249,6 +297,15 @@ document.addEventListener('DOMContentLoaded', () => {
             { regex: /\b(configuracion)\b/gi, replacement: 'configuración' },
             { regex: /\b(provision)\b/gi, replacement: 'provisión' },
             { regex: /\b(validacion)\b/gi, replacement: 'validación' },
+            { regex: /\b(intermitencia)\b/gi, replacement: 'intermitencia' },
+            { regex: /\b(degradacion)\b/gi, replacement: 'degradación' },
+            { regex: /\b(perdida|perdidas)\b/gi, replacement: 'pérdida' },
+            { regex: /\b(caida|caidas)\b/gi, replacement: 'caída' },
+            { regex: /\b(atenuacion)\b/gi, replacement: 'atenuación' },
+            { regex: /\b(telefonia)\b/gi, replacement: 'telefonía' },
+            { regex: /\b(navegacion)\b/gi, replacement: 'navegación' },
+            { regex: /\b(transmision)\b/gi, replacement: 'transmisión' },
+            { regex: /\b(recepcion)\b/gi, replacement: 'recepción' },
 
             // Abreviaturas y errores comunes de asesores
             { regex: /\b(cli|clie)\b/gi, replacement: 'cliente' },
@@ -278,19 +335,30 @@ document.addEventListener('DOMContentLoaded', () => {
             { regex: /\b(tracer)\b/gi, replacement: 'Tracer' },
             { regex: /\b(remedy)\b/gi, replacement: 'Remedy' },
             { regex: /\b(siac)\b/gi, replacement: 'SIAC' },
-            { regex: /\b(sga)\b/gi, replacement: 'SGA' }
+            { regex: /\b(sga)\b/gi, replacement: 'SGA' },
+            { regex: /\b(skyway)\b/gi, replacement: 'Skyway' },
+            { regex: /\b(youbora)\b/gi, replacement: 'Youbora' },
+            { regex: /\b(cbio)\b/gi, replacement: 'CBIO' },
+            { regex: /\b(ims)\b/gi, replacement: 'IMS' }
         ];
 
         corrections.forEach(c => {
             cleaned = cleaned.replace(c.regex, c.replacement);
         });
 
-        // Asegurar mayúscula inicial en cada línea sin borrar espacios
+        // Asegurar mayúscula inicial en cada línea y tras viñetas (- , * , 1. ) o comas / punto y coma
         cleaned = cleaned.split('\n').map(line => {
             if (!line) return '';
-            const firstNonSpace = line.search(/\S/);
-            if (firstNonSpace === -1) return line;
-            return line.slice(0, firstNonSpace) + line.charAt(firstNonSpace).toUpperCase() + line.slice(firstNonSpace + 1);
+            
+            // 1. Capitalizar inicio de línea o tras viñetas (- , * , • , 1. , 1) )
+            let res = line.replace(/^(\s*[-*•\d.)\]]\s*)([a-záéíóúñ])/i, (m, prefix, char) => prefix + char.toUpperCase())
+                          .replace(/^(\s*)([a-záéíóúñ])/i, (m, prefix, char) => prefix + char.toUpperCase());
+
+            // 2. Capitalizar la primera letra después de cada coma o punto y coma seguido de espacio
+            res = res.replace(/(,\s*)([a-záéíóúñ])/g, (m, sep, char) => sep + char.toUpperCase());
+            res = res.replace(/(;\s*)([a-záéíóúñ])/g, (m, sep, char) => sep + char.toUpperCase());
+
+            return res;
         }).join('\n');
 
         if (preserveTrailingSpaces && trailingWhitespace && !cleaned.endsWith(trailingWhitespace)) {
@@ -305,6 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
         populateProblems(elements.genServicio.value);
         elements.genServicio.addEventListener('change', (e) => {
             populateProblems(e.target.value);
+            renderQuickDescartes();
             renderGeneratorPreviews();
         });
 
@@ -482,9 +551,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const attachAutoCorrect = (inputEl, btnEl) => {
             if (!inputEl) return;
 
-            // 1. Al presionar Espacio, Coma o Enter, autocorregir respetando diferencia de longitud del cursor
+            // 1. Al presionar Espacio, Coma, Punto, Punto y Coma o Enter, autocorregir respetando diferencia de longitud del cursor
             inputEl.addEventListener('keyup', (e) => {
-                if ([' ', ',', 'Enter'].includes(e.key)) {
+                if ([' ', ',', '.', ';', 'Enter'].includes(e.key)) {
                     const original = inputEl.value;
                     const startPos = inputEl.selectionStart;
                     const corrected = autoCorrectText(original, true);
@@ -774,18 +843,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderQuickDescartes() {
         if (!elements.quickDescartesContainer) return;
-        const quickDescartesList = [
-            { label: "Consumo Tracer",       states: ["Se valida consumo en Tracer", "Sin consumo en Tracer"] },
-            { label: "Provisión e Incógnito", states: ["Se valida provisión y online en Incógnito", "Sin provisión / no carga en Incógnito"] },
-            { label: "Dashboard OK",          states: ["Se valida Dashboard OK", "Dashboard con avería"] },
-            { label: "TR69 Todo OK",           states: ["Se valida TR69 todo OK", "TR69 con errores"] },
-            { label: "Schaman OK",             states: ["Se valida Schaman OK", "Schaman con avería"] },
-            { label: "Plume",                  states: ["Se valida cliente Plume", "Se valida cliente Plume desalineado con alertas"] },
-            { label: "Escritorio Remoto",      states: ["Se hace reinicio de fábrica desde Escritorio Remoto", "Sin acceso al Escritorio Remoto"] },
-            { label: "SGA OK",                 states: ["Se valida datos de SOT e historial en SGA", "Se valida provisión incorrecta en SGA"] },
-            { label: "SGA SOT",                states: ["Se valida datos de SOT e historial OK", "Se valida sin SOT y sin notas en SGA"] },
-            { label: "Ciclo de Llamada",       states: ["Cliente no contesta, se envía mensaje por LiveChat y se deja mensaje en buzón de voz, se genera ciclo"], icon: '📞 ' }
-        ];
+
+        const currentService = (elements.genServicio?.value || 'INTERNET').toUpperCase();
+
+        const quickDescartesByService = {
+            "INTERNET": [
+                { label: "Consumo Tracer",       states: ["Se valida consumo en Tracer", "Sin consumo en Tracer"] },
+                { label: "Provisión e Incógnito", states: ["Se valida provisión y online en Incógnito", "Sin provisión / no carga en Incógnito"] },
+                { label: "Dashboard OK",          states: ["Se valida Dashboard OK", "Dashboard con avería"] },
+                { label: "TR69 Todo OK",           states: ["Se valida TR69 todo OK", "TR69 con errores"] },
+                { label: "Schaman OK",             states: ["Se valida Schaman OK", "Schaman con avería"] },
+                { label: "Plume",                  states: ["Se valida cliente Plume", "Se valida cliente Plume desalineado con alertas"] },
+                { label: "Escritorio Remoto",      states: ["Se hace reinicio de fábrica desde Escritorio Remoto", "Sin acceso al Escritorio Remoto"] },
+                { label: "SGA OK",                 states: ["Se valida datos de SOT e historial en SGA", "Se valida provisión incorrecta en SGA"] },
+                { label: "Ciclo de Llamada",       states: ["1er intento de contacto: Cliente no contesta, se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)", "2do intento de contacto: Cliente no contesta (2do ciclo)", "Se cumple ciclo de llamada 2x3 (3 intentos sin contacto), cliente nunca respondió, se procede con el cierre del caso"], icon: '📞 ' }
+            ],
+            "IPTV": [
+                { label: "Provisión e Incógnito", states: ["Se valida provisión y online en Incógnito", "Sin provisión / no carga en Incógnito"] },
+                { label: "Skyway",                 states: ["Se valida parámetros y estado OK en Skyway", "Parámetros desalineados en Skyway"] },
+                { label: "Youbora",                states: ["Se valida métricas y reproducción OK en Youbora", "Youbora con alertas de buffering / errores de reproducción"] },
+                { label: "Ciclo de Llamada",       states: ["1er intento de contacto: Cliente no contesta, se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)", "2do intento de contacto: Cliente no contesta (2do ciclo)", "Se cumple ciclo de llamada 2x3 (3 intentos sin contacto), cliente nunca respondió, se procede con el cierre del caso"], icon: '📞 ' }
+            ],
+            "TELEFONIA": [
+                { label: "Provisión e Incógnito", states: ["Se valida provisión y estado de telefonía en Incógnito", "Línea telefónica sin provisión en Incógnito"] },
+                { label: "IMS / CBIO",             states: ["Se valida registro en IMS / CBIO OK", "Falla de autenticación en IMS / CBIO"] },
+                { label: "Tono y Llamadas",        states: ["Se valida tono de discado y tráfico de llamadas OK", "Sin tono de discado / no salen ni entran llamadas"] },
+                { label: "SGA OK",                 states: ["Se valida datos de SOT e historial de telefonía en SGA", "Datos desalineados en SGA"] },
+                { label: "Ciclo de Llamada",       states: ["1er intento de contacto: Cliente no contesta, se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)", "2do intento de contacto: Cliente no contesta (2do ciclo)", "Se cumple ciclo de llamada 2x3 (3 intentos sin contacto), cliente nunca respondió, se procede con el cierre del caso"], icon: '📞 ' }
+            ]
+        };
+
+        const quickDescartesList = quickDescartesByService[currentService] || quickDescartesByService["INTERNET"];
 
         const tooltipEl = document.getElementById('chipPreviewTooltip');
 
@@ -799,12 +887,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (nextState === 0) {
                 nextTextHTML = `<strong>⚪ Próximo Clic:</strong> Desactivar / Quitar descarte`;
                 nextBoxClass = 'tooltip-next-box is-reset';
-            } else if (nextState === 1) {
-                nextTextHTML = `<strong>✅ Próximo Clic (Paso 1):</strong><br>"${item.states[0]}"`;
-                nextBoxClass = 'tooltip-next-box is-ok';
             } else {
-                nextTextHTML = `<strong>❌ Próximo Clic (Paso 2):</strong><br>"${item.states[1]}"`;
-                nextBoxClass = 'tooltip-next-box is-fail';
+                const targetText = item.states[nextState - 1];
+                let icon = '🔄';
+                if (nextState === 1) icon = '📞';
+                else if (nextState === item.states.length) icon = '🏁';
+                nextTextHTML = `<strong>${icon} Próximo Clic (Paso ${nextState}):</strong><br>"${targetText}"`;
+                nextBoxClass = nextState === 1 ? 'tooltip-next-box is-ok' : (nextState === item.states.length ? 'tooltip-next-box is-fail' : 'tooltip-next-box');
             }
 
             let statesHTML = '';
@@ -923,12 +1012,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     const next = (cur + 1) % (item.states.length + 1);
                     
                     let currentVal = elements.genDescartes.value;
-                    if (cur > 0) {
-                        const toRemove = item.states[cur - 1];
-                        currentVal = currentVal.replace(new RegExp(`, \\b${toRemove.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi'), '');
-                        currentVal = currentVal.replace(new RegExp(`\\b${toRemove.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b, ?`, 'gi'), '');
-                        currentVal = currentVal.replace(new RegExp(`\\b${toRemove.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi'), '');
-                    }
+                    
+                    // Limpiar cualquier estado previo de este mismo chip para reemplazarlo limpiamente
+                    item.states.forEach(st => {
+                        const escaped = st.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                        currentVal = currentVal.replace(new RegExp(`,\\s*${escaped}`, 'gi'), '');
+                        currentVal = currentVal.replace(new RegExp(`${escaped}\\s*,?`, 'gi'), '');
+                    });
                     
                     currentVal = currentVal.trim();
                     if (next > 0) {
@@ -936,8 +1026,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         currentVal = currentVal ? `${currentVal}, ${toAdd}` : toAdd;
                     }
                     
-                    currentVal = currentVal.replace(/,+/g, ',').replace(/, ,/g, ',').replace(/^, /, '').trim();
-                    elements.genDescartes.value = currentVal;
+                    currentVal = currentVal.replace(/,+/g, ',').replace(/, ,/g, ',').replace(/^, /, '').replace(/, $/, '').trim();
+                    elements.genDescartes.value = autoCorrectText(currentVal, false);
                     
                     state.selectedDescartes.set(item.label, next);
                     renderGeneratorPreviews();
@@ -1054,18 +1144,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function formatDescartesLines(rawText) {
         if (!rawText || !rawText.trim()) return 'Descartes: N/A';
         
-        let items = [];
-        if (rawText.includes('\n')) {
-            // Si tiene saltos de línea manuales, respetar cada línea
-            items = rawText.split(/\r?\n/)
-                .map(s => s.trim())
-                .filter(s => s.length > 0);
-        } else {
-            // Si es una sola línea con comas (como los chips rápidos)
-            items = rawText.split(/,/)
-                .map(s => s.trim())
-                .filter(s => s.length > 0);
-        }
+        // Separar tanto por saltos de línea como por comas y punto y coma
+        const items = rawText.split(/[\r\n,;]+/)
+            .map(s => s.trim())
+            .filter(s => s.length > 0)
+            .map(s => {
+                // Limpiar viñetas si las tuviera al inicio (- , * , • , 1. )
+                let clean = s.replace(/^[-*•\d.)\]]\s*/, '').trim();
+                if (!clean) return '';
+                // Asegurar mayúscula inicial en cada elemento de descarte
+                return clean.charAt(0).toUpperCase() + clean.slice(1);
+            })
+            .filter(s => s.length > 0);
         
         if (items.length === 0) return 'Descartes: N/A';
         
@@ -1127,6 +1217,45 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        // Manejo adaptativo del campo Solución según el protocolo de Ciclo 2x3 (3 ciclos en 2 días)
+        const descartesLower = (rawDescartes || '').toLowerCase();
+        const isAdvancedCiclo = descartesLower.includes('2do') || 
+                                descartesLower.includes('segundo') || 
+                                descartesLower.includes('3er') || 
+                                descartesLower.includes('tercer') || 
+                                descartesLower.includes('3 intentos') ||
+                                descartesLower.includes('cumple ciclo') ||
+                                descartesLower.includes('fin de ciclo') || 
+                                descartesLower.includes('cumplido') || 
+                                descartesLower.includes('cierre') ||
+                                descartesLower.includes('nunca respondió') ||
+                                descartesLower.includes('nunca respondio') ||
+                                descartesLower.includes('ciclo 2') ||
+                                descartesLower.includes('ciclo 3');
+        const isPrimerCiclo = isCiclo && !isAdvancedCiclo;
+
+        if (elements.genSolucion) {
+            const labelSolucion = document.querySelector('label[for="genSolucion"]');
+            if (labelSolucion) {
+                labelSolucion.textContent = 'Solución del Caso';
+            }
+            elements.genSolucion.placeholder = 'Describe la solución aplicada...';
+
+            if (isPrimerCiclo) {
+                // Deshabilitado discretamente en 1er ciclo
+                elements.genSolucion.disabled = true;
+                elements.genSolucion.style.opacity = '0.6';
+                elements.genSolucion.style.cursor = 'not-allowed';
+                elements.genSolucion.style.backgroundColor = 'var(--bg-secondary)';
+            } else {
+                // Habilitado normalmente
+                elements.genSolucion.disabled = false;
+                elements.genSolucion.style.opacity = '1';
+                elements.genSolucion.style.cursor = 'text';
+                elements.genSolucion.style.backgroundColor = '';
+            }
+        }
+
         if (elements.titleSiacCard) {
             elements.titleSiacCard.innerHTML = isCiclo 
                 ? 'Plantilla SIAC / SGA <span style="font-size:0.75rem; color:#00ACC1; font-weight:bold; margin-left:0.3rem;">(📞 Ciclo de Llamada)</span>' 
@@ -1147,10 +1276,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Template SIAC (Standard or Ciclo de Llamada)
         let siacText = '';
         if (isCiclo) {
+            const solucionCicloLine = (solucion && solucion !== 'N/A' && solucion.trim() !== '') ? `\nSolución: ${solucion}` : '';
             siacText = `BACK OFFICE 2N HITSS - CICLO DE LLAMADA:
 ************************
 Teléfono: ${telefono}
-${descartesFormatted}${sotSiacLine}
+${descartesFormatted}${solucionCicloLine}${sotSiacLine}
 ${contactLines}`;
         } else {
             siacText = `BACK OFFICE 2N HITSS:
@@ -1190,6 +1320,10 @@ ${contactLines}`;
     }
 
     function validateTemplateRequirements() {
+        const rawDescartes = (elements.genDescartes ? elements.genDescartes.value : '');
+        const isAutoCiclo = checkIsCiclo(rawDescartes);
+        const isCiclo = state.cicloOverride !== null ? state.cicloOverride : isAutoCiclo;
+
         const missingFieldNames = [];
         const missingElements = [];
 
@@ -1200,18 +1334,20 @@ ${contactLines}`;
             if (elements.genTelefono) missingElements.push(elements.genTelefono);
         }
 
-        // 2. Descripción / Problema del Cliente
-        const problema = (elements.genProblema ? elements.genProblema.value : '').trim();
-        if (!problema || problema.toUpperCase() === 'N/A') {
-            missingFieldNames.push('Descripción del Cliente / Problema');
-            const trigger = document.getElementById('genProblemaTrigger');
-            if (trigger) missingElements.push(trigger);
+        // 2. Descripción / Problema del Cliente (Solo requerido en modo atención normal)
+        if (!isCiclo) {
+            const problema = (elements.genProblema ? elements.genProblema.value : '').trim();
+            if (!problema || problema.toUpperCase() === 'N/A') {
+                missingFieldNames.push('Descripción del Cliente / Problema');
+                const trigger = document.getElementById('genProblemaTrigger');
+                if (trigger) missingElements.push(trigger);
+            }
         }
 
-        // 3. Descartes Realizados (Al menos 1 descarte)
+        // 3. Descartes Realizados / Intento de Ciclo
         const descartes = (elements.genDescartes ? elements.genDescartes.value : '').trim();
         if (!descartes || descartes.toUpperCase() === 'N/A' || descartes.length < 3) {
-            missingFieldNames.push('Descartes Realizados (Mín. 1)');
+            missingFieldNames.push(isCiclo ? 'Intento de Ciclo de Llamada' : 'Descartes Realizados (Mín. 1)');
             if (elements.genDescartes) missingElements.push(elements.genDescartes);
         }
 
@@ -1797,51 +1933,553 @@ ${contactLines}`;
             });
         }
 
-        // Setup Remedy Modal & Logic
+        // Setup Remedy Modal & Logic (Soporte Multi-Servicio: INTERNET vs IPTV / Falla General)
         const btnOpenRemedyModal = document.getElementById('btnOpenRemedyModal');
         const remedyModal = document.getElementById('remedyModal');
         const remedyModalClose = document.getElementById('remedyModalClose');
-        const remedyModalCancel = document.getElementById('remedyModalCancel');
+        const btnRemedyTabRed = document.getElementById('btnRemedyTabRed');
+        const btnRemedyTabGeneral = document.getElementById('btnRemedyTabGeneral');
+        const remedyFormRed = document.getElementById('remedyFormRed');
+        const remedyFormIptv = document.getElementById('remedyFormIptv');
+        const remedyFormGeneral = document.getElementById('remedyFormGeneral');
+
+        // Campos RED - INTERNET
+        const remedyRedContacto = document.getElementById('remedyRedContacto');
+        const remedyRedTelefono = document.getElementById('remedyRedTelefono');
+        const remedyRedCustomerId = document.getElementById('remedyRedCustomerId');
+        const remedyRedMac = document.getElementById('remedyRedMac');
+        const remedyRedIp = document.getElementById('remedyRedIp');
+        const remedyRedCmtsOlt = document.getElementById('remedyRedCmtsOlt');
+        const remedyRedPaginas = document.getElementById('remedyRedPaginas');
+        const remedyRedRedExterna = document.getElementById('remedyRedRedExterna');
+        const remedyRedPlano = document.getElementById('remedyRedPlano');
+        const remedyRedDescartes = document.getElementById('remedyRedDescartes');
+
+        // Campos RED - IPTV (CANALES A RED)
+        const remedyIptvContacto = document.getElementById('remedyIptvContacto');
+        const remedyIptvTelefono = document.getElementById('remedyIptvTelefono');
+        const remedyIptvCustomerId = document.getElementById('remedyIptvCustomerId');
+        const remedyIptvPlano = document.getElementById('remedyIptvPlano');
+        const remedyIptvCantDecos = document.getElementById('remedyIptvCantDecos');
+        const remedyIptvSerieDecos = document.getElementById('remedyIptvSerieDecos');
+        const remedyIptvCanales = document.getElementById('remedyIptvCanales');
+        const remedyIptvGrilla = document.getElementById('remedyIptvGrilla');
+        const remedyIptvDescartes = document.getElementById('remedyIptvDescartes');
+
+        // Campos RED - TELEFONÍA (TELEFONÍA A RED)
+        const remedyTelContacto = document.getElementById('remedyTelContacto');
+        const remedyTelTelefono = document.getElementById('remedyTelTelefono');
+        const remedyTelCustomerId = document.getElementById('remedyTelCustomerId');
+        const remedyTelMac = document.getElementById('remedyTelMac');
+        const remedyTelPlano = document.getElementById('remedyTelPlano');
+        const remedyTelCmtsOlt = document.getElementById('remedyTelCmtsOlt');
+        const remedyTelNumeroTel = document.getElementById('remedyTelNumeroTel');
+        const remedyTelPlan = document.getElementById('remedyTelPlan');
+        const remedyTelProblema = document.getElementById('remedyTelProblema');
+        const remedyTelDescartes = document.getElementById('remedyTelDescartes');
+
+        // Campos General
         const remedyInputFalla = document.getElementById('remedyInputFalla');
         const remedyInputId = document.getElementById('remedyInputId');
         const remedyInputDni = document.getElementById('remedyInputDni');
         const remedyInputCliente = document.getElementById('remedyInputCliente');
         const remedyInputDetalle = document.getElementById('remedyInputDetalle');
+
         const remedyDropZone = document.getElementById('remedyDropZone');
         const remedyImagesContainer = document.getElementById('remedyImagesContainer');
         const btnClearRemedyImages = document.getElementById('btnClearRemedyImages');
-        const remedyPreviewBox = document.getElementById('remedyPreviewBox');
+        const remedyVisualSheet = document.getElementById('remedyVisualSheet');
         const btnClearRemedyAll = document.getElementById('btnClearRemedyAll');
         const btnExportRemedyPdf = document.getElementById('btnExportRemedyPdf');
         const btnCopyRemedyWord = document.getElementById('btnCopyRemedyWord');
         const btnCopyRemedyText = document.getElementById('btnCopyRemedyText');
 
+        // Lightbox Zoom Modal
+        const imageZoomModal = document.getElementById('imageZoomModal');
+        const imageZoomImg = document.getElementById('imageZoomImg');
+        const btnCloseImageZoom = document.getElementById('btnCloseImageZoom');
+
+        window.previewRemedyImageZoom = (imgSrc) => {
+            if (imageZoomModal && imageZoomImg) {
+                imageZoomImg.src = imgSrc;
+                imageZoomModal.classList.add('active');
+            }
+        };
+
+        if (btnCloseImageZoom && imageZoomModal) {
+            btnCloseImageZoom.addEventListener('click', () => imageZoomModal.classList.remove('active'));
+        }
+        if (imageZoomModal) {
+            imageZoomModal.addEventListener('click', (e) => {
+                if (e.target === imageZoomModal) imageZoomModal.classList.remove('active');
+            });
+        }
+
+        let remedyActiveMode = 'red'; // 'red' | 'general'
         let remedyImagesList = [];
 
-        const getRemedyPlainText = () => {
-            const falla = remedyInputFalla?.value.trim() || '[Descripción de la falla]';
-            const id = remedyInputId?.value.trim() || '[Customer ID]';
-            const dni = remedyInputDni?.value.trim() || '[DNI/RUC]';
-            const cliente = remedyInputCliente?.value.trim() || '[Nombre del Cliente]';
-            const detalle = remedyInputDetalle?.value.trim() || '';
+        const getActiveService = () => (elements.genServicio?.value || 'INTERNET').toUpperCase();
+        const isIptvActive = () => getActiveService() === 'IPTV';
+        const isTelefoniaActive = () => getActiveService() === 'TELEFONIA';
 
-            let text = `FALLA: ${falla}\n\n`;
-            text += `   • ID: ${id}\n`;
-            text += `   • DNI: ${dni}\n`;
-            text += `   • CLIENTE: ${cliente}\n`;
-            if (detalle) {
-                text += `   • ${detalle}\n`;
+        const setRemedyTab = (mode) => {
+            remedyActiveMode = mode;
+            const isIptv = isIptvActive();
+            const isTelefonia = isTelefoniaActive();
+
+            if (btnRemedyTabRed) {
+                if (isTelefonia) {
+                    btnRemedyTabRed.innerHTML = '📞 Telefonía a RED';
+                } else if (isIptv) {
+                    btnRemedyTabRed.innerHTML = '📺 Canales a RED';
+                } else {
+                    btnRemedyTabRed.innerHTML = '🌐 Páginas Web / Apps';
+                }
             }
-            if (remedyImagesList.length > 0) {
-                text += `\n[${remedyImagesList.length} imagen(es) adjunta(s)]`;
+
+            if (mode === 'red') {
+                if (btnRemedyTabRed) {
+                    btnRemedyTabRed.className = 'btn btn-sm btn-primary';
+                    btnRemedyTabRed.style.background = 'var(--primary)';
+                    btnRemedyTabRed.style.color = '#fff';
+                    btnRemedyTabRed.style.borderColor = 'var(--primary)';
+                }
+                if (btnRemedyTabGeneral) {
+                    btnRemedyTabGeneral.className = 'btn btn-sm';
+                    btnRemedyTabGeneral.style.background = 'transparent';
+                    btnRemedyTabGeneral.style.color = 'var(--text-muted)';
+                    btnRemedyTabGeneral.style.borderColor = 'var(--border-color)';
+                }
+                if (remedyFormRed) remedyFormRed.style.display = (!isIptv && !isTelefonia) ? 'block' : 'none';
+                if (remedyFormIptv) remedyFormIptv.style.display = isIptv ? 'block' : 'none';
+                if (remedyFormTelefonia) remedyFormTelefonia.style.display = isTelefonia ? 'block' : 'none';
+                if (remedyFormGeneral) remedyFormGeneral.style.display = 'none';
+            } else {
+                if (btnRemedyTabGeneral) {
+                    btnRemedyTabGeneral.className = 'btn btn-sm btn-primary';
+                    btnRemedyTabGeneral.style.background = 'var(--primary)';
+                    btnRemedyTabGeneral.style.color = '#fff';
+                    btnRemedyTabGeneral.style.borderColor = 'var(--primary)';
+                }
+                if (btnRemedyTabRed) {
+                    btnRemedyTabRed.className = 'btn btn-sm';
+                    btnRemedyTabRed.style.background = 'transparent';
+                    btnRemedyTabRed.style.color = 'var(--text-muted)';
+                    btnRemedyTabRed.style.borderColor = 'var(--border-color)';
+                }
+                if (remedyFormRed) remedyFormRed.style.display = 'none';
+                if (remedyFormIptv) remedyFormIptv.style.display = 'none';
+                if (remedyFormTelefonia) remedyFormTelefonia.style.display = 'none';
+                if (remedyFormGeneral) remedyFormGeneral.style.display = 'block';
             }
-            return text;
+            updateRemedyPreview();
+        };
+
+        if (btnRemedyTabRed) btnRemedyTabRed.addEventListener('click', () => setRemedyTab('red'));
+        if (btnRemedyTabGeneral) btnRemedyTabGeneral.addEventListener('click', () => setRemedyTab('general'));
+
+        const getRemedyPlainText = () => {
+            const isIptv = isIptvActive();
+            const isTelefonia = isTelefoniaActive();
+
+            if (remedyActiveMode === 'red') {
+                if (isTelefonia) {
+                    const contacto = remedyTelContacto?.value.trim() || '[Persona de Contacto]';
+                    const telefono = remedyTelTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '[Número de contacto]');
+                    const customerId = remedyTelCustomerId?.value.trim() || (elements.genContactId?.value.trim() || '[Customer ID]');
+                    const mac = remedyTelMac?.value.trim() || '[Dirección MAC]';
+                    const plano = remedyTelPlano?.value.trim() || '[Plano]';
+                    const cmtsOlt = remedyTelCmtsOlt?.value.trim() || '[(CMTS/OLT)]';
+                    const numeroTel = remedyTelNumeroTel?.value.trim() || (elements.genTelefono?.value.trim() || '[Número telefónico]');
+                    const plan = remedyTelPlan?.value.trim() || '[Plan contratado]';
+                    const problema = remedyTelProblema?.value.trim() || (elements.genProblema?.value.trim() || '[Descripción detallada del problema]');
+                    const descartes = remedyTelDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '[Descartes de primer nivel realizados]');
+
+                    let text = `TELEFONÍA A RED:\n`;
+                    text += `Persona de Contacto: ${contacto}\n`;
+                    text += `Número de contacto: ${telefono}\n`;
+                    text += `Customer ID: ${customerId}\n`;
+                    text += `Dirección MAC: ${mac}\n`;
+                    text += `Plano: ${plano}\n`;
+                    text += `(CMTS/OLT): ${cmtsOlt}\n`;
+                    text += `Número telefónico: ${numeroTel}\n`;
+                    text += `Plan contratado: ${plan}\n`;
+                    text += `Descripción detallada del problema: ${problema}\n`;
+                    text += `Descartes de primer nivel realizados: ${descartes}\n`;
+                    text += `Evidencias:`;
+                    if (remedyImagesList.length > 0) {
+                        text += `\n[${remedyImagesList.length} imagen(es) adjunta(s)]`;
+                    }
+                    return text;
+                } else if (isIptv) {
+                    const contacto = remedyIptvContacto?.value.trim() || '[Persona de Contacto]';
+                    const telefono = remedyIptvTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '[Número de Contacto]');
+                    const customerId = remedyIptvCustomerId?.value.trim() || (elements.genContactId?.value.trim() || '[Customer ID]');
+                    const plano = remedyIptvPlano?.value.trim() || '[Plano]';
+                    const cantDecos = remedyIptvCantDecos?.value.trim() || '[Cantidad de decodificador(es)]';
+                    const serieDecos = remedyIptvSerieDecos?.value.trim() || '[N° Serie decos afectados]';
+                    const canales = remedyIptvCanales?.value.trim() || '[Canales afectados (N° - Nombre de Canal)]';
+                    const grilla = remedyIptvGrilla?.value.trim() || '[Grilla Claro TV actualizada]';
+                    const descartes = remedyIptvDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '[Descripción detallada de DESCARTES realizados]');
+
+                    let text = `4. CANALES A RED:\n`;
+                    text += `Persona de Contacto: ${contacto}\n`;
+                    text += `Número de Contacto: ${telefono}\n`;
+                    text += `Customer ID: ${customerId}\n`;
+                    text += `Plano: ${plano}\n`;
+                    text += `Cantidad de decodificador(es): ${cantDecos}\n`;
+                    text += `N° Serie decos afectados: ${serieDecos}\n`;
+                    text += `Canales afectados (N° - Nombre de Canal): ${canales}\n`;
+                    text += `Grilla Claro TV actualizada: ${grilla}\n`;
+                    text += `Descripción detallada de DESCARTES realizados: ${descartes}\n`;
+                    text += `Evidencias:`;
+                    if (remedyImagesList.length > 0) {
+                        text += `\n[${remedyImagesList.length} imagen(es) adjunta(s)]`;
+                    }
+                    return text;
+                } else {
+                    const contacto = remedyRedContacto?.value.trim() || '[Persona de Contacto]';
+                    const telefono = remedyRedTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '[Número de contacto]');
+                    const customerId = remedyRedCustomerId?.value.trim() || (elements.genContactId?.value.trim() || '[Customer ID]');
+                    const mac = remedyRedMac?.value.trim() || '[Dirección MAC Cable Módem]';
+                    const ip = remedyRedIp?.value.trim() || '[IP Pública(Cuál es mi IP)]';
+                    const paginas = remedyRedPaginas?.value.trim() || '[Páginas/Apps que no accede]';
+                    const redExterna = remedyRedRedExterna?.value.trim() || '[Desde que red puede acceder]';
+                    const cmtsOlt = remedyRedCmtsOlt?.value.trim() || '[CMTS/OLT]';
+                    const plano = remedyRedPlano?.value.trim() || '[Plano]';
+                    const descartes = remedyRedDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '[Descartes o descripción detallada]');
+
+                    let text = `Persona de Contacto: ${contacto}\n`;
+                    text += `Número de contacto: ${telefono}\n`;
+                    text += `Customer ID: ${customerId}\n`;
+                    text += `Dirección MAC Cable Módem: ${mac}\n`;
+                    text += `IP Pública(Cuál es mi IP): ${ip}\n`;
+                    text += `Páginas/Apps que no accede : ${paginas}\n`;
+                    text += `Desde que red puede acceder: ${redExterna}\n`;
+                    text += `CMTS/OLT: ${cmtsOlt}\n`;
+                    text += `Plano: ${plano}\n`;
+                    text += `Descartes o descripción detallada del problema: ${descartes}\n`;
+                    text += `Evidencias:\n`;
+                    text += `Imagen del error con red CLARO\n`;
+                    text += `Imagen sin error con red diferente a CLARO\n`;
+                    text += `Ping desde la red de Claro\n`;
+                    text += `TracerTR desde la red de Claro\n`;
+                    text += `TracerTR desde la red diferente a Claro`;
+                    if (remedyImagesList.length > 0) {
+                        text += `\n[${remedyImagesList.length} imagen(es) adjunta(s)]`;
+                    }
+                    return text;
+                }
+            } else {
+                const falla = remedyInputFalla?.value.trim() || '[Descripción de la falla]';
+                const id = remedyInputId?.value.trim() || '[Customer ID]';
+                const dni = remedyInputDni?.value.trim() || '[DNI/RUC]';
+                const cliente = remedyInputCliente?.value.trim() || '[Nombre del Cliente]';
+                const detalle = remedyInputDetalle?.value.trim() || '';
+
+                let text = `FALLA: ${falla}\n\n`;
+                text += `   • ID: ${id}\n`;
+                text += `   • DNI: ${dni}\n`;
+                text += `   • CLIENTE: ${cliente}\n`;
+                if (detalle) {
+                    text += `   • ${detalle}\n`;
+                }
+                if (remedyImagesList.length > 0) {
+                    text += `\n[${remedyImagesList.length} imagen(es) adjunta(s)]`;
+                }
+                return text;
+            }
+        };
+
+        const renderRemedyVisualSheet = () => {
+            if (!remedyVisualSheet) return;
+            const isIptv = isIptvActive();
+            const isTelefonia = isTelefoniaActive();
+
+            if (remedyActiveMode === 'red') {
+                if (isTelefonia) {
+                    const contacto = remedyTelContacto?.value.trim() || '—';
+                    const telefono = remedyTelTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '—');
+                    const customerId = remedyTelCustomerId?.value.trim() || (elements.genContactId?.value.trim() || '—');
+                    const mac = remedyTelMac?.value.trim() || '—';
+                    const plano = remedyTelPlano?.value.trim() || '—';
+                    const cmtsOlt = remedyTelCmtsOlt?.value.trim() || '—';
+                    const numeroTel = remedyTelNumeroTel?.value.trim() || (elements.genTelefono?.value.trim() || '—');
+                    const plan = remedyTelPlan?.value.trim() || '—';
+                    const problema = remedyTelProblema?.value.trim() || (elements.genProblema?.value.trim() || '—');
+                    const descartes = remedyTelDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '—');
+
+                    let html = `
+                        <div class="remedy-word-page">
+                            <div class="remedy-word-title">
+                                TELEFONÍA A RED:
+                            </div>
+
+                            <table class="remedy-word-table">
+                                <tr>
+                                    <td class="label-cell">Persona de Contacto:</td>
+                                    <td class="value-cell">${contacto}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label-cell">Número de contacto:</td>
+                                    <td class="value-cell">${telefono}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label-cell">Customer ID:</td>
+                                    <td class="value-cell" style="font-weight:bold;">${customerId}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label-cell">Dirección MAC:</td>
+                                    <td class="value-cell" style="font-family:monospace;">${mac}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label-cell">Plano:</td>
+                                    <td class="value-cell">${plano}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label-cell">(CMTS/OLT):</td>
+                                    <td class="value-cell">${cmtsOlt}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label-cell">Número telefónico:</td>
+                                    <td class="value-cell" style="font-weight:bold; color:#0284c7;">${numeroTel}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label-cell">Plan contratado:</td>
+                                    <td class="value-cell">${plan}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label-cell">Descripción del problema:</td>
+                                    <td class="value-cell" style="white-space:pre-wrap;">${problema}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label-cell">Descartes de 1er nivel:</td>
+                                    <td class="value-cell" style="white-space:pre-wrap;">${descartes}</td>
+                                </tr>
+                            </table>
+
+                            <div class="remedy-word-section-title">Evidencias:</div>
+
+                            ${remedyImagesList.length > 0 ? `
+                                <div class="remedy-word-images">
+                                    <div class="remedy-word-section-title" style="margin-bottom:8px;">Capturas Adjuntas:</div>
+                                    ${remedyImagesList.map((img, i) => `
+                                        <div class="remedy-word-img-wrapper">
+                                            <div class="remedy-word-img-label">Evidencia #${i+1} (Clic para ampliar):</div>
+                                            <img src="${img}" class="remedy-word-img" alt="Evidencia ${i+1}" onclick="window.previewRemedyImageZoom && window.previewRemedyImageZoom('${img}')" />
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            ` : `
+                                <div style="margin-top:0.4rem; font-size:11.5px; color:#64748b; font-style:italic;">
+                                    (Sin capturas adjuntas aún. Puedes pegar fotos de error o registros con Ctrl+V).
+                                </div>
+                            `}
+                        </div>
+                    `;
+                    remedyVisualSheet.innerHTML = html;
+                    return;
+                }
+
+                if (isIptv) {
+                    const contacto = remedyIptvContacto?.value.trim() || '—';
+                    const telefono = remedyIptvTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '—');
+                    const customerId = remedyIptvCustomerId?.value.trim() || (elements.genContactId?.value.trim() || '—');
+                    const plano = remedyIptvPlano?.value.trim() || '—';
+                    const cantDecos = remedyIptvCantDecos?.value.trim() || '—';
+                    const serieDecos = remedyIptvSerieDecos?.value.trim() || '—';
+                    const canales = remedyIptvCanales?.value.trim() || '—';
+                    const grilla = remedyIptvGrilla?.value.trim() || '—';
+                    const descartes = remedyIptvDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '—');
+
+                    let html = `
+                        <div class="remedy-word-page">
+                            <div class="remedy-word-title">
+                                4. CANALES A RED:
+                            </div>
+
+                            <table class="remedy-word-table">
+                                <tr>
+                                    <td class="label-cell">Persona de Contacto:</td>
+                                    <td class="value-cell">${contacto}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label-cell">Número de Contacto:</td>
+                                    <td class="value-cell">${telefono}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label-cell">Customer ID:</td>
+                                    <td class="value-cell" style="font-weight:bold;">${customerId}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label-cell">Plano:</td>
+                                    <td class="value-cell">${plano}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label-cell">Cantidad de decodificador(es):</td>
+                                    <td class="value-cell">${cantDecos}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label-cell">N° Serie decos afectados:</td>
+                                    <td class="value-cell" style="font-family:monospace;">${serieDecos}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label-cell">Canales afectados (N° - Nombre):</td>
+                                    <td class="value-cell" style="color:#b91c1c; font-weight:bold;">${canales}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label-cell">Grilla Claro TV actualizada:</td>
+                                    <td class="value-cell">${grilla}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label-cell">Descripción de DESCARTES:</td>
+                                    <td class="value-cell" style="white-space:pre-wrap;">${descartes}</td>
+                                </tr>
+                            </table>
+
+                            <div class="remedy-word-section-title">Evidencias:</div>
+
+                            ${remedyImagesList.length > 0 ? `
+                                <div class="remedy-word-images">
+                                    <div class="remedy-word-section-title" style="margin-bottom:8px;">Capturas Adjuntas:</div>
+                                    ${remedyImagesList.map((img, i) => `
+                                        <div class="remedy-word-img-wrapper">
+                                            <div class="remedy-word-img-label">Evidencia #${i+1} (Clic para ampliar):</div>
+                                            <img src="${img}" class="remedy-word-img" alt="Evidencia ${i+1}" onclick="window.previewRemedyImageZoom && window.previewRemedyImageZoom('${img}')" />
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            ` : `
+                                <div style="margin-top:0.4rem; font-size:11.5px; color:#64748b; font-style:italic;">
+                                    (Sin capturas adjuntas aún. Puedes pegar fotos de error de pantalla con Ctrl+V).
+                                </div>
+                            `}
+                        </div>
+                    `;
+                    remedyVisualSheet.innerHTML = html;
+                    return;
+                }
+
+                const contacto = remedyRedContacto?.value.trim() || '—';
+                const telefono = remedyRedTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '—');
+                const customerId = remedyRedCustomerId?.value.trim() || (elements.genContactId?.value.trim() || '—');
+                const mac = remedyRedMac?.value.trim() || '—';
+                const ip = remedyRedIp?.value.trim() || '—';
+                const paginas = remedyRedPaginas?.value.trim() || '—';
+                const redExterna = remedyRedRedExterna?.value.trim() || '—';
+                const cmtsOlt = remedyRedCmtsOlt?.value.trim() || '—';
+                const plano = remedyRedPlano?.value.trim() || '—';
+                const descartes = remedyRedDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '—');
+
+                let html = `
+                    <div class="remedy-word-page">
+                        <div class="remedy-word-title">
+                            PAGINAS WEB a RED
+                        </div>
+
+                        <table class="remedy-word-table">
+                            <tr>
+                                <td class="label-cell">Persona de Contacto:</td>
+                                <td class="value-cell">${contacto}</td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">Número de contacto:</td>
+                                <td class="value-cell">${telefono}</td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">Customer ID:</td>
+                                <td class="value-cell" style="font-weight:bold;">${customerId}</td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">Dirección MAC Cable Módem:</td>
+                                <td class="value-cell" style="font-family:monospace;">${mac}</td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">IP Pública(Cuál es mi IP):</td>
+                                <td class="value-cell" style="font-family:monospace;">${ip}</td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">Páginas/Apps que no accede:</td>
+                                <td class="value-cell" style="color:#b91c1c; font-weight:bold;">${paginas}</td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">Desde que red puede acceder:</td>
+                                <td class="value-cell">${redExterna}</td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">CMTS/OLT:</td>
+                                <td class="value-cell">${cmtsOlt}</td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">Plano:</td>
+                                <td class="value-cell">${plano}</td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">Descartes o descripción detallada:</td>
+                                <td class="value-cell" style="white-space:pre-wrap;">${descartes}</td>
+                            </tr>
+                        </table>
+
+                        <div class="remedy-word-section-title">Evidencias:</div>
+                        <ul class="remedy-word-list">
+                            <li>Imagen del error con red CLARO</li>
+                            <li>Imagen sin error con red diferente a CLARO</li>
+                            <li>Ping desde la red de Claro</li>
+                            <li>TracerTR desde la red de Claro</li>
+                            <li>TracerTR desde la red diferente a Claro</li>
+                        </ul>
+
+                        ${remedyImagesList.length > 0 ? `
+                            <div class="remedy-word-images">
+                                <div class="remedy-word-section-title" style="margin-bottom:8px;">Capturas Adjuntas:</div>
+                                ${remedyImagesList.map((img, i) => `
+                                    <div class="remedy-word-img-wrapper">
+                                        <div class="remedy-word-img-label">Evidencia #${i+1} (Clic para ampliar):</div>
+                                        <img src="${img}" class="remedy-word-img" alt="Evidencia ${i+1}" onclick="window.previewRemedyImageZoom && window.previewRemedyImageZoom('${img}')" />
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                remedyVisualSheet.innerHTML = html;
+            } else {
+                const falla = remedyInputFalla?.value.trim() || '—';
+                const id = remedyInputId?.value.trim() || (elements.genContactId?.value.trim() || '—');
+                const dni = remedyInputDni?.value.trim() || (elements.genDni?.value.trim() || '—');
+                const cliente = remedyInputCliente?.value.trim() || (elements.genCustomer?.value.trim() || '—');
+                const detalle = remedyInputDetalle?.value.trim() || '';
+
+                let html = `
+                    <div class="remedy-word-page">
+                        <p style="margin: 0 0 12px 0; font-size: 13px;"><strong>FALLA:</strong> ${falla}</p>
+                        
+                        <ul class="remedy-word-list" style="margin-left: 20px; font-size: 13px; color: #1f2937;">
+                            <li style="margin-bottom: 4px;"><strong>ID:</strong> ${id}</li>
+                            <li style="margin-bottom: 4px;"><strong>DNI:</strong> ${dni}</li>
+                            <li style="margin-bottom: 4px;"><strong>CLIENTE:</strong> ${cliente}</li>
+                            ${detalle ? `<li style="margin-bottom: 4px;">${detalle}</li>` : ''}
+                        </ul>
+
+                        ${remedyImagesList.length > 0 ? `
+                            <div class="remedy-word-images">
+                                <div class="remedy-word-section-title" style="margin-bottom:8px;">Capturas Adjuntas:</div>
+                                ${remedyImagesList.map((img, i) => `
+                                    <div class="remedy-word-img-wrapper">
+                                        <div class="remedy-word-img-label">Captura #${i+1} (Clic para ampliar):</div>
+                                        <img src="${img}" class="remedy-word-img" alt="Captura ${i+1}" onclick="window.previewRemedyImageZoom && window.previewRemedyImageZoom('${img}')" />
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                remedyVisualSheet.innerHTML = html;
+            }
         };
 
         const updateRemedyPreview = () => {
-            if (remedyPreviewBox) {
-                remedyPreviewBox.textContent = getRemedyPlainText();
-            }
+            renderRemedyVisualSheet();
         };
 
         const renderRemedyImages = () => {
@@ -1849,7 +2487,11 @@ ${contactLines}`;
             remedyImagesContainer.innerHTML = '';
             remedyImagesList.forEach((imgData, idx) => {
                 const thumbWrapper = document.createElement('div');
-                thumbWrapper.style.cssText = 'position:relative; width:90px; height:70px; border-radius:6px; overflow:hidden; border:1px solid var(--border-color); background:#000;';
+                thumbWrapper.style.cssText = 'position:relative; width:80px; height:60px; border-radius:6px; overflow:hidden; border:1px solid var(--border-color); background:#000; cursor:pointer;';
+                thumbWrapper.title = 'Clic para ampliar';
+                thumbWrapper.addEventListener('click', () => {
+                    window.previewRemedyImageZoom && window.previewRemedyImageZoom(imgData);
+                });
                 
                 const img = document.createElement('img');
                 img.src = imgData;
@@ -1857,7 +2499,7 @@ ${contactLines}`;
                 
                 const delBtn = document.createElement('button');
                 delBtn.innerHTML = '✕';
-                delBtn.style.cssText = 'position:absolute; top:2px; right:2px; background:rgba(220,53,69,0.85); color:#fff; border:none; border-radius:50%; width:18px; height:18px; font-size:10px; cursor:pointer; display:flex; align-items:center; justify-content:center;';
+                delBtn.style.cssText = 'position:absolute; top:2px; right:2px; background:rgba(220,53,69,0.9); color:#fff; border:none; border-radius:50%; width:18px; height:18px; font-size:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:2;';
                 delBtn.title = 'Eliminar imagen';
                 delBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -1887,26 +2529,87 @@ ${contactLines}`;
         const openRemedyModal = () => {
             if (remedyModal) {
                 // Auto-fill from main form if available
-                if (elements.genCustomer && elements.genCustomer.value.trim() && (!remedyInputCliente.value || remedyInputCliente.value === '')) {
-                    remedyInputCliente.value = elements.genCustomer.value.trim().toUpperCase();
+                const mainTel = elements.genTelefono?.value.trim() || '';
+                const mainContactId = elements.genContactId?.value.trim() || '';
+                const mainDescartes = elements.genDescartes?.value.trim() || '';
+                const mainProblema = elements.genProblema?.value.trim() || '';
+
+                if (mainTel) {
+                    if (remedyRedTelefono && !remedyRedTelefono.value) remedyRedTelefono.value = mainTel;
+                    if (remedyIptvTelefono && !remedyIptvTelefono.value) remedyIptvTelefono.value = mainTel;
+                    if (remedyTelTelefono && !remedyTelTelefono.value) remedyTelTelefono.value = mainTel;
+                    if (remedyTelNumeroTel && !remedyTelNumeroTel.value) remedyTelNumeroTel.value = mainTel;
+                }
+                if (mainContactId) {
+                    if (remedyRedCustomerId && !remedyRedCustomerId.value) remedyRedCustomerId.value = mainContactId;
+                    if (remedyIptvCustomerId && !remedyIptvCustomerId.value) remedyIptvCustomerId.value = mainContactId;
+                    if (remedyTelCustomerId && !remedyTelCustomerId.value) remedyTelCustomerId.value = mainContactId;
+                    if (remedyInputId && !remedyInputId.value) remedyInputId.value = mainContactId;
+                }
+                if (mainDescartes) {
+                    if (remedyRedDescartes && !remedyRedDescartes.value) remedyRedDescartes.value = mainDescartes;
+                    if (remedyIptvDescartes && !remedyIptvDescartes.value) remedyIptvDescartes.value = mainDescartes;
+                    if (remedyTelDescartes && !remedyTelDescartes.value) remedyTelDescartes.value = mainDescartes;
+                }
+                if (mainProblema) {
+                    if (remedyTelProblema && !remedyTelProblema.value) remedyTelProblema.value = mainProblema;
+                }
+
+                if (elements.genCustomer && elements.genCustomer.value.trim()) {
+                    const custName = elements.genCustomer.value.trim().toUpperCase();
+                    if (remedyRedContacto && !remedyRedContacto.value) remedyRedContacto.value = custName;
+                    if (remedyIptvContacto && !remedyIptvContacto.value) remedyIptvContacto.value = custName;
+                    if (remedyTelContacto && !remedyTelContacto.value) remedyTelContacto.value = custName;
+                    if (remedyInputCliente && !remedyInputCliente.value) remedyInputCliente.value = custName;
                 }
                 if (elements.genDni && elements.genDni.value.trim() && (!remedyInputDni.value || remedyInputDni.value === '')) {
                     remedyInputDni.value = elements.genDni.value.trim();
                 }
-                if (elements.genIdLlamada && elements.genIdLlamada.value.trim() && (!remedyInputId.value || remedyInputId.value === '')) {
-                    remedyInputId.value = elements.genIdLlamada.value.trim();
-                }
+
                 remedyModal.classList.add('active');
-                updateRemedyPreview();
+                setRemedyTab(remedyActiveMode);
             }
         };
 
         const resetRemedyModal = () => {
+            if (remedyRedContacto) remedyRedContacto.value = '';
+            if (remedyRedTelefono) remedyRedTelefono.value = '';
+            if (remedyRedCustomerId) remedyRedCustomerId.value = '';
+            if (remedyRedMac) remedyRedMac.value = '';
+            if (remedyRedIp) remedyRedIp.value = '';
+            if (remedyRedCmtsOlt) remedyRedCmtsOlt.value = '';
+            if (remedyRedPaginas) remedyRedPaginas.value = '';
+            if (remedyRedRedExterna) remedyRedRedExterna.value = '';
+            if (remedyRedPlano) remedyRedPlano.value = '';
+            if (remedyRedDescartes) remedyRedDescartes.value = '';
+
+            if (remedyIptvContacto) remedyIptvContacto.value = '';
+            if (remedyIptvTelefono) remedyIptvTelefono.value = '';
+            if (remedyIptvCustomerId) remedyIptvCustomerId.value = '';
+            if (remedyIptvPlano) remedyIptvPlano.value = '';
+            if (remedyIptvCantDecos) remedyIptvCantDecos.value = '';
+            if (remedyIptvSerieDecos) remedyIptvSerieDecos.value = '';
+            if (remedyIptvCanales) remedyIptvCanales.value = '';
+            if (remedyIptvGrilla) remedyIptvGrilla.value = '';
+            if (remedyIptvDescartes) remedyIptvDescartes.value = '';
+
+            if (remedyTelContacto) remedyTelContacto.value = '';
+            if (remedyTelTelefono) remedyTelTelefono.value = '';
+            if (remedyTelCustomerId) remedyTelCustomerId.value = '';
+            if (remedyTelMac) remedyTelMac.value = '';
+            if (remedyTelPlano) remedyTelPlano.value = '';
+            if (remedyTelCmtsOlt) remedyTelCmtsOlt.value = '';
+            if (remedyTelNumeroTel) remedyTelNumeroTel.value = '';
+            if (remedyTelPlan) remedyTelPlan.value = '';
+            if (remedyTelProblema) remedyTelProblema.value = '';
+            if (remedyTelDescartes) remedyTelDescartes.value = '';
+
             if (remedyInputFalla) remedyInputFalla.value = '';
             if (remedyInputId) remedyInputId.value = '';
             if (remedyInputDni) remedyInputDni.value = '';
             if (remedyInputCliente) remedyInputCliente.value = '';
             if (remedyInputDetalle) remedyInputDetalle.value = '';
+            
             remedyImagesList = [];
             renderRemedyImages();
             updateRemedyPreview();
@@ -1931,7 +2634,20 @@ ${contactLines}`;
             });
         }
 
-        [remedyInputFalla, remedyInputId, remedyInputDni, remedyInputCliente, remedyInputDetalle].forEach(inp => {
+        // Listeners for all inputs to update live preview
+        [
+            remedyRedContacto, remedyRedTelefono, remedyRedCustomerId, remedyRedMac,
+            remedyRedIp, remedyRedCmtsOlt, remedyRedPaginas, remedyRedRedExterna,
+            remedyRedPlano, remedyRedDescartes,
+            remedyIptvContacto, remedyIptvTelefono, remedyIptvCustomerId, remedyIptvPlano,
+            remedyIptvCantDecos, remedyIptvSerieDecos, remedyIptvCanales, remedyIptvGrilla,
+            remedyIptvDescartes,
+            remedyTelContacto, remedyTelTelefono, remedyTelCustomerId, remedyTelMac,
+            remedyTelPlano, remedyTelCmtsOlt, remedyTelNumeroTel, remedyTelPlan,
+            remedyTelProblema, remedyTelDescartes,
+            remedyInputFalla, remedyInputId, remedyInputDni, remedyInputCliente,
+            remedyInputDetalle
+        ].forEach(inp => {
             if (inp) inp.addEventListener('input', updateRemedyPreview);
         });
 
@@ -1982,74 +2698,362 @@ ${contactLines}`;
         if (btnCopyRemedyText) {
             btnCopyRemedyText.addEventListener('click', () => {
                 const text = getRemedyPlainText();
+                const logLabel = isTelefoniaActive() ? 'Escalamiento Telefonía a RED' : (isIptvActive() ? 'Escalamiento IPTV Canales a RED' : (remedyActiveMode === 'red' ? 'Escalamiento a RED (Páginas/Apps)' : 'Incidencia / Escalamiento'));
                 copyToClipboard(text, 'Texto Remedy copiado');
-                addHistoryRecord('Remedy', 'Incidencia / Escalamiento', text);
+                addHistoryRecord('Remedy', logLabel, text);
             });
         }
 
         // Action: Copy Rich Format for Word (With Embedded Images)
         if (btnCopyRemedyWord) {
             btnCopyRemedyWord.addEventListener('click', async () => {
-                const falla = remedyInputFalla?.value.trim() || '[Descripción de la falla]';
-                const id = remedyInputId?.value.trim() || '[Customer ID]';
-                const dni = remedyInputDni?.value.trim() || '[DNI/RUC]';
-                const cliente = remedyInputCliente?.value.trim() || '[Nombre del Cliente]';
-                const detalle = remedyInputDetalle?.value.trim() || '';
+                let htmlContent = '';
+                const plainText = getRemedyPlainText();
+                const isIptv = isIptvActive();
+                const isTelefonia = isTelefoniaActive();
 
-                let htmlContent = `<div style="font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1f2937; line-height: 1.5;">`;
-                htmlContent += `<p style="margin: 0 0 10pt 0;"><strong>FALLA:</strong> ${falla}</p>`;
-                htmlContent += `<ul style="margin: 0 0 14pt 20pt; padding: 0;">`;
-                htmlContent += `<li style="margin-bottom: 3pt;"><strong>ID:</strong> ${id}</li>`;
-                htmlContent += `<li style="margin-bottom: 3pt;"><strong>DNI:</strong> ${dni}</li>`;
-                htmlContent += `<li style="margin-bottom: 3pt;"><strong>CLIENTE:</strong> ${cliente}</li>`;
-                if (detalle) {
-                    htmlContent += `<li style="margin-bottom: 3pt;">${detalle}</li>`;
-                }
-                htmlContent += `</ul>`;
+                if (remedyActiveMode === 'red') {
+                    if (isTelefonia) {
+                        const contacto = remedyTelContacto?.value.trim() || '[Persona de Contacto]';
+                        const telefono = remedyTelTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '[Número de contacto]');
+                        const customerId = remedyTelCustomerId?.value.trim() || (elements.genContactId?.value.trim() || '[Customer ID]');
+                        const mac = remedyTelMac?.value.trim() || '[Dirección MAC]';
+                        const plano = remedyTelPlano?.value.trim() || '[Plano]';
+                        const cmtsOlt = remedyTelCmtsOlt?.value.trim() || '[(CMTS/OLT)]';
+                        const numeroTel = remedyTelNumeroTel?.value.trim() || (elements.genTelefono?.value.trim() || '[Número telefónico]');
+                        const plan = remedyTelPlan?.value.trim() || '[Plan contratado]';
+                        const problema = remedyTelProblema?.value.trim() || (elements.genProblema?.value.trim() || '[Descripción detallada del problema]');
+                        const descartes = remedyTelDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '[Descartes de primer nivel realizados]');
 
-                if (remedyImagesList.length > 0) {
-                    htmlContent += `<div style="margin-top: 15pt;">`;
-                    remedyImagesList.forEach(imgData => {
-                        htmlContent += `<p style="margin: 0 0 12pt 0;"><img src="${imgData}" style="max-width: 100%; height: auto; border: 1px solid #d1d5db; border-radius: 4px;" /></p>`;
-                    });
+                        htmlContent = `<div style="font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1f2937; line-height: 1.5;">`;
+                        htmlContent += `<h3 style="color: #b91c1c; margin: 0 0 10pt 0;">TELEFONÍA A RED:</h3>`;
+                        htmlContent += `<table style="width: 100%; border-collapse: collapse; margin-bottom: 12pt; font-size: 10.5pt;">`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold; width: 35%;">Persona de Contacto:</td><td style="padding: 4px 8px;">${contacto}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Número de contacto:</td><td style="padding: 4px 8px;">${telefono}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Customer ID:</td><td style="padding: 4px 8px;">${customerId}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Dirección MAC:</td><td style="padding: 4px 8px; font-family:monospace;">${mac}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Plano:</td><td style="padding: 4px 8px;">${plano}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">(CMTS/OLT):</td><td style="padding: 4px 8px;">${cmtsOlt}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Número telefónico:</td><td style="padding: 4px 8px; font-weight:bold; color:#0284c7;">${numeroTel}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Plan contratado:</td><td style="padding: 4px 8px;">${plan}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Descripción detallada del problema:</td><td style="padding: 4px 8px;">${problema}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Descartes de primer nivel realizados:</td><td style="padding: 4px 8px;">${descartes}</td></tr>`;
+                        htmlContent += `</table>`;
+                        
+                        htmlContent += `<p style="font-weight: bold; margin: 10pt 0 4pt 0;">Evidencias:</p>`;
+
+                        if (remedyImagesList.length > 0) {
+                            htmlContent += `<div style="margin-top: 10pt;">`;
+                            remedyImagesList.forEach((imgData, i) => {
+                                htmlContent += `<p style="margin: 0 0 12pt 0;"><strong style="font-size:10pt;">Captura / Evidencia #${i+1}:</strong><br><img src="${imgData}" style="max-width: 100%; height: auto; border: 1px solid #d1d5db; border-radius: 4px; margin-top:4px;" /></p>`;
+                            });
+                            htmlContent += `</div>`;
+                        }
+                        htmlContent += `</div>`;
+                    } else if (isIptv) {
+                        const contacto = remedyIptvContacto?.value.trim() || '[Persona de Contacto]';
+                        const telefono = remedyIptvTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '[Número de Contacto]');
+                        const customerId = remedyIptvCustomerId?.value.trim() || (elements.genContactId?.value.trim() || '[Customer ID]');
+                        const plano = remedyIptvPlano?.value.trim() || '[Plano]';
+                        const cantDecos = remedyIptvCantDecos?.value.trim() || '[Cantidad de decodificador(es)]';
+                        const serieDecos = remedyIptvSerieDecos?.value.trim() || '[N° Serie decos afectados]';
+                        const canales = remedyIptvCanales?.value.trim() || '[Canales afectados (N° - Nombre de Canal)]';
+                        const grilla = remedyIptvGrilla?.value.trim() || '[Grilla Claro TV actualizada]';
+                        const descartes = remedyIptvDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '[Descripción detallada de DESCARTES realizados]');
+
+                        htmlContent = `<div style="font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1f2937; line-height: 1.5;">`;
+                        htmlContent += `<h3 style="color: #b91c1c; margin: 0 0 10pt 0;">4. CANALES A RED:</h3>`;
+                        htmlContent += `<table style="width: 100%; border-collapse: collapse; margin-bottom: 12pt; font-size: 10.5pt;">`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold; width: 40%;">Persona de Contacto:</td><td style="padding: 4px 8px;">${contacto}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Número de Contacto:</td><td style="padding: 4px 8px;">${telefono}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Customer ID:</td><td style="padding: 4px 8px;">${customerId}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Plano:</td><td style="padding: 4px 8px;">${plano}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Cantidad de decodificador(es):</td><td style="padding: 4px 8px;">${cantDecos}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">N° Serie decos afectados:</td><td style="padding: 4px 8px; font-family:monospace;">${serieDecos}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Canales afectados (N° - Nombre de Canal):</td><td style="padding: 4px 8px; color:#b91c1c; font-weight:bold;">${canales}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Grilla Claro TV actualizada:</td><td style="padding: 4px 8px;">${grilla}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Descripción detallada de DESCARTES realizados:</td><td style="padding: 4px 8px;">${descartes}</td></tr>`;
+                        htmlContent += `</table>`;
+                        
+                        htmlContent += `<p style="font-weight: bold; margin: 10pt 0 4pt 0;">Evidencias:</p>`;
+
+                        if (remedyImagesList.length > 0) {
+                            htmlContent += `<div style="margin-top: 10pt;">`;
+                            remedyImagesList.forEach((imgData, i) => {
+                                htmlContent += `<p style="margin: 0 0 12pt 0;"><strong style="font-size:10pt;">Captura / Evidencia #${i+1}:</strong><br><img src="${imgData}" style="max-width: 100%; height: auto; border: 1px solid #d1d5db; border-radius: 4px; margin-top:4px;" /></p>`;
+                            });
+                            htmlContent += `</div>`;
+                        }
+                        htmlContent += `</div>`;
+                    } else {
+                        const contacto = remedyRedContacto?.value.trim() || '[Persona de Contacto]';
+                        const telefono = remedyRedTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '[Número de contacto]');
+                        const customerId = remedyRedCustomerId?.value.trim() || (elements.genContactId?.value.trim() || '[Customer ID]');
+                        const mac = remedyRedMac?.value.trim() || '[Dirección MAC Cable Módem]';
+                        const ip = remedyRedIp?.value.trim() || '[IP Pública(Cuál es mi IP)]';
+                        const paginas = remedyRedPaginas?.value.trim() || '[Páginas/Apps que no accede]';
+                        const redExterna = remedyRedRedExterna?.value.trim() || '[Desde que red puede acceder]';
+                        const cmtsOlt = remedyRedCmtsOlt?.value.trim() || '[CMTS/OLT]';
+                        const plano = remedyRedPlano?.value.trim() || '[Plano]';
+                        const descartes = remedyRedDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '[Descartes técnicos]');
+
+                        htmlContent = `<div style="font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1f2937; line-height: 1.5;">`;
+                        htmlContent += `<h3 style="color: #b91c1c; margin: 0 0 10pt 0;">ESCALAMIENTO A RED - PÁGINAS WEB / APPS BLOQUEADAS</h3>`;
+                        htmlContent += `<table style="width: 100%; border-collapse: collapse; margin-bottom: 12pt; font-size: 10.5pt;">`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold; width: 35%;">Persona de Contacto:</td><td style="padding: 4px 8px;">${contacto}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Número de contacto:</td><td style="padding: 4px 8px;">${telefono}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Customer ID:</td><td style="padding: 4px 8px;">${customerId}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Dirección MAC Cable Módem:</td><td style="padding: 4px 8px;">${mac}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">IP Pública(Cuál es mi IP):</td><td style="padding: 4px 8px;">${ip}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Páginas/Apps que no accede:</td><td style="padding: 4px 8px; color:#b91c1c; font-weight:bold;">${paginas}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Desde que red puede acceder:</td><td style="padding: 4px 8px;">${redExterna}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">CMTS/OLT:</td><td style="padding: 4px 8px;">${cmtsOlt}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Plano:</td><td style="padding: 4px 8px;">${plano}</td></tr>`;
+                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Descartes del problema:</td><td style="padding: 4px 8px;">${descartes}</td></tr>`;
+                        htmlContent += `</table>`;
+                        
+                        htmlContent += `<p style="font-weight: bold; margin: 10pt 0 4pt 0;">Evidencias requeridas:</p>`;
+                        htmlContent += `<ul style="margin: 0 0 10pt 18pt; padding: 0;">`;
+                        htmlContent += `<li>Imagen del error con red CLARO</li>`;
+                        htmlContent += `<li>Imagen sin error con red diferente a CLARO</li>`;
+                        htmlContent += `<li>Ping desde la red de Claro</li>`;
+                        htmlContent += `<li>TracerTR desde la red de Claro</li>`;
+                        htmlContent += `<li>TracerTR desde la red diferente a Claro</li>`;
+                        htmlContent += `</ul>`;
+
+                        if (remedyImagesList.length > 0) {
+                            htmlContent += `<div style="margin-top: 10pt;">`;
+                            remedyImagesList.forEach((imgData, i) => {
+                                htmlContent += `<p style="margin: 0 0 12pt 0;"><strong style="font-size:10pt;">Captura / Evidencia #${i+1}:</strong><br><img src="${imgData}" style="max-width: 100%; height: auto; border: 1px solid #d1d5db; border-radius: 4px; margin-top:4px;" /></p>`;
+                            });
+                            htmlContent += `</div>`;
+                        }
+                        htmlContent += `</div>`;
+                    }
+                } else {
+                    const falla = remedyInputFalla?.value.trim() || '[Descripción de la falla]';
+                    const id = remedyInputId?.value.trim() || '[Customer ID]';
+                    const dni = remedyInputDni?.value.trim() || '[DNI/RUC]';
+                    const cliente = remedyInputCliente?.value.trim() || '[Nombre del Cliente]';
+                    const detalle = remedyInputDetalle?.value.trim() || '';
+
+                    htmlContent = `<div style="font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1f2937; line-height: 1.5;">`;
+                    htmlContent += `<p style="margin: 0 0 8pt 0;"><strong>FALLA:</strong> ${falla}</p>`;
+                    htmlContent += `<ul style="margin: 0 0 12pt 18pt; padding: 0;">`;
+                    htmlContent += `<li><strong>ID:</strong> ${id}</li>`;
+                    htmlContent += `<li><strong>DNI:</strong> ${dni}</li>`;
+                    htmlContent += `<li><strong>CLIENTE:</strong> ${cliente}</li>`;
+                    if (detalle) {
+                        htmlContent += `<li>${detalle}</li>`;
+                    }
+                    htmlContent += `</ul>`;
+
+                    if (remedyImagesList.length > 0) {
+                        htmlContent += `<div style="margin-top: 10pt;">`;
+                        remedyImagesList.forEach((imgData, i) => {
+                            htmlContent += `<p style="margin: 0 0 12pt 0;"><strong style="font-size:10pt;">Captura #${i+1}:</strong><br><img src="${imgData}" style="max-width: 100%; height: auto; border: 1px solid #d1d5db; border-radius: 4px; margin-top:4px;" /></p>`;
+                        });
+                        htmlContent += `</div>`;
+                    }
                     htmlContent += `</div>`;
                 }
-                htmlContent += `</div>`;
-
-                const plainText = getRemedyPlainText();
 
                 try {
-                    const blobHtml = new Blob([htmlContent], { type: 'text/html' });
-                    const blobText = new Blob([plainText], { type: 'text/plain' });
-                    const data = [new ClipboardItem({ 'text/html': blobHtml, 'text/plain': blobText })];
-                    await navigator.clipboard.write(data);
-                    showToast('📋 ¡Formato completo con fotos copiado! Listo para pegar en Word (Ctrl+V)');
-                    addHistoryRecord('Remedy', 'Incidencia Word / Escalamiento', plainText);
+                    if (navigator.clipboard && window.ClipboardItem) {
+                        const blobHtml = new Blob([htmlContent], { type: 'text/html' });
+                        const blobPlain = new Blob([plainText], { type: 'text/plain' });
+                        const item = new ClipboardItem({
+                            'text/html': blobHtml,
+                            'text/plain': blobPlain
+                        });
+                        await navigator.clipboard.write([item]);
+                        showToast('✓ Formato Word copiado con tablas e imágenes');
+                        addHistoryRecord('Remedy (Word)', 'Plantilla con Formato Word enriquecido', plainText);
+                    } else {
+                        copyToClipboard(plainText, 'Texto copiado (El navegador no soporta HTML enriquecido)');
+                    }
                 } catch (err) {
-                    // Fallback to text copy
-                    copyToClipboard(plainText, 'Texto Remedy copiado');
+                    console.error('Error copying rich text:', err);
+                    copyToClipboard(plainText, 'Texto copiado (Fallback)');
                 }
             });
         }
 
-        // Action: Export directly to PDF
+        // Action: Export to PDF with Printable Layout
         if (btnExportRemedyPdf) {
             btnExportRemedyPdf.addEventListener('click', () => {
-                const falla = remedyInputFalla?.value.trim() || 'Sin especificar';
-                const id = remedyInputId?.value.trim() || 'N/A';
-                const dni = remedyInputDni?.value.trim() || 'N/A';
-                const cliente = remedyInputCliente?.value.trim() || 'N/A';
-                const detalle = remedyInputDetalle?.value.trim() || '';
+                let docTitle = 'Remedy_Incidencia';
+                let bodyContent = '';
+                const isIptv = isIptvActive();
+                const isTelefonia = isTelefoniaActive();
 
-                const docTitle = `Remedy_${id}_${cliente.replace(/\s+/g, '_')}`;
+                if (remedyActiveMode === 'red') {
+                    if (isTelefonia) {
+                        const contacto = remedyTelContacto?.value.trim() || 'N/A';
+                        const telefono = remedyTelTelefono?.value.trim() || (elements.genTelefono?.value.trim() || 'N/A');
+                        const customerId = remedyTelCustomerId?.value.trim() || (elements.genContactId?.value.trim() || 'N/A');
+                        const mac = remedyTelMac?.value.trim() || 'N/A';
+                        const plano = remedyTelPlano?.value.trim() || 'N/A';
+                        const cmtsOlt = remedyTelCmtsOlt?.value.trim() || 'N/A';
+                        const numeroTel = remedyTelNumeroTel?.value.trim() || (elements.genTelefono?.value.trim() || 'N/A');
+                        const plan = remedyTelPlan?.value.trim() || 'N/A';
+                        const problema = remedyTelProblema?.value.trim() || (elements.genProblema?.value.trim() || 'N/A');
+                        const descartes = remedyTelDescartes?.value.trim() || (elements.genDescartes?.value.trim() || 'N/A');
 
-                const printWindow = window.open('', '_blank');
-                if (!printWindow) {
-                    showToast('Por favor permite ventanas emergentes para generar el PDF');
-                    return;
+                        docTitle = `Remedy_TELEFONIA_RED_${customerId}_${contacto.replace(/\s+/g, '_')}`;
+
+                        bodyContent = `
+                            <div style="border-bottom: 2px solid #b91c1c; padding-bottom: 8px; margin-bottom: 16px;">
+                                <h2 style="color: #b91c1c; margin: 0; font-size: 14pt;">TELEFONÍA A RED</h2>
+                                <p style="margin: 4px 0 0 0; font-size: 9pt; color: #6b7280;">Informe Técnico de Escalamiento de Telefonía Fija &bull; Back Office 2N</p>
+                            </div>
+
+                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 10pt;">
+                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; width: 35%; border: 1px solid #e5e7eb;">Persona de Contacto:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${contacto}</td></tr>
+                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Número de contacto:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${telefono}</td></tr>
+                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Customer ID:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${customerId}</td></tr>
+                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Dirección MAC:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb; font-family: monospace;">${mac}</td></tr>
+                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Plano:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${plano}</td></tr>
+                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">(CMTS/OLT):</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${cmtsOlt}</td></tr>
+                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb; color:#0284c7;">Número telefónico:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb; font-weight:bold; color:#0284c7;">${numeroTel}</td></tr>
+                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Plan contratado:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${plan}</td></tr>
+                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Descripción detallada del problema:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${problema}</td></tr>
+                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Descartes de primer nivel realizados:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${descartes}</td></tr>
+                            </table>
+
+                            <div style="margin-top: 10px; margin-bottom: 6px; font-weight: bold; font-size: 10pt;">Evidencias:</div>
+
+                            <div class="evidence-section">
+                                ${remedyImagesList.map((img, idx) => `
+                                    <div style="margin-bottom: 20px; page-break-inside: avoid; text-align: center;">
+                                        <p style="font-weight: bold; font-size: 10pt; margin: 0 0 6px 0; text-align: left;">Captura / Evidencia #${idx + 1}:</p>
+                                        <img class="evidence-img" src="${img}" alt="Evidencia Remedy Telefonía" />
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `;
+                    } else if (isIptv) {
+                        const contacto = remedyIptvContacto?.value.trim() || 'N/A';
+                        const telefono = remedyIptvTelefono?.value.trim() || (elements.genTelefono?.value.trim() || 'N/A');
+                        const customerId = remedyIptvCustomerId?.value.trim() || (elements.genContactId?.value.trim() || 'N/A');
+                        const plano = remedyIptvPlano?.value.trim() || 'N/A';
+                        const cantDecos = remedyIptvCantDecos?.value.trim() || 'N/A';
+                        const serieDecos = remedyIptvSerieDecos?.value.trim() || 'N/A';
+                        const canales = remedyIptvCanales?.value.trim() || 'N/A';
+                        const grilla = remedyIptvGrilla?.value.trim() || 'N/A';
+                        const descartes = remedyIptvDescartes?.value.trim() || (elements.genDescartes?.value.trim() || 'N/A');
+
+                        docTitle = `Remedy_IPTV_Canales_${customerId}_${contacto.replace(/\s+/g, '_')}`;
+
+                        bodyContent = `
+                            <div style="border-bottom: 2px solid #b91c1c; padding-bottom: 8px; margin-bottom: 16px;">
+                                <h2 style="color: #b91c1c; margin: 0; font-size: 14pt;">4. CANALES A RED</h2>
+                                <p style="margin: 4px 0 0 0; font-size: 9pt; color: #6b7280;">Informe Técnico de Escalamiento IPTV / Plataforma TV &bull; Back Office 2N</p>
+                            </div>
+
+                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 10pt;">
+                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; width: 40%; border: 1px solid #e5e7eb;">Persona de Contacto:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${contacto}</td></tr>
+                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Número de Contacto:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${telefono}</td></tr>
+                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Customer ID:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${customerId}</td></tr>
+                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Plano:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${plano}</td></tr>
+                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Cantidad de decodificador(es):</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${cantDecos}</td></tr>
+                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">N° Serie decos afectados:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb; font-family: monospace;">${serieDecos}</td></tr>
+                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb; color:#b91c1c;">Canales afectados (N° - Nombre de Canal):</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb; font-weight:bold; color:#b91c1c;">${canales}</td></tr>
+                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Grilla Claro TV actualizada:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${grilla}</td></tr>
+                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Descripción detallada de DESCARTES realizados:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${descartes}</td></tr>
+                            </table>
+
+                            <div style="margin-top: 10px; margin-bottom: 6px; font-weight: bold; font-size: 10pt;">Evidencias:</div>
+
+                            <div class="evidence-section">
+                                ${remedyImagesList.map((img, idx) => `
+                                    <div style="margin-bottom: 20px; page-break-inside: avoid; text-align: center;">
+                                        <p style="font-weight: bold; font-size: 10pt; margin: 0 0 6px 0; text-align: left;">Captura / Evidencia #${idx + 1}:</p>
+                                        <img class="evidence-img" src="${img}" alt="Evidencia Remedy IPTV" />
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `;
+                    } else {
+                        const contacto = remedyRedContacto?.value.trim() || 'N/A';
+                        const telefono = remedyRedTelefono?.value.trim() || (elements.genTelefono?.value.trim() || 'N/A');
+                        const customerId = remedyRedCustomerId?.value.trim() || (elements.genContactId?.value.trim() || 'N/A');
+                        const mac = remedyRedMac?.value.trim() || 'N/A';
+                        const ip = remedyRedIp?.value.trim() || 'N/A';
+                        const paginas = remedyRedPaginas?.value.trim() || 'N/A';
+                        const redExterna = remedyRedRedExterna?.value.trim() || 'N/A';
+                        const cmtsOlt = remedyRedCmtsOlt?.value.trim() || 'N/A';
+                        const plano = remedyRedPlano?.value.trim() || 'N/A';
+                        const descartes = remedyRedDescartes?.value.trim() || (elements.genDescartes?.value.trim() || 'N/A');
+
+                        docTitle = `Remedy_RED_${customerId}_${contacto.replace(/\s+/g, '_')}`;
+
+                        bodyContent = `
+                            <div style="border-bottom: 2px solid #b91c1c; padding-bottom: 8px; margin-bottom: 16px;">
+                                <h2 style="color: #b91c1c; margin: 0; font-size: 14pt;">ESCALAMIENTO A RED - PÁGINAS WEB / APPS BLOQUEADAS</h2>
+                                <p style="margin: 4px 0 0 0; font-size: 9pt; color: #6b7280;">Informe de Auditoría y Pruebas Técnicas &bull; Back Office 2N</p>
+                            </div>
+
+                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 10pt;">
+                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; width: 35%; border: 1px solid #e5e7eb;">Persona de Contacto:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${contacto}</td></tr>
+                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Número de contacto:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${telefono}</td></tr>
+                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Customer ID:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${customerId}</td></tr>
+                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Dirección MAC Cable Módem / ONT:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb; font-family: monospace;">${mac}</td></tr>
+                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb; font-family: monospace;">${ip}</td></tr>
+                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb; color:#b91c1c;">Páginas/Apps que no accede:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb; font-weight:bold; color:#b91c1c;">${paginas}</td></tr>
+                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Desde qué red puede acceder:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${redExterna}</td></tr>
+                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">CMTS / OLT:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${cmtsOlt}</td></tr>
+                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Plano:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${plano}</td></tr>
+                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Descartes técnicos detallados:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${descartes}</td></tr>
+                            </table>
+
+                            <div style="background:#fef2f2; border: 1px solid #fecaca; padding: 8px 12px; border-radius: 4px; margin-bottom: 16px; font-size: 9pt;">
+                                <strong>Evidencias requeridas incluidas:</strong>
+                                <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 2px; margin-top: 4px; color:#4b5563;">
+                                    <div>• Imagen del error con red CLARO</div>
+                                    <div>• Imagen sin error con red externa</div>
+                                    <div>• Ping desde la red de Claro</div>
+                                    <div>• TracerTR desde la red de Claro</div>
+                                    <div>• TracerTR desde la red externa</div>
+                                </div>
+                            </div>
+
+                            <div class="evidence-section">
+                                ${remedyImagesList.map((img, idx) => `
+                                    <div style="margin-bottom: 20px; page-break-inside: avoid; text-align: center;">
+                                        <p style="font-weight: bold; font-size: 10pt; margin: 0 0 6px 0; text-align: left;">Captura / Evidencia #${idx + 1}:</p>
+                                        <img class="evidence-img" src="${img}" alt="Evidencia Remedy" />
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `;
+                    }
+                } else {
+                    const falla = remedyInputFalla?.value.trim() || 'Sin especificar';
+                    const id = remedyInputId?.value.trim() || 'N/A';
+                    const dni = remedyInputDni?.value.trim() || 'N/A';
+                    const cliente = remedyInputCliente?.value.trim() || 'N/A';
+                    const detalle = remedyInputDetalle?.value.trim() || '';
+
+                    docTitle = `Remedy_${id}_${cliente.replace(/\s+/g, '_')}`;
+
+                    bodyContent = `
+                        <div class="falla-title"><strong>FALLA:</strong> ${falla}</div>
+                        
+                        <ul class="meta-list">
+                            <li><strong>ID:</strong> ${id}</li>
+                            <li><strong>DNI:</strong> ${dni}</li>
+                            <li><strong>CLIENTE:</strong> ${cliente}</li>
+                            ${detalle ? `<li>${detalle}</li>` : ''}
+                        </ul>
+
+                        <div class="evidence-section">
+                            ${remedyImagesList.map(img => `<p style="margin: 0 0 16px 0; text-align:center;"><img class="evidence-img" src="${img}" alt="Evidencia Remedy" /></p>`).join('')}
+                        </div>
+                    `;
                 }
 
-                let html = `<!DOCTYPE html>
+                const html = `<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -2057,7 +3061,7 @@ ${contactLines}`;
     <style>
         @page {
             size: A4 portrait;
-            margin: 22mm 20mm 20mm 20mm;
+            margin: 18mm 16mm 18mm 16mm;
         }
         * {
             box-sizing: border-box;
@@ -2065,13 +3069,13 @@ ${contactLines}`;
             print-color-adjust: exact !important;
         }
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            color: #000000;
-            background: #ffffff;
+            font-family: Calibri, 'Segoe UI', Arial, sans-serif;
+            font-size: 10.5pt;
+            color: #1f2937;
             margin: 0;
             padding: 0;
-            font-size: 11pt;
-            line-height: 1.5;
+            font-size: 10.5pt;
+            line-height: 1.45;
         }
         .falla-title {
             font-size: 11.5pt;
@@ -2081,19 +3085,19 @@ ${contactLines}`;
         .meta-list {
             margin: 0 0 24px 20px;
             padding: 0;
-            font-size: 11pt;
+            font-size: 10.5pt;
         }
         .meta-list li {
             margin-bottom: 5px;
         }
         .evidence-section {
-            margin-top: 20px;
+            margin-top: 16px;
         }
         .evidence-img {
             max-width: 100%;
             height: auto;
             display: block;
-            margin: 0 auto 16px auto;
+            margin: 0 auto;
             border: 1px solid #9ca3af;
             border-radius: 4px;
             page-break-inside: avoid;
@@ -2101,19 +3105,7 @@ ${contactLines}`;
     </style>
 </head>
 <body>
-    <div class="falla-title"><strong>FALLA:</strong> ${falla}</div>
-    
-    <ul class="meta-list">
-        <li><strong>ID:</strong> ${id}</li>
-        <li><strong>DNI:</strong> ${dni}</li>
-        <li><strong>CLIENTE:</strong> ${cliente}</li>
-        ${detalle ? `<li>${detalle}</li>` : ''}
-    </ul>
-
-    <div class="evidence-section">
-        ${remedyImagesList.map(img => `<p style="margin: 0 0 16px 0; text-align:center;"><img class="evidence-img" src="${img}" alt="Evidencia Remedy" /></p>`).join('')}
-    </div>
-
+    ${bodyContent}
     <script>
         window.onload = function() {
             setTimeout(function() {
@@ -2128,7 +3120,7 @@ ${contactLines}`;
                 printWindow.document.write(html);
                 printWindow.document.close();
                 showToast('Generando vista de impresión PDF...');
-                addHistoryRecord('Remedy', 'PDF Escalamiento', `FALLA: ${falla} | ID: ${id} | CLIENTE: ${cliente}`);
+                addHistoryRecord('Remedy', remedyActiveMode === 'red' ? 'PDF Escalamiento RED' : 'PDF Escalamiento General', `Doc: ${docTitle}`);
             });
         }
 
@@ -2398,20 +3390,20 @@ ${contactLines}`;
     // ==========================================================================
     function initLinksSidebar() {
         const defaultWorkLinks = [
-            { id: 'lnk_incognito', name: 'Incógnito', url: 'https://incognito.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '🌐', isQuick: true },
+            { id: 'lnk_incognito', name: 'Incógnito (SAC)', url: 'http://prov.incognito.claro.com.pe/sac/Login_input', category: 'Internet & Diagnóstico', icon: '🌐', isQuick: true },
             { id: 'lnk_dashboard', name: 'Dashboard', url: 'https://dashboard.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '📊', isQuick: true },
-            { id: 'lnk_tr69', name: 'TR69', url: 'https://tr69.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '📡', isQuick: true },
-            { id: 'lnk_schaman', name: 'Schaman', url: 'https://schaman.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '🔍', isQuick: true },
+            { id: 'lnk_tr69', name: 'TR69 (ACS)', url: 'http://172.17.27.238:8080/auth/login', category: 'Internet & Diagnóstico', icon: '📡', isQuick: true },
+            { id: 'lnk_schaman', name: 'Schaman', url: 'https://atc-clperu.schaman.com/schaman-sso/login?callback=AAAADDfLhTpFXbSJETw3QhDILl0NLOiLN0QoI8dU3SWwSKTvrjlJU4lSPMmuHTIXFb5Ctr09Tz2H8Se6pOTmA6e2Qww%3D&app=AAAADGMbhcwoHsi4O778tEhNo5SvofJD%2FIcQCFAyhlXeSZE6Mg5jbA%3D%3D&customer=AAAADAcU2Ikxs028MO8BAUqzICiPfU1bCdWstG2p6BMKi4wqtw%3D%3D', category: 'Internet & Diagnóstico', icon: '🔍', isQuick: true },
+            { id: 'lnk_plume', name: 'Plume (Frontline Tier 1)', url: 'https://gamma.central.plume.com/', category: 'Internet & Diagnóstico', icon: '📶', isQuick: true },
             { id: 'lnk_remotedesktop', name: 'Escritorio Remoto', url: 'https://remotedesktop.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '🖥️', isQuick: true },
             { id: 'lnk_tracer', name: 'Tracer', url: 'https://tracer.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '📈', isQuick: true },
             { id: 'lnk_tracerplano', name: 'Tracer por Plano', url: 'https://tracerplano.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '🗺️', isQuick: true },
             
+            { id: 'lnk_remedy', name: 'BMC Helix / Remedy', url: 'https://clarop-rsso.claro.pe/rsso/start', category: 'Sistemas & Gestión', icon: '🛠️', isQuick: true },
+            { id: 'lnk_livechat', name: 'LiveChat (Aivo)', url: 'https://live-us.aivo.co/chat', category: 'Canales & Comunicación', icon: '💬', isQuick: true },
             { id: 'lnk_hygeia', name: 'Hygeia (Niveles HFC/FTTH)', url: 'https://hygeia.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '⚡', isQuick: false },
             { id: 'lnk_siac', name: 'SIAC Único', url: 'https://siacunico.claro.com.pe/', category: 'Sistemas & Gestión', icon: '💻', isQuick: false },
             { id: 'lnk_sga', name: 'SGA Operativo', url: 'https://sga.claro.com.pe/', category: 'Sistemas & Gestión', icon: '📋', isQuick: false },
-            { id: 'lnk_remedy', name: 'Helix / Remedy', url: 'https://helix.remedy.claro.com.pe/', category: 'Sistemas & Gestión', icon: '🛠️', isQuick: false },
-            { id: 'lnk_plume', name: 'Plume Admin', url: 'https://plume.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '📶', isQuick: false },
-            { id: 'lnk_livechat', name: 'LiveChat Corporativo', url: 'https://livechat.claro.com.pe/', category: 'Canales & Comunicación', icon: '💬', isQuick: false },
             { id: 'lnk_wsp', name: 'WhatsApp Web', url: 'https://web.whatsapp.com/', category: 'Canales & Comunicación', icon: '📱', isQuick: false }
         ];
 
@@ -2419,9 +3411,16 @@ ${contactLines}`;
         if (!workLinks || !Array.isArray(workLinks) || workLinks.length === 0) {
             workLinks = defaultWorkLinks;
         } else {
-            // Fusión inteligente: asegurar que las nuevas herramientas por defecto existan
+            // Fusión y actualización inteligente de URLs por defecto
             defaultWorkLinks.forEach(defLnk => {
-                if (!workLinks.some(l => l.id === defLnk.id || l.name.toLowerCase() === defLnk.name.toLowerCase())) {
+                const existing = workLinks.find(l => l.id === defLnk.id || l.name.toLowerCase() === defLnk.name.toLowerCase() || (defLnk.id === 'lnk_livechat' && l.name.toLowerCase().includes('livechat')) || (defLnk.id === 'lnk_remedy' && (l.name.toLowerCase().includes('remedy') || l.name.toLowerCase().includes('helix'))) || (defLnk.id === 'lnk_schaman' && l.name.toLowerCase().includes('schaman')) || (defLnk.id === 'lnk_plume' && l.name.toLowerCase().includes('plume')) || (defLnk.id === 'lnk_tr69' && (l.name.toLowerCase().includes('tr69') || l.name.toLowerCase().includes('tr-69'))));
+                if (existing) {
+                    if (defLnk.id === 'lnk_incognito' || defLnk.id === 'lnk_livechat' || defLnk.id === 'lnk_remedy' || defLnk.id === 'lnk_schaman' || defLnk.id === 'lnk_plume' || defLnk.id === 'lnk_tr69') {
+                        existing.url = defLnk.url;
+                        existing.name = defLnk.name;
+                        existing.isQuick = defLnk.isQuick;
+                    }
+                } else if (!workLinks.some(l => l.id === defLnk.id)) {
                     workLinks.push(defLnk);
                 }
             });

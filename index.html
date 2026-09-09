@@ -525,82 +525,298 @@
 
     <!-- MODAL FOR REMEDY ESCALATION -->
     <div id="remedyModal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 680px; max-height: 90vh; overflow-y: auto;">
-            <div class="card-title">
-                <div class="card-title-text" style="display:flex; align-items:center; gap:0.5rem;">
-                    Estructurador de Escalamiento Remedy
+        <div class="modal-content remedy-modal-content">
+            <!-- Modal Header -->
+            <div class="card-title" style="margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                <div class="card-title-text" style="display:flex; align-items:center; gap:0.5rem; font-size: 1.05rem;">
+                    Estructurador de Escalamiento a Remedy
                 </div>
-                <button id="remedyModalClose" class="btn btn-sm">✕</button>
-            </div>
-            
-            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">
-                Estructura el informe de escalamiento para Remedy. Puedes pegar capturas de pantalla con <strong>Ctrl+V</strong>.
-            </p>
-
-            <div class="form-group">
-                <label class="form-label" style="font-weight:bold;">FALLA / Incidencia Detectada:</label>
-                <textarea id="remedyInputFalla" class="form-textarea" style="min-height:55px;" placeholder="Ej: Cliente tiene un bono de 1000Mbps que se ve reflejado en el SIAC, pero en el incognito no está provisionado..."></textarea>
+                <button id="remedyModalClose" class="btn btn-sm" title="Cerrar modal">✕</button>
             </div>
 
-            <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.8rem;">
-                <div class="form-group">
-                    <label class="form-label">Customer ID:</label>
-                    <input type="text" id="remedyInputId" class="form-input" placeholder="Ej: 57200343">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">DNI / RUC:</label>
-                    <input type="text" id="remedyInputDni" class="form-input" placeholder="Ej: 80593853">
-                </div>
-            </div>
-
-            <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.8rem;">
-                <div class="form-group">
-                    <label class="form-label">CLIENTE (Nombre Completo):</label>
-                    <input type="text" id="remedyInputCliente" class="form-input" placeholder="Ej: EDWARD HUMBERTO SANTA CRUZ ALARCON">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Detalle Técnico / Plan / Bono:</label>
-                    <input type="text" id="remedyInputDetalle" class="form-input" placeholder="Ej: Velocidad Total 1000Mbps-Bono">
-                </div>
-            </div>
-
-            <!-- Zona de Capturas de Pantalla / Evidencias -->
-            <div class="form-group" style="margin-top:0.8rem;">
-                <label class="form-label" style="display:flex; justify-content:space-between; align-items:center;">
-                    <span>📸 Evidencias / Capturas de Pantalla:</span>
-                    <button type="button" id="btnClearRemedyImages" class="btn btn-sm" style="color:var(--danger); font-size:0.75rem; padding:0.1rem 0.4rem;" title="Quitar todas las imágenes">🗑️ Limpiar Fotos</button>
-                </label>
-                <div id="remedyDropZone" tabindex="0" style="border: 2px dashed var(--border-color); border-radius: 8px; padding: 1rem; text-align: center; background: rgba(0,0,0,0.15); cursor: pointer; outline:none;">
-                    <div style="font-size:0.85rem; color:var(--text-muted);">
-                        📋 Haz clic aquí y presiona <strong>Ctrl+V</strong> para pegar capturas de pantalla, o arrastra imágenes aquí.
-                    </div>
-                    <div id="remedyImagesContainer" style="display:flex; flex-wrap:wrap; gap:0.6rem; margin-top:0.8rem; justify-content:center;"></div>
-                </div>
-            </div>
-
-            <!-- Vista Previa Generada -->
-            <div class="form-group" style="margin-top:1rem;">
-                <label class="form-label" style="font-weight:bold;">Vista Previa del Formato Remedy:</label>
-                <div id="remedyPreviewBox" class="preview-box" style="font-size:0.85rem; line-height:1.5; font-family:monospace; white-space:pre-wrap;"></div>
-            </div>
-
-            <!-- Botones de Acción -->
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:1.5rem; flex-wrap:wrap; gap:0.6rem;">
-                <button type="button" id="btnClearRemedyAll" class="btn" style="background:rgba(239, 68, 68, 0.12); border:1px solid rgba(239, 68, 68, 0.35); color:var(--danger); font-size:0.85rem;" title="Borrar todos los campos de texto y capturas">
-                    🗑️ Limpiar Todo
+            <!-- Selector de Tipo de Plantilla Remedy -->
+            <div style="display:flex; gap:0.5rem; margin-bottom:1rem; border-bottom:1px solid var(--border-color); padding-bottom:0.65rem;">
+                <button type="button" id="btnRemedyTabRed" class="btn btn-sm btn-primary" style="font-size:0.82rem; font-weight:bold; display:flex; align-items:center; gap:0.4rem;">
+                    🌐 Páginas Web / Apps
                 </button>
-                <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-                    <button id="btnExportRemedyPdf" class="btn btn-primary" style="background:#dc2626; border-color:#dc2626; font-weight:bold; display:flex; align-items:center; gap:0.35rem;" title="Generar y descargar documento PDF listo para subir a Remedy">
-                        📄 Exportar a PDF
-                    </button>
-                    <button id="btnCopyRemedyWord" class="btn" style="background:var(--primary); color:#fff;" title="Copia el texto con viñetas e imágenes incrustadas listo para pegar directamente en Microsoft Word">
-                        📋 Copiar para Word
-                    </button>
-                    <button id="btnCopyRemedyText" class="btn" style="background:var(--bg-card); border:1px solid var(--border-color);">
-                        📝 Solo Texto
-                    </button>
+                <button type="button" id="btnRemedyTabGeneral" class="btn btn-sm" style="font-size:0.82rem; background:transparent; border:1px solid var(--border-color); color:var(--text-muted); display:flex; align-items:center; gap:0.4rem;">
+                    ⚙️ Problemas de Provisión
+                </button>
+            </div>
+
+            <!-- Layout de 2 Columnas: Formulario a la Izquierda, Previsualizador Gráfico a la Derecha -->
+            <div class="remedy-split-container">
+                <!-- Columna Izquierda: Formulario y Carga -->
+                <div class="remedy-form-column">
+                    <!-- FORMULARIO 1: PÁGINAS WEB / APPS A RED -->
+                    <div id="remedyFormRed">
+                        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.75rem;">
+                            Escalamiento a RED por bloqueo o inaccesibilidad de páginas web / apps bajo red Claro.
+                        </p>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">Persona de Contacto:</label>
+                                <input type="text" id="remedyRedContacto" class="form-input" placeholder="Nombre completo">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Número de Contacto:</label>
+                                <input type="text" id="remedyRedTelefono" class="form-input" placeholder="Ej: 987654321">
+                            </div>
+                        </div>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">Customer ID:</label>
+                                <input type="text" id="remedyRedCustomerId" class="form-input" placeholder="Ej: 57200343">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">MAC Cable Módem / ONT:</label>
+                                <input type="text" id="remedyRedMac" class="form-input" placeholder="Ej: A0:B1:C2:D3:E4:F5">
+                            </div>
+                        </div>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">IP Pública:</label>
+                                <input type="text" id="remedyRedIp" class="form-input" placeholder="Ej: 190.235.14.88">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">CMTS / OLT:</label>
+                                <input type="text" id="remedyRedCmtsOlt" class="form-input" placeholder="Ej: OLT_SURCO_01">
+                            </div>
+                        </div>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">Páginas / Apps bloqueadas:</label>
+                                <input type="text" id="remedyRedPaginas" class="form-input" placeholder="Ej: www.ejemplo.com / App">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Desde qué red accede:</label>
+                                <input type="text" id="remedyRedRedExterna" class="form-input" placeholder="Ej: Datos Entel / Movistar">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Plano:</label>
+                            <input type="text" id="remedyRedPlano" class="form-input" placeholder="Ej: PL-LIM-045">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Descartes / Descripción detallada:</label>
+                            <textarea id="remedyRedDescartes" class="form-textarea" style="min-height:55px;" placeholder="Detalla los descartes técnicos realizados..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- FORMULARIO 3: CANALES A RED (IPTV / CLARO TV) -->
+                    <div id="remedyFormIptv" style="display:none;">
+                        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.75rem;">
+                            Escalamiento a RED por bloqueo, pantalla negra o desalineación de canales IPTV / Claro TV.
+                        </p>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">Persona de Contacto:</label>
+                                <input type="text" id="remedyIptvContacto" class="form-input" placeholder="Nombre completo">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Número de Contacto:</label>
+                                <input type="text" id="remedyIptvTelefono" class="form-input" placeholder="Ej: 987654321">
+                            </div>
+                        </div>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">Customer ID:</label>
+                                <input type="text" id="remedyIptvCustomerId" class="form-input" placeholder="Ej: 57200343">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Plano:</label>
+                                <input type="text" id="remedyIptvPlano" class="form-input" placeholder="Ej: PL-LIM-045">
+                            </div>
+                        </div>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">Cantidad de decodificador(es):</label>
+                                <input type="text" id="remedyIptvCantDecos" class="form-input" placeholder="Ej: 1 deco / 2 decos">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">N° Serie decos afectados:</label>
+                                <input type="text" id="remedyIptvSerieDecos" class="form-input" placeholder="Ej: STB-84920492 / Todos">
+                            </div>
+                        </div>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">Canales afectados (N° - Nombre):</label>
+                                <input type="text" id="remedyIptvCanales" class="form-input" placeholder="Ej: 502 - ESPN HD, 104 - América">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Grilla Claro TV actualizada:</label>
+                                <input type="text" id="remedyIptvGrilla" class="form-input" placeholder="Ej: SÍ / Validada en sistema">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Descripción detallada de DESCARTES realizados:</label>
+                            <textarea id="remedyIptvDescartes" class="form-textarea" style="min-height:55px;" placeholder="Detalla los descartes técnicos realizados en decos/plataforma..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- FORMULARIO 4: TELEFONÍA A RED -->
+                    <div id="remedyFormTelefonia" style="display:none;">
+                        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.75rem;">
+                            Escalamiento a RED por fallas en servicio de telefonía fija (sin tono, no entran/salen llamadas, IMS/CBIO).
+                        </p>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">Persona de Contacto:</label>
+                                <input type="text" id="remedyTelContacto" class="form-input" placeholder="Nombre completo">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Número de contacto:</label>
+                                <input type="text" id="remedyTelTelefono" class="form-input" placeholder="Ej: 987654321">
+                            </div>
+                        </div>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">Customer ID:</label>
+                                <input type="text" id="remedyTelCustomerId" class="form-input" placeholder="Ej: 57200343">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Dirección MAC:</label>
+                                <input type="text" id="remedyTelMac" class="form-input" placeholder="Ej: A0:B1:C2:D3:E4:F5">
+                            </div>
+                        </div>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">Plano:</label>
+                                <input type="text" id="remedyTelPlano" class="form-input" placeholder="Ej: PL-LIM-045">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">(CMTS/OLT):</label>
+                                <input type="text" id="remedyTelCmtsOlt" class="form-input" placeholder="Ej: OLT_SURCO_01 / CMTS_02">
+                            </div>
+                        </div>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">Número telefónico:</label>
+                                <input type="text" id="remedyTelNumeroTel" class="form-input" placeholder="Ej: 01 7654321">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Plan contratado:</label>
+                                <input type="text" id="remedyTelPlan" class="form-input" placeholder="Ej: Plan Ilimitado Fijo / 100 Min">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Descripción detallada del problema:</label>
+                            <textarea id="remedyTelProblema" class="form-textarea" style="min-height:50px;" placeholder="Detalla el problema que presenta la línea telefónica..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Descartes de primer nivel realizados:</label>
+                            <textarea id="remedyTelDescartes" class="form-textarea" style="min-height:55px;" placeholder="Detalla los descartes de 1er nivel realizados en IMS, CBIO, reinicios, etc..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- FORMULARIO 2: FALLA GENERAL / PROVISIÓN -->
+                    <div id="remedyFormGeneral" style="display:none;">
+                        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.75rem;">
+                            Escalamiento general de incidencias técnicas, provisión, bonos y plataformas.
+                        </p>
+
+                        <div class="form-group">
+                            <label class="form-label" style="font-weight:bold;">FALLA / Incidencia Detectada:</label>
+                            <textarea id="remedyInputFalla" class="form-textarea" style="min-height:55px;" placeholder="Ej: Cliente tiene un bono de 1000Mbps que se ve reflejado en el SIAC, pero en el incognito no está provisionado..."></textarea>
+                        </div>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">Customer ID:</label>
+                                <input type="text" id="remedyInputId" class="form-input" placeholder="Ej: 57200343">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">DNI / RUC:</label>
+                                <input type="text" id="remedyInputDni" class="form-input" placeholder="Ej: 80593853">
+                            </div>
+                        </div>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">CLIENTE (Nombre Completo):</label>
+                                <input type="text" id="remedyInputCliente" class="form-input" placeholder="Ej: EDWARD HUMBERTO SANTA CRUZ ALARCON">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Detalle Técnico / Plan / Bono:</label>
+                                <input type="text" id="remedyInputDetalle" class="form-input" placeholder="Ej: Velocidad Total 1000Mbps-Bono">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Zona de Capturas de Pantalla / Evidencias -->
+                    <div class="form-group" style="margin-top:0.7rem;">
+                        <label class="form-label" style="display:flex; justify-content:space-between; align-items:center;">
+                            <span>📸 Capturas / Evidencias (Ctrl+V):</span>
+                            <button type="button" id="btnClearRemedyImages" class="btn btn-sm" style="color:var(--danger); font-size:0.75rem; padding:0.1rem 0.4rem;" title="Quitar todas las imágenes">🗑️ Limpiar Fotos</button>
+                        </label>
+                        <div id="remedyDropZone" tabindex="0" style="border: 2px dashed var(--border-color); border-radius: 8px; padding: 0.8rem; text-align: center; background: rgba(0,0,0,0.15); cursor: pointer; outline:none; transition: all 0.2s ease;">
+                            <div style="font-size:0.8rem; color:var(--text-muted);">
+                                📋 Haz clic aquí y presiona <strong>Ctrl+V</strong> para pegar capturas, o arrastra archivos.
+                            </div>
+                            <div id="remedyImagesContainer" style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:0.6rem; justify-content:center;"></div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 0.8rem;">
+                        <button type="button" id="btnClearRemedyAll" class="btn btn-sm" style="background:rgba(239, 68, 68, 0.12); border:1px solid rgba(239, 68, 68, 0.35); color:var(--danger); font-size:0.8rem; width:100%;" title="Borrar todos los campos de texto y capturas">
+                            🗑️ Limpiar Formulario Remedy
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Previsualizador de Documento en Vivo & Exportaciones -->
+                <div class="remedy-preview-column">
+                    <!-- Header del Previsualizador -->
+                    <div class="remedy-preview-header">
+                        <div style="font-weight: 700; font-size: 0.88rem; display:flex; align-items:center; gap:0.4rem; color:var(--text-main);">
+                             Previsualización de Documento en Tiempo Real
+                        </div>
+                    </div>
+
+                    <!-- Visor de Documento Estilo Word -->
+                    <div id="remedyVisualSheet" class="remedy-visual-sheet">
+                        <!-- Renderizado dinámico vía JavaScript -->
+                    </div>
+
+                    <!-- Botones de Acción / Exportación -->
+                    <div class="remedy-preview-actions">
+                        <button id="btnExportRemedyPdf" class="btn btn-primary" style="background:#dc2626; border-color:#dc2626; font-weight:bold; display:flex; align-items:center; gap:0.35rem; font-size:0.82rem;" title="Generar documento PDF listo para imprimir o subir a Remedy">
+                            📄 Exportar PDF
+                        </button>
+                        <button id="btnCopyRemedyWord" class="btn" style="background:var(--primary); color:#fff; font-weight:600; display:flex; align-items:center; gap:0.35rem; font-size:0.82rem;" title="Copia el texto estructurado con imágenes incrustadas listo para Word">
+                            📋 Copiar para Word
+                        </button>
+                        <button id="btnCopyRemedyText" class="btn" style="background:var(--bg-card); border:1px solid var(--border-color); font-size:0.82rem;" title="Copiar texto plano">
+                            📝 Solo Texto
+                        </button>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- LIGHTBOX MODAL PARA ZOOM DE EVIDENCIAS -->
+    <div id="imageZoomModal" class="modal-overlay" style="z-index: 999; background: rgba(0, 0, 0, 0.88);">
+        <div style="position:relative; max-width: 90vw; max-height: 90vh; display: flex; align-items: center; justify-content: center;">
+            <img id="imageZoomImg" src="" alt="Evidencia Ampliada" style="max-width: 90vw; max-height: 85vh; border-radius: 8px; box-shadow: 0 12px 36px rgba(0,0,0,0.85); border: 1px solid var(--border-color); object-fit: contain;" />
+            <button type="button" id="btnCloseImageZoom" class="btn btn-sm" style="position: absolute; top: -14px; right: -14px; background: #dc2626; color: #fff; border: 2px solid #fff; border-radius: 50%; width: 34px; height: 34px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.5);" title="Cerrar (Esc)">✕</button>
         </div>
     </div>
     <div id="toastContainer" class="toast-container"></div>
