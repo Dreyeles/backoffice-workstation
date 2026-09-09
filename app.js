@@ -3401,7 +3401,7 @@ ${contactLines}`;
             { id: 'lnk_tracer', name: 'Tracer', url: 'https://tracer.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '📈', isQuick: true },
             { id: 'lnk_tracerplano', name: 'Tracer por Plano', url: 'https://tracerplano.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '🗺️', isQuick: true },
             
-            { id: 'lnk_remedy', name: 'BMC Helix / Remedy', url: 'https://clarop-rsso.claro.pe/rsso/start', category: 'Sistemas & Gestión', icon: '🛠️', isQuick: true },
+            { id: 'lnk_remedy', name: 'BMC Helix / Remedy', url: 'https://clarop-smartit.claro.pe/smartit/app/#/ticket-consoleStudio', category: 'Sistemas & Gestión', icon: '🛠️', isQuick: true },
             { id: 'lnk_livechat', name: 'LiveChat (Aivo)', url: 'https://live-us.aivo.co/chat', category: 'Canales & Comunicación', icon: '💬', isQuick: true },
             { id: 'lnk_hygeia', name: 'Hygeia (Niveles HFC/FTTH)', url: 'https://hygeia.claro.com.pe/', category: 'Internet & Diagnóstico', icon: '⚡', isQuick: false },
             { id: 'lnk_siac', name: 'SIAC Único', url: 'https://siacunico.claro.com.pe/', category: 'Sistemas & Gestión', icon: '💻', isQuick: false },
