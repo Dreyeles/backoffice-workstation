@@ -3452,19 +3452,21 @@ ${contactLines}`;
                 navigator.clipboard.writeText(targetIp).catch(() => {});
             }
 
-            // 2. Intento de protocolo URI directo (Abre diálogo nativo del navegador si está disponible)
-            try {
-                const directLink = document.createElement('a');
-                directLink.href = `rdp://${targetIp}`;
-                directLink.style.display = 'none';
-                document.body.appendChild(directLink);
-                directLink.click();
-                setTimeout(() => directLink.remove(), 100);
-            } catch (e) {
-                // Silently fallback to .rdp file
-            }
+            // 2. Disparar protocolo nativo URI para que el navegador muestre el cuadro emergente "¿Abrir mstsc.exe?"
+            const rdpUri = `rdp://${targetIp}`;
+            const tempA = document.createElement('a');
+            tempA.href = rdpUri;
+            tempA.style.display = 'none';
+            document.body.appendChild(tempA);
+            tempA.click();
+            setTimeout(() => {
+                if (tempA.parentNode) tempA.parentNode.removeChild(tempA);
+            }, 600);
 
-            // 3. Generar archivo oficial de conexión RDP (Microsoft Remote Desktop nativo)
+            showToast(`🖥️ Abriendo Escritorio Remoto (${targetIp}) • IP copiada al portapapeles`, 'info');
+        }
+
+        function downloadRdpFile(targetIp = '172.29.0.101') {
             const rdpContent = [
                 `full address:s:${targetIp}`,
                 'prompt for credentials:i:1',
@@ -3486,7 +3488,7 @@ ${contactLines}`;
             const blobUrl = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = blobUrl;
-            a.download = `Escritorio_Remoto_${targetIp.replace(/\./g, '_')}.rdp`;
+            a.download = `Conexion_Escritorio_Remoto_${targetIp.replace(/\./g, '_')}.rdp`;
             document.body.appendChild(a);
             a.click();
             setTimeout(() => {
@@ -3494,7 +3496,7 @@ ${contactLines}`;
                 URL.revokeObjectURL(blobUrl);
             }, 1000);
 
-            showToast(`🖥️ IP ${targetIp} copiada. Haz clic en la descarga y marca "Abrir siempre" para apertura directa.`, 'info');
+            showToast(`💾 Archivo .rdp descargado para ${targetIp}`, 'info');
         }
 
         function openSidebar() {
