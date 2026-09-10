@@ -13,7 +13,7 @@
     <header class="app-header">
         <div class="brand">
             <div>
-                <div class="brand-title">WORKSTATION BACKOFFICE <span id="btnChangelog" style="display: inline-flex; align-items: center; border-radius: 4px; overflow: hidden; vertical-align: middle; margin-left: 0.5rem; font-size: 0.55em; letter-spacing: normal; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">9.0</span></span></div>
+                <div class="brand-title">WORKSTATION BACKOFFICE <span id="btnChangelog" style="display: inline-flex; align-items: center; border-radius: 4px; overflow: hidden; vertical-align: middle; margin-left: 0.5rem; font-size: 0.55em; letter-spacing: normal; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.0</span></span></div>
                 <div class="brand-subtitle">PLATAFORMA LOCAL DE PLANTILLAS Y SEGUIMIENTO PARA BO-FIJA</div>
             </div>
         </div>
@@ -264,45 +264,104 @@
 
                         <!-- Panel HFC (Coaxial) -->
                         <div id="hygeiaHfcPanel">
-                            <div class="form-group">
-                                <label class="form-label" style="font-size:0.75rem;">U/S SNR (Mín: 28 dB)</label>
-                                <textarea id="incInputUsSnr" class="form-textarea" style="min-height:40px; font-size:0.8rem;" placeholder="Ej: 40.6"></textarea>
+                            <!-- Smart Auto-Paste Box -->
+                            <div class="form-group" style="background:rgba(59, 130, 246, 0.07); border:1.5px dashed #3b82f6; border-radius:8px; padding:0.65rem; margin-bottom:0.9rem;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem; flex-wrap:wrap; gap:0.4rem;">
+                                    <label class="form-label" style="font-size:0.75rem; color:#2563eb; font-weight:700; margin-bottom:0; display:flex; align-items:center; gap:0.3rem;">
+                                         Pegado Inteligente
+                                    </label>
+                                    <button type="button" id="btnSmartPasteClip" class="btn btn-sm" style="font-size:0.7rem; padding:0.2rem 0.5rem; background:#2563eb; color:#fff; border:none; border-radius:4px; cursor:pointer;" title="Pegar contenido del portapapeles">
+                                        📋 Pegar del Portapapeles
+                                    </button>
+                                </div>
+                                <textarea id="incSmartPaste" class="form-textarea" style="min-height:46px; font-size:0.78rem; background:var(--bg-main);" placeholder="💡 Pega aquí todo el bloque del módem o Hygeia (detecta U/S SNR, D/S SNR, Potencias y Modelo automáticamente)..."></textarea>
+                                <div id="smartPasteStatus" style="font-size:0.72rem; color:#16a34a; margin-top:0.3rem; display:none; font-weight:600;"></div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label" style="font-size:0.75rem;">D/S SNR (Mín: 33.5 dB)</label>
-                                <textarea id="incInputDwsSnr" class="form-textarea" style="min-height:40px; font-size:0.8rem;" placeholder="Ej: 35.6, 34.3..."></textarea>
+
+                            <!-- Botón para desplegar / recoger campos manuales -->
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+                                <span style="font-size:0.75rem; color:var(--text-muted);">¿Quieres ingresar datos manualmente?</span>
+                                <button type="button" id="btnToggleHfcManual" class="btn btn-xs" style="font-size:0.72rem; padding:0.2rem 0.5rem; background:transparent; border:1px solid var(--border-color); color:var(--text-color); cursor:pointer; border-radius:4px;">
+                                    ⚙️ Campos individuales <span id="toggleManualArrow">▼</span>
+                                </button>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label" style="font-size:0.75rem;">Potencia Downstream Rx (-15 a 20.9 dBmV)</label>
-                                <textarea id="incInputDwsPot" class="form-textarea" style="min-height:40px; font-size:0.8rem;" placeholder="Ej: 0.7, 0.4, 0.1..."></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" style="font-size:0.75rem;">Potencia Upstream Tx (35 a 57 dBmV)</label>
-                                <textarea id="incInputUsPot" class="form-textarea" style="min-height:40px; font-size:0.8rem;" placeholder="Ej: 41.5"></textarea>
+
+                            <!-- Contenedor recogido por defecto de los 4 campos -->
+                            <div id="hfcManualFields" style="display:none;">
+                                <div class="form-group">
+                                    <label class="form-label" style="font-size:0.75rem;">U/S SNR (Mín: 28 dB)</label>
+                                    <textarea id="incInputUsSnr" class="form-textarea" style="min-height:40px; font-size:0.8rem;" placeholder="Ej: 40.6"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" style="font-size:0.75rem;">D/S SNR (Mín: 33.5 dB)</label>
+                                    <textarea id="incInputDwsSnr" class="form-textarea" style="min-height:40px; font-size:0.8rem;" placeholder="Ej: 35.6, 34.3..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" style="font-size:0.75rem;">Potencia Downstream Rx (-15 a 20.9 dBmV)</label>
+                                    <textarea id="incInputDwsPot" class="form-textarea" style="min-height:40px; font-size:0.8rem;" placeholder="Ej: 0.7, 0.4, 0.1..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" style="font-size:0.75rem;">Potencia Upstream Tx (35 a 57 dBmV)</label>
+                                    <textarea id="incInputUsPot" class="form-textarea" style="min-height:40px; font-size:0.8rem;" placeholder="Ej: 41.5"></textarea>
+                                </div>
                             </div>
                             
                             <div id="incognitoResults" style="background:var(--bg-main); padding:1rem; border-radius:8px; border:1px solid var(--border-color); margin-bottom:1rem;">
-                                <div style="font-weight:bold; margin-bottom:0.5rem; text-align:center;">Resultados HFC (Hygeia)</div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem; flex-wrap:wrap; gap:0.5rem;">
+                                    <span style="font-weight:bold; font-size:0.9rem;">Resultados HFC</span>
+                                    <span id="incGlobalBadge" style="font-size:0.75rem; font-weight:600; padding:0.2rem 0.6rem; border-radius:12px; border:1px dashed var(--border-color); color:var(--text-muted);">Esperando datos...</span>
+                                </div>
                                 <div id="incResultUsSnr" style="margin-bottom:0.4rem; padding:0.4rem; border-radius:4px; font-size:0.85rem;">U/S SNR: Esperando datos...</div>
                                 <div id="incResultDwsSnr" style="margin-bottom:0.4rem; padding:0.4rem; border-radius:4px; font-size:0.85rem;">D/S SNR: Esperando datos...</div>
                                 <div id="incResultDwsPot" style="margin-bottom:0.4rem; padding:0.4rem; border-radius:4px; font-size:0.85rem;">Potencia Downstream: Esperando datos...</div>
                                 <div id="incResultUsPot" style="margin-bottom:0.4rem; padding:0.4rem; border-radius:4px; font-size:0.85rem;">Potencia Upstream: Esperando datos...</div>
+                                <div style="font-size:0.73rem; color:var(--text-muted); margin-top:0.55rem; line-height:1.25; border-top:1px dashed var(--border-color); padding-top:0.45rem;">
+                                    ℹ️ <strong>Criterio de Alerta:</strong> Rojo solo si <em>D/S SNR</em> y <em>Potencia DS</em> están mal simultáneamente, o si en una misma fila/canal hay 2 o más fuera de rango. 1 solo fuera de rango se alerta en ámbar.
+                                </div>
                             </div>
                         </div>
 
                         <!-- Panel FTTH (Fibra Óptica) -->
                         <div id="hygeiaFtthPanel" style="display:none;">
-                            <div class="form-group">
-                                <label class="form-label" style="font-size:0.75rem;">Transmission Power Tx (0.5 a 5.0 dBm)</label>
-                                <textarea id="ftthInputTx" class="form-textarea" style="min-height:40px; font-size:0.8rem;" placeholder="Ej: 2.5"></textarea>
+                            <!-- Smart Auto-Paste Box FTTH -->
+                            <div class="form-group" style="background:rgba(59, 130, 246, 0.07); border:1.5px dashed #3b82f6; border-radius:8px; padding:0.65rem; margin-bottom:0.9rem;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem; flex-wrap:wrap; gap:0.4rem;">
+                                    <label class="form-label" style="font-size:0.75rem; color:#2563eb; font-weight:700; margin-bottom:0; display:flex; align-items:center; gap:0.3rem;">
+                                        Pegado Inteligente
+                                    </label>
+                                    <button type="button" id="btnFtthSmartPasteClip" class="btn btn-sm" style="font-size:0.7rem; padding:0.2rem 0.5rem; background:#2563eb; color:#fff; border:none; border-radius:4px; cursor:pointer;" title="Pegar contenido del portapapeles">
+                                        📋 Pegar del Portapapeles
+                                    </button>
+                                </div>
+                                <textarea id="ftthSmartPaste" class="form-textarea" style="min-height:46px; font-size:0.78rem; background:var(--bg-main);" placeholder="💡 Pega aquí el reporte de Hygeia ONT (detecta Transmission y Receiving Power automáticamente)..."></textarea>
+                                <div id="ftthSmartPasteStatus" style="font-size:0.72rem; color:#16a34a; margin-top:0.3rem; display:none; font-weight:600;"></div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label" style="font-size:0.75rem;">Receiving Power Rx (-24.9 a -6.1 dBm)</label>
-                                <textarea id="ftthInputRx" class="form-textarea" style="min-height:40px; font-size:0.8rem;" placeholder="Ej: -18.2"></textarea>
+
+                            <!-- Botón para desplegar / recoger campos manuales FTTH -->
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+                                <span style="font-size:0.75rem; color:var(--text-muted);">¿Quieres ingresar datos manualmente?</span>
+                                <button type="button" id="btnToggleFtthManual" class="btn btn-xs" style="font-size:0.72rem; padding:0.2rem 0.5rem; background:transparent; border:1px solid var(--border-color); color:var(--text-color); cursor:pointer; border-radius:4px;">
+                                    ⚙️ Campos individuales <span id="toggleFtthManualArrow">▼</span>
+                                </button>
+                            </div>
+
+                            <!-- Contenedor recogido por defecto de campos FTTH -->
+                            <div id="ftthManualFields" style="display:none;">
+                                <div class="form-group">
+                                    <label class="form-label" style="font-size:0.75rem;">Transmission Power Tx (0.5 a 5.0 dBm)</label>
+                                    <textarea id="ftthInputTx" class="form-textarea" style="min-height:40px; font-size:0.8rem;" placeholder="Ej: 2.5"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" style="font-size:0.75rem;">Receiving Power Rx (-24.9 a -6.1 dBm)</label>
+                                    <textarea id="ftthInputRx" class="form-textarea" style="min-height:40px; font-size:0.8rem;" placeholder="Ej: -18.2"></textarea>
+                                </div>
                             </div>
                             
                             <div id="ftthResults" style="background:var(--bg-main); padding:1rem; border-radius:8px; border:1px solid var(--border-color); margin-bottom:1rem;">
-                                <div style="font-weight:bold; margin-bottom:0.5rem; text-align:center;">Resultados FTTH (Fibra)</div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem; flex-wrap:wrap; gap:0.5rem;">
+                                    <span style="font-weight:bold; font-size:0.9rem;">Resultados FTTH</span>
+                                    <span id="ftthGlobalBadge" style="font-size:0.75rem; font-weight:600; padding:0.2rem 0.6rem; border-radius:12px; border:1px dashed var(--border-color); color:var(--text-muted);">Esperando datos...</span>
+                                </div>
                                 <div id="ftthResultTx" style="margin-bottom:0.4rem; padding:0.4rem; border-radius:4px; font-size:0.85rem;">Transmission Power (Tx): Esperando datos...</div>
                                 <div id="ftthResultRx" style="margin-bottom:0.4rem; padding:0.4rem; border-radius:4px; font-size:0.85rem;">Receiving Power (Rx): Esperando datos...</div>
                             </div>
@@ -335,18 +394,37 @@
                         <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">
                             Ingresa el modelo o código del equipo para verificar su estado y apariencia.
                         </div>
-                        <div class="form-group">
-                            <input type="text" id="eqSearchInput" class="form-input" placeholder="Buscar equipo (Ej. CGA2121)...">
+                        <div class="form-group" style="margin-bottom:0.5rem;">
+                            <input type="text" id="eqSearchInput" class="form-input" placeholder="Buscar equipo (Ej. CGA2121, TG3442, F6600P)...">
+                        </div>
+                        
+                        <div id="eqQuickChips" style="display:flex; flex-wrap:wrap; gap:0.3rem; margin-bottom:0.85rem;">
+                            <span class="btn-xs eq-chip" data-model="TG3442" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">TG3442</span>
+                            <span class="btn-xs eq-chip" data-model="CGA2121" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">CGA2121</span>
+                            <span class="btn-xs eq-chip" data-model="F6600P" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">F6600P</span>
+                            <span class="btn-xs eq-chip" data-model="ZXHNF680" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">F680</span>
+                            <span class="btn-xs eq-chip" data-model="FAST3686V22" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">FAST3686</span>
+                            <span class="btn-xs eq-chip" data-model="FAST5670V2" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">FAST5670</span>
+                            <span class="btn-xs eq-chip" data-model="TG2482" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">TG2482</span>
+                            <span class="btn-xs eq-chip" data-model="HG8245Q2" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">HG8245Q2</span>
                         </div>
                         
                         <div id="eqResultContainer" style="display:none; background:var(--bg-main); padding:1rem; border-radius:8px; border:1px solid var(--border-color); text-align:center;">
-                            <div style="width:100%; height:120px; background-color:var(--bg-card); border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:1rem; overflow:hidden; border:1px dashed var(--border-color);">
-                                <img id="eqImage" src="" alt="Imagen del equipo" style="max-height:100%; max-width:100%; display:none;">
+                            <div style="width:100%; height:130px; background-color:var(--bg-card); border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:0.8rem; overflow:hidden; border:1px dashed var(--border-color);">
+                                <img id="eqImage" src="" alt="Imagen del equipo" style="max-height:100%; max-width:100%; object-fit:contain; display:none;">
                                 <span id="eqImagePlaceholder" style="color:var(--text-muted); font-size:0.8rem;">Sin imagen</span>
                             </div>
-                            <div id="eqName" style="font-weight:bold; font-size:1.1rem; margin-bottom:0.2rem;">--</div>
-                            <div id="eqType" style="color:var(--text-muted); font-size:0.85rem; margin-bottom:0.8rem;">--</div>
-                            <div id="eqStatus" style="display:inline-block; padding:0.3rem 0.8rem; border-radius:15px; font-size:0.75rem; font-weight:bold; margin-bottom:0.5rem;">--</div>
+                            <div id="eqName" style="font-weight:bold; font-size:1.05rem; margin-bottom:0.2rem;">--</div>
+                            <div id="eqType" style="color:var(--text-muted); font-size:0.8rem; margin-bottom:0.6rem;">--</div>
+                            
+                            <div style="display:flex; justify-content:center; gap:0.35rem; flex-wrap:wrap; margin-bottom:0.6rem;">
+                                <span id="eqVersion" style="padding:0.25rem 0.6rem; border-radius:12px; font-size:0.75rem; font-weight:600;">--</span>
+                                <span id="eqRepetidor" style="padding:0.25rem 0.6rem; border-radius:12px; font-size:0.75rem; font-weight:600;">--</span>
+                                <span id="eqSpeed" style="padding:0.25rem 0.6rem; border-radius:12px; font-size:0.75rem; font-weight:600; background:rgba(59, 130, 246, 0.15); color:#2563eb; border:1px solid rgba(59, 130, 246, 0.3);">--</span>
+                                <span id="eqStatus" style="display:inline-block; padding:0.25rem 0.6rem; border-radius:12px; font-size:0.75rem; font-weight:600;">--</span>
+                            </div>
+
+                            <div id="eqDesc" style="font-size:0.8rem; color:var(--text-color); background:var(--bg-card); padding:0.45rem 0.65rem; border-radius:6px; border:1px solid var(--border-color); margin-top:0.4rem; text-align:left;">--</div>
                             <div id="eqCredentials" style="display:none; font-family:monospace; background:rgba(0,0,0,0.2); padding:0.5rem; border-radius:6px; font-size:0.8rem; margin-top:0.5rem; color:var(--text-color); border:1px solid rgba(255,255,255,0.1);"></div>
                         </div>
                     </div>
@@ -544,22 +622,23 @@
 
     <!-- MODAL FOR CHANGELOG -->
     <div id="changelogModal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 580px;">
+        <div class="modal-content" style="max-width: 620px;">
             <div class="card-title">
-                <div class="card-title-text">🚀 Novedades de la Versión 9.0</div>
+                <div class="card-title-text">🚀 Novedades de la Versión 2.0</div>
                 <button id="changelogModalClose" class="btn btn-sm">✕</button>
             </div>
             <div style="font-size: 0.92rem; line-height: 1.55; color: var(--text-main); margin-top: 1rem;">
                 <ul style="padding-left: 1.3rem; margin-bottom: 1.3rem; display: flex; flex-direction: column; gap: 0.65rem;">
-                    <li><strong>🌐 Hub Integral de Plataformas & Enlaces (<code>Alt+L</code>):</strong> Acceso directo y centralizado a todas las herramientas oficiales de Claro (Incógnito SAC, Dashboard ZT, TR69 ACS, Schaman, BMC Helix Smart IT, Remedy DWP, Plume, Tracer, Tracer por Plano, AICC Huawei, SIAC Único y Link de Trabajo).</li>
-                    <li><strong>🖥️ Tarjeta & Modal de Escritorio Remoto (RDP):</strong> Consulta rápida y copiado en 1 clic de la IP del servidor (<code>172.29.0.101</code>) y del prefijo de dominio (<code>TIM\</code>) con atajo de conexión directa.</li>
-                    <li><strong>📞 Módulo Oficial Telefonía a Red (Remedy):</strong> Estructurador oficial con soporte para los 10 campos requeridos, conmutador de pestañas, formato visual Word y exportación a PDF.</li>
-                    <li><strong>🎨 Consistencia Visual & Botón Limpiar:</strong> Rediseño del botón Limpiar con degradado carmesí unificado, sombras suaves y elevación dinámica en sincronía con el botón Remedy.</li>
-                    <li><strong>⚡ Gestión Superior de Capas & Modales (<code>z-index: 2000</code>):</strong> Interacción fluida y superpuesta de todas las ventanas modales por encima del fondo difuminado y de la barra lateral.</li>
-                    <li><strong>🔄 Migración Inteligente de Enlaces Locales:</strong> Actualización automática y transparente de URLs en el almacenamiento local de tu navegador sin pérdida de personalizaciones.</li>
+                    <li><strong>📋 Pegado Inteligente Multi-Tecnología (HFC & FTTH):</strong> Pega bloques completos copiados de Incógnito / SAC o usa el botón <em>📋 Pegar del Portapapeles</em>. El sistema detecta y extrae automáticamente todas las potencias y SNRs (Downstream, Upstream, Tx y Rx Óptico).</li>
+                    <li><strong>⚖️ Nuevas Reglas Técnicas de Niveles HFC:</strong> Diagnóstico de precisión calibrado con alertas en amarillo para fallas aisladas y alerta roja crítica únicamente cuando coinciden D/S SNR y Potencia DS, o cuando 2 o más parámetros en una misma fila están fuera de rango.</li>
+                    <li><strong>🏷️ Identificador de Routers & ONTs con Badges de Versión:</strong> Catálogo completo de 14 equipos oficiales con fotos en alta definición, límites de velocidad, soporte para repetidor y badges dinámicos según tecnología (<code>DOCSIS 3.0 v3.0</code>, <code>DOCSIS 3.1 v3.1</code>, <code>Wi-Fi 6 FTTH</code> y <code>GPON FTTH</code>).</li>
+                    <li><strong>👁️ Vista Ergonómica y Limpia:</strong> Secciones manuales de ingreso de niveles contraídas por defecto para no saturar la vista, permitiendo desplegarlas en 1 clic cuando se requiera edición manual fila por fila.</li>
+                    <li><strong>🌐 Hub Integral de Plataformas & Enlaces (<code>Alt+L</code>):</strong> Acceso directo centralizado a herramientas oficiales de Claro (Incógnito, Dashboard ZT, TR69, Schaman, Helix Smart IT, Remedy, Plume, Tracer, AICC, SIAC) con soporte para agregar enlaces personalizados.</li>
+                    <li><strong>🖥️ Tarjeta & Modal de Escritorio Remoto (RDP):</strong> Conexión y copiado en 1 clic de la IP del servidor (<code>172.29.0.101</code>) y del prefijo de dominio (<code>TIM\</code>).</li>
+                    <li><strong>📞 Módulo Oficial de Escalamiento a Remedy:</strong> Estructurador oficial para Páginas Web/Apps, Canales IPTV y Telefonía a Red con previsualización en formato Word y exportación a PDF.</li>
                 </ul>
                 <p style="color: var(--text-muted); font-size: 0.82rem; border-top: 1px dashed var(--border-color); padding-top: 0.8rem; text-align: center;">
-                    ¡Optimizado para máxima velocidad, precisión técnica y ergonomía en BackOffice!
+                    ¡Optimizado para máxima velocidad, precisión técnica y ergonomía en BackOffice Fija!
                 </p>
             </div>
         </div>

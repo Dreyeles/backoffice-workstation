@@ -129,15 +129,29 @@ document.addEventListener('DOMContentLoaded', () => {
         hygeiaHfcPanel: document.getElementById('hygeiaHfcPanel'),
         hygeiaFtthPanel: document.getElementById('hygeiaFtthPanel'),
         btnClearHygeia: document.getElementById('btnClearHygeia'),
+        incSmartPaste: document.getElementById('incSmartPaste'),
+        btnSmartPasteClip: document.getElementById('btnSmartPasteClip'),
+        smartPasteStatus: document.getElementById('smartPasteStatus'),
+        hfcManualFields: document.getElementById('hfcManualFields'),
+        btnToggleHfcManual: document.getElementById('btnToggleHfcManual'),
+        toggleManualArrow: document.getElementById('toggleManualArrow'),
         incInputDwsPot: document.getElementById('incInputDwsPot'),
         incInputUsPot: document.getElementById('incInputUsPot'),
         incInputDwsSnr: document.getElementById('incInputDwsSnr'),
         incInputUsSnr: document.getElementById('incInputUsSnr'),
         incognitoResults: document.getElementById('incognitoResults'),
+        incGlobalBadge: document.getElementById('incGlobalBadge'),
         incResultDwsSnr: document.getElementById('incResultDwsSnr'),
         incResultDwsPot: document.getElementById('incResultDwsPot'),
         incResultUsSnr: document.getElementById('incResultUsSnr'),
         incResultUsPot: document.getElementById('incResultUsPot'),
+        ftthSmartPaste: document.getElementById('ftthSmartPaste'),
+        btnFtthSmartPasteClip: document.getElementById('btnFtthSmartPasteClip'),
+        ftthSmartPasteStatus: document.getElementById('ftthSmartPasteStatus'),
+        ftthManualFields: document.getElementById('ftthManualFields'),
+        btnToggleFtthManual: document.getElementById('btnToggleFtthManual'),
+        toggleFtthManualArrow: document.getElementById('toggleFtthManualArrow'),
+        ftthGlobalBadge: document.getElementById('ftthGlobalBadge'),
         ftthInputTx: document.getElementById('ftthInputTx'),
         ftthInputRx: document.getElementById('ftthInputRx'),
         ftthResultTx: document.getElementById('ftthResultTx'),
@@ -145,12 +159,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Equipment Identifier
         eqSearchInput: document.getElementById('eqSearchInput'),
+        eqQuickChips: document.getElementById('eqQuickChips'),
         eqResultContainer: document.getElementById('eqResultContainer'),
         eqImage: document.getElementById('eqImage'),
         eqImagePlaceholder: document.getElementById('eqImagePlaceholder'),
         eqName: document.getElementById('eqName'),
         eqType: document.getElementById('eqType'),
+        eqVersion: document.getElementById('eqVersion'),
+        eqRepetidor: document.getElementById('eqRepetidor'),
+        eqSpeed: document.getElementById('eqSpeed'),
         eqStatus: document.getElementById('eqStatus'),
+        eqDesc: document.getElementById('eqDesc'),
         eqCredentials: document.getElementById('eqCredentials'),
 
         // Toast Container
@@ -1596,54 +1615,107 @@ ${contactLines}`;
             const dsSnr = parseNumbers(elements.incInputDwsSnr.value);
             const usSnr = parseNumbers(elements.incInputUsSnr.value);
 
-            const validate = (values, min, max, unit = 'dB', checkVariation = false) => {
-                if (!values || values.length === 0) return { status: 'UNKNOWN', text: 'Esperando datos...' };
-                let outOfRange = false;
-                for (let v of values) {
-                    if (v < min || (max !== null && v > max)) {
-                        outOfRange = true;
-                        break;
-                    }
+            // Umbrales HFC
+            // DS SNR >= 33.5 dB
+            // DS Potencia: -15.0 a 20.9 dBmV
+            // US SNR >= 28.0 dB
+            // US Potencia: 35.0 a 57.0 dBmV
+            const isDsSnrBad = (v) => v !== null && v !== undefined && v < 33.5;
+            const isDsPotBad = (v) => v !== null && v !== undefined && (v < -15 || v > 20.9);
+            const isUsSnrBad = (v) => v !== null && v !== undefined && v < 28;
+            const isUsPotBad = (v) => v !== null && v !== undefined && (v < 35 || v > 57);
+
+            const dsSnrHasBad = dsSnr ? dsSnr.some(isDsSnrBad) : false;
+            const dsPotHasBad = dsPot ? dsPot.some(isDsPotBad) : false;
+            const usSnrHasBad = usSnr ? usSnr.some(isUsSnrBad) : false;
+            const usPotHasBad = usPot ? usPot.some(isUsPotBad) : false;
+
+            // Análisis por fila / canal:
+            // 1. Filas en Downstream (pares dsSnr[i], dsPot[i])
+            let hasRowWithMultipleBad = false;
+            const maxDsLen = Math.max(dsSnr ? dsSnr.length : 0, dsPot ? dsPot.length : 0);
+            for (let i = 0; i < maxDsLen; i++) {
+                let badInRow = 0;
+                if (dsSnr && dsSnr[i] !== undefined && isDsSnrBad(dsSnr[i])) badInRow++;
+                if (dsPot && dsPot[i] !== undefined && isDsPotBad(dsPot[i])) badInRow++;
+                if (badInRow >= 2) {
+                    hasRowWithMultipleBad = true;
+                    break;
                 }
+            }
+
+            // 2. Filas en Upstream (pares usSnr[j], usPot[j])
+            const maxUsLen = Math.max(usSnr ? usSnr.length : 0, usPot ? usPot.length : 0);
+            for (let j = 0; j < maxUsLen; j++) {
+                let badInRow = 0;
+                if (usSnr && usSnr[j] !== undefined && isUsSnrBad(usSnr[j])) badInRow++;
+                if (usPot && usPot[j] !== undefined && isUsPotBad(usPot[j])) badInRow++;
+                if (badInRow >= 2) {
+                    hasRowWithMultipleBad = true;
+                    break;
+                }
+            }
+
+            // 3. Fila global alineada (si el asesor pega columnas alineadas por canal/fila)
+            const maxGlobalLen = Math.max(maxDsLen, maxUsLen);
+            for (let k = 0; k < maxGlobalLen; k++) {
+                let badInRow = 0;
+                if (dsSnr && dsSnr[k] !== undefined && isDsSnrBad(dsSnr[k])) badInRow++;
+                if (dsPot && dsPot[k] !== undefined && isDsPotBad(dsPot[k])) badInRow++;
+                if (usSnr && usSnr[k] !== undefined && isUsSnrBad(usSnr[k])) badInRow++;
+                if (usPot && usPot[k] !== undefined && isUsPotBad(usPot[k])) badInRow++;
+                if (badInRow >= 2) {
+                    hasRowWithMultipleBad = true;
+                    break;
+                }
+            }
+
+            const totalBadParams = (dsSnrHasBad ? 1 : 0) + (dsPotHasBad ? 1 : 0) + (usSnrHasBad ? 1 : 0) + (usPotHasBad ? 1 : 0);
+            const bothDsBad = dsSnrHasBad && dsPotHasBad;
+
+            // Regla solicitada:
+            // "el rojo solo se debe activar cuando en ds snr y pontencia downstream están mal también se debe activar en rojo si en la misma fila hay 2 o mas fuera de rango"
+            const triggerRed = bothDsBad || hasRowWithMultipleBad || totalBadParams >= 2;
+
+            const validate = (values, checkBadFn, min, max, unit = 'dB', checkVariation = false) => {
+                if (!values || values.length === 0) return { status: 'UNKNOWN', text: 'Esperando datos...' };
+                const outOfRange = values.some(checkBadFn);
                 const displayVals = values.length > 5 ? values.slice(0, 5).join(', ') + '...' : values.join(', ');
 
                 // Variación de niveles en el bloque (Máx - Mín <= 4)
+                let deltaInfo = '';
+                let deltaExceeded = false;
                 if (checkVariation && values.length > 1) {
                     const minVal = Math.min(...values);
                     const maxVal = Math.max(...values);
                     const delta = +(maxVal - minVal).toFixed(2);
-                    const deltaExceeded = delta > 4.0;
-
-                    if (outOfRange) {
-                        if (deltaExceeded) {
-                            return { 
-                                status: 'ERROR', 
-                                text: `Fuera de Rango y Variación Excesiva (Δ: ${delta} ${unit} [Máx: ${maxVal}, Mín: ${minVal}] > 4.0 ${unit})` 
-                            };
-                        }
-                        return { 
-                            status: 'ERROR', 
-                            text: `Fuera de Rango (${displayVals} ${unit}) [Δ: ${delta} ${unit}]` 
-                        };
-                    }
-
-                    if (deltaExceeded) {
-                        return { 
-                            status: 'WARNING', 
-                            text: `⚠️ Observación - Variación en Bloque: Δ ${delta} ${unit} (Máx: ${maxVal}, Mín: ${minVal} - Diferencia > 4.0 ${unit})` 
-                        };
-                    }
-
-                    return { 
-                        status: 'OK', 
-                        text: `Dentro del Rango (${displayVals} ${unit})` 
-                    };
+                    deltaExceeded = delta > 4.0;
+                    deltaInfo = ` [Δ: ${delta} ${unit}]`;
                 }
 
                 if (outOfRange) {
-                    return { status: 'ERROR', text: `Fuera de Rango (${displayVals} ${unit})` };
+                    if (triggerRed) {
+                        return {
+                            status: 'ERROR',
+                            text: `Fuera de Rango (${displayVals} ${unit})${deltaInfo}`
+                        };
+                    } else {
+                        // Solo 1 parámetro / canal aislado fuera de rango sin cumplir condición roja -> Advertencia (Ámbar)
+                        return {
+                            status: 'WARNING',
+                            text: `⚠️ Fuera de Rango (${displayVals} ${unit})${deltaInfo} [Alerta preventiva]`
+                        };
+                    }
                 }
-                return { status: 'OK', text: `Dentro del Rango (${displayVals} ${unit})` };
+
+                if (deltaExceeded) {
+                    return { 
+                        status: 'WARNING', 
+                        text: `⚠️ Observación - Variación en Bloque: Δ ${deltaInfo}` 
+                    };
+                }
+
+                return { status: 'OK', text: `Dentro del Rango (${displayVals} ${unit})${deltaInfo}` };
             };
 
             const setVisuals = (element, result, label) => {
@@ -1668,16 +1740,426 @@ ${contactLines}`;
                 }
             };
 
-            const dsSnrRes = validate(dsSnr, 33.5, null, 'dB', true);
-            const dsPotRes = validate(dsPot, -15, 20.9, 'dBmV', true);
-            const usSnrRes = validate(usSnr, 28, null, 'dB', false);
-            const usPotRes = validate(usPot, 35, 57, 'dBmV', false);
+            const dsSnrRes = validate(dsSnr, isDsSnrBad, 33.5, null, 'dB', true);
+            const dsPotRes = validate(dsPot, isDsPotBad, -15, 20.9, 'dBmV', true);
+            const usSnrRes = validate(usSnr, isUsSnrBad, 28, null, 'dB', false);
+            const usPotRes = validate(usPot, isUsPotBad, 35, 57, 'dBmV', false);
 
             setVisuals(elements.incResultUsSnr, usSnrRes, 'U/S SNR');
             setVisuals(elements.incResultDwsSnr, dsSnrRes, 'D/S SNR');
             setVisuals(elements.incResultDwsPot, dsPotRes, 'Potencia Downstream');
             setVisuals(elements.incResultUsPot, usPotRes, 'Potencia Upstream');
+
+            // Actualizar Badge de Estado Global HFC
+            if (elements.incGlobalBadge) {
+                const hasAnyData = dsSnr || dsPot || usSnr || usPot;
+                if (!hasAnyData) {
+                    elements.incGlobalBadge.textContent = 'Esperando datos...';
+                    elements.incGlobalBadge.style.backgroundColor = 'transparent';
+                    elements.incGlobalBadge.style.color = 'var(--text-muted)';
+                    elements.incGlobalBadge.style.border = '1px dashed var(--border-color)';
+                } else if (triggerRed && (dsSnrHasBad || dsPotHasBad || usSnrHasBad || usPotHasBad)) {
+                    elements.incGlobalBadge.textContent = '🔴 FALLA CRÍTICA (ROJO)';
+                    elements.incGlobalBadge.style.backgroundColor = 'rgba(220, 53, 69, 0.2)';
+                    elements.incGlobalBadge.style.color = '#dc3545';
+                    elements.incGlobalBadge.style.border = '1px solid #dc3545';
+                } else if (totalBadParams === 1 || dsSnrRes.status === 'WARNING' || dsPotRes.status === 'WARNING') {
+                    elements.incGlobalBadge.textContent = '⚠️ OBSERVACIÓN (ÁMBAR)';
+                    elements.incGlobalBadge.style.backgroundColor = 'rgba(245, 158, 11, 0.2)';
+                    elements.incGlobalBadge.style.color = '#f59e0b';
+                    elements.incGlobalBadge.style.border = '1px solid #f59e0b';
+                } else {
+                    elements.incGlobalBadge.textContent = '✅ NIVELES ÓPTIMOS';
+                    elements.incGlobalBadge.style.backgroundColor = 'rgba(40, 167, 69, 0.2)';
+                    elements.incGlobalBadge.style.color = '#28a745';
+                    elements.incGlobalBadge.style.border = '1px solid #28a745';
+                }
+            }
         };
+
+        // Smart HFC Multi-Block Parser & Auto-Distributor
+        const parseSmartHfcBlock = (text) => {
+            if (!text || typeof text !== 'string') return null;
+            const cleanText = text.trim();
+            if (!cleanText) return null;
+
+            const keywords = [
+                /u\s*\/?\s*s\s*snr/i,
+                /d\s*\/?\s*s\s*snr/i,
+                /downstream\s*snr/i,
+                /upstream\s*snr/i,
+                /potencia\s*(?:downstream|d\s*\/\s*s|rx)/i,
+                /potencia\s*(?:upstream|u\s*\/\s*s|tx)/i,
+                /downstream\s*power/i,
+                /upstream\s*power/i,
+                /velocidad\s*[du]\s*\/\s*s/i,
+                /versión\s*de\s*firmware/i,
+                /modelo\s*:/i
+            ];
+
+            let matchesCount = 0;
+            for (const kw of keywords) {
+                if (kw.test(cleanText)) matchesCount++;
+            }
+            if (matchesCount === 0) return null;
+
+            const extracted = {
+                usSnr: null,
+                dsSnr: null,
+                dsPot: null,
+                usPot: null,
+                modelo: null
+            };
+
+            const labelDefinitions = [
+                { type: 'usSnr', regex: /(?:u\s*\/\s*s\s*snr|upstream\s*snr|us\s*snr)\s*(?:\([^)]*\))?\s*[:\t]/gi },
+                { type: 'dsSnr', regex: /(?:d\s*\/\s*s\s*snr|downstream\s*snr|ds\s*snr)\s*(?:\([^)]*\))?\s*[:\t]/gi },
+                { type: 'dsPot', regex: /(?:potencia\s*(?:downstream|d\s*\/\s*s|rx)|downstream\s*power|rx\s*power)\s*(?:\([^)]*\))?\s*[:\t]/gi },
+                { type: 'usPot', regex: /(?:potencia\s*(?:upstream|u\s*\/\s*s|tx)|upstream\s*power|tx\s*power)\s*(?:\([^)]*\))?\s*[:\t]/gi },
+                { type: 'modelo', regex: /(?:modelo|model)\s*(?:\([^)]*\))?\s*[:\t]/gi },
+                { type: 'ignore', regex: /(?:velocidad\s*[du]\s*\/\s*s|versión\s*de\s*firmware|compensación\s*de\s*tiempo|tiempo\s*de\s*actividad|datos\s*del\s*módem)\s*(?:\([^)]*\))?\s*[:\t]/gi }
+            ];
+
+            const occurrences = [];
+            for (const def of labelDefinitions) {
+                let match;
+                const re = new RegExp(def.regex.source, 'gi');
+                while ((match = re.exec(cleanText)) !== null) {
+                    occurrences.push({
+                        type: def.type,
+                        startIndex: match.index,
+                        contentStartIndex: match.index + match[0].length
+                    });
+                }
+            }
+
+            occurrences.sort((a, b) => a.startIndex - b.startIndex);
+
+            if (occurrences.length > 0) {
+                for (let i = 0; i < occurrences.length; i++) {
+                    const current = occurrences[i];
+                    const next = occurrences[i + 1];
+                    const rawContent = cleanText.substring(
+                        current.contentStartIndex,
+                        next ? next.startIndex : cleanText.length
+                    ).trim();
+
+                    if (current.type === 'modelo') {
+                        const modelMatch = rawContent.match(/[a-zA-Z0-9\-_.]+/);
+                        if (modelMatch) extracted.modelo = modelMatch[0];
+                    } else if (current.type !== 'ignore') {
+                        const numMatches = rawContent.match(/-?\d+(\.\d+)?/g);
+                        if (numMatches && numMatches.length > 0) {
+                            extracted[current.type] = numMatches.join(', ');
+                        }
+                    }
+                }
+            }
+
+            // Fallback por escaneo línea a línea
+            const lines = cleanText.split(/\r?\n/);
+            for (const line of lines) {
+                if (!extracted.usSnr && /u\s*\/\s*s\s*snr|upstream\s*snr|us\s*snr/i.test(line)) {
+                    const nums = line.replace(/^[^\d-]*/, '').match(/-?\d+(\.\d+)?/g);
+                    if (nums) extracted.usSnr = nums.join(', ');
+                }
+                if (!extracted.dsSnr && /d\s*\/\s*s\s*snr|downstream\s*snr|ds\s*snr/i.test(line)) {
+                    const nums = line.replace(/^[^\d-]*/, '').match(/-?\d+(\.\d+)?/g);
+                    if (nums) extracted.dsSnr = nums.join(', ');
+                }
+                if (!extracted.dsPot && /potencia\s*(?:downstream|d\s*\/\s*s|rx)|downstream\s*power/i.test(line)) {
+                    const nums = line.replace(/^[^\d-]*/, '').match(/-?\d+(\.\d+)?/g);
+                    if (nums) extracted.dsPot = nums.join(', ');
+                }
+                if (!extracted.usPot && /potencia\s*(?:upstream|u\s*\/\s*s|tx)|upstream\s*power/i.test(line)) {
+                    const nums = line.replace(/^[^\d-]*/, '').match(/-?\d+(\.\d+)?/g);
+                    if (nums) extracted.usPot = nums.join(', ');
+                }
+                if (!extracted.modelo && /modelo\s*:/i.test(line)) {
+                    const parts = line.split(/modelo\s*:/i);
+                    if (parts[1]) extracted.modelo = parts[1].trim().split(/\s+/)[0];
+                }
+            }
+
+            return extracted;
+        };
+
+        const applySmartHfcBlock = (rawText) => {
+            const data = parseSmartHfcBlock(rawText);
+            if (!data) return false;
+
+            let count = 0;
+            if (data.usSnr && elements.incInputUsSnr) {
+                elements.incInputUsSnr.value = data.usSnr;
+                count++;
+            }
+            if (data.dsSnr && elements.incInputDwsSnr) {
+                elements.incInputDwsSnr.value = data.dsSnr;
+                count++;
+            }
+            if (data.dsPot && elements.incInputDwsPot) {
+                elements.incInputDwsPot.value = data.dsPot;
+                count++;
+            }
+            if (data.usPot && elements.incInputUsPot) {
+                elements.incInputUsPot.value = data.usPot;
+                count++;
+            }
+
+            if (count > 0) {
+                runIncognitoValidation();
+                let statusMsg = `✨ ${count} parámetros asignados automáticamente`;
+                if (data.modelo) {
+                    statusMsg += ` · Modelo: <strong>${data.modelo}</strong>`;
+                    if (elements.eqSearchInput) {
+                        elements.eqSearchInput.value = data.modelo;
+                        elements.eqSearchInput.dispatchEvent(new Event('input'));
+                    }
+                }
+                if (elements.smartPasteStatus) {
+                    elements.smartPasteStatus.innerHTML = statusMsg;
+                    elements.smartPasteStatus.style.display = 'block';
+                }
+                showToast(`Auto-pegado: ${count} parámetros detectados`);
+                return true;
+            }
+            return false;
+        };
+
+        // Toggle para desplegar / recoger campos manuales HFC
+        if (elements.btnToggleHfcManual && elements.hfcManualFields) {
+            elements.btnToggleHfcManual.addEventListener('click', () => {
+                const isHidden = elements.hfcManualFields.style.display === 'none';
+                elements.hfcManualFields.style.display = isHidden ? 'block' : 'none';
+                if (elements.toggleManualArrow) {
+                    elements.toggleManualArrow.textContent = isHidden ? '▲' : '▼';
+                }
+            });
+        }
+
+        // Listeners para Smart Paste
+        if (elements.incSmartPaste) {
+            const handleSmartPasteInput = (e) => {
+                const text = e.target.value;
+                if (applySmartHfcBlock(text)) {
+                    // Mantener o limpiar tras breve delay
+                }
+            };
+            elements.incSmartPaste.addEventListener('input', handleSmartPasteInput);
+            elements.incSmartPaste.addEventListener('paste', (e) => {
+                setTimeout(() => {
+                    applySmartHfcBlock(elements.incSmartPaste.value);
+                }, 50);
+            });
+        }
+
+        if (elements.btnSmartPasteClip) {
+            elements.btnSmartPasteClip.addEventListener('click', async () => {
+                try {
+                    const text = await navigator.clipboard.readText();
+                    if (text && applySmartHfcBlock(text)) {
+                        if (elements.incSmartPaste) elements.incSmartPaste.value = text;
+                    } else {
+                        showToast('No se reconocieron parámetros HFC en el portapapeles', 'warning');
+                        if (elements.incSmartPaste) elements.incSmartPaste.focus();
+                    }
+                } catch (err) {
+                    showToast('Pega el texto directamente en el cuadro de Pegado Inteligente', 'info');
+                    if (elements.incSmartPaste) elements.incSmartPaste.focus();
+                }
+            });
+        }
+
+        // Intercepción de pegado inteligente en cualquiera de los 4 textareas HFC individuales
+        const individualHfcInputs = [elements.incInputUsSnr, elements.incInputDwsSnr, elements.incInputDwsPot, elements.incInputUsPot];
+        individualHfcInputs.forEach(input => {
+            if (!input) return;
+            input.addEventListener('paste', (e) => {
+                const pastedText = (e.clipboardData || window.clipboardData)?.getData('text');
+                if (pastedText && parseSmartHfcBlock(pastedText)) {
+                    e.preventDefault();
+                    applySmartHfcBlock(pastedText);
+                    if (elements.incSmartPaste) elements.incSmartPaste.value = pastedText;
+                }
+            });
+        });
+
+        // Smart FTTH Multi-Block Parser & Auto-Distributor
+        const parseSmartFtthBlock = (text) => {
+            if (!text || typeof text !== 'string') return null;
+            const cleanText = text.trim();
+            if (!cleanText) return null;
+
+            const keywords = [
+                /transmission\s*power/i,
+                /receiving\s*power/i,
+                /tx\s*power/i,
+                /rx\s*power/i,
+                /potencia\s*(?:de\s*)?(?:transmisi[oó]n|tx)/i,
+                /potencia\s*(?:de\s*)?(?:recepci[oó]n|rx)/i,
+                /ont\s*data/i,
+                /hygeia\s*ont/i,
+                /download\s*speed.*ftth/i
+            ];
+
+            let matchesCount = 0;
+            for (const kw of keywords) {
+                if (kw.test(cleanText)) matchesCount++;
+            }
+            if (matchesCount === 0) return null;
+
+            const extracted = {
+                tx: null,
+                rx: null,
+                hw: null
+            };
+
+            const labelDefinitions = [
+                { type: 'tx', regex: /(?:transmission\s*power|tx\s*(?:optical\s*)?power|potencia\s*(?:de\s*)?(?:transmisi[oó]n|tx))\s*(?:\([^)]*\))?\s*[:\t]/gi },
+                { type: 'rx', regex: /(?:receiving\s*power|rx\s*(?:optical\s*)?power|potencia\s*(?:de\s*)?(?:recepci[oó]n|rx))\s*(?:\([^)]*\))?\s*[:\t]/gi },
+                { type: 'hw', regex: /(?:hardware\s*version|versi[oó]n\s*hardware)\s*(?:\([^)]*\))?\s*[:\t]/gi },
+                { type: 'ignore', regex: /(?:download\s*speed|upload\s*speed|velocidad\s*[du]p?load|ont\s*data|device\s*hygeia)\s*(?:\([^)]*\))?\s*[:\t]/gi }
+            ];
+
+            const occurrences = [];
+            for (const def of labelDefinitions) {
+                let match;
+                const re = new RegExp(def.regex.source, 'gi');
+                while ((match = re.exec(cleanText)) !== null) {
+                    occurrences.push({
+                        type: def.type,
+                        startIndex: match.index,
+                        contentStartIndex: match.index + match[0].length
+                    });
+                }
+            }
+
+            occurrences.sort((a, b) => a.startIndex - b.startIndex);
+
+            if (occurrences.length > 0) {
+                for (let i = 0; i < occurrences.length; i++) {
+                    const current = occurrences[i];
+                    const next = occurrences[i + 1];
+                    const rawContent = cleanText.substring(
+                        current.contentStartIndex,
+                        next ? next.startIndex : cleanText.length
+                    ).trim();
+
+                    if (current.type === 'hw') {
+                        const hwMatch = rawContent.match(/[a-zA-Z0-9\-_.]+/);
+                        if (hwMatch) extracted.hw = hwMatch[0];
+                    } else if (current.type !== 'ignore') {
+                        const numMatches = rawContent.match(/-?\d+(\.\d+)?/g);
+                        if (numMatches && numMatches.length > 0) {
+                            extracted[current.type] = numMatches.join(', ');
+                        }
+                    }
+                }
+            }
+
+            // Fallback por escaneo línea a línea
+            const lines = cleanText.split(/\r?\n/);
+            for (const line of lines) {
+                if (!extracted.tx && /transmission\s*power|tx\s*(?:optical\s*)?power|potencia\s*(?:de\s*)?(?:transmisi[oó]n|tx)/i.test(line)) {
+                    const nums = line.replace(/^[^\d-]*/, '').match(/-?\d+(\.\d+)?/g);
+                    if (nums) extracted.tx = nums.join(', ');
+                }
+                if (!extracted.rx && /receiving\s*power|rx\s*(?:optical\s*)?power|potencia\s*(?:de\s*)?(?:recepci[oó]n|rx)/i.test(line)) {
+                    const nums = line.replace(/^[^\d-]*/, '').match(/-?\d+(\.\d+)?/g);
+                    if (nums) extracted.rx = nums.join(', ');
+                }
+                if (!extracted.hw && /hardware\s*version/i.test(line)) {
+                    const parts = line.split(/hardware\s*version\s*:/i);
+                    if (parts[1]) extracted.hw = parts[1].trim();
+                }
+            }
+
+            return extracted;
+        };
+
+        const applySmartFtthBlock = (rawText) => {
+            const data = parseSmartFtthBlock(rawText);
+            if (!data) return false;
+
+            let count = 0;
+            if (data.tx && elements.ftthInputTx) {
+                elements.ftthInputTx.value = data.tx;
+                count++;
+            }
+            if (data.rx && elements.ftthInputRx) {
+                elements.ftthInputRx.value = data.rx;
+                count++;
+            }
+
+            if (count > 0) {
+                runFtthValidation();
+                let statusMsg = `✨ ${count} niveles ópticos FTTH asignados`;
+                if (data.hw) {
+                    statusMsg += ` · Hardware: <strong>${data.hw}</strong>`;
+                }
+                if (elements.ftthSmartPasteStatus) {
+                    elements.ftthSmartPasteStatus.innerHTML = statusMsg;
+                    elements.ftthSmartPasteStatus.style.display = 'block';
+                }
+                showToast(`Auto-pegado FTTH: ${count} parámetros detectados`);
+                return true;
+            }
+            return false;
+        };
+
+        // Toggle para desplegar / recoger campos manuales FTTH
+        if (elements.btnToggleFtthManual && elements.ftthManualFields) {
+            elements.btnToggleFtthManual.addEventListener('click', () => {
+                const isHidden = elements.ftthManualFields.style.display === 'none';
+                elements.ftthManualFields.style.display = isHidden ? 'block' : 'none';
+                if (elements.toggleFtthManualArrow) {
+                    elements.toggleFtthManualArrow.textContent = isHidden ? '▲' : '▼';
+                }
+            });
+        }
+
+        // Listeners para Smart Paste FTTH
+        if (elements.ftthSmartPaste) {
+            elements.ftthSmartPaste.addEventListener('input', (e) => {
+                applySmartFtthBlock(e.target.value);
+            });
+            elements.ftthSmartPaste.addEventListener('paste', (e) => {
+                setTimeout(() => {
+                    applySmartFtthBlock(elements.ftthSmartPaste.value);
+                }, 50);
+            });
+        }
+
+        if (elements.btnFtthSmartPasteClip) {
+            elements.btnFtthSmartPasteClip.addEventListener('click', async () => {
+                try {
+                    const text = await navigator.clipboard.readText();
+                    if (text && applySmartFtthBlock(text)) {
+                        if (elements.ftthSmartPaste) elements.ftthSmartPaste.value = text;
+                    } else {
+                        showToast('No se reconocieron niveles FTTH en el portapapeles', 'warning');
+                        if (elements.ftthSmartPaste) elements.ftthSmartPaste.focus();
+                    }
+                } catch (err) {
+                    showToast('Pega el reporte directamente en el cuadro de Pegado Inteligente FTTH', 'info');
+                    if (elements.ftthSmartPaste) elements.ftthSmartPaste.focus();
+                }
+            });
+        }
+
+        // Intercepción de pegado inteligente en textareas FTTH individuales
+        const individualFtthInputs = [elements.ftthInputTx, elements.ftthInputRx];
+        individualFtthInputs.forEach(input => {
+            if (!input) return;
+            input.addEventListener('paste', (e) => {
+                const pastedText = (e.clipboardData || window.clipboardData)?.getData('text');
+                if (pastedText && parseSmartFtthBlock(pastedText)) {
+                    e.preventDefault();
+                    applySmartFtthBlock(pastedText);
+                    if (elements.ftthSmartPaste) elements.ftthSmartPaste.value = pastedText;
+                }
+            });
+        });
 
         const runFtthValidation = () => {
             if (!elements.ftthInputTx) return;
@@ -1736,6 +2218,27 @@ ${contactLines}`;
 
             setVisuals(elements.ftthResultTx, txRes, 'Transmission Power (Tx)');
             setVisuals(elements.ftthResultRx, rxRes, 'Receiving Power (Rx)');
+
+            // Actualizar Badge Global FTTH
+            if (elements.ftthGlobalBadge) {
+                const hasAnyData = txVals || rxVals;
+                if (!hasAnyData) {
+                    elements.ftthGlobalBadge.textContent = 'Esperando datos...';
+                    elements.ftthGlobalBadge.style.backgroundColor = 'transparent';
+                    elements.ftthGlobalBadge.style.color = 'var(--text-muted)';
+                    elements.ftthGlobalBadge.style.border = '1px dashed var(--border-color)';
+                } else if (txRes.status === 'ERROR' || rxRes.status === 'ERROR') {
+                    elements.ftthGlobalBadge.textContent = '🔴 FUERA DE RANGO';
+                    elements.ftthGlobalBadge.style.backgroundColor = 'rgba(220, 53, 69, 0.2)';
+                    elements.ftthGlobalBadge.style.color = '#dc3545';
+                    elements.ftthGlobalBadge.style.border = '1px solid #dc3545';
+                } else {
+                    elements.ftthGlobalBadge.textContent = '✅ NIVELES ÓPTIMOS';
+                    elements.ftthGlobalBadge.style.backgroundColor = 'rgba(40, 167, 69, 0.2)';
+                    elements.ftthGlobalBadge.style.color = '#28a745';
+                    elements.ftthGlobalBadge.style.border = '1px solid #28a745';
+                }
+            }
         };
 
         // Switch HFC vs FTTH
@@ -1771,6 +2274,18 @@ ${contactLines}`;
 
         if (elements.btnClearHygeia) {
             elements.btnClearHygeia.addEventListener('click', () => {
+                if (elements.incSmartPaste) elements.incSmartPaste.value = '';
+                if (elements.smartPasteStatus) elements.smartPasteStatus.style.display = 'none';
+                if (elements.hfcManualFields) {
+                    elements.hfcManualFields.style.display = 'none';
+                    if (elements.toggleManualArrow) elements.toggleManualArrow.textContent = '▼';
+                }
+                if (elements.ftthSmartPaste) elements.ftthSmartPaste.value = '';
+                if (elements.ftthSmartPasteStatus) elements.ftthSmartPasteStatus.style.display = 'none';
+                if (elements.ftthManualFields) {
+                    elements.ftthManualFields.style.display = 'none';
+                    if (elements.toggleFtthManualArrow) elements.toggleFtthManualArrow.textContent = '▼';
+                }
                 if (elements.incInputDwsPot) elements.incInputDwsPot.value = '';
                 if (elements.incInputUsPot) elements.incInputUsPot.value = '';
                 if (elements.incInputDwsSnr) elements.incInputDwsSnr.value = '';
@@ -1799,26 +2314,112 @@ ${contactLines}`;
                     betaEquiposPopover.classList.add('active');
                 }
 
-                // Search in dataset (equiposClaro)
-                if (typeof equiposClaro !== 'undefined') {
-                    const result = equiposClaro.find(eq => 
-                        eq.codigo.toUpperCase().includes(query) || 
-                        eq.nombre.toUpperCase().includes(query)
-                    );
+                // Search in dataset (equiposClaro / modelosData)
+                if (typeof equiposClaro !== 'undefined' || typeof modelosData !== 'undefined') {
+                    const cleanQuery = query.replace(/[^A-Z0-9]/g, '');
+                    
+                    // Buscar en dataset normalizado
+                    const dataset = typeof equiposClaro !== 'undefined' ? equiposClaro : Object.keys(modelosData).map(k => ({
+                        codigo: k,
+                        nombre: modelosData[k].nombre,
+                        tipo: modelosData[k].tipo || 'Router / ONT',
+                        homologado: modelosData[k].homologado !== false,
+                        imagen: modelosData[k].img,
+                        descripcion: modelosData[k].descripcion,
+                        repetidor: modelosData[k].repetidor,
+                        velocidad: modelosData[k].velocidad
+                    }));
+
+                    const result = dataset.find(eq => {
+                        const codeClean = (eq.codigo || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+                        const nameClean = (eq.nombre || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+                        return codeClean.includes(cleanQuery) || 
+                               cleanQuery.includes(codeClean) || 
+                               nameClean.includes(cleanQuery) || 
+                               eq.nombre.toUpperCase().includes(query) ||
+                               eq.codigo.toUpperCase().includes(query);
+                    });
 
                     if (result) {
                         elements.eqResultContainer.style.display = 'block';
                         elements.eqName.textContent = result.nombre;
-                        elements.eqType.textContent = result.tipo;
+                        elements.eqType.textContent = result.tipo || 'Equipo Homologado';
                         
+                        // Descripción técnica
+                        if (elements.eqDesc) {
+                            elements.eqDesc.innerHTML = `<strong>Características:</strong> ${result.descripcion || 'Sin descripción adicional'}`;
+                            elements.eqDesc.style.display = 'block';
+                        }
+
+                        // Badge Versión / Tecnología (DOCSIS 3.0 / DOCSIS 3.1 / FTTH Wi-Fi 6 / FTTH GPON)
+                        if (elements.eqVersion) {
+                            const tipoStr = (result.tipo || '').toUpperCase();
+                            const isFtth = tipoStr.includes('FTTH') || tipoStr.includes('GPON') || (result.nombre || '').toUpperCase().includes('ONT');
+                            if (isFtth) {
+                                if (tipoStr.includes('WI-FI 6') || (result.nombre || '').toUpperCase().includes('F6600') || (result.nombre || '').toUpperCase().includes('5670')) {
+                                    elements.eqVersion.textContent = '📶 Wi-Fi 6 (FTTH)';
+                                    elements.eqVersion.style.backgroundColor = 'rgba(139, 92, 246, 0.15)';
+                                    elements.eqVersion.style.color = '#7c3aed';
+                                    elements.eqVersion.style.border = '1px solid rgba(139, 92, 246, 0.3)';
+                                } else {
+                                    elements.eqVersion.textContent = '🌐 GPON (FTTH)';
+                                    elements.eqVersion.style.backgroundColor = 'rgba(20, 184, 166, 0.15)';
+                                    elements.eqVersion.style.color = '#0d9488';
+                                    elements.eqVersion.style.border = '1px solid rgba(20, 184, 166, 0.3)';
+                                }
+                            } else {
+                                if (result.velocidad <= 30) {
+                                    elements.eqVersion.textContent = '📦 DOCSIS 3.0 (v3.0)';
+                                    elements.eqVersion.style.backgroundColor = 'rgba(245, 158, 11, 0.15)';
+                                    elements.eqVersion.style.color = '#d97706';
+                                    elements.eqVersion.style.border = '1px solid rgba(245, 158, 11, 0.3)';
+                                } else {
+                                    elements.eqVersion.textContent = '⚡ DOCSIS 3.1 (v3.1)';
+                                    elements.eqVersion.style.backgroundColor = 'rgba(6, 182, 212, 0.15)';
+                                    elements.eqVersion.style.color = '#0891b2';
+                                    elements.eqVersion.style.border = '1px solid rgba(6, 182, 212, 0.3)';
+                                }
+                            }
+                            elements.eqVersion.style.display = 'inline-block';
+                        }
+
+                        // Badge Repetidor
+                        if (elements.eqRepetidor) {
+                            if (result.repetidor === 'SI') {
+                                elements.eqRepetidor.textContent = '🟢 Compatible con Repetidor';
+                                elements.eqRepetidor.style.backgroundColor = 'rgba(40, 167, 69, 0.15)';
+                                elements.eqRepetidor.style.color = '#28a745';
+                                elements.eqRepetidor.style.border = '1px solid rgba(40, 167, 69, 0.3)';
+                            } else {
+                                elements.eqRepetidor.textContent = '🔴 Sin Soporte Repetidor';
+                                elements.eqRepetidor.style.backgroundColor = 'rgba(220, 53, 69, 0.15)';
+                                elements.eqRepetidor.style.color = '#dc3545';
+                                elements.eqRepetidor.style.border = '1px solid rgba(220, 53, 69, 0.3)';
+                            }
+                            elements.eqRepetidor.style.display = 'inline-block';
+                        }
+
+                        // Badge Velocidad
+                        if (elements.eqSpeed) {
+                            if (result.velocidad) {
+                                elements.eqSpeed.textContent = `⚡ Hasta ${result.velocidad >= 1000 ? '1 Gbps (1000M)' : result.velocidad + ' Mbps'}`;
+                                elements.eqSpeed.style.display = 'inline-block';
+                            } else {
+                                elements.eqSpeed.style.display = 'none';
+                            }
+                        }
+
+                        // Badge Homologación
                         if (result.homologado) {
-                            elements.eqStatus.textContent = "Homologado por Claro";
-                            elements.eqStatus.style.backgroundColor = 'rgba(40, 167, 69, 0.2)';
+                            elements.eqStatus.textContent = "Homologado";
+                            elements.eqStatus.style.backgroundColor = 'rgba(40, 167, 69, 0.15)';
                             elements.eqStatus.style.color = '#28a745';
+                            elements.eqStatus.style.border = '1px solid rgba(40, 167, 69, 0.3)';
                         } else {
                             elements.eqStatus.textContent = "No Homologado";
-                            elements.eqStatus.style.backgroundColor = 'rgba(220, 53, 69, 0.2)';
+                            elements.eqStatus.style.backgroundColor = 'rgba(220, 53, 69, 0.15)';
                             elements.eqStatus.style.color = '#dc3545';
+                            elements.eqStatus.style.border = '1px solid rgba(220, 53, 69, 0.3)';
                         }
 
                         // Handle credentials
@@ -1838,7 +2439,7 @@ ${contactLines}`;
                         elements.eqImage.onerror = () => {
                             elements.eqImage.style.display = 'none';
                             elements.eqImagePlaceholder.style.display = 'block';
-                            elements.eqImagePlaceholder.textContent = 'Falta imagen en carpeta';
+                            elements.eqImagePlaceholder.textContent = 'Falta imagen (' + result.imagen + ')';
                         };
                     } else {
                         elements.eqResultContainer.style.display = 'block';
@@ -1847,12 +2448,30 @@ ${contactLines}`;
                         elements.eqStatus.textContent = "Desconocido";
                         elements.eqStatus.style.backgroundColor = 'transparent';
                         elements.eqStatus.style.color = 'var(--text-muted)';
+                        elements.eqStatus.style.border = '1px dashed var(--border-color)';
                         
+                        if (elements.eqVersion) elements.eqVersion.style.display = 'none';
+                        if (elements.eqRepetidor) elements.eqRepetidor.style.display = 'none';
+                        if (elements.eqSpeed) elements.eqSpeed.style.display = 'none';
+                        if (elements.eqDesc) elements.eqDesc.style.display = 'none';
+                        if (elements.eqCredentials) elements.eqCredentials.style.display = 'none';
+
                         elements.eqImage.style.display = 'none';
                         elements.eqImagePlaceholder.style.display = 'block';
                         elements.eqImagePlaceholder.textContent = 'Sin imagen';
                     }
                 }
+            });
+
+            // Quick Chips Click Handler
+            document.querySelectorAll('.eq-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    const model = chip.getAttribute('data-model');
+                    if (model && elements.eqSearchInput) {
+                        elements.eqSearchInput.value = model;
+                        elements.eqSearchInput.dispatchEvent(new Event('input'));
+                    }
+                });
             });
         }
 

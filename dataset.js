@@ -708,48 +708,40 @@ const BO_DATASET = {
     ]
 };
 
-const equiposClaro = [
-    {
-        codigo: "CGA2121",
-        nombre: "Technicolor CGA2121",
-        tipo: "Router HFC",
-        homologado: true,
-        imagen: "images/equipos/CGA2121.jpg"
-    },
-    {
-        codigo: "F680",
-        nombre: "ZTE F680",
-        tipo: "Router FTTH",
-        homologado: true,
-        imagen: "images/equipos/F680.jpg"
-    },
-    {
-        codigo: "HG8145V5",
-        nombre: "Huawei HG8145V5",
-        tipo: "Router FTTH",
-        homologado: true,
-        imagen: "images/equipos/HG8145V5.jpg"
-    },
-    {
-        codigo: "TC7300",
-        nombre: "Technicolor TC7300",
-        tipo: "Router HFC",
-        homologado: false,
-        imagen: "images/equipos/TC7300.jpg"
-    },
-    {
-        codigo: "PLUME",
-        nombre: "Plume SuperPod",
-        tipo: "Repetidor Mesh",
-        homologado: true,
-        imagen: "images/equipos/PLUME.jpg"
-    },
-    {
-        codigo: "INFINITY601",
-        nombre: "Infinity601 CM",
-        tipo: "Router HFC",
-        homologado: true,
-        imagen: "",
-        credenciales: "User: Expert | Pass: c14r02024@@@"
-    }
-];
+const modelosData = {
+    "DPC3926": { nombre:"CISCO DPC3926", img:"img/CISCO DPC3926.jpg", descripcion:"Soporta 30 Mbps / NO REPETIDOR", repetidor:"NO", velocidad:30, tipo:"Router HFC (Docsis 3.0)", homologado: true },
+    "DPQ3925": { nombre:"CISCO DPQ3925", img:"img/CISCO DPQ3925.jpg", descripcion:"Soporta 30 Mbps / NO REPETIDOR", repetidor:"NO", velocidad:30, tipo:"Router HFC (Docsis 3.0)", homologado: true },
+    "TG862": { nombre:"ARRIS TG862", img:"img/ARRIS TG862.jpg", descripcion:"Soporta 30 Mbps / NO REPETIDOR", repetidor:"NO", velocidad:30, tipo:"Router HFC (Docsis 3.0)", homologado: true },
+    "FAST3686V22": { nombre:"SAGEMCOM FAST3686V2.2", img:"img/SAGEMCOM FAST3686V2_2.jpg", descripcion:"Soporta 300 Mbps / NO REPETIDOR", repetidor:"NO", velocidad:300, tipo:"Router HFC (Docsis 3.0)", homologado: true },
+    "TG2482": { nombre:"ARRIS TG2482", img:"img/ARRIS TG2482.jpg", descripcion:"Soporta 300 Mbps / SI REPETIDOR", repetidor:"SI", velocidad:300, tipo:"Router HFC (Docsis 3.0)", homologado: true },
+    "CGA2121": { nombre:"TECNICOLOR CGA2121", img:"img/TECNICOLOR CGA2121.jpg", descripcion:"Soporta 300 Mbps / NO REPETIDOR", repetidor:"NO", velocidad:300, tipo:"Router HFC (Docsis 3.0)", homologado: true },
+    "F3890V3": { nombre:"SAGEMCOM F3890 V3", img:"img/SAGEMCOM F3890 V3.jpg", descripcion:"Soporta 301-1000 Mbps / NO REPETIDOR", repetidor:"NO", velocidad:1000, tipo:"Router HFC (Docsis 3.1)", homologado: true },
+    "TG3442": { nombre:"ARRIS TG3442", img:"img/ARRIS TG3442.jpg", descripcion:"Soporta 301-1000 Mbps / SI REPETIDOR", repetidor:"SI", velocidad:1000, tipo:"Router HFC (Docsis 3.1)", homologado: true },
+    "CGA4233": { nombre:"TECNICOLOR CGA4233 CLP2", img:"img/TECNICOLOR CGA4233 CLP2.jpg", descripcion:"Soporta 301-1000 Mbps / SI REPETIDOR", repetidor:"SI", velocidad:1000, tipo:"Router HFC (Docsis 3.1)", homologado: true },
+    "HG8245Q2": { nombre:"HUAWEI HG8245Q2", img:"img/ONT_HUAWEI HG8245Q2.jpg", descripcion:"Soporta 1000 Mbps / NO REPETIDOR", repetidor:"NO", velocidad:1000, tipo:"ONT FTTH (GPON)", homologado: true },
+    "HG815V5": { nombre:"HUAWEI HG815V5", img:"img/ONT_HUAWEI HG815V5.jpg", descripcion:"Soporta 1000 Mbps / NO REPETIDOR", repetidor:"NO", velocidad:1000, tipo:"ONT FTTH (GPON)", homologado: true },
+    "ZXHNF680": { nombre:"ZTE ZXHNF680", img:"img/ONT_ZTE ZXHNF680.jpg", descripcion:"Soporta 1000 Mbps / NO REPETIDOR", repetidor:"NO", velocidad:1000, tipo:"ONT FTTH (GPON)", homologado: true },
+    "F6600P": { nombre:"ZTE F6600P v9.0.12", img:"img/ONT_ZTE_F6600P.jpg", descripcion:"Soporta 1000 Mbps / NO REPETIDOR", repetidor:"NO", velocidad:1000, tipo:"ONT FTTH (Wi-Fi 6)", homologado: true },
+    "FAST5670V2": { nombre:"SAGEMCOM FAST5670 v2", img:"img/ONT_SAGEMCOM FAST5670 v2.jpg", descripcion:"Soporta 1GB A+ Mbps / NO REPETIDOR", repetidor:"NO", velocidad:1000, tipo:"ONT FTTH (Wi-Fi 6)", homologado: true }
+};
+
+const equiposClaro = Object.keys(modelosData).map(key => ({
+    codigo: key,
+    nombre: modelosData[key].nombre,
+    tipo: modelosData[key].tipo || (modelosData[key].nombre.includes('ONT') || key.startsWith('HG') || key.startsWith('ZX') || key.startsWith('F6') || key.includes('5670') ? 'Router FTTH' : 'Router HFC'),
+    homologado: modelosData[key].homologado !== false,
+    imagen: modelosData[key].img,
+    descripcion: modelosData[key].descripcion,
+    repetidor: modelosData[key].repetidor,
+    velocidad: modelosData[key].velocidad,
+    credenciales: modelosData[key].credenciales || ''
+}));
+
+if (typeof window !== 'undefined') {
+    window.modelosData = modelosData;
+    window.equiposClaro = equiposClaro;
+}
+if (typeof global !== 'undefined') {
+    global.modelosData = modelosData;
+    global.equiposClaro = equiposClaro;
+}

@@ -70,7 +70,7 @@ graph TD
 * **Copiado al Portapapeles en 1-Clic:** Formato limpio y compatible con los gestores de tickets.
 
 ### 2. ⚡ Diagnóstico Técnico de Niveles (HFC & FTTH)
-* **HFC (Coaxial):** Validación de *Upstream SNR*, *Downstream SNR*, *Potencia Rx*, *Potencia Tx* y **análisis de variación en bloque ($\Delta \le 4.0\text{ dB}$)** para detección preventiva de degradación de planta.
+* **HFC (Coaxial):** Validación de *Upstream SNR*, *Downstream SNR*, *Potencia Rx*, *Potencia Tx*, **análisis de variación en bloque ($\Delta \le 4.0\text{ dB}$)** y nuevo algoritmo de criticidad (activación en **ROJO** solo si *D/S SNR* y *Potencia DS* fallan juntos o si hay 2 o más parámetros fuera de rango en la misma fila/canal; fallas aisladas se muestran en advertencia preventiva **ÁMBAR**).
 * **FTTH (Fibra Óptica):** Validación instantánea de niveles ópticos *Tx* y *Rx* con semáforo visual de tolerancias homologadas.
 
 ### 3. 🛠️ Estructurador de Escalamientos Remedy
