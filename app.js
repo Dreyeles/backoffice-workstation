@@ -25,8 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
         state.customTemplates = [];
     }
 
-    // Ensure WhatsApp default templates exist
-    const whatsappTemplates = [
+    // Ensure default templates exist (WhatsApp & Visita Técnica con SOT dinámica)
+    const defaultTemplates = [
         {
             id: 'tmpl_wsp_1',
             title: 'CLIENTE CONTESTA WHATSAPP',
@@ -38,6 +38,12 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'CLIENTE NO CONTESTA LLAMADA',
             category: 'WhatsApp',
             content: `Estimado cliente 👋, estuvimos llamando a su número celular 📱, pero no tuvimos respuesta. Procedemos a finalizar esta conversación. Lo estaremos llamando en el transcurso del día o mañana. 🕒📞 ¡Que tenga un excelente día! 😊`
+        },
+        {
+            id: 'tmpl_visita_sot',
+            title: 'CONFIRMACIÓN VISITA TÉCNICA (SOT)',
+            category: 'WhatsApp',
+            content: `Estimado(a) cliente 👋, le confirmamos que se ha generado la visita técnica con el Codigo: {sot} La atención se realizará en un plazo máximo de 48 horas 👨🔧🏠. El técnico se comunicará previamente con usted para coordinar el ingreso. ¡Muchas gracias por su tiempo y preferencia! 😊👍`
         }
     ];
 
@@ -50,9 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
         templatesUpdated = true;
     }
 
-    whatsappTemplates.forEach(wspTmpl => {
-        if (!state.customTemplates.find(t => t.id === wspTmpl.id)) {
-            state.customTemplates.push(wspTmpl);
+    defaultTemplates.forEach(defTmpl => {
+        const existing = state.customTemplates.find(t => t.id === defTmpl.id);
+        if (!existing) {
+            state.customTemplates.push(defTmpl);
             templatesUpdated = true;
         }
     });
@@ -423,12 +430,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Validación Inteligente: Número de Contacto (Solo dígitos numéricos)
+        // Validación Inteligente: Número de Contacto (Permite dígitos y separadores para soportar múltiples teléfonos)
         if (elements.genTelefono) {
             const telefonoWarning = document.getElementById('genTelefonoWarning');
             let warningTimeout = null;
 
-            const triggerPhoneWarning = (msg = '⚠️ Solo se permiten números en el teléfono') => {
+            const triggerPhoneWarning = (msg = '⚠️ Solo se permiten números y separadores') => {
                 elements.genTelefono.classList.remove('input-invalid');
                 void elements.genTelefono.offsetWidth; // Forzar reflow para reiniciar animación
                 elements.genTelefono.classList.add('input-invalid');
@@ -447,9 +454,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 showToast(msg, 'warning');
             };
 
-            // 1. Bloquear teclas no numéricas al tipear
+            // 1. Bloquear teclas inválidas al tipear
             elements.genTelefono.addEventListener('keydown', (e) => {
-                // Permitir teclas de control y navegación
                 const allowedControlKeys = [
                     'Backspace', 'Tab', 'Enter', 'Delete', 'Escape',
                     'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
@@ -459,38 +465,104 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                // Si no es un dígito entre 0 y 9, cancelar y avisar
-                if (!/^[0-9]$/.test(e.key)) {
+                // Permitir dígitos 0-9 y separadores comunes: espacio, barra, guión, coma
+                if (!/^[0-9\s/,-]$/.test(e.key)) {
                     e.preventDefault();
-                    triggerPhoneWarning('⚠️ Solo se permiten números en el teléfono');
+                    triggerPhoneWarning('⚠️ Solo se permiten números y separadores (/ - ,)');
                 }
             });
 
-            // 2. Filtrado y sanitizado al pegar texto (Paste)
+            // 2. Filtrado y sanitizado inteligente al pegar texto (Paste)
             elements.genTelefono.addEventListener('paste', (e) => {
                 e.preventDefault();
                 const pastedText = (e.clipboardData || window.clipboardData).getData('text') || '';
-                const digitsOnly = pastedText.replace(/\D/g, '');
+                if (!pastedText.trim()) return;
 
-                if (!digitsOnly) {
+                // Verificar si el texto copiado proviene de Customer Service Cloud / AICC o contiene múltiples datos
+                let extractedCallId = null;
+                let extractedPhones = [];
+
+                // A) Buscar ID de llamada (patrón 1789050624-2967456, UUID o etiqueta 'ID de llamada')
+                const callPatternMatch = pastedText.match(/\b\d{8,12}-\d{4,8}\b/);
+                if (callPatternMatch) {
+                    extractedCallId = callPatternMatch[0];
+                } else {
+                    const callLabelMatch = pastedText.match(/(?:id\s*de\s*llamada|id\s*call|call\s*id)\s*[:=\t\r\n]?\s*([^\r\n]+)/i);
+                    if (callLabelMatch) {
+                        const candidate = callLabelMatch[1].trim();
+                        if (candidate && candidate.toUpperCase() !== 'N/A') {
+                            extractedCallId = candidate;
+                        }
+                    }
+                }
+
+                // B) Buscar Teléfono / Número de cliente
+                const clientNumMatch = pastedText.match(/(?:n[uú]mero\s*de\s*cliente|n[uú]mero\s*llamado|n[uú]mero\s*de\s*contacto|tel[eé]fono|contacto|celular)\s*[:=\t\r\n]?\s*([0-9\s/,-]{7,40})/i);
+                if (clientNumMatch) {
+                    const nums = clientNumMatch[1].match(/\b\d{7,11}\b/g);
+                    if (nums) {
+                        extractedPhones = Array.from(new Set(nums));
+                    }
+                }
+
+                // Si no encontró por etiqueta explícita, buscar números móviles de 9 dígitos o fijos
+                if (extractedPhones.length === 0) {
+                    let textWithoutCallId = pastedText;
+                    if (extractedCallId) {
+                        textWithoutCallId = textWithoutCallId.replace(extractedCallId, '');
+                    }
+                    const allNums = textWithoutCallId.match(/\b9\d{8}\b/g) || textWithoutCallId.match(/\b\d{7,11}\b/g);
+                    if (allNums) {
+                        extractedPhones = Array.from(new Set(allNums));
+                    }
+                }
+
+                // Si se detectó ID de llamada o un bloque estructurado de Customer Service Cloud:
+                if (extractedCallId || (extractedPhones.length > 0 && pastedText.length > 20)) {
+                    if (extractedCallId) {
+                        processAndStoreContactText(extractedCallId);
+                        updateContactInputField();
+                    }
+
+                    if (extractedPhones.length > 0) {
+                        elements.genTelefono.value = extractedPhones.slice(0, 2).join(' / ');
+                        elements.genTelefono.classList.remove('input-invalid');
+                    } else {
+                        const cleanPhone = pastedText.replace(/[^0-9\s/,-]/g, '').trim();
+                        if (cleanPhone) elements.genTelefono.value = cleanPhone;
+                    }
+
+                    renderGeneratorPreviews();
+
+                    const toastMsg = extractedCallId 
+                        ? `📞 Teléfono (${elements.genTelefono.value}) e ID Llamada (${extractedCallId}) asignados`
+                        : `📱 Teléfono detectado: ${elements.genTelefono.value}`;
+                    showToast(toastMsg, 'success');
+                    return;
+                }
+
+                // Pegado normal de número simple
+                const cleanPhone = pastedText.replace(/[^0-9\s/,-]/g, '').trim();
+
+                if (!cleanPhone) {
                     triggerPhoneWarning('⚠️ El texto pegado no contiene números válidos');
                     return;
                 }
 
-                if (digitsOnly !== pastedText.trim()) {
-                    triggerPhoneWarning('⚠️ Solo números: Se eliminaron letras y caracteres especiales');
+                if (cleanPhone !== pastedText.trim()) {
+                    triggerPhoneWarning('⚠️ Solo números y separadores: Se eliminaron caracteres especiales');
                 }
 
-                elements.genTelefono.value = digitsOnly;
+                elements.genTelefono.value = cleanPhone;
                 renderGeneratorPreviews();
             });
 
-            // 3. Listener reactivo para limpiar caracteres residuales y actualizar vista previa
+            // 3. Listener reactivo para limpiar caracteres residuales
             elements.genTelefono.addEventListener('input', () => {
                 const currentVal = elements.genTelefono.value;
-                if (/\D/.test(currentVal)) {
-                    elements.genTelefono.value = currentVal.replace(/\D/g, '');
-                    triggerPhoneWarning('⚠️ Solo se permiten números en este campo');
+                if (/[^0-9\s/,-]/.test(currentVal)) {
+                    elements.genTelefono.value = currentVal.replace(/[^0-9\s/,-]/g, '');
+                    triggerPhoneWarning('⚠️ Solo se permiten números y separadores');
                 }
                 renderGeneratorPreviews();
             });
@@ -509,6 +581,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const pastedText = (e.clipboardData || window.clipboardData).getData('text').trim();
                 if (!pastedText) return;
 
+                // Si viene del Customer Service Cloud y trae número de cliente, asignarlo a teléfono si está vacío
+                const clientNumMatch = pastedText.match(/(?:n[uú]mero\s*de\s*cliente|n[uú]mero\s*llamado)\s*[:=\t\r\n]?\s*(\d{7,11})/i);
+                if (clientNumMatch && elements.genTelefono && !elements.genTelefono.value) {
+                    elements.genTelefono.value = clientNumMatch[1];
+                    elements.genTelefono.classList.remove('input-invalid');
+                }
+
                 processAndStoreContactText(pastedText);
                 updateContactInputField();
                 renderGeneratorPreviews();
@@ -526,7 +605,228 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Interceptar 'Pegar' (Ctrl+V) en Descartes para guardar capturas de pantalla
+        // ======================================================================
+        // ANALIZADOR Y FILTRO INTELIGENTE DE PLANTILLAS DE CASO (Smart Case Parser)
+        // ======================================================================
+        function parseAndDistributeCaseTemplate(rawText) {
+            if (!rawText || typeof rawText !== 'string') return false;
+            const text = rawText.trim();
+            if (!text || text.length < 8) return false;
+
+            let indicatorsCount = 0;
+            const detected = {
+                phones: [],
+                sot: null,
+                contactIds: [],
+                servicio: null,
+                problema: null,
+                solucion: null,
+                descartes: [],
+                isAgendamiento: false
+            };
+
+            const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+
+            // 1. Detectar Agendamiento
+            if (/\b(agendamiento|agendar|agenda|agendado|agendada)\b/i.test(text)) {
+                detected.isAgendamiento = true;
+                indicatorsCount++;
+            }
+
+            // 2. Extraer Teléfonos
+            // A) Buscar en líneas con etiquetas explícitas (Teléfono, Contacto, Celular, Tlf, etc.)
+            const phoneLabelMatch = text.match(/(?:tel[eé]fono[s]?|contacto[s]?|celular(?:es)?|tlf|cel)\s*[:=-]?\s*([0-9\s/,-]{8,40})/i);
+            if (phoneLabelMatch) {
+                const rawPhones = phoneLabelMatch[1];
+                const nums = rawPhones.match(/\b\d{7,11}\b/g);
+                if (nums && nums.length > 0) {
+                    detected.phones = Array.from(new Set(nums)).slice(0, 2);
+                    indicatorsCount++;
+                }
+            }
+
+            // B) Si no encontró por etiqueta, buscar números móviles de 9 dígitos que empiezan con 9
+            if (detected.phones.length === 0) {
+                const mobileMatches = text.match(/\b9\d{8}\b/g);
+                if (mobileMatches && mobileMatches.length > 0) {
+                    const uniquePhones = Array.from(new Set(mobileMatches));
+                    detected.phones = uniquePhones.slice(0, 2);
+                    indicatorsCount++;
+                }
+            }
+
+            // 3. Extraer SOT / REMEDY
+            // A) Con etiqueta explícita
+            const sotLabelMatch = text.match(/(?:sot\s*\/\s*remedy|sot|remedy|ticket|inc|incidente|wo|orden)\s*[:=-]?\s*([a-zA-Z0-9\-_]{6,16})/i);
+            if (sotLabelMatch) {
+                const candidate = sotLabelMatch[1].trim();
+                if (candidate.toUpperCase() !== 'N/A') {
+                    detected.sot = candidate;
+                    indicatorsCount++;
+                }
+            }
+
+            // B) Sin etiqueta: SOT estándar peruano (8 dígitos que empiezan con 9, ej: 90718308)
+            if (!detected.sot) {
+                const sotNumMatches = text.match(/\b9\d{7}\b/g);
+                if (sotNumMatches && sotNumMatches.length > 0) {
+                    // Excluir si es prefijo o subcadena de un teléfono de 9 dígitos ya capturado
+                    const validSots = sotNumMatches.filter(s => !detected.phones.some(p => p.includes(s)));
+                    if (validSots.length > 0) {
+                        detected.sot = validSots[0];
+                        indicatorsCount++;
+                    }
+                }
+            }
+
+            // 4. Extraer ID Llamada / Chat ID
+            const contactMatches = [];
+            // UUIDs de Chat
+            const uuidMatches = text.match(/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/gi);
+            if (uuidMatches) {
+                uuidMatches.forEach(u => contactMatches.push(u));
+            }
+            // ID llamada explícito
+            const callLabelMatch = text.match(/(?:id\s*(?:call\/live|call|live|livechat|llamada|chat)|chat\s*id)\s*[:=-]?\s*([^\n\r]+)/i);
+            if (callLabelMatch) {
+                const rawCall = callLabelMatch[1].trim();
+                if (rawCall.toUpperCase() !== 'N/A') {
+                    contactMatches.push(rawCall);
+                }
+            }
+            // Patrón numérico común (ej: 1787747820-730926)
+            const callPatternMatches = text.match(/\b\d{8,12}-\d{4,8}\b/g);
+            if (callPatternMatches) {
+                callPatternMatches.forEach(cp => contactMatches.push(cp));
+            }
+
+            if (contactMatches.length > 0) {
+                detected.contactIds = Array.from(new Set(contactMatches));
+                indicatorsCount++;
+            }
+
+            // 5. Detectar Cabeceras / Banners de plantilla
+            if (/BACK\s*OFFICE/i.test(text) || /\*{6,}/.test(text) || /Plantilla\s*SIAC/i.test(text) || /Plantilla\s*Mantenimiento/i.test(text)) {
+                indicatorsCount++;
+            }
+
+            // 6. Extraer Problema si viene etiquetado
+            const probMatch = text.match(/(?:problema|motivo|falla|inconveniente)\s*[:=-]\s*([^\n\r]+)/i);
+            if (probMatch) {
+                detected.problema = probMatch[1].trim();
+                indicatorsCount++;
+            }
+
+            // 7. Extraer Solución si viene etiquetada
+            const solMatch = text.match(/(?:soluci[oó]n|resoluci[oó]n)\s*[:=-]\s*([^\n\r]+)/i);
+            if (solMatch) {
+                const solCandidate = solMatch[1].trim();
+                if (solCandidate.toUpperCase() !== 'N/A') {
+                    detected.solucion = solCandidate;
+                    indicatorsCount++;
+                }
+            }
+
+            // 8. Condición de Activación: Al menos 2 datos clave
+            if (indicatorsCount < 2) {
+                return false; // Pegado de texto ordinario, no interceptar
+            }
+
+            // 9. Extraer y Limpiar Descartes
+            const descartesLines = [];
+            lines.forEach(line => {
+                const clean = line.trim();
+                if (!clean) return;
+
+                // Omitir cabeceras o banners
+                if (/^BACK\s*OFFICE/i.test(clean) || /^\*{3,}/.test(clean) || /^=+/.test(clean)) return;
+
+                // Omitir líneas con etiquetas ya procesadas
+                if (/^(?:tel[eé]fono|contacto|celular|tlf)\s*[:=-]/i.test(clean)) return;
+                if (/^(?:sot|remedy|ticket|inc|wo)\s*[:=-]/i.test(clean)) return;
+                if (/^(?:id\s*(?:call|live|llamada|chat)|chat\s*id)\s*[:=-]/i.test(clean)) return;
+                if (/^(?:problema|motivo)\s*[:=-]/i.test(clean)) return;
+                if (/^(?:soluci[oó]n|resoluci[oó]n)\s*[:=-]/i.test(clean)) return;
+                if (/^#[^#]+#$/.test(clean) || /^#[A-Z0-9_+]+$/i.test(clean)) return;
+
+                // Si la línea empieza con "Descartes:" o "Pruebas:"
+                if (/^(?:descartes|pruebas|acciones)\s*[:=-]/i.test(clean)) {
+                    const content = clean.replace(/^(?:descartes|pruebas|acciones)\s*[:=-]\s*/i, '').trim();
+                    if (content) descartesLines.push(content);
+                    return;
+                }
+
+                descartesLines.push(clean);
+            });
+
+            detected.descartes = descartesLines;
+
+            // ==========================================
+            // DISTRIBUIR VALORES EN LAS CASILLAS
+            // ==========================================
+
+            // A) Teléfono(s)
+            if (detected.phones.length > 0) {
+                elements.genTelefono.value = detected.phones.join(' / ');
+                elements.genTelefono.classList.remove('input-invalid');
+            }
+
+            // B) SOT
+            if (detected.sot) {
+                elements.genSot.value = detected.sot;
+                elements.genSot.classList.remove('input-invalid');
+            }
+
+            // C) Contact IDs (Llamadas / Chats)
+            if (detected.contactIds.length > 0) {
+                detected.contactIds.forEach(c => processAndStoreContactText(c));
+                updateContactInputField();
+            }
+
+            // D) Problema
+            if (detected.problema) {
+                const probQuery = detected.problema.toLowerCase();
+                const found = currentProblemList.find(p => p.toLowerCase().includes(probQuery) || probQuery.includes(p.toLowerCase()));
+                if (found) {
+                    setProblemValue(found);
+                } else {
+                    setProblemValue(detected.problema);
+                }
+            }
+
+            // E) Solución
+            if (detected.solucion) {
+                elements.genSolucion.value = detected.solucion;
+            }
+
+            // F) Descartes
+            if (detected.descartes.length > 0) {
+                elements.genDescartes.value = detected.descartes.join('\n');
+                elements.genDescartes.classList.remove('input-invalid');
+            } else if (detected.isAgendamiento && detected.sot) {
+                elements.genDescartes.value = `Se valida agendamiento y generación de SOT ${detected.sot}`;
+            }
+
+            // G) Predecir categorías automáticamente si aplica
+            if (elements.btnPredictCategory) {
+                elements.btnPredictCategory.click();
+            }
+
+            // H) Re-renderizar Previews
+            renderGeneratorPreviews();
+
+            // I) Notificación descriptiva
+            const summary = [];
+            if (detected.phones.length > 0) summary.push(`📱 ${detected.phones.join(' / ')}`);
+            if (detected.sot) summary.push(`🏷️ SOT: ${detected.sot}`);
+            if (detected.isAgendamiento) summary.push(`📅 Agendamiento`);
+            if (detected.contactIds.length > 0) summary.push(`📞 ID Contacto`);
+
+            showToast(`⚡ ¡Plantilla detectada y distribuida! ${summary.join(' | ')}`, 'success');
+            return true;
+        }
+
+        // Interceptar 'Pegar' (Ctrl+V) en Descartes: Capturas de Imagen o Filtrado Inteligente de Plantillas
         if (elements.genDescartes) {
             elements.genDescartes.addEventListener('paste', (e) => {
                 const items = (e.clipboardData || e.originalEvent.clipboardData).items;
@@ -559,7 +859,17 @@ document.addEventListener('DOMContentLoaded', () => {
                             showToast(`📷 Captura guardada: ${fileName}`);
                         }
                         
-                        e.preventDefault(); // Evita que pegue texto raro en la caja
+                        e.preventDefault();
+                        return;
+                    }
+                }
+
+                // Detección y Distribución Inteligente al pegar texto completo
+                const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+                if (pastedText) {
+                    const wasDistributed = parseAndDistributeCaseTemplate(pastedText);
+                    if (wasDistributed) {
+                        e.preventDefault(); // Evita que se duplique o sobreescriba con el bloque en bruto
                     }
                 }
             });
@@ -631,52 +941,78 @@ document.addEventListener('DOMContentLoaded', () => {
         attachAutoCorrect(elements.genSolucion, document.getElementById('btnAutoCorrectSolucion'));
         attachAutoCorrect(elements.genDescartes, document.getElementById('btnAutoCorrectDescartes'));
 
-        // 6. Custom Select Dropdown Logic for Problema Detectado
-        const problemaTrigger = document.getElementById('genProblemaTrigger');
+        // 6. Custom Combobox Dropdown Logic for Problema Detectado (Editable e Interactivo)
         const problemaDropdown = document.getElementById('problemaDropdown');
-        const problemaSearch = document.getElementById('genProblemaSearch');
+        const btnToggleProblema = document.getElementById('btnToggleProblemaDropdown');
+        const problemaWrapper = document.getElementById('problemaWrapper');
 
         let currentFocus = -1;
 
-        if (problemaTrigger) {
-            problemaTrigger.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const isOpen = problemaDropdown.classList.contains('open');
-                if (!isOpen) {
-                    problemaDropdown.classList.add('open');
-                    problemaSearch.value = '';
-                    renderProblemOptions(currentProblemList);
-                    currentFocus = -1;
-                    problemaSearch.focus();
-                } else {
-                    problemaDropdown.classList.remove('open');
-                }
-            });
-        }
-
-        if (problemaSearch) {
-            problemaSearch.addEventListener('input', (e) => {
-                const query = e.target.value.toLowerCase();
-                const filtered = currentProblemList.filter(p => p.toLowerCase().includes(query));
+        if (elements.genProblema) {
+            // Permitir escribir directamente y filtrar sugerencias en tiempo real
+            elements.genProblema.addEventListener('input', (e) => {
+                e.target.classList.remove('input-invalid');
+                const query = (e.target.value || '').toLowerCase().trim();
+                const filtered = query 
+                    ? currentProblemList.filter(p => p.toLowerCase().includes(query))
+                    : currentProblemList;
+                
                 renderProblemOptions(filtered);
                 currentFocus = -1;
+                if (problemaDropdown) {
+                    if (filtered.length > 0) {
+                        problemaDropdown.classList.add('open');
+                    } else {
+                        problemaDropdown.classList.remove('open');
+                    }
+                }
+                renderGeneratorPreviews();
             });
-            problemaSearch.addEventListener('click', (e) => e.stopPropagation());
-            problemaSearch.addEventListener('keydown', (e) => {
-                const options = document.getElementById('genProblemaOptions').getElementsByClassName('custom-option');
+
+            // Abrir sugerencias al hacer foco o clic en el campo (y auto-seleccionar si tiene texto para sobreescribir al tipear)
+            elements.genProblema.addEventListener('focus', () => {
+                const query = (elements.genProblema.value || '').toLowerCase().trim();
+                const filtered = query 
+                    ? currentProblemList.filter(p => p.toLowerCase().includes(query))
+                    : currentProblemList;
+                renderProblemOptions(filtered.length > 0 ? filtered : currentProblemList);
+                currentFocus = -1;
+                if (problemaDropdown) problemaDropdown.classList.add('open');
+                if (elements.genProblema.value) {
+                    setTimeout(() => {
+                        elements.genProblema.select();
+                    }, 10);
+                }
+            });
+
+            // Navegación por teclado (Flechas Arriba/Abajo, Enter, Escape)
+            elements.genProblema.addEventListener('keydown', (e) => {
+                const options = document.getElementById('genProblemaOptions')?.getElementsByClassName('custom-option');
+
                 if (e.key === 'ArrowDown') {
                     e.preventDefault();
-                    currentFocus++;
-                    addActive(options);
+                    if (problemaDropdown && !problemaDropdown.classList.contains('open')) {
+                        problemaDropdown.classList.add('open');
+                    }
+                    if (options && options.length > 0) {
+                        currentFocus++;
+                        addActive(options);
+                    }
                 } else if (e.key === 'ArrowUp') {
                     e.preventDefault();
-                    currentFocus--;
-                    addActive(options);
-                } else if (e.key === 'Enter') {
-                    e.preventDefault();
-                    if (currentFocus > -1) {
-                        if (options) options[currentFocus].click();
+                    if (options && options.length > 0) {
+                        currentFocus--;
+                        addActive(options);
                     }
+                } else if (e.key === 'Enter') {
+                    if (currentFocus > -1 && options && options[currentFocus]) {
+                        e.preventDefault();
+                        options[currentFocus].click();
+                    } else if (problemaDropdown) {
+                        problemaDropdown.classList.remove('open');
+                    }
+                } else if (e.key === 'Escape') {
+                    if (problemaDropdown) problemaDropdown.classList.remove('open');
                 }
             });
 
@@ -684,10 +1020,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!options) return false;
                 removeActive(options);
                 if (currentFocus >= options.length) currentFocus = 0;
-                if (currentFocus < 0) currentFocus = (options.length - 1);
+                if (currentFocus < 0) currentFocus = options.length - 1;
                 options[currentFocus].classList.add('active');
                 options[currentFocus].scrollIntoView({ block: 'nearest' });
             }
+
             function removeActive(options) {
                 for (let i = 0; i < options.length; i++) {
                     options[i].classList.remove('active');
@@ -695,9 +1032,25 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        if (btnToggleProblema) {
+            btnToggleProblema.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!problemaDropdown) return;
+                const isOpen = problemaDropdown.classList.contains('open');
+                if (!isOpen) {
+                    renderProblemOptions(currentProblemList);
+                    currentFocus = -1;
+                    problemaDropdown.classList.add('open');
+                    elements.genProblema?.focus();
+                } else {
+                    problemaDropdown.classList.remove('open');
+                }
+            });
+        }
+
         document.addEventListener('click', (e) => {
-            if (problemaDropdown && problemaDropdown.classList.contains('open')) {
-                problemaDropdown.classList.remove('open');
+            if (problemaWrapper && !problemaWrapper.contains(e.target)) {
+                if (problemaDropdown) problemaDropdown.classList.remove('open');
             }
         });
 
@@ -825,11 +1178,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function setProblemValue(val) {
         if (elements.genProblema) {
-            elements.genProblema.value = val;
-            elements.genProblema.dispatchEvent(new Event('input'));
+            elements.genProblema.value = val || '';
+            elements.genProblema.classList.remove('input-invalid');
         }
-        const trigger = document.getElementById('genProblemaTrigger');
-        if (trigger) trigger.textContent = val || 'Seleccionar problema...';
+        renderGeneratorPreviews();
     }
 
     function renderProblemOptions(list) {
@@ -849,13 +1201,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function populateProblems(serviceKey) {
+    function populateProblems(serviceKey, keepCurrentValue = false) {
         currentProblemList = BO_DATASET.problemsByService[serviceKey] || [];
         renderProblemOptions(currentProblemList);
         
-        if (currentProblemList.length > 0) {
-            setProblemValue(currentProblemList[0]);
-        } else {
+        if (!keepCurrentValue) {
             setProblemValue('');
         }
     }
@@ -1201,9 +1551,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderGeneratorPreviews() {
-        const rawProblema = (elements.genProblema.value || 'INT - BAJA VELOCIDAD VIA CABLEADO').trim();
+        const rawProblema = (elements.genProblema && elements.genProblema.value ? elements.genProblema.value : '').trim();
         let cleanProblema = rawProblema.replace(/^(INT|TEL|IPTV|CABLE|APPS)\s*-\s*/i, '').trim();
-        if (!cleanProblema) cleanProblema = rawProblema;
+        if (!cleanProblema) cleanProblema = rawProblema || 'N/A';
 
         const telefono = (elements.genTelefono.value || 'N/A').trim();
         const sot = (elements.genSot.value || 'N/A').trim();
@@ -1211,15 +1561,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const rawSolucion = ((elements.genSolucion && elements.genSolucion.value) ? elements.genSolucion.value.trim() : 'N/A');
         const solucion = rawSolucion !== 'N/A' ? autoCorrectText(rawSolucion, false) : 'N/A';
 
-        const rawDescartesInput = (elements.genDescartes ? elements.genDescartes.value : '');
-        const rawDescartes = (rawDescartesInput || 'Se realizan descartes de protocolo').trim();
-        const correctedDescartes = autoCorrectText(rawDescartes, false);
+        const rawDescartesInput = (elements.genDescartes ? elements.genDescartes.value : '').trim();
+        const correctedDescartes = rawDescartesInput ? autoCorrectText(rawDescartesInput, false) : '';
         const descartesFormatted = formatDescartesLines(correctedDescartes);
         const tagsStr = state.selectedHashtags.size > 0 ? Array.from(state.selectedHashtags).join(' ') : 'N/A';
 
         const contactLines = getFormattedContactLines();
 
-        const isAutoCiclo = checkIsCiclo(rawDescartes);
+        const isAutoCiclo = rawDescartesInput ? checkIsCiclo(rawDescartesInput) : false;
         const isCiclo = state.cicloOverride !== null ? state.cicloOverride : isAutoCiclo;
 
         // Actualizar UI del Switch / Badge de Ciclo
@@ -1237,7 +1586,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Manejo adaptativo del campo Solución según el protocolo de Ciclo 2x3 (3 ciclos en 2 días)
-        const descartesLower = (rawDescartes || '').toLowerCase();
+        const descartesLower = (rawDescartesInput || '').toLowerCase();
         const isAdvancedCiclo = descartesLower.includes('2do') || 
                                 descartesLower.includes('segundo') || 
                                 descartesLower.includes('3er') || 
@@ -1312,7 +1661,7 @@ ${contactLines}`;
         }
 
         // Template Mantenimiento (MANTO) - Formato de Plataforma para Técnicos
-        const rawDescartesManto = autoCorrectText((elements.genDescartes.value || 'Se realizan descartes de protocolo').trim(), false);
+        const rawDescartesManto = rawDescartesInput ? autoCorrectText(rawDescartesInput, false) : 'N/A';
         const contactIdVal = (Array.from(state.callIds).concat(Array.from(state.chatIds)).join(' / ') || (elements.genContactId ? elements.genContactId.value.trim() : '') || 'N/A');
         
         let tagManto = '';
@@ -1358,8 +1707,7 @@ ${contactLines}`;
             const problema = (elements.genProblema ? elements.genProblema.value : '').trim();
             if (!problema || problema.toUpperCase() === 'N/A') {
                 missingFieldNames.push('Descripción del Cliente / Problema');
-                const trigger = document.getElementById('genProblemaTrigger');
-                if (trigger) missingElements.push(trigger);
+                if (elements.genProblema) missingElements.push(elements.genProblema);
             }
         }
 
@@ -1741,7 +2089,7 @@ ${contactLines}`;
             };
 
             const dsSnrRes = validate(dsSnr, isDsSnrBad, 33.5, null, 'dB', true);
-            const dsPotRes = validate(dsPot, isDsPotBad, -15, 20.9, 'dBmV', true);
+            const dsPotRes = validate(dsPot, isDsPotBad, -15, 20.9, 'dBmV', false);
             const usSnrRes = validate(usSnr, isUsSnrBad, 28, null, 'dB', false);
             const usPotRes = validate(usPot, isUsPotBad, 35, 57, 'dBmV', false);
 
@@ -2482,6 +2830,33 @@ ${contactLines}`;
     // TAB 3: MIS PLANTILLAS PERSONALIZADAS
     // ==========================================================================
 
+    // Helper para sustitución dinámica de variables en plantillas personalizadas ({sot}, {telefono}, etc.)
+    function resolveTemplateVariables(templateContent) {
+        if (!templateContent) return '';
+        const currentSot = (elements.genSot && elements.genSot.value) ? elements.genSot.value.trim() : '';
+        const sotReplacement = currentSot || 'xxxxx';
+
+        const currentTel = (elements.genTelefono && elements.genTelefono.value) ? elements.genTelefono.value.trim() : '';
+        const telReplacement = currentTel || 'xxxxx';
+
+        const currentServicio = (elements.genServicio && elements.genServicio.value) ? elements.genServicio.value : 'INTERNET';
+        const currentProblema = (elements.genProblema && elements.genProblema.value) ? elements.genProblema.value.trim() : 'xxxxx';
+        const currentSolucion = (elements.genSolucion && elements.genSolucion.value) ? elements.genSolucion.value.trim() : 'xxxxx';
+
+        let resolved = templateContent;
+
+        // Reemplazar {sot}, {SOT}, {codigo}, {ticket}, etc.
+        resolved = resolved.replace(/\{(?:sot|SOT|codigo|código|codigo_sot|ticket|orden)\}/gi, sotReplacement);
+
+        // Reemplazar otros placeholders estándar
+        resolved = resolved.replace(/\{(?:telefono|teléfono|contacto|celular)\}/gi, telReplacement);
+        resolved = resolved.replace(/\{(?:servicio)\}/gi, currentServicio);
+        resolved = resolved.replace(/\{(?:problema|motivo)\}/gi, currentProblema);
+        resolved = resolved.replace(/\{(?:solucion|solución)\}/gi, currentSolucion);
+
+        return resolved;
+    }
+
     function renderCustomTemplates() {
         const query = elements.customSearch.value.toLowerCase().trim();
         elements.customTemplatesList.innerHTML = '';
@@ -2500,18 +2875,24 @@ ${contactLines}`;
         filtered.forEach(tmpl => {
             const card = document.createElement('div');
             card.className = 'template-card';
+            const resolvedContent = resolveTemplateVariables(tmpl.content);
+            const hasDynamicVars = tmpl.content.includes('{');
+
             card.innerHTML = `
                 <div class="template-card-header">
                     <div>
                         <div class="template-card-title">${tmpl.title}</div>
-                        <span class="badge badge-info" style="margin-top:0.3rem;">${tmpl.category}</span>
+                        <div style="display:flex; gap:0.35rem; align-items:center; margin-top:0.3rem; flex-wrap:wrap;">
+                            <span class="badge badge-info">${tmpl.category}</span>
+                            ${hasDynamicVars ? '<span class="badge" style="background:rgba(16, 185, 129, 0.15); color:#10b981; font-size:0.7rem; border:1px solid rgba(16, 185, 129, 0.3);">⚡ Auto-Variables</span>' : ''}
+                        </div>
                     </div>
                     <div style="display:flex; gap:0.3rem;">
                         <button class="btn btn-sm edit-tmpl-btn" data-id="${tmpl.id}" title="Editar plantilla">✏️</button>
                         <button class="btn btn-sm del-tmpl-btn" data-id="${tmpl.id}" style="color:var(--danger);" title="Eliminar plantilla">🗑️</button>
                     </div>
                 </div>
-                <div class="template-card-preview">${tmpl.content}</div>
+                <div class="template-card-preview" style="white-space:pre-wrap; line-height:1.45;">${resolvedContent}</div>
                 <button class="btn btn-sm btn-primary copy-tmpl-btn" data-id="${tmpl.id}" style="margin-top:0.5rem; width:100%;">📋 Copiar Plantilla</button>
             `;
 
@@ -2521,8 +2902,9 @@ ${contactLines}`;
             card.querySelector('.del-tmpl-btn').addEventListener('click', () => deleteTemplate(tmpl.id));
             // Direct 1-Click Copy Event
             card.querySelector('.copy-tmpl-btn').addEventListener('click', () => {
-                copyToClipboard(tmpl.content, `Plantilla "${tmpl.title}" copiada`);
-                addHistoryRecord('Personalizada', tmpl.category || 'Plantilla', tmpl.content);
+                const textToCopy = resolveTemplateVariables(tmpl.content);
+                copyToClipboard(textToCopy, `Plantilla "${tmpl.title}" copiada`);
+                addHistoryRecord('Personalizada', tmpl.category || 'Plantilla', textToCopy);
             });
 
             elements.customTemplatesList.appendChild(card);

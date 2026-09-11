@@ -13,7 +13,7 @@
     <header class="app-header">
         <div class="brand">
             <div>
-                <div class="brand-title">WORKSTATION BACKOFFICE <span id="btnChangelog" style="display: inline-flex; align-items: center; border-radius: 4px; overflow: hidden; vertical-align: middle; margin-left: 0.5rem; font-size: 0.55em; letter-spacing: normal; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.0</span></span></div>
+                <div class="brand-title">WORKSTATION BACKOFFICE <span id="btnChangelog" style="display: inline-flex; align-items: center; border-radius: 4px; overflow: hidden; vertical-align: middle; margin-left: 0.5rem; font-size: 0.55em; letter-spacing: normal; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.1</span></span></div>
                 <div class="brand-subtitle">PLATAFORMA LOCAL DE PLANTILLAS Y SEGUIMIENTO PARA BO-FIJA</div>
             </div>
         </div>
@@ -66,14 +66,14 @@
                     <div class="card">
                         <div class="card-title">
                             <div class="card-title-text">🛠️ Datos del Caso & Servicio</div>
-                            <button id="btnClearForm" class="btn" style="background: linear-gradient(135deg, #ef4444, #b91c1c); border: 1px solid #ef4444; color: #ffffff; font-weight: 700; font-size: 0.95rem; padding: 0.5rem 1.25rem; border-radius: 6px; box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4); display: flex; align-items: center; gap: 0.4rem; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer;" onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 6px 18px rgba(239, 68, 68, 0.55)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 14px rgba(239, 68, 68, 0.4)';" title="Limpiar campos">🗑️ Limpiar</button>
+                            <button id="btnClearForm" class="btn btn-sm" style="color:var(--danger); border-color:var(--danger);" title="Limpiar campos">🗑️ Limpiar</button>
                         </div>
 
                         <div class="form-grid">
                             <div class="form-group" style="position: relative;">
                                 <label class="form-label" for="genTelefono">Número de Contacto <span style="color:var(--danger); font-weight:bold;">*</span></label>
-                                <input type="text" id="genTelefono" class="form-input" placeholder="Ej: 987654321" inputmode="numeric" pattern="[0-9]*" maxlength="15" autocomplete="tel">
-                                <div id="genTelefonoWarning" class="input-inline-warning" style="display:none;">⚠️ Solo se permiten números</div>
+                                <input type="text" id="genTelefono" class="form-input" placeholder="Ej: 987654321 / 912345678" maxlength="35" autocomplete="tel">
+                                <div id="genTelefonoWarning" class="input-inline-warning" style="display:none;">⚠️ Solo se permiten números y separadores</div>
                             </div>
 
                             <div class="form-group">
@@ -98,14 +98,15 @@
                             </div>
 
                             <div class="form-group full-width">
-                                <label class="form-label">Problema Detectado / Descripción del Cliente <span style="color:var(--danger); font-weight:bold;">*</span></label>
+                                <label class="form-label" for="genProblema">Problema Detectado / Descripción del Cliente <span style="color:var(--danger); font-weight:bold;">*</span></label>
                                 <div class="custom-select-wrapper" id="problemaWrapper">
-                                    <div class="custom-select-trigger" id="genProblemaTrigger">Seleccionar problema...</div>
+                                    <div style="position: relative; display: flex; align-items: center;">
+                                        <input type="text" id="genProblema" class="form-input" style="padding-right: 2.2rem;" placeholder="Escribe o selecciona un problema..." autocomplete="off" spellcheck="true">
+                                        <button type="button" id="btnToggleProblemaDropdown" style="position: absolute; right: 8px; background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 4px 8px; font-size: 0.75rem; border-radius: 4px;" title="Ver lista de problemas sugeridos">▼</button>
+                                    </div>
                                     <div class="custom-select-dropdown" id="problemaDropdown">
-                                        <input type="text" class="custom-select-search" id="genProblemaSearch" placeholder="Escribe para buscar...">
                                         <div class="custom-select-options" id="genProblemaOptions"></div>
                                     </div>
-                                    <input type="hidden" id="genProblema">
                                 </div>
                             </div>
                         </div>
@@ -127,7 +128,7 @@
                                 <label class="form-label" for="genDescartes">Descartes Realizados <span style="color:var(--danger); font-weight:bold;">*</span> <span style="font-size:0.75rem; text-transform:none; font-weight:normal; color:var(--text-muted);">(Mínimo 1 descarte)</span></label>
                                 <button type="button" id="btnAutoCorrectDescartes" class="btn btn-sm" style="font-size:0.72rem; padding:0.15rem 0.4rem;" title="Corregir ortografía y abreviaturas en Descartes">🪄 Auto-corregir</button>
                             </div>
-                            <textarea id="genDescartes" class="form-textarea" placeholder="Descartes técnicos realizados..." spellcheck="true" autocomplete="on"></textarea>
+                            <textarea id="genDescartes" class="form-textarea" placeholder="Descartes técnicos realizados... (💡 Si pegas una plantilla completa aquí, se detectarán y distribuirán los datos automáticamente)" spellcheck="true" autocomplete="on"></textarea>
                             
                             <span class="form-label" style="margin-top:0.4rem; font-size:0.75rem;">Descartes Rápida Selección:</span>
                             <div id="quickDescartesContainer" class="chips-container"></div>
@@ -565,9 +566,9 @@
 
             <div class="form-group">
                 <label class="form-label" for="tmplContentInput">Contenido (Usa {variable} para campos dinámicos)</label>
-                <textarea id="tmplContentInput" class="form-textarea" style="min-height:180px;" placeholder="Ej: ESTIMADO {cliente}, SE GENERA TICKET {ticket} PARA EL SERVICIO DE {servicio}. ASESOR: {asesor}"></textarea>
+                <textarea id="tmplContentInput" class="form-textarea" style="min-height:180px;" placeholder="Ej: Estimado cliente, su visita técnica fue generada con SOT {sot} para su servicio de {servicio}."></textarea>
                 <span style="font-size:0.75rem; color:var(--text-muted); margin-top:0.3rem;">
-                    💡 Tip: Las variables entre llaves <code>{nombre}</code>, <code>{ticket}</code>, <code>{fecha}</code> generarán campos automáticos de llenado.
+                    💡 Tip: Las variables entre llaves como <code>{sot}</code>, <code>{telefono}</code>, <code>{servicio}</code> se completan automáticamente con los datos del caso activo (si SOT está vacío, mostrará <code>xxxxx</code>).
                 </span>
             </div>
 
@@ -622,23 +623,24 @@
 
     <!-- MODAL FOR CHANGELOG -->
     <div id="changelogModal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 620px;">
+        <div class="modal-content" style="max-width: 640px;">
             <div class="card-title">
-                <div class="card-title-text">🚀 Novedades de la Versión 2.0</div>
+                <div class="card-title-text">🚀 Novedades de la Versión 2.1</div>
                 <button id="changelogModalClose" class="btn btn-sm">✕</button>
             </div>
             <div style="font-size: 0.92rem; line-height: 1.55; color: var(--text-main); margin-top: 1rem;">
                 <ul style="padding-left: 1.3rem; margin-bottom: 1.3rem; display: flex; flex-direction: column; gap: 0.65rem;">
-                    <li><strong>📋 Pegado Inteligente Multi-Tecnología (HFC & FTTH):</strong> Pega bloques completos copiados de Incógnito / SAC o usa el botón <em>📋 Pegar del Portapapeles</em>. El sistema detecta y extrae automáticamente todas las potencias y SNRs (Downstream, Upstream, Tx y Rx Óptico).</li>
-                    <li><strong>⚖️ Nuevas Reglas Técnicas de Niveles HFC:</strong> Diagnóstico de precisión calibrado con alertas en amarillo para fallas aisladas y alerta roja crítica únicamente cuando coinciden D/S SNR y Potencia DS, o cuando 2 o más parámetros en una misma fila están fuera de rango.</li>
-                    <li><strong>🏷️ Identificador de Routers & ONTs con Badges de Versión:</strong> Catálogo completo de 14 equipos oficiales con fotos en alta definición, límites de velocidad, soporte para repetidor y badges dinámicos según tecnología (<code>DOCSIS 3.0 v3.0</code>, <code>DOCSIS 3.1 v3.1</code>, <code>Wi-Fi 6 FTTH</code> y <code>GPON FTTH</code>).</li>
-                    <li><strong>👁️ Vista Ergonómica y Limpia:</strong> Secciones manuales de ingreso de niveles contraídas por defecto para no saturar la vista, permitiendo desplegarlas en 1 clic cuando se requiera edición manual fila por fila.</li>
-                    <li><strong>🌐 Hub Integral de Plataformas & Enlaces (<code>Alt+L</code>):</strong> Acceso directo centralizado a herramientas oficiales de Claro (Incógnito, Dashboard ZT, TR69, Schaman, Helix Smart IT, Remedy, Plume, Tracer, AICC, SIAC) con soporte para agregar enlaces personalizados.</li>
-                    <li><strong>🖥️ Tarjeta & Modal de Escritorio Remoto (RDP):</strong> Conexión y copiado en 1 clic de la IP del servidor (<code>172.29.0.101</code>) y del prefijo de dominio (<code>TIM\</code>).</li>
-                    <li><strong>📞 Módulo Oficial de Escalamiento a Remedy:</strong> Estructurador oficial para Páginas Web/Apps, Canales IPTV y Telefonía a Red con previsualización en formato Word y exportación a PDF.</li>
+                    <li><strong>⚡ Filtro Inteligente Customer Service Cloud (Huawei/AICC):</strong> Al copiar la tabla o bloque (Número de cliente + ID de llamada) y pegarlo en <em>Número de Contacto</em> o <em>ID de Llamada</em>, el sistema detecta y distribuye ambos datos automáticamente en sus respectivas casillas.</li>
+                    <li><strong>🧩 Pegado Inteligente de Casos en Descartes:</strong> Al pegar una plantilla o nota completa en la casilla de <em>Descartes</em>, el sistema extrae automáticamente teléfonos múltiples, SOTs de 8 dígitos, casos de agendamiento, IDs de contacto y deja los descartes técnicos limpios.</li>
+                    <li><strong>✍️ Problema Detectado 100% Editable con Autocompletado:</strong> Ahora puedes escribir directamente cualquier problema personalizado o buscar entre las sugerencias oficiales en tiempo real. Inicia limpio y auto-selecciona el texto al hacer clic para editar sin fricción.</li>
+                    <li><strong>📋 Plantillas Personalizadas con Auto-SOT Dinámico:</strong> Nueva plantilla oficial de <em>Confirmación de Visita Técnica</em> con la variable dinámica <code>{sot}</code>, la cual inserta en tiempo real la SOT del caso activo o muestra <code>xxxxx</code> si la casilla está vacía.</li>
+                    <li><strong>⚖️ Calibración de Reglas Técnicas HFC:</strong> La verificación de variación en bloque se enfoca exclusivamente en D/S SNR (&Delta; &le; 4.0 dB), validando Potencia Downstream Rx en su rango operativo directo (-15.0 a +20.9 dBmV).</li>
+                    <li><strong>🧹 Manejo Limpio de Campos Vacíos (N/A):</strong> Si la casilla de descartes está vacía, las plantillas SIAC y Mantenimiento reflejan <code>N/A</code> de forma limpia y consistente.</li>
+                    <li><strong>🏷️ Identificador de Routers & ONTs (14 Equipos):</strong> Catálogo completo de equipos con badges de versión de firmware, soporte para repetidor y especificaciones oficiales de velocidad.</li>
+                    <li><strong>🌐 Hub Integral de Plataformas & Enlaces (<code>Alt+L</code>) y Tarjeta RDP:</strong> Conexión ágil a todas las herramientas de Claro y escritorio remoto con copiado de credenciales en 1 clic.</li>
                 </ul>
                 <p style="color: var(--text-muted); font-size: 0.82rem; border-top: 1px dashed var(--border-color); padding-top: 0.8rem; text-align: center;">
-                    ¡Optimizado para máxima velocidad, precisión técnica y ergonomía en BackOffice Fija!
+                    ¡WorkStation BackOffice v2.1 optimizado para máxima velocidad, precisión técnica y ergonomía operativa!
                 </p>
             </div>
         </div>
