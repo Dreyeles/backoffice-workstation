@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize UI Component References
     const elements = {
         themeBtn: document.getElementById('themeToggleBtn'),
-        
+
         // Generator Tab
         genServicio: document.getElementById('genServicio'),
         genProblema: document.getElementById('genProblema'),
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         genCatResolucion: document.getElementById('genCatResolucion'),
         genCatCausa: document.getElementById('genCatCausa'),
         btnPredictCategory: document.getElementById('btnPredictCategory'),
-        
+
         titleSiacCard: document.getElementById('titleSiacCard'),
         btnToggleCiclo: document.getElementById('btnToggleCiclo'),
         labelCicloToggle: document.getElementById('labelCicloToggle'),
@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-            
+
             btn.classList.add('active');
             const targetId = btn.getAttribute('data-tab');
             document.getElementById(targetId).classList.add('active');
@@ -213,11 +213,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     function autoCorrectText(text, preserveTrailingSpaces = true) {
         if (!text) return '';
-        
+
         // Capturar espacios o saltos de línea al final para preservarlos intactos durante el tipeo
         const trailingMatch = text.match(/\s*$/);
         const trailingWhitespace = preserveTrailingSpaces && trailingMatch ? trailingMatch[0] : '';
-        
+
         let cleaned = text;
 
         // 1. Normalización de espacios y comas múltiples
@@ -352,7 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { regex: /\b(nocontesta)\b/gi, replacement: 'no contesta' },
             { regex: /\b(wsp|wa|wha)\b/gi, replacement: 'WhatsApp' },
             { regex: /\b(msj|msg)\b/gi, replacement: 'mensaje' },
-            
+
             // Nombres de herramientas y plataformas
             { regex: /\b(incognito|incog)\b/gi, replacement: 'Incógnito' },
             { regex: /\b(schaman)\b/gi, replacement: 'Schaman' },
@@ -375,10 +375,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Asegurar mayúscula inicial en cada línea y tras viñetas (- , * , 1. ) o comas / punto y coma
         cleaned = cleaned.split('\n').map(line => {
             if (!line) return '';
-            
+
             // 1. Capitalizar inicio de línea o tras viñetas (- , * , • , 1. , 1) )
             let res = line.replace(/^(\s*[-*•\d.)\]]\s*)([a-záéíóúñ])/i, (m, prefix, char) => prefix + char.toUpperCase())
-                          .replace(/^(\s*)([a-záéíóúñ])/i, (m, prefix, char) => prefix + char.toUpperCase());
+                .replace(/^(\s*)([a-záéíóúñ])/i, (m, prefix, char) => prefix + char.toUpperCase());
 
             // 2. Capitalizar la primera letra después de cada coma o punto y coma seguido de espacio
             res = res.replace(/(,\s*)([a-záéíóúñ])/g, (m, sep, char) => sep + char.toUpperCase());
@@ -534,7 +534,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     renderGeneratorPreviews();
 
-                    const toastMsg = extractedCallId 
+                    const toastMsg = extractedCallId
                         ? `📞 Teléfono (${elements.genTelefono.value}) e ID Llamada (${extractedCallId}) asignados`
                         : `📱 Teléfono detectado: ${elements.genTelefono.value}`;
                     showToast(toastMsg, 'success');
@@ -656,8 +656,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // 3. Extraer SOT / REMEDY
-            // A) Con etiqueta explícita
-            const sotLabelMatch = text.match(/(?:sot\s*\/\s*remedy|sot|remedy|ticket|inc|incidente|wo|orden)\s*[:=-]?\s*([a-zA-Z0-9\-_]{6,16})/i);
+            // A) Con etiqueta explícita (requiere límite de palabra y separador obligatorio para no confundir con INCOGNITO)
+            const sotLabelMatch = text.match(/\b(?:sot\s*\/\s*remedy|sot|remedy|ticket|incidente|wo|orden|inc)\b\s*[:=-]\s*([a-zA-Z0-9\-_]{6,16})/i);
             if (sotLabelMatch) {
                 const candidate = sotLabelMatch[1].trim();
                 if (candidate.toUpperCase() !== 'N/A') {
@@ -686,18 +686,27 @@ document.addEventListener('DOMContentLoaded', () => {
             if (uuidMatches) {
                 uuidMatches.forEach(u => contactMatches.push(u));
             }
-            // ID llamada explícito
-            const callLabelMatch = text.match(/(?:id\s*(?:call\/live|call|live|livechat|llamada|chat)|chat\s*id)\s*[:=-]?\s*([^\n\r]+)/i);
-            if (callLabelMatch) {
-                const rawCall = callLabelMatch[1].trim();
-                if (rawCall.toUpperCase() !== 'N/A') {
-                    contactMatches.push(rawCall);
-                }
-            }
-            // Patrón numérico común (ej: 1787747820-730926)
+            // Patrón numérico común (ej: 1787747820-730926 o 1789136560-996120)
             const callPatternMatches = text.match(/\b\d{8,12}-\d{4,8}\b/g);
             if (callPatternMatches) {
                 callPatternMatches.forEach(cp => contactMatches.push(cp));
+            }
+            // ID llamada explícito (si no coincidió con patrón numérico)
+            const callLabelMatch = text.match(/(?:id\s*(?:call\/live|call|live|livechat|llamada|chat)|chat\s*id)\s*[:=-]\s*([^\n\r]+)/i);
+            if (callLabelMatch) {
+                let rawCall = callLabelMatch[1].trim();
+                if (rawCall.toUpperCase() !== 'N/A') {
+                    if (uuidMatches) {
+                        uuidMatches.forEach(u => { rawCall = rawCall.replace(u, ''); });
+                    }
+                    if (callPatternMatches) {
+                        callPatternMatches.forEach(cp => { rawCall = rawCall.replace(cp, ''); });
+                    }
+                    rawCall = rawCall.replace(/^[/\s|,-]+|[/\s|,-]+$/g, '').trim();
+                    if (rawCall.length >= 4) {
+                        contactMatches.push(rawCall);
+                    }
+                }
             }
 
             if (contactMatches.length > 0) {
@@ -743,8 +752,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Omitir líneas con etiquetas ya procesadas
                 if (/^(?:tel[eé]fono|contacto|celular|tlf)\s*[:=-]/i.test(clean)) return;
-                if (/^(?:sot|remedy|ticket|inc|wo)\s*[:=-]/i.test(clean)) return;
-                if (/^(?:id\s*(?:call|live|llamada|chat)|chat\s*id)\s*[:=-]/i.test(clean)) return;
+                if (/^\b(?:sot\s*\/\s*remedy|sot|remedy|ticket|incidente|wo|orden|inc)\b\s*[:=-]/i.test(clean)) return;
+                if (/^(?:id\s*(?:call\/live|call|live|livechat|llamada|chat)|chat\s*id)\s*[:=-]/i.test(clean)) return;
                 if (/^(?:problema|motivo)\s*[:=-]/i.test(clean)) return;
                 if (/^(?:soluci[oó]n|resoluci[oó]n)\s*[:=-]/i.test(clean)) return;
                 if (/^#[^#]+#$/.test(clean) || /^#[A-Z0-9_+]+$/i.test(clean)) return;
@@ -775,12 +784,18 @@ document.addEventListener('DOMContentLoaded', () => {
             if (detected.sot) {
                 elements.genSot.value = detected.sot;
                 elements.genSot.classList.remove('input-invalid');
+            } else {
+                elements.genSot.value = '';
             }
 
             // C) Contact IDs (Llamadas / Chats)
+            state.callIds.clear();
+            state.chatIds.clear();
             if (detected.contactIds.length > 0) {
                 detected.contactIds.forEach(c => processAndStoreContactText(c));
                 updateContactInputField();
+            } else {
+                if (elements.genContactId) elements.genContactId.value = '';
             }
 
             // D) Problema
@@ -807,7 +822,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 elements.genDescartes.value = `Se valida agendamiento y generación de SOT ${detected.sot}`;
             }
 
-            // G) Predecir categorías automáticamente si aplica
+            // G) Limpiar y sincronizar hashtags de la plantilla si los tuviera
+            state.selectedHashtags.clear();
+            const tagMatches = text.match(/#([a-zA-Z0-9_+]+)#?/g);
+            if (tagMatches && typeof BO_DATASET !== 'undefined' && BO_DATASET.hashtags) {
+                tagMatches.forEach(tm => {
+                    const cleanTag = tm.replace(/#/g, '').toUpperCase();
+                    const found = BO_DATASET.hashtags.find(h => h.tag.replace(/#/g, '').toUpperCase() === cleanTag);
+                    if (found) state.selectedHashtags.add(found.tag);
+                });
+            }
+            if (typeof renderHashtagChips === 'function') {
+                renderHashtagChips();
+            }
+
+            // H) Predecir categorías automáticamente si aplica
             if (elements.btnPredictCategory) {
                 elements.btnPredictCategory.click();
             }
@@ -835,15 +864,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (item.kind === 'file' && item.type.startsWith('image/')) {
                         const blob = item.getAsFile();
                         const now = new Date();
-                        const dateStr = now.getFullYear().toString() + 
-                                        String(now.getMonth() + 1).padStart(2, '0') + 
-                                        String(now.getDate()).padStart(2, '0') + '_' + 
-                                        String(now.getHours()).padStart(2, '0') + 
-                                        String(now.getMinutes()).padStart(2, '0') + 
-                                        String(now.getSeconds()).padStart(2, '0');
-                        
+                        const dateStr = now.getFullYear().toString() +
+                            String(now.getMonth() + 1).padStart(2, '0') +
+                            String(now.getDate()).padStart(2, '0') + '_' +
+                            String(now.getHours()).padStart(2, '0') +
+                            String(now.getMinutes()).padStart(2, '0') +
+                            String(now.getSeconds()).padStart(2, '0');
+
                         const fileName = `evidencia_${dateStr}.png`;
-                        
+
                         const url = URL.createObjectURL(blob);
                         const a = document.createElement('a');
                         a.href = url;
@@ -854,11 +883,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             document.body.removeChild(a);
                             window.URL.revokeObjectURL(url);
                         }, 100);
-                        
+
                         if (typeof showToast === 'function') {
                             showToast(`📷 Captura guardada: ${fileName}`);
                         }
-                        
+
                         e.preventDefault();
                         return;
                     }
@@ -953,10 +982,10 @@ document.addEventListener('DOMContentLoaded', () => {
             elements.genProblema.addEventListener('input', (e) => {
                 e.target.classList.remove('input-invalid');
                 const query = (e.target.value || '').toLowerCase().trim();
-                const filtered = query 
+                const filtered = query
                     ? currentProblemList.filter(p => p.toLowerCase().includes(query))
                     : currentProblemList;
-                
+
                 renderProblemOptions(filtered);
                 currentFocus = -1;
                 if (problemaDropdown) {
@@ -972,7 +1001,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Abrir sugerencias al hacer foco o clic en el campo (y auto-seleccionar si tiene texto para sobreescribir al tipear)
             elements.genProblema.addEventListener('focus', () => {
                 const query = (elements.genProblema.value || '').toLowerCase().trim();
-                const filtered = query 
+                const filtered = query
                     ? currentProblemList.filter(p => p.toLowerCase().includes(query))
                     : currentProblemList;
                 renderProblemOptions(filtered.length > 0 ? filtered : currentProblemList);
@@ -1074,7 +1103,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Clear quick descartes
             if (state.selectedDescartes) state.selectedDescartes.clear();
             renderQuickDescartes();
-            
+
             // Reset ciclo override & contact IDs
             state.cicloOverride = null;
             state.callIds.clear();
@@ -1096,7 +1125,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const descartes = (elements.genDescartes.value || '').toUpperCase();
                 const sot = (elements.genSot.value || '').trim();
                 const solucion = (elements.genSolucion && elements.genSolucion.value) ? elements.genSolucion.value.toUpperCase() : '';
-                
+
                 let predictedCategory = '';
 
                 // Prioridad Alta: Remedy
@@ -1120,11 +1149,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 // Regla 3: Solucionado en línea / Provisión
                 else if (solucion !== '') {
-                     if (descartes.includes('PROVISIÓN') || descartes.includes('INCÓGNITO')) {
-                         predictedCategory = 'BO.TEC SOLUCIONADO > PROVISIÓN > INCOGNITO-EQUIPOS';
-                     } else {
-                         predictedCategory = 'BO.TEC SOLUCIONADO > EQUIPOS CLARO > REINICIO DE FABRICA';
-                     }
+                    if (descartes.includes('PROVISIÓN') || descartes.includes('INCÓGNITO')) {
+                        predictedCategory = 'BO.TEC SOLUCIONADO > PROVISIÓN > INCOGNITO-EQUIPOS';
+                    } else {
+                        predictedCategory = 'BO.TEC SOLUCIONADO > EQUIPOS CLARO > REINICIO DE FABRICA';
+                    }
                 }
                 // Default fallback
                 else {
@@ -1175,7 +1204,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let currentProblemList = [];
-    
+
     function setProblemValue(val) {
         if (elements.genProblema) {
             elements.genProblema.value = val || '';
@@ -1204,7 +1233,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function populateProblems(serviceKey, keepCurrentValue = false) {
         currentProblemList = BO_DATASET.problemsByService[serviceKey] || [];
         renderProblemOptions(currentProblemList);
-        
+
         if (!keepCurrentValue) {
             setProblemValue('');
         }
@@ -1217,28 +1246,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const quickDescartesByService = {
             "INTERNET": [
-                { label: "Consumo Tracer",       states: ["Se valida consumo en Tracer", "Sin consumo en Tracer"] },
-                { label: "Provisión e Incógnito", states: ["Se valida provisión y online en Incógnito", "Sin provisión / no carga en Incógnito"] },
-                { label: "Dashboard OK",          states: ["Se valida Dashboard OK", "Dashboard con avería"] },
-                { label: "TR69 Todo OK",           states: ["Se valida TR69 todo OK", "TR69 con errores"] },
-                { label: "Schaman OK",             states: ["Se valida Schaman OK", "Schaman con avería"] },
-                { label: "Plume",                  states: ["Se valida cliente Plume", "Se valida cliente Plume desalineado con alertas"] },
-                { label: "Escritorio Remoto",      states: ["Se hace reinicio de fábrica desde Escritorio Remoto", "Sin acceso al Escritorio Remoto"] },
-                { label: "SGA OK",                 states: ["Se valida datos de SOT e historial en SGA", "Se valida provisión incorrecta en SGA"] },
-                { label: "Ciclo de Llamada",       states: ["1er intento de contacto: Cliente no contesta, se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)", "2do intento de contacto: Cliente no contesta (2do ciclo)", "Se cumple ciclo de llamada 2x3 (3 intentos sin contacto), cliente nunca respondió, se procede con el cierre del caso"], icon: '📞 ' }
+                { label: "Consumo Tracer", states: ["Se valida consumo en Tracer y sin flags alarmados", "Se valida sin consumo en tracer y con flag alarmado"] },
+                { label: "Provisión e Incógnito", states: ["Se valida provisión y online en Incógnito", "Se valida sin provisión / offline en Incógnito"] },
+                { label: "Dashboard OK", states: ["Se valida Dashboard OK", "Se valida dashboard con online en naranja "] },
+                { label: "TR69 Todo OK", states: ["Se valida TR69 todo OK", "Se valida TR69 con canales saturados"] },
+                { label: "Schaman OK", states: ["Se valida Schaman sin alertas", "Se valida Schaman con alerta de"] },
+                { label: "Plume", states: ["Se valida cliente Plume", "Plume con extensores desconectados y firmware desactualizado"] },
+                { label: "Escritorio Remoto", states: ["Se hace reinicio de fábrica desde Escritorio Remoto", "Sin acceso al Escritorio Remoto"] },
+                { label: "SGA OK", states: ["Se valida datos de SOT e historial en SGA", "Se valida provisión incorrecta en SGA"] },
+                { label: "Ciclo de Llamada", states: ["1er intento de contacto: Cliente no contesta, se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)", "2do intento de contacto: Cliente no contesta (2do ciclo)", "Se cumple ciclo de llamada 2x3 (3 intentos sin contacto), cliente nunca respondió, se procede con el cierre del caso"], icon: '📞 ' }
             ],
             "IPTV": [
                 { label: "Provisión e Incógnito", states: ["Se valida provisión y online en Incógnito", "Sin provisión / no carga en Incógnito"] },
-                { label: "Skyway",                 states: ["Se valida parámetros y estado OK en Skyway", "Parámetros desalineados en Skyway"] },
-                { label: "Youbora",                states: ["Se valida métricas y reproducción OK en Youbora", "Youbora con alertas de buffering / errores de reproducción"] },
-                { label: "Ciclo de Llamada",       states: ["1er intento de contacto: Cliente no contesta, se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)", "2do intento de contacto: Cliente no contesta (2do ciclo)", "Se cumple ciclo de llamada 2x3 (3 intentos sin contacto), cliente nunca respondió, se procede con el cierre del caso"], icon: '📞 ' }
+                { label: "Skyway", states: ["Se valida parámetros y estado OK en Skyway", "Parámetros desalineados en Skyway"] },
+                { label: "Youbora", states: ["Se valida métricas y reproducción OK en Youbora", "Youbora con alertas de buffering / errores de reproducción"] },
+                { label: "Ciclo de Llamada", states: ["1er intento de contacto: Cliente no contesta, se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)", "2do intento de contacto: Cliente no contesta (2do ciclo)", "Se cumple ciclo de llamada 2x3 (3 intentos sin contacto), cliente nunca respondió, se procede con el cierre del caso"], icon: '📞 ' }
             ],
             "TELEFONIA": [
                 { label: "Provisión e Incógnito", states: ["Se valida provisión y estado de telefonía en Incógnito", "Línea telefónica sin provisión en Incógnito"] },
-                { label: "IMS / CBIO",             states: ["Se valida registro en IMS / CBIO OK", "Falla de autenticación en IMS / CBIO"] },
-                { label: "Tono y Llamadas",        states: ["Se valida tono de discado y tráfico de llamadas OK", "Sin tono de discado / no salen ni entran llamadas"] },
-                { label: "SGA OK",                 states: ["Se valida datos de SOT e historial de telefonía en SGA", "Datos desalineados en SGA"] },
-                { label: "Ciclo de Llamada",       states: ["1er intento de contacto: Cliente no contesta, se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)", "2do intento de contacto: Cliente no contesta (2do ciclo)", "Se cumple ciclo de llamada 2x3 (3 intentos sin contacto), cliente nunca respondió, se procede con el cierre del caso"], icon: '📞 ' }
+                { label: "IMS / CBIO", states: ["Se valida registro en IMS / CBIO OK", "Falla de autenticación en IMS / CBIO"] },
+                { label: "Tono y Llamadas", states: ["Se valida tono de discado y tráfico de llamadas OK", "Sin tono de discado / no salen ni entran llamadas"] },
+                { label: "SGA OK", states: ["Se valida datos de SOT e historial de telefonía en SGA", "Datos desalineados en SGA"] },
+                { label: "Ciclo de Llamada", states: ["1er intento de contacto: Cliente no contesta, se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)", "2do intento de contacto: Cliente no contesta (2do ciclo)", "Se cumple ciclo de llamada 2x3 (3 intentos sin contacto), cliente nunca respondió, se procede con el cierre del caso"], icon: '📞 ' }
             ]
         };
 
@@ -1249,10 +1278,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const showChipTooltip = (e, item, currentState) => {
             if (!tooltipEl) return;
             const nextState = (currentState + 1) % (item.states.length + 1);
-            
+
             let nextTextHTML = '';
             let nextBoxClass = '';
-            
+
             if (nextState === 0) {
                 nextTextHTML = `<strong>⚪ Próximo Clic:</strong> Desactivar / Quitar descarte`;
                 nextBoxClass = 'tooltip-next-box is-reset';
@@ -1304,10 +1333,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!tooltipEl || !e) return;
             const mouseX = e.clientX || 0;
             const mouseY = e.clientY || 0;
-            
+
             let posX = mouseX + 14;
             let posY = mouseY + 14;
-            
+
             const rect = tooltipEl.getBoundingClientRect();
             const tooltipWidth = rect.width || 310;
             const tooltipHeight = rect.height || 180;
@@ -1356,7 +1385,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const s = state.selectedDescartes.get(item.label) || 0;
                 const chip = document.createElement('div');
                 let chipIcon = item.icon || '';
-                
+
                 if (s === 0) {
                     chip.className = 'chip';
                 } else if (s === 1) {
@@ -1370,7 +1399,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 let labelText = item.label;
 
                 chip.innerHTML = `${chipIcon}${labelText}`;
-                
+
                 // Eventos para previsualización dinámica al pasar el mouse (hover)
                 chip.addEventListener('mouseenter', (e) => showChipTooltip(e, item, s));
                 chip.addEventListener('mousemove', (e) => positionTooltip(e));
@@ -1379,25 +1408,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 chip.addEventListener('click', (e) => {
                     const cur = state.selectedDescartes.get(item.label) || 0;
                     const next = (cur + 1) % (item.states.length + 1);
-                    
+
                     let currentVal = elements.genDescartes.value;
-                    
+
                     // Limpiar cualquier estado previo de este mismo chip para reemplazarlo limpiamente
                     item.states.forEach(st => {
                         const escaped = st.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                         currentVal = currentVal.replace(new RegExp(`,\\s*${escaped}`, 'gi'), '');
                         currentVal = currentVal.replace(new RegExp(`${escaped}\\s*,?`, 'gi'), '');
                     });
-                    
+
                     currentVal = currentVal.trim();
                     if (next > 0) {
                         const toAdd = item.states[next - 1];
                         currentVal = currentVal ? `${currentVal}, ${toAdd}` : toAdd;
                     }
-                    
+
                     currentVal = currentVal.replace(/,+/g, ',').replace(/, ,/g, ',').replace(/^, /, '').replace(/, $/, '').trim();
                     elements.genDescartes.value = autoCorrectText(currentVal, false);
-                    
+
                     state.selectedDescartes.set(item.label, next);
                     renderGeneratorPreviews();
                     rebuild();
@@ -1435,9 +1464,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function checkIsCiclo(descartesText) {
         const text = (descartesText || '').toUpperCase();
-        if (text.includes('CICLO') || 
-            text.includes('NO CONTESTA') || 
-            text.includes('BUZON DE VOZ') || 
+        if (text.includes('CICLO') ||
+            text.includes('NO CONTESTA') ||
+            text.includes('BUZON DE VOZ') ||
             text.includes('BUZÓN DE VOZ')) {
             return true;
         }
@@ -1460,14 +1489,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const uuidMatches = raw.match(/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/gi);
         if (uuidMatches && uuidMatches.length > 0) {
             uuidMatches.forEach(u => state.chatIds.add(u.trim()));
-            
+
             // Verificar si en el resto del texto venía algún ID de llamada adicional
             let remainder = raw;
             uuidMatches.forEach(u => { remainder = remainder.replace(u, ''); });
             remainder = remainder.replace(/\||,|;|chat\s*id:?/gi, '').trim();
+            remainder = remainder.replace(/^ID\s*(CALL\/LIVE|CALL|LIVE|LLAMADA)?\s*[:=-]?\s*/i, '').trim();
+            remainder = remainder.replace(/^[/\s|,-]+|[/\s|,-]+$/g, '').trim();
             if (remainder && remainder.length >= 4) {
-                const cleanCall = remainder.replace(/^ID\s*(LLAMADA)?\s*[:=-]?\s*/i, '').trim();
-                if (cleanCall) state.callIds.add(cleanCall);
+                state.callIds.add(remainder);
             }
             showToast(`💬 Chat ID sumado (${state.chatIds.size}): ${uuidMatches.join(' / ')}`, 'info');
             return;
@@ -1475,7 +1505,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 2. Si contiene palabras explícitas de Chat
         if (/CHAT/i.test(raw)) {
-            const cleanChat = raw.replace(/^CHAT\s*(ID)?\s*[:=-]?\s*/i, '').trim();
+            let cleanChat = raw.replace(/^CHAT\s*(ID)?\s*[:=-]?\s*/i, '').trim();
+            cleanChat = cleanChat.replace(/^[/\s|,-]+|[/\s|,-]+$/g, '').trim();
             if (cleanChat) {
                 state.chatIds.add(cleanChat);
                 showToast(`💬 Chat ID sumado: ${cleanChat}`, 'info');
@@ -1484,7 +1515,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // 3. De lo contrario, se guarda como ID de Llamada
-        const cleanCall = raw.replace(/^ID\s*(LLAMADA)?\s*[:=-]?\s*/i, '').trim();
+        let cleanCall = raw.replace(/^ID\s*(CALL\/LIVE|CALL|LIVE|LLAMADA)?\s*[:=-]?\s*/i, '').trim();
+        cleanCall = cleanCall.replace(/^[/\s|,-]+|[/\s|,-]+$/g, '').trim();
         if (cleanCall) {
             state.callIds.add(cleanCall);
             showToast(`📞 ID Llamada sumado: ${cleanCall}`, 'info');
@@ -1495,7 +1527,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!elements.genContactId) return;
         const callsArr = Array.from(state.callIds);
         const chatsArr = Array.from(state.chatIds);
-        
+
         const parts = [];
         if (callsArr.length > 0) parts.push(callsArr.join(' / '));
         if (chatsArr.length > 0) parts.push(chatsArr.join(' / '));
@@ -1512,7 +1544,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function formatDescartesLines(rawText) {
         if (!rawText || !rawText.trim()) return 'Descartes: N/A';
-        
+
         // Separar tanto por saltos de línea como por comas y punto y coma
         const items = rawText.split(/[\r\n,;]+/)
             .map(s => s.trim())
@@ -1525,12 +1557,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 return clean.charAt(0).toUpperCase() + clean.slice(1);
             })
             .filter(s => s.length > 0);
-        
+
         if (items.length === 0) return 'Descartes: N/A';
-        
+
         const prefix = 'Descartes: ';
         const indent = '           '; // 11 espacios para alinear bajo el primer descarte
-        
+
         return prefix + items[0] + (items.length > 1 ? '\n' + items.slice(1).map(l => indent + l).join('\n') : '');
     }
 
@@ -1557,7 +1589,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const telefono = (elements.genTelefono.value || 'N/A').trim();
         const sot = (elements.genSot.value || 'N/A').trim();
-        
+
         const rawSolucion = ((elements.genSolucion && elements.genSolucion.value) ? elements.genSolucion.value.trim() : 'N/A');
         const solucion = rawSolucion !== 'N/A' ? autoCorrectText(rawSolucion, false) : 'N/A';
 
@@ -1587,19 +1619,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Manejo adaptativo del campo Solución según el protocolo de Ciclo 2x3 (3 ciclos en 2 días)
         const descartesLower = (rawDescartesInput || '').toLowerCase();
-        const isAdvancedCiclo = descartesLower.includes('2do') || 
-                                descartesLower.includes('segundo') || 
-                                descartesLower.includes('3er') || 
-                                descartesLower.includes('tercer') || 
-                                descartesLower.includes('3 intentos') ||
-                                descartesLower.includes('cumple ciclo') ||
-                                descartesLower.includes('fin de ciclo') || 
-                                descartesLower.includes('cumplido') || 
-                                descartesLower.includes('cierre') ||
-                                descartesLower.includes('nunca respondió') ||
-                                descartesLower.includes('nunca respondio') ||
-                                descartesLower.includes('ciclo 2') ||
-                                descartesLower.includes('ciclo 3');
+        const isAdvancedCiclo = descartesLower.includes('2do') ||
+            descartesLower.includes('segundo') ||
+            descartesLower.includes('3er') ||
+            descartesLower.includes('tercer') ||
+            descartesLower.includes('3 intentos') ||
+            descartesLower.includes('cumple ciclo') ||
+            descartesLower.includes('fin de ciclo') ||
+            descartesLower.includes('cumplido') ||
+            descartesLower.includes('cierre') ||
+            descartesLower.includes('nunca respondió') ||
+            descartesLower.includes('nunca respondio') ||
+            descartesLower.includes('ciclo 2') ||
+            descartesLower.includes('ciclo 3');
         const isPrimerCiclo = isCiclo && !isAdvancedCiclo;
 
         if (elements.genSolucion) {
@@ -1625,8 +1657,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (elements.titleSiacCard) {
-            elements.titleSiacCard.innerHTML = isCiclo 
-                ? 'Plantilla SIAC / SGA <span style="font-size:0.75rem; color:#00ACC1; font-weight:bold; margin-left:0.3rem;">(📞 Ciclo de Llamada)</span>' 
+            elements.titleSiacCard.innerHTML = isCiclo
+                ? 'Plantilla SIAC / SGA <span style="font-size:0.75rem; color:#00ACC1; font-weight:bold; margin-left:0.3rem;">(📞 Ciclo de Llamada)</span>'
                 : 'Plantilla SIAC / Helix';
         }
 
@@ -1663,7 +1695,7 @@ ${contactLines}`;
         // Template Mantenimiento (MANTO) - Formato de Plataforma para Técnicos
         const rawDescartesManto = rawDescartesInput ? autoCorrectText(rawDescartesInput, false) : 'N/A';
         const contactIdVal = (Array.from(state.callIds).concat(Array.from(state.chatIds)).join(' / ') || (elements.genContactId ? elements.genContactId.value.trim() : '') || 'N/A');
-        
+
         let tagManto = '';
         if (state.selectedHashtags.size > 0) {
             tagManto = Array.from(state.selectedHashtags).map(t => {
@@ -1811,7 +1843,7 @@ ${contactLines}`;
     function renderTrackerTimeline() {
         if (!elements.trackerTimeline) return;
         elements.trackerTimeline.innerHTML = '';
-        
+
         if (elements.trackerCount) {
             elements.trackerCount.textContent = dailyCases.length;
         }
@@ -1846,18 +1878,18 @@ ${contactLines}`;
         sortedHours.forEach(hour => {
             const groupDiv = document.createElement('div');
             groupDiv.className = 'timeline-group';
-            
+
             const hourLabel = document.createElement('div');
             hourLabel.className = 'timeline-hour';
             hourLabel.textContent = hour;
             groupDiv.appendChild(hourLabel);
-            
+
             const itemsDiv = document.createElement('div');
             itemsDiv.className = 'timeline-items';
-            
+
             // Sort cases within the hour by time descending
             const cases = grouped[hour].sort((a, b) => b.timestamp - a.timestamp);
-            
+
             cases.forEach(c => {
                 const item = document.createElement('div');
                 item.className = 'timeline-item';
@@ -1879,7 +1911,7 @@ ${contactLines}`;
                 });
                 itemsDiv.appendChild(item);
             });
-            
+
             groupDiv.appendChild(itemsDiv);
             elements.trackerTimeline.appendChild(groupDiv);
         });
@@ -1889,7 +1921,7 @@ ${contactLines}`;
         if (!elements.btnTrackerAdd) return;
 
         // Validación de solo números
-        elements.trackerCaseInput.addEventListener('input', function() {
+        elements.trackerCaseInput.addEventListener('input', function () {
             this.value = this.value.replace(/[^0-9]/g, '');
         });
 
@@ -1900,23 +1932,23 @@ ${contactLines}`;
                 showToast('Ingresa un código de caso válido');
                 return;
             }
-            
+
             const now = new Date();
             let hours = now.getHours();
             const ampm = hours >= 12 ? 'PM' : 'AM';
             hours = hours % 12;
             hours = hours ? hours : 12; // the hour '0' should be '12'
             const hourStr = `${hours} ${ampm}`;
-            
+
             const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
+
             dailyCases.unshift({
                 caseCode: code.toUpperCase(),
                 hourStr: hourStr,
                 time: timeStr,
                 timestamp: now.getTime()
             });
-            
+
             localStorage.setItem('bo_daily_tracker', JSON.stringify(dailyCases));
             elements.trackerCaseInput.value = '';
             renderTrackerTimeline();
@@ -2057,9 +2089,9 @@ ${contactLines}`;
                 }
 
                 if (deltaExceeded) {
-                    return { 
-                        status: 'WARNING', 
-                        text: `⚠️ Observación - Variación en Bloque: Δ ${deltaInfo}` 
+                    return {
+                        status: 'WARNING',
+                        text: `⚠️ Observación - Variación en Bloque: Δ ${deltaInfo}`
                     };
                 }
 
@@ -2650,7 +2682,7 @@ ${contactLines}`;
         if (elements.eqSearchInput) {
             elements.eqSearchInput.addEventListener('input', (e) => {
                 const query = e.target.value.trim().toUpperCase();
-                
+
                 if (query.length < 2) {
                     elements.eqResultContainer.style.display = 'none';
                     return;
@@ -2665,7 +2697,7 @@ ${contactLines}`;
                 // Search in dataset (equiposClaro / modelosData)
                 if (typeof equiposClaro !== 'undefined' || typeof modelosData !== 'undefined') {
                     const cleanQuery = query.replace(/[^A-Z0-9]/g, '');
-                    
+
                     // Buscar en dataset normalizado
                     const dataset = typeof equiposClaro !== 'undefined' ? equiposClaro : Object.keys(modelosData).map(k => ({
                         codigo: k,
@@ -2681,18 +2713,18 @@ ${contactLines}`;
                     const result = dataset.find(eq => {
                         const codeClean = (eq.codigo || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
                         const nameClean = (eq.nombre || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-                        return codeClean.includes(cleanQuery) || 
-                               cleanQuery.includes(codeClean) || 
-                               nameClean.includes(cleanQuery) || 
-                               eq.nombre.toUpperCase().includes(query) ||
-                               eq.codigo.toUpperCase().includes(query);
+                        return codeClean.includes(cleanQuery) ||
+                            cleanQuery.includes(codeClean) ||
+                            nameClean.includes(cleanQuery) ||
+                            eq.nombre.toUpperCase().includes(query) ||
+                            eq.codigo.toUpperCase().includes(query);
                     });
 
                     if (result) {
                         elements.eqResultContainer.style.display = 'block';
                         elements.eqName.textContent = result.nombre;
                         elements.eqType.textContent = result.tipo || 'Equipo Homologado';
-                        
+
                         // Descripción técnica
                         if (elements.eqDesc) {
                             elements.eqDesc.innerHTML = `<strong>Características:</strong> ${result.descripcion || 'Sin descripción adicional'}`;
@@ -2797,7 +2829,7 @@ ${contactLines}`;
                         elements.eqStatus.style.backgroundColor = 'transparent';
                         elements.eqStatus.style.color = 'var(--text-muted)';
                         elements.eqStatus.style.border = '1px dashed var(--border-color)';
-                        
+
                         if (elements.eqVersion) elements.eqVersion.style.display = 'none';
                         if (elements.eqRepetidor) elements.eqRepetidor.style.display = 'none';
                         if (elements.eqSpeed) elements.eqSpeed.style.display = 'none';
@@ -2861,8 +2893,8 @@ ${contactLines}`;
         const query = elements.customSearch.value.toLowerCase().trim();
         elements.customTemplatesList.innerHTML = '';
 
-        const filtered = state.customTemplates.filter(t => 
-            t.title.toLowerCase().includes(query) || 
+        const filtered = state.customTemplates.filter(t =>
+            t.title.toLowerCase().includes(query) ||
             t.category.toLowerCase().includes(query) ||
             t.content.toLowerCase().includes(query)
         );
@@ -2915,302 +2947,302 @@ ${contactLines}`;
 
     // Modal controls
     elements.btnNewTemplate.addEventListener('click', () => openTemplateModal());
-        if (elements.modalClose) elements.modalClose.addEventListener('click', closeModal);
-        if (elements.modalCancel) elements.modalCancel.addEventListener('click', closeModal);
+    if (elements.modalClose) elements.modalClose.addEventListener('click', closeModal);
+    if (elements.modalCancel) elements.modalCancel.addEventListener('click', closeModal);
 
-        // Setup Changelog Modal
-        const btnChangelog = document.getElementById('btnChangelog');
-        const changelogModal = document.getElementById('changelogModal');
-        const changelogModalClose = document.getElementById('changelogModalClose');
-        
-        if (btnChangelog && changelogModal) {
-            btnChangelog.addEventListener('click', () => {
-                changelogModal.classList.add('active');
-            });
+    // Setup Changelog Modal
+    const btnChangelog = document.getElementById('btnChangelog');
+    const changelogModal = document.getElementById('changelogModal');
+    const changelogModalClose = document.getElementById('changelogModalClose');
+
+    if (btnChangelog && changelogModal) {
+        btnChangelog.addEventListener('click', () => {
+            changelogModal.classList.add('active');
+        });
+    }
+    if (changelogModalClose && changelogModal) {
+        changelogModalClose.addEventListener('click', () => {
+            changelogModal.classList.remove('active');
+        });
+    }
+
+    // Setup Remedy Modal & Logic (Soporte Multi-Servicio: INTERNET vs IPTV / Falla General)
+    const btnOpenRemedyModal = document.getElementById('btnOpenRemedyModal');
+    const remedyModal = document.getElementById('remedyModal');
+    const remedyModalClose = document.getElementById('remedyModalClose');
+    const btnRemedyTabRed = document.getElementById('btnRemedyTabRed');
+    const btnRemedyTabGeneral = document.getElementById('btnRemedyTabGeneral');
+    const remedyFormRed = document.getElementById('remedyFormRed');
+    const remedyFormIptv = document.getElementById('remedyFormIptv');
+    const remedyFormGeneral = document.getElementById('remedyFormGeneral');
+
+    // Campos RED - INTERNET
+    const remedyRedContacto = document.getElementById('remedyRedContacto');
+    const remedyRedTelefono = document.getElementById('remedyRedTelefono');
+    const remedyRedCustomerId = document.getElementById('remedyRedCustomerId');
+    const remedyRedMac = document.getElementById('remedyRedMac');
+    const remedyRedIp = document.getElementById('remedyRedIp');
+    const remedyRedCmtsOlt = document.getElementById('remedyRedCmtsOlt');
+    const remedyRedPaginas = document.getElementById('remedyRedPaginas');
+    const remedyRedRedExterna = document.getElementById('remedyRedRedExterna');
+    const remedyRedPlano = document.getElementById('remedyRedPlano');
+    const remedyRedDescartes = document.getElementById('remedyRedDescartes');
+
+    // Campos RED - IPTV (CANALES A RED)
+    const remedyIptvContacto = document.getElementById('remedyIptvContacto');
+    const remedyIptvTelefono = document.getElementById('remedyIptvTelefono');
+    const remedyIptvCustomerId = document.getElementById('remedyIptvCustomerId');
+    const remedyIptvPlano = document.getElementById('remedyIptvPlano');
+    const remedyIptvCantDecos = document.getElementById('remedyIptvCantDecos');
+    const remedyIptvSerieDecos = document.getElementById('remedyIptvSerieDecos');
+    const remedyIptvCanales = document.getElementById('remedyIptvCanales');
+    const remedyIptvGrilla = document.getElementById('remedyIptvGrilla');
+    const remedyIptvDescartes = document.getElementById('remedyIptvDescartes');
+
+    // Campos RED - TELEFONÍA (TELEFONÍA A RED)
+    const remedyTelContacto = document.getElementById('remedyTelContacto');
+    const remedyTelTelefono = document.getElementById('remedyTelTelefono');
+    const remedyTelCustomerId = document.getElementById('remedyTelCustomerId');
+    const remedyTelMac = document.getElementById('remedyTelMac');
+    const remedyTelPlano = document.getElementById('remedyTelPlano');
+    const remedyTelCmtsOlt = document.getElementById('remedyTelCmtsOlt');
+    const remedyTelNumeroTel = document.getElementById('remedyTelNumeroTel');
+    const remedyTelPlan = document.getElementById('remedyTelPlan');
+    const remedyTelProblema = document.getElementById('remedyTelProblema');
+    const remedyTelDescartes = document.getElementById('remedyTelDescartes');
+
+    // Campos General
+    const remedyInputFalla = document.getElementById('remedyInputFalla');
+    const remedyInputId = document.getElementById('remedyInputId');
+    const remedyInputDni = document.getElementById('remedyInputDni');
+    const remedyInputCliente = document.getElementById('remedyInputCliente');
+    const remedyInputDetalle = document.getElementById('remedyInputDetalle');
+
+    const remedyDropZone = document.getElementById('remedyDropZone');
+    const remedyImagesContainer = document.getElementById('remedyImagesContainer');
+    const btnClearRemedyImages = document.getElementById('btnClearRemedyImages');
+    const remedyVisualSheet = document.getElementById('remedyVisualSheet');
+    const btnClearRemedyAll = document.getElementById('btnClearRemedyAll');
+    const btnExportRemedyPdf = document.getElementById('btnExportRemedyPdf');
+    const btnCopyRemedyWord = document.getElementById('btnCopyRemedyWord');
+    const btnCopyRemedyText = document.getElementById('btnCopyRemedyText');
+
+    // Lightbox Zoom Modal
+    const imageZoomModal = document.getElementById('imageZoomModal');
+    const imageZoomImg = document.getElementById('imageZoomImg');
+    const btnCloseImageZoom = document.getElementById('btnCloseImageZoom');
+
+    window.previewRemedyImageZoom = (imgSrc) => {
+        if (imageZoomModal && imageZoomImg) {
+            imageZoomImg.src = imgSrc;
+            imageZoomModal.classList.add('active');
         }
-        if (changelogModalClose && changelogModal) {
-            changelogModalClose.addEventListener('click', () => {
-                changelogModal.classList.remove('active');
-            });
-        }
+    };
 
-        // Setup Remedy Modal & Logic (Soporte Multi-Servicio: INTERNET vs IPTV / Falla General)
-        const btnOpenRemedyModal = document.getElementById('btnOpenRemedyModal');
-        const remedyModal = document.getElementById('remedyModal');
-        const remedyModalClose = document.getElementById('remedyModalClose');
-        const btnRemedyTabRed = document.getElementById('btnRemedyTabRed');
-        const btnRemedyTabGeneral = document.getElementById('btnRemedyTabGeneral');
-        const remedyFormRed = document.getElementById('remedyFormRed');
-        const remedyFormIptv = document.getElementById('remedyFormIptv');
-        const remedyFormGeneral = document.getElementById('remedyFormGeneral');
+    if (btnCloseImageZoom && imageZoomModal) {
+        btnCloseImageZoom.addEventListener('click', () => imageZoomModal.classList.remove('active'));
+    }
+    if (imageZoomModal) {
+        imageZoomModal.addEventListener('click', (e) => {
+            if (e.target === imageZoomModal) imageZoomModal.classList.remove('active');
+        });
+    }
 
-        // Campos RED - INTERNET
-        const remedyRedContacto = document.getElementById('remedyRedContacto');
-        const remedyRedTelefono = document.getElementById('remedyRedTelefono');
-        const remedyRedCustomerId = document.getElementById('remedyRedCustomerId');
-        const remedyRedMac = document.getElementById('remedyRedMac');
-        const remedyRedIp = document.getElementById('remedyRedIp');
-        const remedyRedCmtsOlt = document.getElementById('remedyRedCmtsOlt');
-        const remedyRedPaginas = document.getElementById('remedyRedPaginas');
-        const remedyRedRedExterna = document.getElementById('remedyRedRedExterna');
-        const remedyRedPlano = document.getElementById('remedyRedPlano');
-        const remedyRedDescartes = document.getElementById('remedyRedDescartes');
+    let remedyActiveMode = 'red'; // 'red' | 'general'
+    let remedyImagesList = [];
 
-        // Campos RED - IPTV (CANALES A RED)
-        const remedyIptvContacto = document.getElementById('remedyIptvContacto');
-        const remedyIptvTelefono = document.getElementById('remedyIptvTelefono');
-        const remedyIptvCustomerId = document.getElementById('remedyIptvCustomerId');
-        const remedyIptvPlano = document.getElementById('remedyIptvPlano');
-        const remedyIptvCantDecos = document.getElementById('remedyIptvCantDecos');
-        const remedyIptvSerieDecos = document.getElementById('remedyIptvSerieDecos');
-        const remedyIptvCanales = document.getElementById('remedyIptvCanales');
-        const remedyIptvGrilla = document.getElementById('remedyIptvGrilla');
-        const remedyIptvDescartes = document.getElementById('remedyIptvDescartes');
+    const getActiveService = () => (elements.genServicio?.value || 'INTERNET').toUpperCase();
+    const isIptvActive = () => getActiveService() === 'IPTV';
+    const isTelefoniaActive = () => getActiveService() === 'TELEFONIA';
 
-        // Campos RED - TELEFONÍA (TELEFONÍA A RED)
-        const remedyTelContacto = document.getElementById('remedyTelContacto');
-        const remedyTelTelefono = document.getElementById('remedyTelTelefono');
-        const remedyTelCustomerId = document.getElementById('remedyTelCustomerId');
-        const remedyTelMac = document.getElementById('remedyTelMac');
-        const remedyTelPlano = document.getElementById('remedyTelPlano');
-        const remedyTelCmtsOlt = document.getElementById('remedyTelCmtsOlt');
-        const remedyTelNumeroTel = document.getElementById('remedyTelNumeroTel');
-        const remedyTelPlan = document.getElementById('remedyTelPlan');
-        const remedyTelProblema = document.getElementById('remedyTelProblema');
-        const remedyTelDescartes = document.getElementById('remedyTelDescartes');
+    const setRemedyTab = (mode) => {
+        remedyActiveMode = mode;
+        const isIptv = isIptvActive();
+        const isTelefonia = isTelefoniaActive();
 
-        // Campos General
-        const remedyInputFalla = document.getElementById('remedyInputFalla');
-        const remedyInputId = document.getElementById('remedyInputId');
-        const remedyInputDni = document.getElementById('remedyInputDni');
-        const remedyInputCliente = document.getElementById('remedyInputCliente');
-        const remedyInputDetalle = document.getElementById('remedyInputDetalle');
-
-        const remedyDropZone = document.getElementById('remedyDropZone');
-        const remedyImagesContainer = document.getElementById('remedyImagesContainer');
-        const btnClearRemedyImages = document.getElementById('btnClearRemedyImages');
-        const remedyVisualSheet = document.getElementById('remedyVisualSheet');
-        const btnClearRemedyAll = document.getElementById('btnClearRemedyAll');
-        const btnExportRemedyPdf = document.getElementById('btnExportRemedyPdf');
-        const btnCopyRemedyWord = document.getElementById('btnCopyRemedyWord');
-        const btnCopyRemedyText = document.getElementById('btnCopyRemedyText');
-
-        // Lightbox Zoom Modal
-        const imageZoomModal = document.getElementById('imageZoomModal');
-        const imageZoomImg = document.getElementById('imageZoomImg');
-        const btnCloseImageZoom = document.getElementById('btnCloseImageZoom');
-
-        window.previewRemedyImageZoom = (imgSrc) => {
-            if (imageZoomModal && imageZoomImg) {
-                imageZoomImg.src = imgSrc;
-                imageZoomModal.classList.add('active');
+        if (btnRemedyTabRed) {
+            if (isTelefonia) {
+                btnRemedyTabRed.innerHTML = '📞 Telefonía a RED';
+            } else if (isIptv) {
+                btnRemedyTabRed.innerHTML = '📺 Canales a RED';
+            } else {
+                btnRemedyTabRed.innerHTML = '🌐 Páginas Web / Apps';
             }
-        };
-
-        if (btnCloseImageZoom && imageZoomModal) {
-            btnCloseImageZoom.addEventListener('click', () => imageZoomModal.classList.remove('active'));
-        }
-        if (imageZoomModal) {
-            imageZoomModal.addEventListener('click', (e) => {
-                if (e.target === imageZoomModal) imageZoomModal.classList.remove('active');
-            });
         }
 
-        let remedyActiveMode = 'red'; // 'red' | 'general'
-        let remedyImagesList = [];
-
-        const getActiveService = () => (elements.genServicio?.value || 'INTERNET').toUpperCase();
-        const isIptvActive = () => getActiveService() === 'IPTV';
-        const isTelefoniaActive = () => getActiveService() === 'TELEFONIA';
-
-        const setRemedyTab = (mode) => {
-            remedyActiveMode = mode;
-            const isIptv = isIptvActive();
-            const isTelefonia = isTelefoniaActive();
-
+        if (mode === 'red') {
             if (btnRemedyTabRed) {
-                if (isTelefonia) {
-                    btnRemedyTabRed.innerHTML = '📞 Telefonía a RED';
-                } else if (isIptv) {
-                    btnRemedyTabRed.innerHTML = '📺 Canales a RED';
-                } else {
-                    btnRemedyTabRed.innerHTML = '🌐 Páginas Web / Apps';
-                }
+                btnRemedyTabRed.className = 'btn btn-sm btn-primary';
+                btnRemedyTabRed.style.background = 'var(--primary)';
+                btnRemedyTabRed.style.color = '#fff';
+                btnRemedyTabRed.style.borderColor = 'var(--primary)';
             }
-
-            if (mode === 'red') {
-                if (btnRemedyTabRed) {
-                    btnRemedyTabRed.className = 'btn btn-sm btn-primary';
-                    btnRemedyTabRed.style.background = 'var(--primary)';
-                    btnRemedyTabRed.style.color = '#fff';
-                    btnRemedyTabRed.style.borderColor = 'var(--primary)';
-                }
-                if (btnRemedyTabGeneral) {
-                    btnRemedyTabGeneral.className = 'btn btn-sm';
-                    btnRemedyTabGeneral.style.background = 'transparent';
-                    btnRemedyTabGeneral.style.color = 'var(--text-muted)';
-                    btnRemedyTabGeneral.style.borderColor = 'var(--border-color)';
-                }
-                if (remedyFormRed) remedyFormRed.style.display = (!isIptv && !isTelefonia) ? 'block' : 'none';
-                if (remedyFormIptv) remedyFormIptv.style.display = isIptv ? 'block' : 'none';
-                if (remedyFormTelefonia) remedyFormTelefonia.style.display = isTelefonia ? 'block' : 'none';
-                if (remedyFormGeneral) remedyFormGeneral.style.display = 'none';
-            } else {
-                if (btnRemedyTabGeneral) {
-                    btnRemedyTabGeneral.className = 'btn btn-sm btn-primary';
-                    btnRemedyTabGeneral.style.background = 'var(--primary)';
-                    btnRemedyTabGeneral.style.color = '#fff';
-                    btnRemedyTabGeneral.style.borderColor = 'var(--primary)';
-                }
-                if (btnRemedyTabRed) {
-                    btnRemedyTabRed.className = 'btn btn-sm';
-                    btnRemedyTabRed.style.background = 'transparent';
-                    btnRemedyTabRed.style.color = 'var(--text-muted)';
-                    btnRemedyTabRed.style.borderColor = 'var(--border-color)';
-                }
-                if (remedyFormRed) remedyFormRed.style.display = 'none';
-                if (remedyFormIptv) remedyFormIptv.style.display = 'none';
-                if (remedyFormTelefonia) remedyFormTelefonia.style.display = 'none';
-                if (remedyFormGeneral) remedyFormGeneral.style.display = 'block';
+            if (btnRemedyTabGeneral) {
+                btnRemedyTabGeneral.className = 'btn btn-sm';
+                btnRemedyTabGeneral.style.background = 'transparent';
+                btnRemedyTabGeneral.style.color = 'var(--text-muted)';
+                btnRemedyTabGeneral.style.borderColor = 'var(--border-color)';
             }
-            updateRemedyPreview();
-        };
+            if (remedyFormRed) remedyFormRed.style.display = (!isIptv && !isTelefonia) ? 'block' : 'none';
+            if (remedyFormIptv) remedyFormIptv.style.display = isIptv ? 'block' : 'none';
+            if (remedyFormTelefonia) remedyFormTelefonia.style.display = isTelefonia ? 'block' : 'none';
+            if (remedyFormGeneral) remedyFormGeneral.style.display = 'none';
+        } else {
+            if (btnRemedyTabGeneral) {
+                btnRemedyTabGeneral.className = 'btn btn-sm btn-primary';
+                btnRemedyTabGeneral.style.background = 'var(--primary)';
+                btnRemedyTabGeneral.style.color = '#fff';
+                btnRemedyTabGeneral.style.borderColor = 'var(--primary)';
+            }
+            if (btnRemedyTabRed) {
+                btnRemedyTabRed.className = 'btn btn-sm';
+                btnRemedyTabRed.style.background = 'transparent';
+                btnRemedyTabRed.style.color = 'var(--text-muted)';
+                btnRemedyTabRed.style.borderColor = 'var(--border-color)';
+            }
+            if (remedyFormRed) remedyFormRed.style.display = 'none';
+            if (remedyFormIptv) remedyFormIptv.style.display = 'none';
+            if (remedyFormTelefonia) remedyFormTelefonia.style.display = 'none';
+            if (remedyFormGeneral) remedyFormGeneral.style.display = 'block';
+        }
+        updateRemedyPreview();
+    };
 
-        if (btnRemedyTabRed) btnRemedyTabRed.addEventListener('click', () => setRemedyTab('red'));
-        if (btnRemedyTabGeneral) btnRemedyTabGeneral.addEventListener('click', () => setRemedyTab('general'));
+    if (btnRemedyTabRed) btnRemedyTabRed.addEventListener('click', () => setRemedyTab('red'));
+    if (btnRemedyTabGeneral) btnRemedyTabGeneral.addEventListener('click', () => setRemedyTab('general'));
 
-        const getRemedyPlainText = () => {
-            const isIptv = isIptvActive();
-            const isTelefonia = isTelefoniaActive();
+    const getRemedyPlainText = () => {
+        const isIptv = isIptvActive();
+        const isTelefonia = isTelefoniaActive();
 
-            if (remedyActiveMode === 'red') {
-                if (isTelefonia) {
-                    const contacto = remedyTelContacto?.value.trim() || '[Persona de Contacto]';
-                    const telefono = remedyTelTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '[Número de contacto]');
-                    const customerId = remedyTelCustomerId?.value.trim() || (elements.genContactId?.value.trim() || '[Customer ID]');
-                    const mac = remedyTelMac?.value.trim() || '[Dirección MAC]';
-                    const plano = remedyTelPlano?.value.trim() || '[Plano]';
-                    const cmtsOlt = remedyTelCmtsOlt?.value.trim() || '[(CMTS/OLT)]';
-                    const numeroTel = remedyTelNumeroTel?.value.trim() || (elements.genTelefono?.value.trim() || '[Número telefónico]');
-                    const plan = remedyTelPlan?.value.trim() || '[Plan contratado]';
-                    const problema = remedyTelProblema?.value.trim() || (elements.genProblema?.value.trim() || '[Descripción detallada del problema]');
-                    const descartes = remedyTelDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '[Descartes de primer nivel realizados]');
+        if (remedyActiveMode === 'red') {
+            if (isTelefonia) {
+                const contacto = remedyTelContacto?.value.trim() || '[Persona de Contacto]';
+                const telefono = remedyTelTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '[Número de contacto]');
+                const customerId = remedyTelCustomerId?.value.trim() || '[Customer ID]';
+                const mac = remedyTelMac?.value.trim() || '[Dirección MAC]';
+                const plano = remedyTelPlano?.value.trim() || '[Plano]';
+                const cmtsOlt = remedyTelCmtsOlt?.value.trim() || '[(CMTS/OLT)]';
+                const numeroTel = remedyTelNumeroTel?.value.trim() || (elements.genTelefono?.value.trim() || '[Número telefónico]');
+                const plan = remedyTelPlan?.value.trim() || '[Plan contratado]';
+                const problema = remedyTelProblema?.value.trim() || (elements.genProblema?.value.trim() || '[Descripción detallada del problema]');
+                const descartes = remedyTelDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '[Descartes de primer nivel realizados]');
 
-                    let text = `TELEFONÍA A RED:\n`;
-                    text += `Persona de Contacto: ${contacto}\n`;
-                    text += `Número de contacto: ${telefono}\n`;
-                    text += `Customer ID: ${customerId}\n`;
-                    text += `Dirección MAC: ${mac}\n`;
-                    text += `Plano: ${plano}\n`;
-                    text += `(CMTS/OLT): ${cmtsOlt}\n`;
-                    text += `Número telefónico: ${numeroTel}\n`;
-                    text += `Plan contratado: ${plan}\n`;
-                    text += `Descripción detallada del problema: ${problema}\n`;
-                    text += `Descartes de primer nivel realizados: ${descartes}\n`;
-                    text += `Evidencias:`;
-                    if (remedyImagesList.length > 0) {
-                        text += `\n[${remedyImagesList.length} imagen(es) adjunta(s)]`;
-                    }
-                    return text;
-                } else if (isIptv) {
-                    const contacto = remedyIptvContacto?.value.trim() || '[Persona de Contacto]';
-                    const telefono = remedyIptvTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '[Número de Contacto]');
-                    const customerId = remedyIptvCustomerId?.value.trim() || (elements.genContactId?.value.trim() || '[Customer ID]');
-                    const plano = remedyIptvPlano?.value.trim() || '[Plano]';
-                    const cantDecos = remedyIptvCantDecos?.value.trim() || '[Cantidad de decodificador(es)]';
-                    const serieDecos = remedyIptvSerieDecos?.value.trim() || '[N° Serie decos afectados]';
-                    const canales = remedyIptvCanales?.value.trim() || '[Canales afectados (N° - Nombre de Canal)]';
-                    const grilla = remedyIptvGrilla?.value.trim() || '[Grilla Claro TV actualizada]';
-                    const descartes = remedyIptvDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '[Descripción detallada de DESCARTES realizados]');
-
-                    let text = `4. CANALES A RED:\n`;
-                    text += `Persona de Contacto: ${contacto}\n`;
-                    text += `Número de Contacto: ${telefono}\n`;
-                    text += `Customer ID: ${customerId}\n`;
-                    text += `Plano: ${plano}\n`;
-                    text += `Cantidad de decodificador(es): ${cantDecos}\n`;
-                    text += `N° Serie decos afectados: ${serieDecos}\n`;
-                    text += `Canales afectados (N° - Nombre de Canal): ${canales}\n`;
-                    text += `Grilla Claro TV actualizada: ${grilla}\n`;
-                    text += `Descripción detallada de DESCARTES realizados: ${descartes}\n`;
-                    text += `Evidencias:`;
-                    if (remedyImagesList.length > 0) {
-                        text += `\n[${remedyImagesList.length} imagen(es) adjunta(s)]`;
-                    }
-                    return text;
-                } else {
-                    const contacto = remedyRedContacto?.value.trim() || '[Persona de Contacto]';
-                    const telefono = remedyRedTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '[Número de contacto]');
-                    const customerId = remedyRedCustomerId?.value.trim() || (elements.genContactId?.value.trim() || '[Customer ID]');
-                    const mac = remedyRedMac?.value.trim() || '[Dirección MAC Cable Módem]';
-                    const ip = remedyRedIp?.value.trim() || '[IP Pública(Cuál es mi IP)]';
-                    const paginas = remedyRedPaginas?.value.trim() || '[Páginas/Apps que no accede]';
-                    const redExterna = remedyRedRedExterna?.value.trim() || '[Desde que red puede acceder]';
-                    const cmtsOlt = remedyRedCmtsOlt?.value.trim() || '[CMTS/OLT]';
-                    const plano = remedyRedPlano?.value.trim() || '[Plano]';
-                    const descartes = remedyRedDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '[Descartes o descripción detallada]');
-
-                    let text = `Persona de Contacto: ${contacto}\n`;
-                    text += `Número de contacto: ${telefono}\n`;
-                    text += `Customer ID: ${customerId}\n`;
-                    text += `Dirección MAC Cable Módem: ${mac}\n`;
-                    text += `IP Pública(Cuál es mi IP): ${ip}\n`;
-                    text += `Páginas/Apps que no accede : ${paginas}\n`;
-                    text += `Desde que red puede acceder: ${redExterna}\n`;
-                    text += `CMTS/OLT: ${cmtsOlt}\n`;
-                    text += `Plano: ${plano}\n`;
-                    text += `Descartes o descripción detallada del problema: ${descartes}\n`;
-                    text += `Evidencias:\n`;
-                    text += `Imagen del error con red CLARO\n`;
-                    text += `Imagen sin error con red diferente a CLARO\n`;
-                    text += `Ping desde la red de Claro\n`;
-                    text += `TracerTR desde la red de Claro\n`;
-                    text += `TracerTR desde la red diferente a Claro`;
-                    if (remedyImagesList.length > 0) {
-                        text += `\n[${remedyImagesList.length} imagen(es) adjunta(s)]`;
-                    }
-                    return text;
+                let text = `TELEFONÍA A RED:\n`;
+                text += `Persona de Contacto: ${contacto}\n`;
+                text += `Número de contacto: ${telefono}\n`;
+                text += `Customer ID: ${customerId}\n`;
+                text += `Dirección MAC: ${mac}\n`;
+                text += `Plano: ${plano}\n`;
+                text += `(CMTS/OLT): ${cmtsOlt}\n`;
+                text += `Número telefónico: ${numeroTel}\n`;
+                text += `Plan contratado: ${plan}\n`;
+                text += `Descripción detallada del problema: ${problema}\n`;
+                text += `Descartes de primer nivel realizados: ${descartes}\n`;
+                text += `Evidencias:`;
+                if (remedyImagesList.length > 0) {
+                    text += `\n[${remedyImagesList.length} imagen(es) adjunta(s)]`;
                 }
+                return text;
+            } else if (isIptv) {
+                const contacto = remedyIptvContacto?.value.trim() || '[Persona de Contacto]';
+                const telefono = remedyIptvTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '[Número de Contacto]');
+                const customerId = remedyIptvCustomerId?.value.trim() || '[Customer ID]';
+                const plano = remedyIptvPlano?.value.trim() || '[Plano]';
+                const cantDecos = remedyIptvCantDecos?.value.trim() || '[Cantidad de decodificador(es)]';
+                const serieDecos = remedyIptvSerieDecos?.value.trim() || '[N° Serie decos afectados]';
+                const canales = remedyIptvCanales?.value.trim() || '[Canales afectados (N° - Nombre de Canal)]';
+                const grilla = remedyIptvGrilla?.value.trim() || '[Grilla Claro TV actualizada]';
+                const descartes = remedyIptvDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '[Descripción detallada de DESCARTES realizados]');
+
+                let text = `4. CANALES A RED:\n`;
+                text += `Persona de Contacto: ${contacto}\n`;
+                text += `Número de Contacto: ${telefono}\n`;
+                text += `Customer ID: ${customerId}\n`;
+                text += `Plano: ${plano}\n`;
+                text += `Cantidad de decodificador(es): ${cantDecos}\n`;
+                text += `N° Serie decos afectados: ${serieDecos}\n`;
+                text += `Canales afectados (N° - Nombre de Canal): ${canales}\n`;
+                text += `Grilla Claro TV actualizada: ${grilla}\n`;
+                text += `Descripción detallada de DESCARTES realizados: ${descartes}\n`;
+                text += `Evidencias:`;
+                if (remedyImagesList.length > 0) {
+                    text += `\n[${remedyImagesList.length} imagen(es) adjunta(s)]`;
+                }
+                return text;
             } else {
-                const falla = remedyInputFalla?.value.trim() || '[Descripción de la falla]';
-                const id = remedyInputId?.value.trim() || '[Customer ID]';
-                const dni = remedyInputDni?.value.trim() || '[DNI/RUC]';
-                const cliente = remedyInputCliente?.value.trim() || '[Nombre del Cliente]';
-                const detalle = remedyInputDetalle?.value.trim() || '';
+                const contacto = remedyRedContacto?.value.trim() || '[Persona de Contacto]';
+                const telefono = remedyRedTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '[Número de contacto]');
+                const customerId = remedyRedCustomerId?.value.trim() || (elements.genContactId?.value.trim() || '[Customer ID]');
+                const mac = remedyRedMac?.value.trim() || '[Dirección MAC Cable Módem]';
+                const ip = remedyRedIp?.value.trim() || '[IP Pública(Cuál es mi IP)]';
+                const paginas = remedyRedPaginas?.value.trim() || '[Páginas/Apps que no accede]';
+                const redExterna = remedyRedRedExterna?.value.trim() || '[Desde que red puede acceder]';
+                const cmtsOlt = remedyRedCmtsOlt?.value.trim() || '[CMTS/OLT]';
+                const plano = remedyRedPlano?.value.trim() || '[Plano]';
+                const descartes = remedyRedDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '[Descartes o descripción detallada]');
 
-                let text = `FALLA: ${falla}\n\n`;
-                text += `   • ID: ${id}\n`;
-                text += `   • DNI: ${dni}\n`;
-                text += `   • CLIENTE: ${cliente}\n`;
-                if (detalle) {
-                    text += `   • ${detalle}\n`;
-                }
+                let text = `Persona de Contacto: ${contacto}\n`;
+                text += `Número de contacto: ${telefono}\n`;
+                text += `Customer ID: ${customerId}\n`;
+                text += `Dirección MAC Cable Módem: ${mac}\n`;
+                text += `IP Pública(Cuál es mi IP): ${ip}\n`;
+                text += `Páginas/Apps que no accede : ${paginas}\n`;
+                text += `Desde que red puede acceder: ${redExterna}\n`;
+                text += `CMTS/OLT: ${cmtsOlt}\n`;
+                text += `Plano: ${plano}\n`;
+                text += `Descartes o descripción detallada del problema: ${descartes}\n`;
+                text += `Evidencias:\n`;
+                text += `Imagen del error con red CLARO\n`;
+                text += `Imagen sin error con red diferente a CLARO\n`;
+                text += `Ping desde la red de Claro\n`;
+                text += `TracerTR desde la red de Claro\n`;
+                text += `TracerTR desde la red diferente a Claro`;
                 if (remedyImagesList.length > 0) {
                     text += `\n[${remedyImagesList.length} imagen(es) adjunta(s)]`;
                 }
                 return text;
             }
-        };
+        } else {
+            const falla = remedyInputFalla?.value.trim() || '[Descripción de la falla]';
+            const id = remedyInputId?.value.trim() || '[Customer ID]';
+            const dni = remedyInputDni?.value.trim() || '[DNI/RUC]';
+            const cliente = remedyInputCliente?.value.trim() || '[Nombre del Cliente]';
+            const detalle = remedyInputDetalle?.value.trim() || '';
 
-        const renderRemedyVisualSheet = () => {
-            if (!remedyVisualSheet) return;
-            const isIptv = isIptvActive();
-            const isTelefonia = isTelefoniaActive();
+            let text = `FALLA: ${falla}\n\n`;
+            text += `   • ID: ${id}\n`;
+            text += `   • DNI: ${dni}\n`;
+            text += `   • CLIENTE: ${cliente}\n`;
+            if (detalle) {
+                text += `   • ${detalle}\n`;
+            }
+            if (remedyImagesList.length > 0) {
+                text += `\n[${remedyImagesList.length} imagen(es) adjunta(s)]`;
+            }
+            return text;
+        }
+    };
 
-            if (remedyActiveMode === 'red') {
-                if (isTelefonia) {
-                    const contacto = remedyTelContacto?.value.trim() || '—';
-                    const telefono = remedyTelTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '—');
-                    const customerId = remedyTelCustomerId?.value.trim() || (elements.genContactId?.value.trim() || '—');
-                    const mac = remedyTelMac?.value.trim() || '—';
-                    const plano = remedyTelPlano?.value.trim() || '—';
-                    const cmtsOlt = remedyTelCmtsOlt?.value.trim() || '—';
-                    const numeroTel = remedyTelNumeroTel?.value.trim() || (elements.genTelefono?.value.trim() || '—');
-                    const plan = remedyTelPlan?.value.trim() || '—';
-                    const problema = remedyTelProblema?.value.trim() || (elements.genProblema?.value.trim() || '—');
-                    const descartes = remedyTelDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '—');
+    const renderRemedyVisualSheet = () => {
+        if (!remedyVisualSheet) return;
+        const isIptv = isIptvActive();
+        const isTelefonia = isTelefoniaActive();
 
-                    let html = `
+        if (remedyActiveMode === 'red') {
+            if (isTelefonia) {
+                const contacto = remedyTelContacto?.value.trim() || '—';
+                const telefono = remedyTelTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '—');
+                const customerId = remedyTelCustomerId?.value.trim() || '—';
+                const mac = remedyTelMac?.value.trim() || '—';
+                const plano = remedyTelPlano?.value.trim() || '—';
+                const cmtsOlt = remedyTelCmtsOlt?.value.trim() || '—';
+                const numeroTel = remedyTelNumeroTel?.value.trim() || (elements.genTelefono?.value.trim() || '—');
+                const plan = remedyTelPlan?.value.trim() || '—';
+                const problema = remedyTelProblema?.value.trim() || (elements.genProblema?.value.trim() || '—');
+                const descartes = remedyTelDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '—');
+
+                let html = `
                         <div class="remedy-word-page">
                             <div class="remedy-word-title">
                                 TELEFONÍA A RED:
@@ -3266,8 +3298,8 @@ ${contactLines}`;
                                     <div class="remedy-word-section-title" style="margin-bottom:8px;">Capturas Adjuntas:</div>
                                     ${remedyImagesList.map((img, i) => `
                                         <div class="remedy-word-img-wrapper">
-                                            <div class="remedy-word-img-label">Evidencia #${i+1} (Clic para ampliar):</div>
-                                            <img src="${img}" class="remedy-word-img" alt="Evidencia ${i+1}" onclick="window.previewRemedyImageZoom && window.previewRemedyImageZoom('${img}')" />
+                                            <div class="remedy-word-img-label">Evidencia #${i + 1} (Clic para ampliar):</div>
+                                            <img src="${img}" class="remedy-word-img" alt="Evidencia ${i + 1}" onclick="window.previewRemedyImageZoom && window.previewRemedyImageZoom('${img}')" />
                                         </div>
                                     `).join('')}
                                 </div>
@@ -3278,22 +3310,22 @@ ${contactLines}`;
                             `}
                         </div>
                     `;
-                    remedyVisualSheet.innerHTML = html;
-                    return;
-                }
+                remedyVisualSheet.innerHTML = html;
+                return;
+            }
 
-                if (isIptv) {
-                    const contacto = remedyIptvContacto?.value.trim() || '—';
-                    const telefono = remedyIptvTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '—');
-                    const customerId = remedyIptvCustomerId?.value.trim() || (elements.genContactId?.value.trim() || '—');
-                    const plano = remedyIptvPlano?.value.trim() || '—';
-                    const cantDecos = remedyIptvCantDecos?.value.trim() || '—';
-                    const serieDecos = remedyIptvSerieDecos?.value.trim() || '—';
-                    const canales = remedyIptvCanales?.value.trim() || '—';
-                    const grilla = remedyIptvGrilla?.value.trim() || '—';
-                    const descartes = remedyIptvDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '—');
+            if (isIptv) {
+                const contacto = remedyIptvContacto?.value.trim() || '—';
+                const telefono = remedyIptvTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '—');
+                const customerId = remedyIptvCustomerId?.value.trim() || '—';
+                const plano = remedyIptvPlano?.value.trim() || '—';
+                const cantDecos = remedyIptvCantDecos?.value.trim() || '—';
+                const serieDecos = remedyIptvSerieDecos?.value.trim() || '—';
+                const canales = remedyIptvCanales?.value.trim() || '—';
+                const grilla = remedyIptvGrilla?.value.trim() || '—';
+                const descartes = remedyIptvDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '—');
 
-                    let html = `
+                let html = `
                         <div class="remedy-word-page">
                             <div class="remedy-word-title">
                                 4. CANALES A RED:
@@ -3345,8 +3377,8 @@ ${contactLines}`;
                                     <div class="remedy-word-section-title" style="margin-bottom:8px;">Capturas Adjuntas:</div>
                                     ${remedyImagesList.map((img, i) => `
                                         <div class="remedy-word-img-wrapper">
-                                            <div class="remedy-word-img-label">Evidencia #${i+1} (Clic para ampliar):</div>
-                                            <img src="${img}" class="remedy-word-img" alt="Evidencia ${i+1}" onclick="window.previewRemedyImageZoom && window.previewRemedyImageZoom('${img}')" />
+                                            <div class="remedy-word-img-label">Evidencia #${i + 1} (Clic para ampliar):</div>
+                                            <img src="${img}" class="remedy-word-img" alt="Evidencia ${i + 1}" onclick="window.previewRemedyImageZoom && window.previewRemedyImageZoom('${img}')" />
                                         </div>
                                     `).join('')}
                                 </div>
@@ -3357,22 +3389,22 @@ ${contactLines}`;
                             `}
                         </div>
                     `;
-                    remedyVisualSheet.innerHTML = html;
-                    return;
-                }
+                remedyVisualSheet.innerHTML = html;
+                return;
+            }
 
-                const contacto = remedyRedContacto?.value.trim() || '—';
-                const telefono = remedyRedTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '—');
-                const customerId = remedyRedCustomerId?.value.trim() || (elements.genContactId?.value.trim() || '—');
-                const mac = remedyRedMac?.value.trim() || '—';
-                const ip = remedyRedIp?.value.trim() || '—';
-                const paginas = remedyRedPaginas?.value.trim() || '—';
-                const redExterna = remedyRedRedExterna?.value.trim() || '—';
-                const cmtsOlt = remedyRedCmtsOlt?.value.trim() || '—';
-                const plano = remedyRedPlano?.value.trim() || '—';
-                const descartes = remedyRedDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '—');
+            const contacto = remedyRedContacto?.value.trim() || '—';
+            const telefono = remedyRedTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '—');
+            const customerId = remedyRedCustomerId?.value.trim() || '—';
+            const mac = remedyRedMac?.value.trim() || '—';
+            const ip = remedyRedIp?.value.trim() || '—';
+            const paginas = remedyRedPaginas?.value.trim() || '—';
+            const redExterna = remedyRedRedExterna?.value.trim() || '—';
+            const cmtsOlt = remedyRedCmtsOlt?.value.trim() || '—';
+            const plano = remedyRedPlano?.value.trim() || '—';
+            const descartes = remedyRedDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '—');
 
-                let html = `
+            let html = `
                     <div class="remedy-word-page">
                         <div class="remedy-word-title">
                             PAGINAS WEB a RED
@@ -3435,23 +3467,23 @@ ${contactLines}`;
                                 <div class="remedy-word-section-title" style="margin-bottom:8px;">Capturas Adjuntas:</div>
                                 ${remedyImagesList.map((img, i) => `
                                     <div class="remedy-word-img-wrapper">
-                                        <div class="remedy-word-img-label">Evidencia #${i+1} (Clic para ampliar):</div>
-                                        <img src="${img}" class="remedy-word-img" alt="Evidencia ${i+1}" onclick="window.previewRemedyImageZoom && window.previewRemedyImageZoom('${img}')" />
+                                        <div class="remedy-word-img-label">Evidencia #${i + 1} (Clic para ampliar):</div>
+                                        <img src="${img}" class="remedy-word-img" alt="Evidencia ${i + 1}" onclick="window.previewRemedyImageZoom && window.previewRemedyImageZoom('${img}')" />
                                     </div>
                                 `).join('')}
                             </div>
                         ` : ''}
                     </div>
                 `;
-                remedyVisualSheet.innerHTML = html;
-            } else {
-                const falla = remedyInputFalla?.value.trim() || '—';
-                const id = remedyInputId?.value.trim() || (elements.genContactId?.value.trim() || '—');
-                const dni = remedyInputDni?.value.trim() || (elements.genDni?.value.trim() || '—');
-                const cliente = remedyInputCliente?.value.trim() || (elements.genCustomer?.value.trim() || '—');
-                const detalle = remedyInputDetalle?.value.trim() || '';
+            remedyVisualSheet.innerHTML = html;
+        } else {
+            const falla = remedyInputFalla?.value.trim() || '—';
+            const id = remedyInputId?.value.trim() || '—';
+            const dni = remedyInputDni?.value.trim() || (elements.genDni?.value.trim() || '—');
+            const cliente = remedyInputCliente?.value.trim() || (elements.genCustomer?.value.trim() || '—');
+            const detalle = remedyInputDetalle?.value.trim() || '';
 
-                let html = `
+            let html = `
                     <div class="remedy-word-page">
                         <p style="margin: 0 0 12px 0; font-size: 13px;"><strong>FALLA:</strong> ${falla}</p>
                         
@@ -3467,443 +3499,437 @@ ${contactLines}`;
                                 <div class="remedy-word-section-title" style="margin-bottom:8px;">Capturas Adjuntas:</div>
                                 ${remedyImagesList.map((img, i) => `
                                     <div class="remedy-word-img-wrapper">
-                                        <div class="remedy-word-img-label">Captura #${i+1} (Clic para ampliar):</div>
-                                        <img src="${img}" class="remedy-word-img" alt="Captura ${i+1}" onclick="window.previewRemedyImageZoom && window.previewRemedyImageZoom('${img}')" />
+                                        <div class="remedy-word-img-label">Captura #${i + 1} (Clic para ampliar):</div>
+                                        <img src="${img}" class="remedy-word-img" alt="Captura ${i + 1}" onclick="window.previewRemedyImageZoom && window.previewRemedyImageZoom('${img}')" />
                                     </div>
                                 `).join('')}
                             </div>
                         ` : ''}
                     </div>
                 `;
-                remedyVisualSheet.innerHTML = html;
-            }
-        };
+            remedyVisualSheet.innerHTML = html;
+        }
+    };
 
-        const updateRemedyPreview = () => {
-            renderRemedyVisualSheet();
-        };
+    const updateRemedyPreview = () => {
+        renderRemedyVisualSheet();
+    };
 
-        const renderRemedyImages = () => {
-            if (!remedyImagesContainer) return;
-            remedyImagesContainer.innerHTML = '';
-            remedyImagesList.forEach((imgData, idx) => {
-                const thumbWrapper = document.createElement('div');
-                thumbWrapper.style.cssText = 'position:relative; width:80px; height:60px; border-radius:6px; overflow:hidden; border:1px solid var(--border-color); background:#000; cursor:pointer;';
-                thumbWrapper.title = 'Clic para ampliar';
-                thumbWrapper.addEventListener('click', () => {
-                    window.previewRemedyImageZoom && window.previewRemedyImageZoom(imgData);
-                });
-                
-                const img = document.createElement('img');
-                img.src = imgData;
-                img.style.cssText = 'width:100%; height:100%; object-fit:cover;';
-                
-                const delBtn = document.createElement('button');
-                delBtn.innerHTML = '✕';
-                delBtn.style.cssText = 'position:absolute; top:2px; right:2px; background:rgba(220,53,69,0.9); color:#fff; border:none; border-radius:50%; width:18px; height:18px; font-size:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:2;';
-                delBtn.title = 'Eliminar imagen';
-                delBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    remedyImagesList.splice(idx, 1);
-                    renderRemedyImages();
-                    updateRemedyPreview();
-                });
-
-                thumbWrapper.appendChild(img);
-                thumbWrapper.appendChild(delBtn);
-                remedyImagesContainer.appendChild(thumbWrapper);
+    const renderRemedyImages = () => {
+        if (!remedyImagesContainer) return;
+        remedyImagesContainer.innerHTML = '';
+        remedyImagesList.forEach((imgData, idx) => {
+            const thumbWrapper = document.createElement('div');
+            thumbWrapper.style.cssText = 'position:relative; width:80px; height:60px; border-radius:6px; overflow:hidden; border:1px solid var(--border-color); background:#000; cursor:pointer;';
+            thumbWrapper.title = 'Clic para ampliar';
+            thumbWrapper.addEventListener('click', () => {
+                window.previewRemedyImageZoom && window.previewRemedyImageZoom(imgData);
             });
-            updateRemedyPreview();
-        };
 
-        const handleImageFile = (file) => {
-            if (!file || !file.type.startsWith('image/')) return;
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                remedyImagesList.push(e.target.result);
+            const img = document.createElement('img');
+            img.src = imgData;
+            img.style.cssText = 'width:100%; height:100%; object-fit:cover;';
+
+            const delBtn = document.createElement('button');
+            delBtn.innerHTML = '✕';
+            delBtn.style.cssText = 'position:absolute; top:2px; right:2px; background:rgba(220,53,69,0.9); color:#fff; border:none; border-radius:50%; width:18px; height:18px; font-size:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:2;';
+            delBtn.title = 'Eliminar imagen';
+            delBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                remedyImagesList.splice(idx, 1);
                 renderRemedyImages();
-                showToast('Captura añadida a Remedy');
-            };
-            reader.readAsDataURL(file);
+                updateRemedyPreview();
+            });
+
+            thumbWrapper.appendChild(img);
+            thumbWrapper.appendChild(delBtn);
+            remedyImagesContainer.appendChild(thumbWrapper);
+        });
+        updateRemedyPreview();
+    };
+
+    const handleImageFile = (file) => {
+        if (!file || !file.type.startsWith('image/')) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            remedyImagesList.push(e.target.result);
+            renderRemedyImages();
+            showToast('Captura añadida a Remedy');
         };
+        reader.readAsDataURL(file);
+    };
 
-        const openRemedyModal = () => {
-            if (remedyModal) {
-                // Auto-fill from main form if available
-                const mainTel = elements.genTelefono?.value.trim() || '';
-                const mainContactId = elements.genContactId?.value.trim() || '';
-                const mainDescartes = elements.genDescartes?.value.trim() || '';
-                const mainProblema = elements.genProblema?.value.trim() || '';
+    const openRemedyModal = () => {
+        if (remedyModal) {
+            // Auto-fill from main form if available
+            const mainTel = elements.genTelefono?.value.trim() || '';
+            const mainContactId = elements.genContactId?.value.trim() || '';
+            const mainDescartes = elements.genDescartes?.value.trim() || '';
+            const mainProblema = elements.genProblema?.value.trim() || '';
 
-                if (mainTel) {
-                    if (remedyRedTelefono && !remedyRedTelefono.value) remedyRedTelefono.value = mainTel;
-                    if (remedyIptvTelefono && !remedyIptvTelefono.value) remedyIptvTelefono.value = mainTel;
-                    if (remedyTelTelefono && !remedyTelTelefono.value) remedyTelTelefono.value = mainTel;
-                    if (remedyTelNumeroTel && !remedyTelNumeroTel.value) remedyTelNumeroTel.value = mainTel;
-                }
-                if (mainContactId) {
-                    if (remedyRedCustomerId && !remedyRedCustomerId.value) remedyRedCustomerId.value = mainContactId;
-                    if (remedyIptvCustomerId && !remedyIptvCustomerId.value) remedyIptvCustomerId.value = mainContactId;
-                    if (remedyTelCustomerId && !remedyTelCustomerId.value) remedyTelCustomerId.value = mainContactId;
-                    if (remedyInputId && !remedyInputId.value) remedyInputId.value = mainContactId;
-                }
-                if (mainDescartes) {
-                    if (remedyRedDescartes && !remedyRedDescartes.value) remedyRedDescartes.value = mainDescartes;
-                    if (remedyIptvDescartes && !remedyIptvDescartes.value) remedyIptvDescartes.value = mainDescartes;
-                    if (remedyTelDescartes && !remedyTelDescartes.value) remedyTelDescartes.value = mainDescartes;
-                }
-                if (mainProblema) {
-                    if (remedyTelProblema && !remedyTelProblema.value) remedyTelProblema.value = mainProblema;
-                }
-
-                if (elements.genCustomer && elements.genCustomer.value.trim()) {
-                    const custName = elements.genCustomer.value.trim().toUpperCase();
-                    if (remedyRedContacto && !remedyRedContacto.value) remedyRedContacto.value = custName;
-                    if (remedyIptvContacto && !remedyIptvContacto.value) remedyIptvContacto.value = custName;
-                    if (remedyTelContacto && !remedyTelContacto.value) remedyTelContacto.value = custName;
-                    if (remedyInputCliente && !remedyInputCliente.value) remedyInputCliente.value = custName;
-                }
-                if (elements.genDni && elements.genDni.value.trim() && (!remedyInputDni.value || remedyInputDni.value === '')) {
-                    remedyInputDni.value = elements.genDni.value.trim();
-                }
-
-                remedyModal.classList.add('active');
-                setRemedyTab(remedyActiveMode);
+            if (mainTel) {
+                if (remedyRedTelefono && !remedyRedTelefono.value) remedyRedTelefono.value = mainTel;
+                if (remedyIptvTelefono && !remedyIptvTelefono.value) remedyIptvTelefono.value = mainTel;
+                if (remedyTelTelefono && !remedyTelTelefono.value) remedyTelTelefono.value = mainTel;
+                if (remedyTelNumeroTel && !remedyTelNumeroTel.value) remedyTelNumeroTel.value = mainTel;
             }
-        };
+            if (mainDescartes) {
+                if (remedyRedDescartes && !remedyRedDescartes.value) remedyRedDescartes.value = mainDescartes;
+                if (remedyIptvDescartes && !remedyIptvDescartes.value) remedyIptvDescartes.value = mainDescartes;
+                if (remedyTelDescartes && !remedyTelDescartes.value) remedyTelDescartes.value = mainDescartes;
+            }
+            if (mainProblema) {
+                if (remedyTelProblema && !remedyTelProblema.value) remedyTelProblema.value = mainProblema;
+            }
 
-        const resetRemedyModal = () => {
-            if (remedyRedContacto) remedyRedContacto.value = '';
-            if (remedyRedTelefono) remedyRedTelefono.value = '';
-            if (remedyRedCustomerId) remedyRedCustomerId.value = '';
-            if (remedyRedMac) remedyRedMac.value = '';
-            if (remedyRedIp) remedyRedIp.value = '';
-            if (remedyRedCmtsOlt) remedyRedCmtsOlt.value = '';
-            if (remedyRedPaginas) remedyRedPaginas.value = '';
-            if (remedyRedRedExterna) remedyRedRedExterna.value = '';
-            if (remedyRedPlano) remedyRedPlano.value = '';
-            if (remedyRedDescartes) remedyRedDescartes.value = '';
+            if (elements.genCustomer && elements.genCustomer.value.trim()) {
+                const custName = elements.genCustomer.value.trim().toUpperCase();
+                if (remedyRedContacto && !remedyRedContacto.value) remedyRedContacto.value = custName;
+                if (remedyIptvContacto && !remedyIptvContacto.value) remedyIptvContacto.value = custName;
+                if (remedyTelContacto && !remedyTelContacto.value) remedyTelContacto.value = custName;
+                if (remedyInputCliente && !remedyInputCliente.value) remedyInputCliente.value = custName;
+            }
+            if (elements.genDni && elements.genDni.value.trim() && (!remedyInputDni.value || remedyInputDni.value === '')) {
+                remedyInputDni.value = elements.genDni.value.trim();
+            }
 
-            if (remedyIptvContacto) remedyIptvContacto.value = '';
-            if (remedyIptvTelefono) remedyIptvTelefono.value = '';
-            if (remedyIptvCustomerId) remedyIptvCustomerId.value = '';
-            if (remedyIptvPlano) remedyIptvPlano.value = '';
-            if (remedyIptvCantDecos) remedyIptvCantDecos.value = '';
-            if (remedyIptvSerieDecos) remedyIptvSerieDecos.value = '';
-            if (remedyIptvCanales) remedyIptvCanales.value = '';
-            if (remedyIptvGrilla) remedyIptvGrilla.value = '';
-            if (remedyIptvDescartes) remedyIptvDescartes.value = '';
+            remedyModal.classList.add('active');
+            setRemedyTab(remedyActiveMode);
+        }
+    };
 
-            if (remedyTelContacto) remedyTelContacto.value = '';
-            if (remedyTelTelefono) remedyTelTelefono.value = '';
-            if (remedyTelCustomerId) remedyTelCustomerId.value = '';
-            if (remedyTelMac) remedyTelMac.value = '';
-            if (remedyTelPlano) remedyTelPlano.value = '';
-            if (remedyTelCmtsOlt) remedyTelCmtsOlt.value = '';
-            if (remedyTelNumeroTel) remedyTelNumeroTel.value = '';
-            if (remedyTelPlan) remedyTelPlan.value = '';
-            if (remedyTelProblema) remedyTelProblema.value = '';
-            if (remedyTelDescartes) remedyTelDescartes.value = '';
+    const resetRemedyModal = () => {
+        if (remedyRedContacto) remedyRedContacto.value = '';
+        if (remedyRedTelefono) remedyRedTelefono.value = '';
+        if (remedyRedCustomerId) remedyRedCustomerId.value = '';
+        if (remedyRedMac) remedyRedMac.value = '';
+        if (remedyRedIp) remedyRedIp.value = '';
+        if (remedyRedCmtsOlt) remedyRedCmtsOlt.value = '';
+        if (remedyRedPaginas) remedyRedPaginas.value = '';
+        if (remedyRedRedExterna) remedyRedRedExterna.value = '';
+        if (remedyRedPlano) remedyRedPlano.value = '';
+        if (remedyRedDescartes) remedyRedDescartes.value = '';
 
-            if (remedyInputFalla) remedyInputFalla.value = '';
-            if (remedyInputId) remedyInputId.value = '';
-            if (remedyInputDni) remedyInputDni.value = '';
-            if (remedyInputCliente) remedyInputCliente.value = '';
-            if (remedyInputDetalle) remedyInputDetalle.value = '';
-            
+        if (remedyIptvContacto) remedyIptvContacto.value = '';
+        if (remedyIptvTelefono) remedyIptvTelefono.value = '';
+        if (remedyIptvCustomerId) remedyIptvCustomerId.value = '';
+        if (remedyIptvPlano) remedyIptvPlano.value = '';
+        if (remedyIptvCantDecos) remedyIptvCantDecos.value = '';
+        if (remedyIptvSerieDecos) remedyIptvSerieDecos.value = '';
+        if (remedyIptvCanales) remedyIptvCanales.value = '';
+        if (remedyIptvGrilla) remedyIptvGrilla.value = '';
+        if (remedyIptvDescartes) remedyIptvDescartes.value = '';
+
+        if (remedyTelContacto) remedyTelContacto.value = '';
+        if (remedyTelTelefono) remedyTelTelefono.value = '';
+        if (remedyTelCustomerId) remedyTelCustomerId.value = '';
+        if (remedyTelMac) remedyTelMac.value = '';
+        if (remedyTelPlano) remedyTelPlano.value = '';
+        if (remedyTelCmtsOlt) remedyTelCmtsOlt.value = '';
+        if (remedyTelNumeroTel) remedyTelNumeroTel.value = '';
+        if (remedyTelPlan) remedyTelPlan.value = '';
+        if (remedyTelProblema) remedyTelProblema.value = '';
+        if (remedyTelDescartes) remedyTelDescartes.value = '';
+
+        if (remedyInputFalla) remedyInputFalla.value = '';
+        if (remedyInputId) remedyInputId.value = '';
+        if (remedyInputDni) remedyInputDni.value = '';
+        if (remedyInputCliente) remedyInputCliente.value = '';
+        if (remedyInputDetalle) remedyInputDetalle.value = '';
+
+        remedyImagesList = [];
+        renderRemedyImages();
+        updateRemedyPreview();
+    };
+
+    const closeRemedyModal = () => {
+        if (remedyModal) remedyModal.classList.remove('active');
+    };
+
+    if (btnOpenRemedyModal) btnOpenRemedyModal.addEventListener('click', openRemedyModal);
+    if (remedyModalClose) remedyModalClose.addEventListener('click', closeRemedyModal);
+    if (remedyModal) {
+        remedyModal.addEventListener('click', (e) => {
+            if (e.target === remedyModal) closeRemedyModal();
+        });
+    }
+
+    if (btnClearRemedyAll) {
+        btnClearRemedyAll.addEventListener('click', () => {
+            resetRemedyModal();
+            showToast('Formulario de Remedy limpiado');
+        });
+    }
+
+    // Listeners for all inputs to update live preview
+    [
+        remedyRedContacto, remedyRedTelefono, remedyRedCustomerId, remedyRedMac,
+        remedyRedIp, remedyRedCmtsOlt, remedyRedPaginas, remedyRedRedExterna,
+        remedyRedPlano, remedyRedDescartes,
+        remedyIptvContacto, remedyIptvTelefono, remedyIptvCustomerId, remedyIptvPlano,
+        remedyIptvCantDecos, remedyIptvSerieDecos, remedyIptvCanales, remedyIptvGrilla,
+        remedyIptvDescartes,
+        remedyTelContacto, remedyTelTelefono, remedyTelCustomerId, remedyTelMac,
+        remedyTelPlano, remedyTelCmtsOlt, remedyTelNumeroTel, remedyTelPlan,
+        remedyTelProblema, remedyTelDescartes,
+        remedyInputFalla, remedyInputId, remedyInputDni, remedyInputCliente,
+        remedyInputDetalle
+    ].forEach(inp => {
+        if (inp) inp.addEventListener('input', updateRemedyPreview);
+    });
+
+    if (btnClearRemedyImages) {
+        btnClearRemedyImages.addEventListener('click', () => {
             remedyImagesList = [];
             renderRemedyImages();
-            updateRemedyPreview();
-        };
-
-        const closeRemedyModal = () => {
-            if (remedyModal) remedyModal.classList.remove('active');
-        };
-
-        if (btnOpenRemedyModal) btnOpenRemedyModal.addEventListener('click', openRemedyModal);
-        if (remedyModalClose) remedyModalClose.addEventListener('click', closeRemedyModal);
-        if (remedyModal) {
-            remedyModal.addEventListener('click', (e) => {
-                if (e.target === remedyModal) closeRemedyModal();
-            });
-        }
-
-        if (btnClearRemedyAll) {
-            btnClearRemedyAll.addEventListener('click', () => {
-                resetRemedyModal();
-                showToast('Formulario de Remedy limpiado');
-            });
-        }
-
-        // Listeners for all inputs to update live preview
-        [
-            remedyRedContacto, remedyRedTelefono, remedyRedCustomerId, remedyRedMac,
-            remedyRedIp, remedyRedCmtsOlt, remedyRedPaginas, remedyRedRedExterna,
-            remedyRedPlano, remedyRedDescartes,
-            remedyIptvContacto, remedyIptvTelefono, remedyIptvCustomerId, remedyIptvPlano,
-            remedyIptvCantDecos, remedyIptvSerieDecos, remedyIptvCanales, remedyIptvGrilla,
-            remedyIptvDescartes,
-            remedyTelContacto, remedyTelTelefono, remedyTelCustomerId, remedyTelMac,
-            remedyTelPlano, remedyTelCmtsOlt, remedyTelNumeroTel, remedyTelPlan,
-            remedyTelProblema, remedyTelDescartes,
-            remedyInputFalla, remedyInputId, remedyInputDni, remedyInputCliente,
-            remedyInputDetalle
-        ].forEach(inp => {
-            if (inp) inp.addEventListener('input', updateRemedyPreview);
+            showToast('Imágenes eliminadas');
         });
+    }
 
-        if (btnClearRemedyImages) {
-            btnClearRemedyImages.addEventListener('click', () => {
-                remedyImagesList = [];
-                renderRemedyImages();
-                showToast('Imágenes eliminadas');
-            });
+    // Paste event support (Ctrl+V)
+    window.addEventListener('paste', (e) => {
+        if (!remedyModal || !remedyModal.classList.contains('active')) return;
+        const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+        for (let item of items) {
+            if (item.type.indexOf('image') !== -1) {
+                const blob = item.getAsFile();
+                handleImageFile(blob);
+            }
         }
+    });
 
-        // Paste event support (Ctrl+V)
-        window.addEventListener('paste', (e) => {
-            if (!remedyModal || !remedyModal.classList.contains('active')) return;
-            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
-            for (let item of items) {
-                if (item.type.indexOf('image') !== -1) {
-                    const blob = item.getAsFile();
-                    handleImageFile(blob);
+    // Drag and Drop support
+    if (remedyDropZone) {
+        remedyDropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            remedyDropZone.style.borderColor = 'var(--primary)';
+            remedyDropZone.style.background = 'rgba(2, 132, 199, 0.15)';
+        });
+        remedyDropZone.addEventListener('dragleave', () => {
+            remedyDropZone.style.borderColor = 'var(--border-color)';
+            remedyDropZone.style.background = 'rgba(0,0,0,0.15)';
+        });
+        remedyDropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            remedyDropZone.style.borderColor = 'var(--border-color)';
+            remedyDropZone.style.background = 'rgba(0,0,0,0.15)';
+            if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                for (let file of e.dataTransfer.files) {
+                    handleImageFile(file);
                 }
             }
         });
+    }
 
-        // Drag and Drop support
-        if (remedyDropZone) {
-            remedyDropZone.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                remedyDropZone.style.borderColor = 'var(--primary)';
-                remedyDropZone.style.background = 'rgba(2, 132, 199, 0.15)';
-            });
-            remedyDropZone.addEventListener('dragleave', () => {
-                remedyDropZone.style.borderColor = 'var(--border-color)';
-                remedyDropZone.style.background = 'rgba(0,0,0,0.15)';
-            });
-            remedyDropZone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                remedyDropZone.style.borderColor = 'var(--border-color)';
-                remedyDropZone.style.background = 'rgba(0,0,0,0.15)';
-                if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-                    for (let file of e.dataTransfer.files) {
-                        handleImageFile(file);
-                    }
-                }
-            });
-        }
+    // Action: Copy Plain Text
+    if (btnCopyRemedyText) {
+        btnCopyRemedyText.addEventListener('click', () => {
+            const text = getRemedyPlainText();
+            const logLabel = isTelefoniaActive() ? 'Escalamiento Telefonía a RED' : (isIptvActive() ? 'Escalamiento IPTV Canales a RED' : (remedyActiveMode === 'red' ? 'Escalamiento a RED (Páginas/Apps)' : 'Incidencia / Escalamiento'));
+            copyToClipboard(text, 'Texto Remedy copiado');
+            addHistoryRecord('Remedy', logLabel, text);
+        });
+    }
 
-        // Action: Copy Plain Text
-        if (btnCopyRemedyText) {
-            btnCopyRemedyText.addEventListener('click', () => {
-                const text = getRemedyPlainText();
-                const logLabel = isTelefoniaActive() ? 'Escalamiento Telefonía a RED' : (isIptvActive() ? 'Escalamiento IPTV Canales a RED' : (remedyActiveMode === 'red' ? 'Escalamiento a RED (Páginas/Apps)' : 'Incidencia / Escalamiento'));
-                copyToClipboard(text, 'Texto Remedy copiado');
-                addHistoryRecord('Remedy', logLabel, text);
-            });
-        }
+    // Action: Copy Rich Format for Word (With Embedded Images)
+    if (btnCopyRemedyWord) {
+        btnCopyRemedyWord.addEventListener('click', async () => {
+            let htmlContent = '';
+            const plainText = getRemedyPlainText();
+            const isIptv = isIptvActive();
+            const isTelefonia = isTelefoniaActive();
 
-        // Action: Copy Rich Format for Word (With Embedded Images)
-        if (btnCopyRemedyWord) {
-            btnCopyRemedyWord.addEventListener('click', async () => {
-                let htmlContent = '';
-                const plainText = getRemedyPlainText();
-                const isIptv = isIptvActive();
-                const isTelefonia = isTelefoniaActive();
-
-                if (remedyActiveMode === 'red') {
-                    if (isTelefonia) {
-                        const contacto = remedyTelContacto?.value.trim() || '[Persona de Contacto]';
-                        const telefono = remedyTelTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '[Número de contacto]');
-                        const customerId = remedyTelCustomerId?.value.trim() || (elements.genContactId?.value.trim() || '[Customer ID]');
-                        const mac = remedyTelMac?.value.trim() || '[Dirección MAC]';
-                        const plano = remedyTelPlano?.value.trim() || '[Plano]';
-                        const cmtsOlt = remedyTelCmtsOlt?.value.trim() || '[(CMTS/OLT)]';
-                        const numeroTel = remedyTelNumeroTel?.value.trim() || (elements.genTelefono?.value.trim() || '[Número telefónico]');
-                        const plan = remedyTelPlan?.value.trim() || '[Plan contratado]';
-                        const problema = remedyTelProblema?.value.trim() || (elements.genProblema?.value.trim() || '[Descripción detallada del problema]');
-                        const descartes = remedyTelDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '[Descartes de primer nivel realizados]');
-
-                        htmlContent = `<div style="font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1f2937; line-height: 1.5;">`;
-                        htmlContent += `<h3 style="color: #b91c1c; margin: 0 0 10pt 0;">TELEFONÍA A RED:</h3>`;
-                        htmlContent += `<table style="width: 100%; border-collapse: collapse; margin-bottom: 12pt; font-size: 10.5pt;">`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold; width: 35%;">Persona de Contacto:</td><td style="padding: 4px 8px;">${contacto}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Número de contacto:</td><td style="padding: 4px 8px;">${telefono}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Customer ID:</td><td style="padding: 4px 8px;">${customerId}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Dirección MAC:</td><td style="padding: 4px 8px; font-family:monospace;">${mac}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Plano:</td><td style="padding: 4px 8px;">${plano}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">(CMTS/OLT):</td><td style="padding: 4px 8px;">${cmtsOlt}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Número telefónico:</td><td style="padding: 4px 8px; font-weight:bold; color:#0284c7;">${numeroTel}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Plan contratado:</td><td style="padding: 4px 8px;">${plan}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Descripción detallada del problema:</td><td style="padding: 4px 8px;">${problema}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Descartes de primer nivel realizados:</td><td style="padding: 4px 8px;">${descartes}</td></tr>`;
-                        htmlContent += `</table>`;
-                        
-                        htmlContent += `<p style="font-weight: bold; margin: 10pt 0 4pt 0;">Evidencias:</p>`;
-
-                        if (remedyImagesList.length > 0) {
-                            htmlContent += `<div style="margin-top: 10pt;">`;
-                            remedyImagesList.forEach((imgData, i) => {
-                                htmlContent += `<p style="margin: 0 0 12pt 0;"><strong style="font-size:10pt;">Captura / Evidencia #${i+1}:</strong><br><img src="${imgData}" style="max-width: 100%; height: auto; border: 1px solid #d1d5db; border-radius: 4px; margin-top:4px;" /></p>`;
-                            });
-                            htmlContent += `</div>`;
-                        }
-                        htmlContent += `</div>`;
-                    } else if (isIptv) {
-                        const contacto = remedyIptvContacto?.value.trim() || '[Persona de Contacto]';
-                        const telefono = remedyIptvTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '[Número de Contacto]');
-                        const customerId = remedyIptvCustomerId?.value.trim() || (elements.genContactId?.value.trim() || '[Customer ID]');
-                        const plano = remedyIptvPlano?.value.trim() || '[Plano]';
-                        const cantDecos = remedyIptvCantDecos?.value.trim() || '[Cantidad de decodificador(es)]';
-                        const serieDecos = remedyIptvSerieDecos?.value.trim() || '[N° Serie decos afectados]';
-                        const canales = remedyIptvCanales?.value.trim() || '[Canales afectados (N° - Nombre de Canal)]';
-                        const grilla = remedyIptvGrilla?.value.trim() || '[Grilla Claro TV actualizada]';
-                        const descartes = remedyIptvDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '[Descripción detallada de DESCARTES realizados]');
-
-                        htmlContent = `<div style="font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1f2937; line-height: 1.5;">`;
-                        htmlContent += `<h3 style="color: #b91c1c; margin: 0 0 10pt 0;">4. CANALES A RED:</h3>`;
-                        htmlContent += `<table style="width: 100%; border-collapse: collapse; margin-bottom: 12pt; font-size: 10.5pt;">`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold; width: 40%;">Persona de Contacto:</td><td style="padding: 4px 8px;">${contacto}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Número de Contacto:</td><td style="padding: 4px 8px;">${telefono}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Customer ID:</td><td style="padding: 4px 8px;">${customerId}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Plano:</td><td style="padding: 4px 8px;">${plano}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Cantidad de decodificador(es):</td><td style="padding: 4px 8px;">${cantDecos}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">N° Serie decos afectados:</td><td style="padding: 4px 8px; font-family:monospace;">${serieDecos}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Canales afectados (N° - Nombre de Canal):</td><td style="padding: 4px 8px; color:#b91c1c; font-weight:bold;">${canales}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Grilla Claro TV actualizada:</td><td style="padding: 4px 8px;">${grilla}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Descripción detallada de DESCARTES realizados:</td><td style="padding: 4px 8px;">${descartes}</td></tr>`;
-                        htmlContent += `</table>`;
-                        
-                        htmlContent += `<p style="font-weight: bold; margin: 10pt 0 4pt 0;">Evidencias:</p>`;
-
-                        if (remedyImagesList.length > 0) {
-                            htmlContent += `<div style="margin-top: 10pt;">`;
-                            remedyImagesList.forEach((imgData, i) => {
-                                htmlContent += `<p style="margin: 0 0 12pt 0;"><strong style="font-size:10pt;">Captura / Evidencia #${i+1}:</strong><br><img src="${imgData}" style="max-width: 100%; height: auto; border: 1px solid #d1d5db; border-radius: 4px; margin-top:4px;" /></p>`;
-                            });
-                            htmlContent += `</div>`;
-                        }
-                        htmlContent += `</div>`;
-                    } else {
-                        const contacto = remedyRedContacto?.value.trim() || '[Persona de Contacto]';
-                        const telefono = remedyRedTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '[Número de contacto]');
-                        const customerId = remedyRedCustomerId?.value.trim() || (elements.genContactId?.value.trim() || '[Customer ID]');
-                        const mac = remedyRedMac?.value.trim() || '[Dirección MAC Cable Módem]';
-                        const ip = remedyRedIp?.value.trim() || '[IP Pública(Cuál es mi IP)]';
-                        const paginas = remedyRedPaginas?.value.trim() || '[Páginas/Apps que no accede]';
-                        const redExterna = remedyRedRedExterna?.value.trim() || '[Desde que red puede acceder]';
-                        const cmtsOlt = remedyRedCmtsOlt?.value.trim() || '[CMTS/OLT]';
-                        const plano = remedyRedPlano?.value.trim() || '[Plano]';
-                        const descartes = remedyRedDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '[Descartes técnicos]');
-
-                        htmlContent = `<div style="font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1f2937; line-height: 1.5;">`;
-                        htmlContent += `<h3 style="color: #b91c1c; margin: 0 0 10pt 0;">ESCALAMIENTO A RED - PÁGINAS WEB / APPS BLOQUEADAS</h3>`;
-                        htmlContent += `<table style="width: 100%; border-collapse: collapse; margin-bottom: 12pt; font-size: 10.5pt;">`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold; width: 35%;">Persona de Contacto:</td><td style="padding: 4px 8px;">${contacto}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Número de contacto:</td><td style="padding: 4px 8px;">${telefono}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Customer ID:</td><td style="padding: 4px 8px;">${customerId}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Dirección MAC Cable Módem:</td><td style="padding: 4px 8px;">${mac}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">IP Pública(Cuál es mi IP):</td><td style="padding: 4px 8px;">${ip}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Páginas/Apps que no accede:</td><td style="padding: 4px 8px; color:#b91c1c; font-weight:bold;">${paginas}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Desde que red puede acceder:</td><td style="padding: 4px 8px;">${redExterna}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">CMTS/OLT:</td><td style="padding: 4px 8px;">${cmtsOlt}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Plano:</td><td style="padding: 4px 8px;">${plano}</td></tr>`;
-                        htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Descartes del problema:</td><td style="padding: 4px 8px;">${descartes}</td></tr>`;
-                        htmlContent += `</table>`;
-                        
-                        htmlContent += `<p style="font-weight: bold; margin: 10pt 0 4pt 0;">Evidencias requeridas:</p>`;
-                        htmlContent += `<ul style="margin: 0 0 10pt 18pt; padding: 0;">`;
-                        htmlContent += `<li>Imagen del error con red CLARO</li>`;
-                        htmlContent += `<li>Imagen sin error con red diferente a CLARO</li>`;
-                        htmlContent += `<li>Ping desde la red de Claro</li>`;
-                        htmlContent += `<li>TracerTR desde la red de Claro</li>`;
-                        htmlContent += `<li>TracerTR desde la red diferente a Claro</li>`;
-                        htmlContent += `</ul>`;
-
-                        if (remedyImagesList.length > 0) {
-                            htmlContent += `<div style="margin-top: 10pt;">`;
-                            remedyImagesList.forEach((imgData, i) => {
-                                htmlContent += `<p style="margin: 0 0 12pt 0;"><strong style="font-size:10pt;">Captura / Evidencia #${i+1}:</strong><br><img src="${imgData}" style="max-width: 100%; height: auto; border: 1px solid #d1d5db; border-radius: 4px; margin-top:4px;" /></p>`;
-                            });
-                            htmlContent += `</div>`;
-                        }
-                        htmlContent += `</div>`;
-                    }
-                } else {
-                    const falla = remedyInputFalla?.value.trim() || '[Descripción de la falla]';
-                    const id = remedyInputId?.value.trim() || '[Customer ID]';
-                    const dni = remedyInputDni?.value.trim() || '[DNI/RUC]';
-                    const cliente = remedyInputCliente?.value.trim() || '[Nombre del Cliente]';
-                    const detalle = remedyInputDetalle?.value.trim() || '';
+            if (remedyActiveMode === 'red') {
+                if (isTelefonia) {
+                    const contacto = remedyTelContacto?.value.trim() || '[Persona de Contacto]';
+                    const telefono = remedyTelTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '[Número de contacto]');
+                    const customerId = remedyTelCustomerId?.value.trim() || '[Customer ID]';
+                    const mac = remedyTelMac?.value.trim() || '[Dirección MAC]';
+                    const plano = remedyTelPlano?.value.trim() || '[Plano]';
+                    const cmtsOlt = remedyTelCmtsOlt?.value.trim() || '[(CMTS/OLT)]';
+                    const numeroTel = remedyTelNumeroTel?.value.trim() || (elements.genTelefono?.value.trim() || '[Número telefónico]');
+                    const plan = remedyTelPlan?.value.trim() || '[Plan contratado]';
+                    const problema = remedyTelProblema?.value.trim() || (elements.genProblema?.value.trim() || '[Descripción detallada del problema]');
+                    const descartes = remedyTelDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '[Descartes de primer nivel realizados]');
 
                     htmlContent = `<div style="font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1f2937; line-height: 1.5;">`;
-                    htmlContent += `<p style="margin: 0 0 8pt 0;"><strong>FALLA:</strong> ${falla}</p>`;
-                    htmlContent += `<ul style="margin: 0 0 12pt 18pt; padding: 0;">`;
-                    htmlContent += `<li><strong>ID:</strong> ${id}</li>`;
-                    htmlContent += `<li><strong>DNI:</strong> ${dni}</li>`;
-                    htmlContent += `<li><strong>CLIENTE:</strong> ${cliente}</li>`;
-                    if (detalle) {
-                        htmlContent += `<li>${detalle}</li>`;
+                    htmlContent += `<h3 style="color: #b91c1c; margin: 0 0 10pt 0;">TELEFONÍA A RED:</h3>`;
+                    htmlContent += `<table style="width: 100%; border-collapse: collapse; margin-bottom: 12pt; font-size: 10.5pt;">`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold; width: 35%;">Persona de Contacto:</td><td style="padding: 4px 8px;">${contacto}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Número de contacto:</td><td style="padding: 4px 8px;">${telefono}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Customer ID:</td><td style="padding: 4px 8px;">${customerId}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Dirección MAC:</td><td style="padding: 4px 8px; font-family:monospace;">${mac}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Plano:</td><td style="padding: 4px 8px;">${plano}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">(CMTS/OLT):</td><td style="padding: 4px 8px;">${cmtsOlt}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Número telefónico:</td><td style="padding: 4px 8px; font-weight:bold; color:#0284c7;">${numeroTel}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Plan contratado:</td><td style="padding: 4px 8px;">${plan}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Descripción detallada del problema:</td><td style="padding: 4px 8px;">${problema}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Descartes de primer nivel realizados:</td><td style="padding: 4px 8px;">${descartes}</td></tr>`;
+                    htmlContent += `</table>`;
+
+                    htmlContent += `<p style="font-weight: bold; margin: 10pt 0 4pt 0;">Evidencias:</p>`;
+
+                    if (remedyImagesList.length > 0) {
+                        htmlContent += `<div style="margin-top: 10pt;">`;
+                        remedyImagesList.forEach((imgData, i) => {
+                            htmlContent += `<p style="margin: 0 0 12pt 0;"><strong style="font-size:10pt;">Captura / Evidencia #${i + 1}:</strong><br><img src="${imgData}" style="max-width: 100%; height: auto; border: 1px solid #d1d5db; border-radius: 4px; margin-top:4px;" /></p>`;
+                        });
+                        htmlContent += `</div>`;
                     }
+                    htmlContent += `</div>`;
+                } else if (isIptv) {
+                    const contacto = remedyIptvContacto?.value.trim() || '[Persona de Contacto]';
+                    const telefono = remedyIptvTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '[Número de Contacto]');
+                    const customerId = remedyIptvCustomerId?.value.trim() || '[Customer ID]';
+                    const plano = remedyIptvPlano?.value.trim() || '[Plano]';
+                    const cantDecos = remedyIptvCantDecos?.value.trim() || '[Cantidad de decodificador(es)]';
+                    const serieDecos = remedyIptvSerieDecos?.value.trim() || '[N° Serie decos afectados]';
+                    const canales = remedyIptvCanales?.value.trim() || '[Canales afectados (N° - Nombre de Canal)]';
+                    const grilla = remedyIptvGrilla?.value.trim() || '[Grilla Claro TV actualizada]';
+                    const descartes = remedyIptvDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '[Descripción detallada de DESCARTES realizados]');
+
+                    htmlContent = `<div style="font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1f2937; line-height: 1.5;">`;
+                    htmlContent += `<h3 style="color: #b91c1c; margin: 0 0 10pt 0;">4. CANALES A RED:</h3>`;
+                    htmlContent += `<table style="width: 100%; border-collapse: collapse; margin-bottom: 12pt; font-size: 10.5pt;">`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold; width: 40%;">Persona de Contacto:</td><td style="padding: 4px 8px;">${contacto}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Número de Contacto:</td><td style="padding: 4px 8px;">${telefono}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Customer ID:</td><td style="padding: 4px 8px;">${customerId}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Plano:</td><td style="padding: 4px 8px;">${plano}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Cantidad de decodificador(es):</td><td style="padding: 4px 8px;">${cantDecos}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">N° Serie decos afectados:</td><td style="padding: 4px 8px; font-family:monospace;">${serieDecos}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Canales afectados (N° - Nombre de Canal):</td><td style="padding: 4px 8px; color:#b91c1c; font-weight:bold;">${canales}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Grilla Claro TV actualizada:</td><td style="padding: 4px 8px;">${grilla}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Descripción detallada de DESCARTES realizados:</td><td style="padding: 4px 8px;">${descartes}</td></tr>`;
+                    htmlContent += `</table>`;
+
+                    htmlContent += `<p style="font-weight: bold; margin: 10pt 0 4pt 0;">Evidencias:</p>`;
+
+                    if (remedyImagesList.length > 0) {
+                        htmlContent += `<div style="margin-top: 10pt;">`;
+                        remedyImagesList.forEach((imgData, i) => {
+                            htmlContent += `<p style="margin: 0 0 12pt 0;"><strong style="font-size:10pt;">Captura / Evidencia #${i + 1}:</strong><br><img src="${imgData}" style="max-width: 100%; height: auto; border: 1px solid #d1d5db; border-radius: 4px; margin-top:4px;" /></p>`;
+                        });
+                        htmlContent += `</div>`;
+                    }
+                    htmlContent += `</div>`;
+                } else {
+                    const contacto = remedyRedContacto?.value.trim() || '[Persona de Contacto]';
+                    const telefono = remedyRedTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '[Número de contacto]');
+                    const customerId = remedyRedCustomerId?.value.trim() || '[Customer ID]';
+                    const mac = remedyRedMac?.value.trim() || '[Dirección MAC Cable Módem]';
+                    const ip = remedyRedIp?.value.trim() || '[IP Pública(Cuál es mi IP)]';
+                    const paginas = remedyRedPaginas?.value.trim() || '[Páginas/Apps que no accede]';
+                    const redExterna = remedyRedRedExterna?.value.trim() || '[Desde que red puede acceder]';
+                    const cmtsOlt = remedyRedCmtsOlt?.value.trim() || '[CMTS/OLT]';
+                    const plano = remedyRedPlano?.value.trim() || '[Plano]';
+                    const descartes = remedyRedDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '[Descartes técnicos]');
+
+                    htmlContent = `<div style="font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1f2937; line-height: 1.5;">`;
+                    htmlContent += `<h3 style="color: #b91c1c; margin: 0 0 10pt 0;">ESCALAMIENTO A RED - PÁGINAS WEB / APPS BLOQUEADAS</h3>`;
+                    htmlContent += `<table style="width: 100%; border-collapse: collapse; margin-bottom: 12pt; font-size: 10.5pt;">`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold; width: 35%;">Persona de Contacto:</td><td style="padding: 4px 8px;">${contacto}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Número de contacto:</td><td style="padding: 4px 8px;">${telefono}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Customer ID:</td><td style="padding: 4px 8px;">${customerId}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Dirección MAC Cable Módem:</td><td style="padding: 4px 8px;">${mac}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">IP Pública(Cuál es mi IP):</td><td style="padding: 4px 8px;">${ip}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Páginas/Apps que no accede:</td><td style="padding: 4px 8px; color:#b91c1c; font-weight:bold;">${paginas}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Desde que red puede acceder:</td><td style="padding: 4px 8px;">${redExterna}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">CMTS/OLT:</td><td style="padding: 4px 8px;">${cmtsOlt}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Plano:</td><td style="padding: 4px 8px;">${plano}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Descartes del problema:</td><td style="padding: 4px 8px;">${descartes}</td></tr>`;
+                    htmlContent += `</table>`;
+
+                    htmlContent += `<p style="font-weight: bold; margin: 10pt 0 4pt 0;">Evidencias requeridas:</p>`;
+                    htmlContent += `<ul style="margin: 0 0 10pt 18pt; padding: 0;">`;
+                    htmlContent += `<li>Imagen del error con red CLARO</li>`;
+                    htmlContent += `<li>Imagen sin error con red diferente a CLARO</li>`;
+                    htmlContent += `<li>Ping desde la red de Claro</li>`;
+                    htmlContent += `<li>TracerTR desde la red de Claro</li>`;
+                    htmlContent += `<li>TracerTR desde la red diferente a Claro</li>`;
                     htmlContent += `</ul>`;
 
                     if (remedyImagesList.length > 0) {
                         htmlContent += `<div style="margin-top: 10pt;">`;
                         remedyImagesList.forEach((imgData, i) => {
-                            htmlContent += `<p style="margin: 0 0 12pt 0;"><strong style="font-size:10pt;">Captura #${i+1}:</strong><br><img src="${imgData}" style="max-width: 100%; height: auto; border: 1px solid #d1d5db; border-radius: 4px; margin-top:4px;" /></p>`;
+                            htmlContent += `<p style="margin: 0 0 12pt 0;"><strong style="font-size:10pt;">Captura / Evidencia #${i + 1}:</strong><br><img src="${imgData}" style="max-width: 100%; height: auto; border: 1px solid #d1d5db; border-radius: 4px; margin-top:4px;" /></p>`;
                         });
                         htmlContent += `</div>`;
                     }
                     htmlContent += `</div>`;
                 }
+            } else {
+                const falla = remedyInputFalla?.value.trim() || '[Descripción de la falla]';
+                const id = remedyInputId?.value.trim() || '[Customer ID]';
+                const dni = remedyInputDni?.value.trim() || '[DNI/RUC]';
+                const cliente = remedyInputCliente?.value.trim() || '[Nombre del Cliente]';
+                const detalle = remedyInputDetalle?.value.trim() || '';
 
-                try {
-                    if (navigator.clipboard && window.ClipboardItem) {
-                        const blobHtml = new Blob([htmlContent], { type: 'text/html' });
-                        const blobPlain = new Blob([plainText], { type: 'text/plain' });
-                        const item = new ClipboardItem({
-                            'text/html': blobHtml,
-                            'text/plain': blobPlain
-                        });
-                        await navigator.clipboard.write([item]);
-                        showToast('✓ Formato Word copiado con tablas e imágenes');
-                        addHistoryRecord('Remedy (Word)', 'Plantilla con Formato Word enriquecido', plainText);
-                    } else {
-                        copyToClipboard(plainText, 'Texto copiado (El navegador no soporta HTML enriquecido)');
-                    }
-                } catch (err) {
-                    console.error('Error copying rich text:', err);
-                    copyToClipboard(plainText, 'Texto copiado (Fallback)');
+                htmlContent = `<div style="font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1f2937; line-height: 1.5;">`;
+                htmlContent += `<p style="margin: 0 0 8pt 0;"><strong>FALLA:</strong> ${falla}</p>`;
+                htmlContent += `<ul style="margin: 0 0 12pt 18pt; padding: 0;">`;
+                htmlContent += `<li><strong>ID:</strong> ${id}</li>`;
+                htmlContent += `<li><strong>DNI:</strong> ${dni}</li>`;
+                htmlContent += `<li><strong>CLIENTE:</strong> ${cliente}</li>`;
+                if (detalle) {
+                    htmlContent += `<li>${detalle}</li>`;
                 }
-            });
-        }
+                htmlContent += `</ul>`;
 
-        // Action: Export to PDF with Printable Layout
-        if (btnExportRemedyPdf) {
-            btnExportRemedyPdf.addEventListener('click', () => {
-                let docTitle = 'Remedy_Incidencia';
-                let bodyContent = '';
-                const isIptv = isIptvActive();
-                const isTelefonia = isTelefoniaActive();
+                if (remedyImagesList.length > 0) {
+                    htmlContent += `<div style="margin-top: 10pt;">`;
+                    remedyImagesList.forEach((imgData, i) => {
+                        htmlContent += `<p style="margin: 0 0 12pt 0;"><strong style="font-size:10pt;">Captura #${i + 1}:</strong><br><img src="${imgData}" style="max-width: 100%; height: auto; border: 1px solid #d1d5db; border-radius: 4px; margin-top:4px;" /></p>`;
+                    });
+                    htmlContent += `</div>`;
+                }
+                htmlContent += `</div>`;
+            }
 
-                if (remedyActiveMode === 'red') {
-                    if (isTelefonia) {
-                        const contacto = remedyTelContacto?.value.trim() || 'N/A';
-                        const telefono = remedyTelTelefono?.value.trim() || (elements.genTelefono?.value.trim() || 'N/A');
-                        const customerId = remedyTelCustomerId?.value.trim() || (elements.genContactId?.value.trim() || 'N/A');
-                        const mac = remedyTelMac?.value.trim() || 'N/A';
-                        const plano = remedyTelPlano?.value.trim() || 'N/A';
-                        const cmtsOlt = remedyTelCmtsOlt?.value.trim() || 'N/A';
-                        const numeroTel = remedyTelNumeroTel?.value.trim() || (elements.genTelefono?.value.trim() || 'N/A');
-                        const plan = remedyTelPlan?.value.trim() || 'N/A';
-                        const problema = remedyTelProblema?.value.trim() || (elements.genProblema?.value.trim() || 'N/A');
-                        const descartes = remedyTelDescartes?.value.trim() || (elements.genDescartes?.value.trim() || 'N/A');
+            try {
+                if (navigator.clipboard && window.ClipboardItem) {
+                    const blobHtml = new Blob([htmlContent], { type: 'text/html' });
+                    const blobPlain = new Blob([plainText], { type: 'text/plain' });
+                    const item = new ClipboardItem({
+                        'text/html': blobHtml,
+                        'text/plain': blobPlain
+                    });
+                    await navigator.clipboard.write([item]);
+                    showToast('✓ Formato Word copiado con tablas e imágenes');
+                    addHistoryRecord('Remedy (Word)', 'Plantilla con Formato Word enriquecido', plainText);
+                } else {
+                    copyToClipboard(plainText, 'Texto copiado (El navegador no soporta HTML enriquecido)');
+                }
+            } catch (err) {
+                console.error('Error copying rich text:', err);
+                copyToClipboard(plainText, 'Texto copiado (Fallback)');
+            }
+        });
+    }
 
-                        docTitle = `Remedy_TELEFONIA_RED_${customerId}_${contacto.replace(/\s+/g, '_')}`;
+    // Action: Export to PDF with Printable Layout
+    if (btnExportRemedyPdf) {
+        btnExportRemedyPdf.addEventListener('click', () => {
+            let docTitle = 'Remedy_Incidencia';
+            let bodyContent = '';
+            const isIptv = isIptvActive();
+            const isTelefonia = isTelefoniaActive();
 
-                        bodyContent = `
+            if (remedyActiveMode === 'red') {
+                if (isTelefonia) {
+                    const contacto = remedyTelContacto?.value.trim() || 'N/A';
+                    const telefono = remedyTelTelefono?.value.trim() || (elements.genTelefono?.value.trim() || 'N/A');
+                    const customerId = remedyTelCustomerId?.value.trim() || 'N/A';
+                    const mac = remedyTelMac?.value.trim() || 'N/A';
+                    const plano = remedyTelPlano?.value.trim() || 'N/A';
+                    const cmtsOlt = remedyTelCmtsOlt?.value.trim() || 'N/A';
+                    const numeroTel = remedyTelNumeroTel?.value.trim() || (elements.genTelefono?.value.trim() || 'N/A');
+                    const plan = remedyTelPlan?.value.trim() || 'N/A';
+                    const problema = remedyTelProblema?.value.trim() || (elements.genProblema?.value.trim() || 'N/A');
+                    const descartes = remedyTelDescartes?.value.trim() || (elements.genDescartes?.value.trim() || 'N/A');
+
+                    docTitle = `Remedy_TELEFONIA_RED_${customerId}_${contacto.replace(/\s+/g, '_')}`;
+
+                    bodyContent = `
                             <div style="border-bottom: 2px solid #b91c1c; padding-bottom: 8px; margin-bottom: 16px;">
                                 <h2 style="color: #b91c1c; margin: 0; font-size: 14pt;">TELEFONÍA A RED</h2>
                                 <p style="margin: 4px 0 0 0; font-size: 9pt; color: #6b7280;">Informe Técnico de Escalamiento de Telefonía Fija &bull; Back Office 2N</p>
@@ -3933,20 +3959,20 @@ ${contactLines}`;
                                 `).join('')}
                             </div>
                         `;
-                    } else if (isIptv) {
-                        const contacto = remedyIptvContacto?.value.trim() || 'N/A';
-                        const telefono = remedyIptvTelefono?.value.trim() || (elements.genTelefono?.value.trim() || 'N/A');
-                        const customerId = remedyIptvCustomerId?.value.trim() || (elements.genContactId?.value.trim() || 'N/A');
-                        const plano = remedyIptvPlano?.value.trim() || 'N/A';
-                        const cantDecos = remedyIptvCantDecos?.value.trim() || 'N/A';
-                        const serieDecos = remedyIptvSerieDecos?.value.trim() || 'N/A';
-                        const canales = remedyIptvCanales?.value.trim() || 'N/A';
-                        const grilla = remedyIptvGrilla?.value.trim() || 'N/A';
-                        const descartes = remedyIptvDescartes?.value.trim() || (elements.genDescartes?.value.trim() || 'N/A');
+                } else if (isIptv) {
+                    const contacto = remedyIptvContacto?.value.trim() || 'N/A';
+                    const telefono = remedyIptvTelefono?.value.trim() || (elements.genTelefono?.value.trim() || 'N/A');
+                    const customerId = remedyIptvCustomerId?.value.trim() || 'N/A';
+                    const plano = remedyIptvPlano?.value.trim() || 'N/A';
+                    const cantDecos = remedyIptvCantDecos?.value.trim() || 'N/A';
+                    const serieDecos = remedyIptvSerieDecos?.value.trim() || 'N/A';
+                    const canales = remedyIptvCanales?.value.trim() || 'N/A';
+                    const grilla = remedyIptvGrilla?.value.trim() || 'N/A';
+                    const descartes = remedyIptvDescartes?.value.trim() || (elements.genDescartes?.value.trim() || 'N/A');
 
-                        docTitle = `Remedy_IPTV_Canales_${customerId}_${contacto.replace(/\s+/g, '_')}`;
+                    docTitle = `Remedy_IPTV_Canales_${customerId}_${contacto.replace(/\s+/g, '_')}`;
 
-                        bodyContent = `
+                    bodyContent = `
                             <div style="border-bottom: 2px solid #b91c1c; padding-bottom: 8px; margin-bottom: 16px;">
                                 <h2 style="color: #b91c1c; margin: 0; font-size: 14pt;">4. CANALES A RED</h2>
                                 <p style="margin: 4px 0 0 0; font-size: 9pt; color: #6b7280;">Informe Técnico de Escalamiento IPTV / Plataforma TV &bull; Back Office 2N</p>
@@ -3975,21 +4001,21 @@ ${contactLines}`;
                                 `).join('')}
                             </div>
                         `;
-                    } else {
-                        const contacto = remedyRedContacto?.value.trim() || 'N/A';
-                        const telefono = remedyRedTelefono?.value.trim() || (elements.genTelefono?.value.trim() || 'N/A');
-                        const customerId = remedyRedCustomerId?.value.trim() || (elements.genContactId?.value.trim() || 'N/A');
-                        const mac = remedyRedMac?.value.trim() || 'N/A';
-                        const ip = remedyRedIp?.value.trim() || 'N/A';
-                        const paginas = remedyRedPaginas?.value.trim() || 'N/A';
-                        const redExterna = remedyRedRedExterna?.value.trim() || 'N/A';
-                        const cmtsOlt = remedyRedCmtsOlt?.value.trim() || 'N/A';
-                        const plano = remedyRedPlano?.value.trim() || 'N/A';
-                        const descartes = remedyRedDescartes?.value.trim() || (elements.genDescartes?.value.trim() || 'N/A');
+                } else {
+                    const contacto = remedyRedContacto?.value.trim() || 'N/A';
+                    const telefono = remedyRedTelefono?.value.trim() || (elements.genTelefono?.value.trim() || 'N/A');
+                    const customerId = remedyRedCustomerId?.value.trim() || 'N/A';
+                    const mac = remedyRedMac?.value.trim() || 'N/A';
+                    const ip = remedyRedIp?.value.trim() || 'N/A';
+                    const paginas = remedyRedPaginas?.value.trim() || 'N/A';
+                    const redExterna = remedyRedRedExterna?.value.trim() || 'N/A';
+                    const cmtsOlt = remedyRedCmtsOlt?.value.trim() || 'N/A';
+                    const plano = remedyRedPlano?.value.trim() || 'N/A';
+                    const descartes = remedyRedDescartes?.value.trim() || (elements.genDescartes?.value.trim() || 'N/A');
 
-                        docTitle = `Remedy_RED_${customerId}_${contacto.replace(/\s+/g, '_')}`;
+                    docTitle = `Remedy_RED_${customerId}_${contacto.replace(/\s+/g, '_')}`;
 
-                        bodyContent = `
+                    bodyContent = `
                             <div style="border-bottom: 2px solid #b91c1c; padding-bottom: 8px; margin-bottom: 16px;">
                                 <h2 style="color: #b91c1c; margin: 0; font-size: 14pt;">ESCALAMIENTO A RED - PÁGINAS WEB / APPS BLOQUEADAS</h2>
                                 <p style="margin: 4px 0 0 0; font-size: 9pt; color: #6b7280;">Informe de Auditoría y Pruebas Técnicas &bull; Back Office 2N</p>
@@ -4028,17 +4054,17 @@ ${contactLines}`;
                                 `).join('')}
                             </div>
                         `;
-                    }
-                } else {
-                    const falla = remedyInputFalla?.value.trim() || 'Sin especificar';
-                    const id = remedyInputId?.value.trim() || 'N/A';
-                    const dni = remedyInputDni?.value.trim() || 'N/A';
-                    const cliente = remedyInputCliente?.value.trim() || 'N/A';
-                    const detalle = remedyInputDetalle?.value.trim() || '';
+                }
+            } else {
+                const falla = remedyInputFalla?.value.trim() || 'Sin especificar';
+                const id = remedyInputId?.value.trim() || 'N/A';
+                const dni = remedyInputDni?.value.trim() || 'N/A';
+                const cliente = remedyInputCliente?.value.trim() || 'N/A';
+                const detalle = remedyInputDetalle?.value.trim() || '';
 
-                    docTitle = `Remedy_${id}_${cliente.replace(/\s+/g, '_')}`;
+                docTitle = `Remedy_${id}_${cliente.replace(/\s+/g, '_')}`;
 
-                    bodyContent = `
+                bodyContent = `
                         <div class="falla-title"><strong>FALLA:</strong> ${falla}</div>
                         
                         <ul class="meta-list">
@@ -4052,9 +4078,9 @@ ${contactLines}`;
                             ${remedyImagesList.map(img => `<p style="margin: 0 0 16px 0; text-align:center;"><img class="evidence-img" src="${img}" alt="Evidencia Remedy" /></p>`).join('')}
                         </div>
                     `;
-                }
+            }
 
-                const html = `<!DOCTYPE html>
+            const html = `<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -4107,84 +4133,100 @@ ${contactLines}`;
 </head>
 <body>
     ${bodyContent}
-    <script>
-        window.onload = function() {
-            setTimeout(function() {
-                window.print();
-            }, 300);
-        };
-    </script>
 </body>
 </html>`;
 
-                printWindow.document.open();
-                printWindow.document.write(html);
-                printWindow.document.close();
-                showToast('Generando vista de impresión PDF...');
-                addHistoryRecord('Remedy', remedyActiveMode === 'red' ? 'PDF Escalamiento RED' : 'PDF Escalamiento General', `Doc: ${docTitle}`);
-            });
-        }
+            // Generar mediante un iframe invisible para evitar abrir ventanas/pestañas adicionales en blanco
+            const printIframe = document.createElement('iframe');
+            printIframe.style.position = 'fixed';
+            printIframe.style.right = '0';
+            printIframe.style.bottom = '0';
+            printIframe.style.width = '0';
+            printIframe.style.height = '0';
+            printIframe.style.border = '0';
+            printIframe.style.visibility = 'hidden';
+            document.body.appendChild(printIframe);
 
-        // Setup Beta Info Popover
-        const btnBetaInfo = document.getElementById('btnBetaInfo');
-        const betaInfoPopover = document.getElementById('betaInfoPopover');
-        const btnCloseBetaInfoPopover = document.getElementById('btnCloseBetaInfoPopover');
+            const iframeDoc = printIframe.contentWindow.document;
+            iframeDoc.open();
+            iframeDoc.write(html);
+            iframeDoc.close();
 
-        if (btnBetaInfo && betaInfoPopover) {
-            btnBetaInfo.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                if (betaEquiposPopover) betaEquiposPopover.classList.remove('active');
-                betaInfoPopover.classList.toggle('active');
-            });
-        }
-        if (btnCloseBetaInfoPopover && betaInfoPopover) {
-            btnCloseBetaInfoPopover.addEventListener('click', (e) => {
-                e.stopPropagation();
-                betaInfoPopover.classList.remove('active');
-            });
-        }
+            setTimeout(() => {
+                printIframe.contentWindow.focus();
+                printIframe.contentWindow.print();
+                setTimeout(() => {
+                    if (printIframe.parentNode) {
+                        document.body.removeChild(printIframe);
+                    }
+                }, 2000);
+            }, 350);
 
-        // Setup Beta Equipos Popover
-        const btnBetaEquipos = document.getElementById('btnBetaEquipos');
-        const betaEquiposPopover = document.getElementById('betaEquiposPopover');
-        const btnCloseBetaEquiposPopover = document.getElementById('btnCloseBetaEquiposPopover');
-
-        if (btnBetaEquipos && betaEquiposPopover) {
-            btnBetaEquipos.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                if (betaInfoPopover) betaInfoPopover.classList.remove('active');
-                betaEquiposPopover.classList.toggle('active');
-            });
-        }
-        if (btnCloseBetaEquiposPopover && betaEquiposPopover) {
-            btnCloseBetaEquiposPopover.addEventListener('click', (e) => {
-                e.stopPropagation();
-                betaEquiposPopover.classList.remove('active');
-            });
-        }
-
-        // Click outside listener for Popovers
-        document.addEventListener('click', (e) => {
-            if (betaInfoPopover && betaInfoPopover.classList.contains('active')) {
-                const isInsideBetaInfo = e.target.closest('#betaInfoPopover') || 
-                                         e.target.closest('#btnBetaInfo') || 
-                                         e.target.closest('#btnPredictCategory');
-                if (!isInsideBetaInfo) {
-                    betaInfoPopover.classList.remove('active');
-                }
-            }
-
-            if (betaEquiposPopover && betaEquiposPopover.classList.contains('active')) {
-                const isInsideBetaEquipos = e.target.closest('#betaEquiposPopover') || 
-                                            e.target.closest('#btnBetaEquipos') || 
-                                            e.target.closest('#eqSearchInput');
-                if (!isInsideBetaEquipos) {
-                    betaEquiposPopover.classList.remove('active');
-                }
-            }
+            showToast('Generando vista de impresión PDF...');
+            addHistoryRecord('Remedy', remedyActiveMode === 'red' ? 'PDF Escalamiento RED' : 'PDF Escalamiento General', `Doc: ${docTitle}`);
         });
+    }
+
+    // Setup Beta Info Popover
+    const btnBetaInfo = document.getElementById('btnBetaInfo');
+    const betaInfoPopover = document.getElementById('betaInfoPopover');
+    const btnCloseBetaInfoPopover = document.getElementById('btnCloseBetaInfoPopover');
+
+    if (btnBetaInfo && betaInfoPopover) {
+        btnBetaInfo.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (betaEquiposPopover) betaEquiposPopover.classList.remove('active');
+            betaInfoPopover.classList.toggle('active');
+        });
+    }
+    if (btnCloseBetaInfoPopover && betaInfoPopover) {
+        btnCloseBetaInfoPopover.addEventListener('click', (e) => {
+            e.stopPropagation();
+            betaInfoPopover.classList.remove('active');
+        });
+    }
+
+    // Setup Beta Equipos Popover
+    const btnBetaEquipos = document.getElementById('btnBetaEquipos');
+    const betaEquiposPopover = document.getElementById('betaEquiposPopover');
+    const btnCloseBetaEquiposPopover = document.getElementById('btnCloseBetaEquiposPopover');
+
+    if (btnBetaEquipos && betaEquiposPopover) {
+        btnBetaEquipos.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (betaInfoPopover) betaInfoPopover.classList.remove('active');
+            betaEquiposPopover.classList.toggle('active');
+        });
+    }
+    if (btnCloseBetaEquiposPopover && betaEquiposPopover) {
+        btnCloseBetaEquiposPopover.addEventListener('click', (e) => {
+            e.stopPropagation();
+            betaEquiposPopover.classList.remove('active');
+        });
+    }
+
+    // Click outside listener for Popovers
+    document.addEventListener('click', (e) => {
+        if (betaInfoPopover && betaInfoPopover.classList.contains('active')) {
+            const isInsideBetaInfo = e.target.closest('#betaInfoPopover') ||
+                e.target.closest('#btnBetaInfo') ||
+                e.target.closest('#btnPredictCategory');
+            if (!isInsideBetaInfo) {
+                betaInfoPopover.classList.remove('active');
+            }
+        }
+
+        if (betaEquiposPopover && betaEquiposPopover.classList.contains('active')) {
+            const isInsideBetaEquipos = e.target.closest('#betaEquiposPopover') ||
+                e.target.closest('#btnBetaEquipos') ||
+                e.target.closest('#eqSearchInput');
+            if (!isInsideBetaEquipos) {
+                betaEquiposPopover.classList.remove('active');
+            }
+        }
+    });
 
     function openTemplateModal(tmplId = null) {
         if (tmplId) {
@@ -4309,16 +4351,16 @@ ${contactLines}`;
 
         const jsonString = JSON.stringify(backupData, null, 2);
         const dataStr = "data:text/plain;charset=utf-8," + encodeURIComponent(jsonString);
-        
+
         const a = document.createElement('a');
         a.href = dataStr;
         a.download = `plantillas_bo_backup_${new Date().toISOString().split('T')[0]}.txt`;
         a.style.display = 'none';
-        
+
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        
+
         showToast('Respaldo descargado como .txt');
     });
 
@@ -4401,7 +4443,7 @@ ${contactLines}`;
             { id: 'lnk_remotedesktop', name: 'Escritorio Remoto (RDP)', url: '172.29.0.101', category: 'Internet & Diagnóstico', icon: '🖥️', isQuick: true, isRdpInfo: true },
             { id: 'lnk_tracer', name: 'Tracer', url: 'http://172.19.112.62/generador/', category: 'Internet & Diagnóstico', icon: '📈', isQuick: true },
             { id: 'lnk_tracerplano', name: 'Tracer - Cliente por Plano', url: 'http://172.19.112.62/generador/hfc/ConexionesPlano', category: 'Internet & Diagnóstico', icon: '🗺️', isQuick: true },
-            
+
             { id: 'lnk_remedy_helix', name: 'BMC Helix (Smart IT)', url: 'https://clarop-smartit.claro.pe/smartit/app/#/ticket-consoleStudio', category: 'Sistemas & Gestión', icon: '🛠️', isQuick: true },
             { id: 'lnk_remedy_dwp', name: 'Remedy (DWP)', url: 'https://clarop-dwp.claro.pe/dwp/app/#/activity/events/details', category: 'Sistemas & Gestión', icon: '📋', isQuick: true },
             { id: 'lnk_linktrabajo', name: 'Link de Trabajo', url: 'https://forms.cloud.microsoft/pages/responsepage.aspx?id=CkbVXyW03kmb0PzSYnDTDItamkezRqRIvBJVVnC0d0pUQkEyRTRHM1dWOFNTMTAzUEI0ODQySThXVi4u&route=shorturl', category: 'Sistemas & Gestión', icon: '📝', isQuick: true },
@@ -4440,10 +4482,10 @@ ${contactLines}`;
         const openBtn = document.getElementById('btnOpenLinksSidebar');
         const closeBtn = document.getElementById('btnCloseLinksSidebar');
         const searchInput = document.getElementById('sidebarLinkSearch');
-        
+
         const quickGrid = document.getElementById('sidebarQuickLinks');
         const fullContainer = document.getElementById('sidebarFullLinksContainer');
-        
+
         const addBtn = document.getElementById('btnAddCustomLinkBtn');
         const addForm = document.getElementById('addCustomLinkForm');
         const cancelAddBtn = document.getElementById('btnCancelAddLink');
@@ -4463,7 +4505,7 @@ ${contactLines}`;
         function openRdpInfoModal(ip = '172.29.0.101') {
             if (rdpModalDisplayIp) rdpModalDisplayIp.textContent = ip;
             if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(ip).catch(() => {});
+                navigator.clipboard.writeText(ip).catch(() => { });
             }
             if (rdpInfoModal) rdpInfoModal.classList.add('active');
             showToast(`🖥️ IP ${ip} copiada al portapapeles`, 'info');
@@ -4577,7 +4619,7 @@ ${contactLines}`;
 
                 workLinks.push(newLink);
                 localStorage.setItem('bo_work_links', JSON.stringify(workLinks));
-                
+
                 newNameInput.value = '';
                 newUrlInput.value = '';
                 if (addForm) addForm.style.display = 'none';
@@ -4608,7 +4650,7 @@ ${contactLines}`;
         function renderSidebarLinks() {
             const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
 
-            const filtered = workLinks.filter(l => 
+            const filtered = workLinks.filter(l =>
                 l.name.toLowerCase().includes(query) ||
                 l.category.toLowerCase().includes(query) ||
                 l.url.toLowerCase().includes(query)
@@ -4618,14 +4660,14 @@ ${contactLines}`;
             if (quickGrid) {
                 quickGrid.innerHTML = '';
                 const quickList = filtered.filter(l => l.isQuick);
-                
+
                 if (quickList.length === 0) {
                     quickGrid.innerHTML = '<div style="font-size:0.78rem; color:var(--text-muted); grid-column:1/-1;">No hay accesos rápidos marcados.</div>';
                 } else {
                     quickList.forEach(lnk => {
                         const card = document.createElement('a');
                         card.className = 'quick-link-card';
-                        
+
                         if (lnk.isRdpInfo) {
                             card.href = '#';
                             card.title = `Escritorio Remoto (${lnk.url})\nClic para ver datos de acceso y copiar`;
@@ -4655,7 +4697,7 @@ ${contactLines}`;
             // 2. Render Catálogo Completo por Categorías
             if (fullContainer) {
                 fullContainer.innerHTML = '';
-                
+
                 if (filtered.length === 0) {
                     fullContainer.innerHTML = '<div style="font-size:0.85rem; color:var(--text-muted); padding:1rem 0;">No se encontraron enlaces con ese término.</div>';
                     return;
