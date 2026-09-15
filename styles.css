@@ -622,16 +622,18 @@ body {
   color: #4DD0E1;
 }
 
-.ciclo-indicator-dot {
+.ciclo-indicator-dot,
+.template-indicator-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
   background-color: #94a3b8;
   display: inline-block;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.btn-toggle-ciclo.active .ciclo-indicator-dot {
+.btn-toggle-ciclo.active .ciclo-indicator-dot,
+.btn-toggle-ciclo.active .template-indicator-dot {
   background-color: #00ACC1;
   box-shadow: 0 0 6px #00ACC1;
 }

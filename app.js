@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         customTemplates: JSON.parse(localStorage.getItem('bo_custom_templates') || '[]'),
         history: JSON.parse(localStorage.getItem('bo_history') || '[]'),
         activeTab: 'tab-generator',
+        siacTemplateMode: localStorage.getItem('bo_siac_template_mode') || 'wsp',
         cicloOverride: null,
         callIds: new Set(),
         chatIds: new Set()
@@ -92,6 +93,8 @@ document.addEventListener('DOMContentLoaded', () => {
         btnPredictCategory: document.getElementById('btnPredictCategory'),
 
         titleSiacCard: document.getElementById('titleSiacCard'),
+        btnToggleSiacMode: document.getElementById('btnToggleSiacMode'),
+        labelSiacMode: document.getElementById('labelSiacMode'),
         btnToggleCiclo: document.getElementById('btnToggleCiclo'),
         labelCicloToggle: document.getElementById('labelCicloToggle'),
         previewSiac: document.getElementById('previewSiac'),
@@ -1566,6 +1569,45 @@ document.addEventListener('DOMContentLoaded', () => {
         return prefix + items[0] + (items.length > 1 ? '\n' + items.slice(1).map(l => indent + l).join('\n') : '');
     }
 
+    function formatDescartesLinesWsp(rawText) {
+        if (!rawText || !rawText.trim()) return 'DESCARTES REALIZADOS: N/A';
+
+        // Separar tanto por saltos de línea como por comas y punto y coma
+        const items = rawText.split(/[\r\n,;]+/)
+            .map(s => s.trim())
+            .filter(s => s.length > 0)
+            .map(s => {
+                let clean = s.replace(/^[-*•\d.)\]]\s*/, '').trim();
+                if (!clean) return '';
+                return clean.charAt(0).toUpperCase() + clean.slice(1);
+            })
+            .filter(s => s.length > 0);
+
+        if (items.length === 0) return 'DESCARTES REALIZADOS: N/A';
+
+        const prefix = 'DESCARTES REALIZADOS: ';
+        const indent = '                      '; // 22 espacios para alinear bajo el primer descarte
+
+        return prefix + items[0] + (items.length > 1 ? '\n' + items.slice(1).map(l => indent + l).join('\n') : '');
+    }
+
+    function formatDescarteWspCiclo(rawText) {
+        if (!rawText || !rawText.trim() || rawText.trim().toUpperCase() === 'N/A') {
+            return 'DECARTE: NO RESPONDE N°XX DE LLAMADA';
+        }
+        let clean = rawText.replace(/^(DECARTE|DESCARTE|DESCARTES REALIZADOS)\s*:\s*/i, '').trim();
+        const items = clean.split(/[\r\n,;]+/)
+            .map(s => s.trim())
+            .filter(s => s.length > 0)
+            .map(s => s.replace(/^[-*•\d.)\]]\s*/, '').trim())
+            .filter(s => s.length > 0);
+        if (items.length === 0) return 'DECARTE: NO RESPONDE N°XX DE LLAMADA';
+        if (items.length === 1) return `DECARTE: ${items[0]}`;
+        const prefix = 'DECARTE: ';
+        const indent = '         '; // 9 espacios para alinear bajo el primer descarte
+        return prefix + items[0] + '\n' + items.slice(1).map(l => indent + l).join('\n');
+    }
+
     function getFormattedContactLines() {
         const all = [];
         if (state.callIds.size > 0) {
@@ -1596,15 +1638,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const rawDescartesInput = (elements.genDescartes ? elements.genDescartes.value : '').trim();
         const correctedDescartes = rawDescartesInput ? autoCorrectText(rawDescartesInput, false) : '';
         const descartesFormatted = formatDescartesLines(correctedDescartes);
+        const descartesFormattedWsp = formatDescartesLinesWsp(correctedDescartes);
         const tagsStr = state.selectedHashtags.size > 0 ? Array.from(state.selectedHashtags).join(' ') : 'N/A';
 
         const contactLines = getFormattedContactLines();
 
+        const isWsp = state.siacTemplateMode === 'wsp';
         const isAutoCiclo = rawDescartesInput ? checkIsCiclo(rawDescartesInput) : false;
         const isCiclo = state.cicloOverride !== null ? state.cicloOverride : isAutoCiclo;
 
-        // Actualizar UI del Switch / Badge de Ciclo
+        // Actualizar UI del Switch de Plantilla (Estándar vs Oficial Cliente Claro)
+        if (elements.btnToggleSiacMode && elements.labelSiacMode) {
+            elements.labelSiacMode.textContent = isWsp ? 'Oficial Cliente Claro' : 'Estándar';
+            elements.btnToggleSiacMode.classList.remove('active');
+        }
+
+        // Actualizar UI del Switch / Badge de Ciclo (siempre disponible para alternar manualmente)
         if (elements.btnToggleCiclo && elements.labelCicloToggle) {
+            elements.btnToggleCiclo.style.display = 'inline-flex';
             if (state.cicloOverride !== null) {
                 elements.labelCicloToggle.textContent = state.cicloOverride ? 'Ciclo: Manual ON' : 'Ciclo: Manual OFF';
             } else {
@@ -1672,29 +1723,54 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const sotRaw = (elements.genSot.value || '').trim();
         const sotSiacLine = (sotRaw && sotRaw.toUpperCase() !== 'N/A') ? `\nSOT / REMEDY: ${sotRaw}` : '';
+        const contactIdVal = (Array.from(state.callIds).concat(Array.from(state.chatIds)).join(' / ') || (elements.genContactId ? elements.genContactId.value.trim() : '') || 'N/A');
 
-        // Template SIAC (Standard or Ciclo de Llamada)
-        let siacText = '';
-        if (isCiclo) {
+        // Template SIAC (Standard, Ciclo de Llamada, 1era LLAMADA + WSP, o Rellamadas Ciclo)
+        let siacTextDisplay = '';
+        let siacTextCopy = '';
+
+        if (isWsp) {
+            if (isCiclo) {
+                const descarteWspCiclo = formatDescarteWspCiclo(correctedDescartes);
+                const baseBody = `BACKOFFICE HITSS - CICLO DE LLAMADA
+TELEFONO: ${telefono}
+${descarteWspCiclo}${sotSiacLine}
+ID DE LLAMADA: ${contactIdVal}`;
+
+                siacTextDisplay = `RELLAMADAS CADA 2 HORAS\n${baseBody}`;
+                siacTextCopy = baseBody;
+            } else {
+                const baseBody = `BACKOFFICE HITSS
+TELEFONO: ${telefono}
+PROBLEMA DETECTADO: ${cleanProblema}
+${descartesFormattedWsp}
+SOLUCION: ${solucion}${sotSiacLine}
+ID DE LLAMADA: ${contactIdVal}`;
+
+                siacTextDisplay = `1era LLAMADA + WSP\n${baseBody}`;
+                siacTextCopy = baseBody;
+            }
+        } else if (isCiclo) {
             const solucionCicloLine = (solucion && solucion !== 'N/A' && solucion.trim() !== '') ? `\nSolución: ${solucion}` : '';
-            siacText = `BACK OFFICE 2N HITSS - CICLO DE LLAMADA:
+            siacTextDisplay = `BACK OFFICE 2N HITSS - CICLO DE LLAMADA:
 ************************
 Teléfono: ${telefono}
 ${descartesFormatted}${solucionCicloLine}${sotSiacLine}
 ${contactLines}`;
+            siacTextCopy = siacTextDisplay;
         } else {
-            siacText = `BACK OFFICE 2N HITSS:
+            siacTextDisplay = `BACK OFFICE 2N HITSS:
 ************************
 Teléfono: ${telefono}
 Problema: ${cleanProblema}
 ${descartesFormatted}
 Solución: ${solucion}${sotSiacLine}
 ${contactLines}`;
+            siacTextCopy = siacTextDisplay;
         }
 
         // Template Mantenimiento (MANTO) - Formato de Plataforma para Técnicos
         const rawDescartesManto = rawDescartesInput ? autoCorrectText(rawDescartesInput, false) : 'N/A';
-        const contactIdVal = (Array.from(state.callIds).concat(Array.from(state.chatIds)).join(' / ') || (elements.genContactId ? elements.genContactId.value.trim() : '') || 'N/A');
 
         let tagManto = '';
         if (state.selectedHashtags.size > 0) {
@@ -1715,14 +1791,21 @@ ${contactLines}`;
 
         const mantoText = mantoLines.join('\n');
 
-        if (elements.previewSiac) elements.previewSiac.textContent = siacText;
-        if (elements.previewManto) elements.previewManto.textContent = mantoText;
+        if (elements.previewSiac) {
+            elements.previewSiac.textContent = siacTextDisplay;
+            elements.previewSiac.dataset.copyText = siacTextCopy;
+        }
+        if (elements.previewManto) {
+            elements.previewManto.textContent = mantoText;
+            elements.previewManto.dataset.copyText = mantoText;
+        }
     }
 
     function validateTemplateRequirements() {
         const rawDescartes = (elements.genDescartes ? elements.genDescartes.value : '');
         const isAutoCiclo = checkIsCiclo(rawDescartes);
         const isCiclo = state.cicloOverride !== null ? state.cicloOverride : isAutoCiclo;
+        const isWsp = state.siacTemplateMode === 'wsp';
 
         const missingFieldNames = [];
         const missingElements = [];
@@ -1744,10 +1827,12 @@ ${contactLines}`;
         }
 
         // 3. Descartes Realizados / Intento de Ciclo
-        const descartes = (elements.genDescartes ? elements.genDescartes.value : '').trim();
-        if (!descartes || descartes.toUpperCase() === 'N/A' || descartes.length < 3) {
-            missingFieldNames.push(isCiclo ? 'Intento de Ciclo de Llamada' : 'Descartes Realizados (Mín. 1)');
-            if (elements.genDescartes) missingElements.push(elements.genDescartes);
+        if (!(isWsp && isCiclo)) {
+            const descartes = (elements.genDescartes ? elements.genDescartes.value : '').trim();
+            if (!descartes || descartes.toUpperCase() === 'N/A' || descartes.length < 3) {
+                missingFieldNames.push(isCiclo ? 'Intento de Ciclo de Llamada' : 'Descartes Realizados (Mín. 1)');
+                if (elements.genDescartes) missingElements.push(elements.genDescartes);
+            }
         }
 
         return {
@@ -1790,9 +1875,20 @@ ${contactLines}`;
             return false;
         }
 
-        copyToClipboard(previewElement.textContent, successMsg);
-        addHistoryRecord(logType, elements.genServicio.value, previewElement.textContent);
+        const textToCopy = previewElement.dataset.copyText || previewElement.textContent;
+        copyToClipboard(textToCopy, successMsg);
+        addHistoryRecord(logType, elements.genServicio.value, textToCopy);
         return true;
+    }
+
+    // Toggle entre Formatos de Plantilla (Estándar vs Oficial Cliente Claro)
+    if (elements.btnToggleSiacMode) {
+        elements.btnToggleSiacMode.addEventListener('click', () => {
+            state.siacTemplateMode = state.siacTemplateMode === 'wsp' ? 'standard' : 'wsp';
+            localStorage.setItem('bo_siac_template_mode', state.siacTemplateMode);
+            showToast(state.siacTemplateMode === 'wsp' ? 'Formato cambiado a: Oficial Cliente Claro' : 'Formato cambiado a: SIAC Estándar', 'info');
+            renderGeneratorPreviews();
+        });
     }
 
     // Toggle manual para Modo Ciclo
@@ -1813,10 +1909,25 @@ ${contactLines}`;
     // Copy Buttons for Generator con Validación Estricta
     if (elements.btnCopySiac) {
         elements.btnCopySiac.addEventListener('click', () => {
+            const isWsp = state.siacTemplateMode === 'wsp';
             const isAutoCiclo = checkIsCiclo(elements.genDescartes.value || '');
             const isCiclo = state.cicloOverride !== null ? state.cicloOverride : isAutoCiclo;
-            const msg = isCiclo ? 'Plantilla Ciclo de Llamada copiada' : 'Plantilla SIAC/SGA copiada';
-            const logType = isCiclo ? 'Generador Ciclo' : 'Generador SIAC';
+
+            let msg = 'Plantilla SIAC/SGA copiada';
+            let logType = 'Generador SIAC';
+
+            if (isWsp) {
+                if (isCiclo) {
+                    msg = 'Plantilla Oficial Claro (Rellamadas) copiada';
+                    logType = 'Generador Oficial Ciclo';
+                } else {
+                    msg = 'Plantilla Oficial Cliente Claro copiada';
+                    logType = 'Generador Oficial Claro';
+                }
+            } else if (isCiclo) {
+                msg = 'Plantilla Ciclo de Llamada copiada';
+                logType = 'Generador Ciclo';
+            }
 
             executeCopyTemplate(elements.previewSiac, msg, logType);
         });

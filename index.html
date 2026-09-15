@@ -13,7 +13,7 @@
     <header class="app-header">
         <div class="brand">
             <div>
-                <div class="brand-title">WORKSTATION BACKOFFICE <span id="btnChangelog" style="display: inline-flex; align-items: center; border-radius: 4px; overflow: hidden; vertical-align: middle; margin-left: 0.5rem; font-size: 0.55em; letter-spacing: normal; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.2</span></span></div>
+                <div class="brand-title">WORKSTATION BACKOFFICE <span id="btnChangelog" style="display: inline-flex; align-items: center; border-radius: 4px; overflow: hidden; vertical-align: middle; margin-left: 0.5rem; font-size: 0.55em; letter-spacing: normal; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.3</span></span></div>
                 <div class="brand-subtitle">PLATAFORMA LOCAL DE PLANTILLAS Y SEGUIMIENTO PARA BO-FIJA</div>
             </div>
         </div>
@@ -189,9 +189,13 @@
                 <div class="preview-sticky-col">
                     <!-- Preview SIAC / Helix / Ciclo -->
                     <div class="card">
-                        <div class="card-title">
+                        <div class="card-title" style="flex-wrap: wrap; gap: 0.5rem;">
                             <div class="card-title-text" id="titleSiacCard">Plantilla SIAC / Helix</div>
-                            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <div style="display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap;">
+                                <button type="button" id="btnToggleSiacMode" class="btn-toggle-ciclo" title="Cambiar formato de plantilla (Estándar vs Oficial Cliente Claro)">
+                                    <span class="template-indicator-dot"></span>
+                                    <span id="labelSiacMode">Oficial Cliente Claro</span>
+                                </button>
                                 <button type="button" id="btnToggleCiclo" class="btn-toggle-ciclo" title="Alternar formato normal o ciclo de llamada">
                                     <span class="ciclo-indicator-dot"></span>
                                     <span id="labelCicloToggle">Ciclo: Auto</span>
@@ -625,20 +629,20 @@
     <div id="changelogModal" class="modal-overlay">
         <div class="modal-content" style="max-width: 640px;">
             <div class="card-title">
-                <div class="card-title-text">🚀 Novedades de la Versión 2.2</div>
+                <div class="card-title-text">🚀 Novedades de la Versión 2.3</div>
                 <button id="changelogModalClose" class="btn btn-sm">✕</button>
             </div>
             <div style="font-size: 0.92rem; line-height: 1.55; color: var(--text-main); margin-top: 1rem;">
                 <ul style="padding-left: 1.3rem; margin-bottom: 1.3rem; display: flex; flex-direction: column; gap: 0.65rem;">
-                    <li><strong>📄 Exportación PDF Remedy Mejorada (Impresión Limpia sin Popups):</strong> Se optimizó la exportación a PDF y Word para escalamientos de Remedy utilizando un iframe de impresión silencioso que evita bloqueos de ventanas emergentes en el navegador y preserva el formato estructurado con capturas fotográficas.</li>
-                    <li><strong>🧠 Smart Case Parser Refinado (INCOGNITO & Chat IDs):</strong> Algoritmo de extracción de texto perfeccionado: se previenen falsos positivos de SOTs al detectar palabras de plataformas como <code>INCOGNITO</code>, se corrigen duplicaciones de barras separadoras (<code>//</code>) en IDs de llamadas y se independiza la captura de Customer ID en Remedy.</li>
-                    <li><strong>✨ Experiencia Visual & División Limpia en 2 Columnas:</strong> Eliminación de la barra de scroll tosca del sistema en el centro de la pantalla (<code>scrollbar-width: none</code>) mientras se mantiene el desplazamiento fluido con la rueda del mouse, junto con una división vertical sutil y scrollbars globales minimalistas adaptados al modo oscuro y claro.</li>
-                    <li><strong>⚡ Filtro Inteligente Customer Service Cloud (Huawei/AICC):</strong> Distribución instantánea de teléfono e ID de llamada al pegar bloques estructurados desde las plataformas de atención.</li>
-                    <li><strong>✍️ Selector de Problemas Editable:</strong> Búsqueda en tiempo real y escritura libre en la descripción del problema con selección rápida.</li>
-                    <li><strong>📋 Plantillas Personalizadas con Auto-SOT Dinámico:</strong> Inserción en vivo de la variable <code>{sot}</code> del caso activo en plantillas de WhatsApp y Visitas Técnicas.</li>
+                    <li><strong>📱 Nueva Plantilla Oficial Cliente Claro (Por Defecto):</strong> Incorporación del nuevo formato oficial homologado para Claro (<code>BACKOFFICE HITSS / TELEFONO / PROBLEMA DETECTADO / DESCARTES REALIZADOS / SOLUCION / ID DE LLAMADA</code>), optimizado como formato estándar de inicio.</li>
+                    <li><strong>🔄 Conmutador de Plantillas Integrado y Uniforme:</strong> Botón selector minimalista en la cabecera de la tarjeta SIAC/Helix que permite alternar instantáneamente entre la plantilla <code>Oficial Cliente Claro</code> y la plantilla <code>Estándar</code> con diseño visual 100% homogéneo.</li>
+                    <li><strong>📞 Modo Rellamadas / Ciclo de Llamada Oficial:</strong> Integración del protocolo de ciclo adaptado para la plantilla oficial (<code>RELLAMADAS CADA 2 HORAS / BACKOFFICE HITSS - CICLO DE LLAMADA / DECARTE: NO RESPONDE N°XX DE LLAMADA</code>) activable con el conmutador manual de ciclo.</li>
+                    <li><strong>📋 Copiado Inteligente sin Encabezados:</strong> La vista previa muestra el título identificativo en pantalla pero, al hacer clic en <em>Copiar</em>, omite la primera línea para pegar directamente el cuerpo limpio en los sistemas de gestión.</li>
+                    <li><strong>📄 Exportación PDF Remedy Mejorada:</strong> Impresión limpia sin popups ni bloqueos del navegador para escalamientos con capturas fotográficas.</li>
+                    <li><strong>🧠 Smart Case Parser:</strong> Extracción precisa de SOTs y IDs de llamadas sin falsos positivos de plataformas ni duplicación de caracteres.</li>
                 </ul>
                 <p style="color: var(--text-muted); font-size: 0.82rem; border-top: 1px dashed var(--border-color); padding-top: 0.8rem; text-align: center;">
-                    ¡WorkStation BackOffice v2.2 optimizado para máxima velocidad, precisión técnica y ergonomía operativa!
+                    ¡WorkStation BackOffice v2.3 optimizado para máxima velocidad, precisión técnica y ergonomía operativa!
                 </p>
             </div>
         </div>
