@@ -737,6 +737,90 @@ const equiposClaro = Object.keys(modelosData).map(key => ({
     credenciales: modelosData[key].credenciales || ''
 }));
 
+if (typeof BO_DATASET !== 'undefined') {
+    if (BO_DATASET.problemsByService) {
+        BO_DATASET.problemsByService['CLARO VIDEO'] = BO_DATASET.problemsByService['APPS'];
+    }
+    
+    BO_DATASET.predictiveCorpus = {
+        descartes: [
+            "Se valida consumo en Tracer y sin flags alarmados",
+            "Se valida sin consumo en tracer y con flag alarmado",
+            "Se valida consumo en Tracer y con flag de alerta de corte de energia activo",
+            "Se valida consumo minimo en Tracer y sin flags alarmados",
+            "Se valida consumo en Tracer y se valida que cliente apaga su equipo por las noches",
+            "Se valida provisión y online en Incógnito",
+            "Se valida sin provisión / offline en Incógnito",
+            "Se valida provisión y online en Incógnito sin ipes",
+            "Se valida Incógnito con status dying gasp",
+            "Se valida Incógnito provisionado con niveles fuera de rango y en status los",
+            "Se valida provisión y estado de telefonía en Incógnito",
+            "Se valida Dashboard OK",
+            "Se valida dashboard con online en naranja",
+            "Se valida Dashboard con bandas separadas",
+            "Se valida bandas unificadas",
+            "Se valida TR69 todo OK",
+            "Se valida TR69 con canales saturados",
+            "Se valida Schaman sin alertas",
+            "Se valida Schaman con alerta de",
+            "Se valida cliente Plume",
+            "Se valida en Plume extensores desconectados y firmware desactualizado",
+            "Se valida datos de SOT e historial en SGA",
+            "Se valida provisión incorrecta en SGA",
+            "Se valida registro en IMS / CBIO OK",
+            "Se valida tono de discado y tráfico de llamadas OK",
+            "Se valida parámetros y estado OK en Skyway",
+            "Se valida métricas y reproducción OK en Youbora",
+            "Se valida usuario y suscripción activa en Base Perú / México",
+            "Se valida provisión y cuenta activa en AMCO",
+            "Se reinicia desde Incógnito",
+            "Se reinicia equipo físicamente",
+            "Se hace reboot y resync desde dashboard",
+            "Se hace reinicio de fábrica desde Escritorio Remoto",
+            "Se realiza alta y baja",
+            "Se realizan descartes físicos",
+            "Prueba de velocidad",
+            "Se ejecuta NCPA.CPL para validar tarjeta de red de cliente",
+            "Se valida tarjeta de red de 100mps.",
+            "Se trata de ingresar al remoto",
+            "Sin luz roja de los Y sin ipes",
+            "Se genera SOT de mtto",
+            "Se valida cliente por plano se valida que cliente pudo estar en averia",
+            "Se valida que cliente cuenta con 2 repetidores de terceros",
+            "Se le educa sobre los repetidores externos y los problemas que suelen causar",
+            "Cliente indica que cuenta con cámaras, se le indica adquirir un repetidor",
+            "Se logra contacto con cliente",
+            "Cliente indica que el servicio ya esta bien y no tiene lentitud",
+            "Cliente indica que el problema esta solucionado",
+            "Cliente no se encuentra en su domicilio se le envia mensaje por live chat para que lo presione cuando tenga disponibilidad",
+            "Cliente contesta live chat",
+            "Se le envía mensaje por live chat y se le indica presionarlo cuando tenga la disponibilidad",
+            "Se le envia mensaje antes de llamarlo",
+            "Cliente no contesta llamada",
+            "Se cierra chat ciclo",
+            "1er intento de contacto: Cliente no contesta, se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)",
+            "2do intento de contacto: Cliente no contesta (2do ciclo)",
+            "Se cumple ciclo de llamada 2x3 (3 intentos sin contacto), cliente nunca respondió, se procede con el cierre del caso",
+            "Corta llamada",
+            "Se deja mensaje en buzón y se envia mensaje en ciclo",
+            "Se indica al cliente borrado de datos/caché y reinicio de app OK",
+            "Falla persiste tras borrado de caché y reinstalación"
+        ],
+        soluciones: [
+            "Cliente confirma servicio óptimo",
+            "Cliente confirma problema solucionado",
+            "Se educa al cliente sobre la limitacion de la tarjeta de red de su equipo",
+            "Se educa a cliente a adquirir repetidor homologado por claro",
+            "Se genera SOT de mtto",
+            "Se valida cliente con SOT en ejecucion",
+            "Se deberia ofrecer un repetidor",
+            "Generar Remedy (pendiente)",
+            "Se realiza reinicio y se valida servicio operativo",
+            "N/A"
+        ]
+    };
+}
+
 if (typeof window !== 'undefined') {
     window.modelosData = modelosData;
     window.equiposClaro = equiposClaro;
@@ -745,3 +829,4 @@ if (typeof global !== 'undefined') {
     global.modelosData = modelosData;
     global.equiposClaro = equiposClaro;
 }
+

@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedHashtags2: new Set(),
         customTemplates: JSON.parse(localStorage.getItem('bo_custom_templates') || '[]'),
         history: JSON.parse(localStorage.getItem('bo_history') || '[]'),
+        learnedPhrases: JSON.parse(localStorage.getItem('bo_learned_phrases') || '{"descartes":[],"soluciones":[]}'),
         activeTab: 'tab-generator',
         siacTemplateMode: localStorage.getItem('bo_siac_template_mode') || 'wsp',
         cicloOverride: null,
@@ -89,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
         quickDescartesContainer: document.getElementById('quickDescartesContainer'),
         hashtagsContainer: document.getElementById('hashtagsContainer'),
         genCatResolucion: document.getElementById('genCatResolucion'),
-        genCatCausa: document.getElementById('genCatCausa'),
         btnPredictCategory: document.getElementById('btnPredictCategory'),
 
         titleSiacCard: document.getElementById('titleSiacCard'),
@@ -196,18 +196,34 @@ document.addEventListener('DOMContentLoaded', () => {
     elements.themeBtn.innerHTML = state.theme === 'dark' ? '🌙' : '☀️';
 
     // Navigation Tabs Toggle
+    function switchTab(targetId) {
+        document.querySelectorAll('.nav-tab-btn').forEach(b => {
+            if (b.getAttribute('data-tab') === targetId) {
+                b.classList.add('active');
+            } else {
+                b.classList.remove('active');
+            }
+        });
+        document.querySelectorAll('.tab-pane').forEach(p => {
+            if (p.id === targetId) {
+                p.classList.add('active');
+            } else {
+                p.classList.remove('active');
+            }
+        });
+        state.activeTab = targetId;
+
+        if (targetId === 'tab-custom') renderCustomTemplates();
+        if (targetId === 'tab-history') {
+            renderHistoryTable();
+            renderLatestFullCases();
+        }
+    }
+
     document.querySelectorAll('.nav-tab-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-            document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-
-            btn.classList.add('active');
             const targetId = btn.getAttribute('data-tab');
-            document.getElementById(targetId).classList.add('active');
-            state.activeTab = targetId;
-
-            if (targetId === 'tab-custom') renderCustomTemplates();
-            if (targetId === 'tab-history') renderHistoryTable();
+            switchTab(targetId);
         });
     });
 
@@ -418,11 +434,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // 4. Render Hashtags Chips
         renderHashtagChips();
 
+        // 4.1 Initialize Predictive Text Engine (Ghost Text & Dropdown)
+        initPredictiveTextEngine();
+
         // 5. Input change listeners (Limpian resaltados de error al escribir)
         [
             elements.genProblema, elements.genTelefono, elements.genSot,
-            elements.genDescartes, elements.genCatResolucion,
-            elements.genCatCausa
+            elements.genDescartes, elements.genCatResolucion
         ].forEach(input => {
             if (input) {
                 input.addEventListener('input', (e) => {
@@ -499,22 +517,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
 
-                // B) Buscar Teléfono / Número de cliente
-                const clientNumMatch = pastedText.match(/(?:n[uú]mero\s*de\s*cliente|n[uú]mero\s*llamado|n[uú]mero\s*de\s*contacto|tel[eé]fono|contacto|celular)\s*[:=\t\r\n]?\s*([0-9\s/,-]{7,40})/i);
+                // B) Buscar Teléfono / Número de cliente (Móviles y Fijos de casa)
+                const clientNumMatch = pastedText.match(/(?:n[uú]mero\s*de\s*cliente|n[uú]mero\s*llamado|n[uú]mero\s*de\s*contacto|tel[eé]fono|contacto|celular|fijo|casa)\s*[:=\t\r\n]?\s*([0-9\s/,-]{6,40})/i);
                 if (clientNumMatch) {
-                    const nums = clientNumMatch[1].match(/\b\d{7,11}\b/g);
+                    const nums = clientNumMatch[1].match(/\b\d{6,11}\b/g);
                     if (nums) {
                         extractedPhones = Array.from(new Set(nums));
                     }
                 }
 
-                // Si no encontró por etiqueta explícita, buscar números móviles de 9 dígitos o fijos
+                // Si no encontró por etiqueta explícita, buscar números móviles (9 dígitos) o fijos (6-8 dígitos)
                 if (extractedPhones.length === 0) {
                     let textWithoutCallId = pastedText;
                     if (extractedCallId) {
                         textWithoutCallId = textWithoutCallId.replace(extractedCallId, '');
                     }
-                    const allNums = textWithoutCallId.match(/\b9\d{8}\b/g) || textWithoutCallId.match(/\b\d{7,11}\b/g);
+                    const allNums = textWithoutCallId.match(/\b9\d{8}\b/g) || textWithoutCallId.match(/\b(?:01\d{7}|0[4-8]\d{7}|[2-8]\d{5,7})\b/g) || textWithoutCallId.match(/\b\d{6,11}\b/g);
                     if (allNums) {
                         extractedPhones = Array.from(new Set(allNums));
                     }
@@ -539,7 +557,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     const toastMsg = extractedCallId
                         ? `📞 Teléfono (${elements.genTelefono.value}) e ID Llamada (${extractedCallId}) asignados`
-                        : `📱 Teléfono detectado: ${elements.genTelefono.value}`;
+                        : `📞 Teléfono detectado: ${elements.genTelefono.value}`;
                     showToast(toastMsg, 'success');
                     return;
                 }
@@ -570,7 +588,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderGeneratorPreviews();
             });
 
-            elements.genTelefono.addEventListener('change', renderGeneratorPreviews);
+            elements.genTelefono.addEventListener('change', () => {
+                renderGeneratorPreviews();
+            });
         }
 
         // Gestión Inteligente de ID Llamada y Chat ID (Pegar continuo sin borrar)
@@ -636,23 +656,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 indicatorsCount++;
             }
 
-            // 2. Extraer Teléfonos
-            // A) Buscar en líneas con etiquetas explícitas (Teléfono, Contacto, Celular, Tlf, etc.)
-            const phoneLabelMatch = text.match(/(?:tel[eé]fono[s]?|contacto[s]?|celular(?:es)?|tlf|cel)\s*[:=-]?\s*([0-9\s/,-]{8,40})/i);
+            // 2. Extraer Teléfonos (Móviles y Fijos de Casa)
+            // A) Buscar en líneas con etiquetas explícitas (Teléfono, Contacto, Celular, Fijo, Casa, Tlf, etc.)
+            const phoneLabelMatch = text.match(/(?:tel[eé]fono[s]?|contacto[s]?|celular(?:es)?|fijo[s]?|casa|tlf|cel)\s*[:=-]?\s*([0-9\s/,-]{6,40})/i);
             if (phoneLabelMatch) {
                 const rawPhones = phoneLabelMatch[1];
-                const nums = rawPhones.match(/\b\d{7,11}\b/g);
+                const nums = rawPhones.match(/\b\d{6,11}\b/g);
                 if (nums && nums.length > 0) {
                     detected.phones = Array.from(new Set(nums)).slice(0, 2);
                     indicatorsCount++;
                 }
             }
 
-            // B) Si no encontró por etiqueta, buscar números móviles de 9 dígitos que empiezan con 9
+            // B) Si no encontró por etiqueta, buscar números móviles (9 dígitos) o fijos (6-8 dígitos o con prefijo 01/0XX)
             if (detected.phones.length === 0) {
-                const mobileMatches = text.match(/\b9\d{8}\b/g);
-                if (mobileMatches && mobileMatches.length > 0) {
-                    const uniquePhones = Array.from(new Set(mobileMatches));
+                const mobileMatches = text.match(/\b9\d{8}\b/g) || [];
+                const fixedMatches = text.match(/\b(?:01\d{7}|0[4-8]\d{7}|[2-8]\d{5,7})\b/g) || [];
+                const combined = mobileMatches.concat(fixedMatches);
+                if (combined.length > 0) {
+                    const uniquePhones = Array.from(new Set(combined));
                     detected.phones = uniquePhones.slice(0, 2);
                     indicatorsCount++;
                 }
@@ -1088,15 +1110,72 @@ document.addEventListener('DOMContentLoaded', () => {
 
         renderGeneratorPreviews();
 
-        // Clear button for Case 1
+        let lastClearedSnapshot = null;
+
+        function restoreClearedFormSnapshot() {
+            if (!lastClearedSnapshot) return false;
+            const snap = lastClearedSnapshot;
+            if (elements.genTelefono) elements.genTelefono.value = snap.telefono || '';
+            if (elements.genProblema) elements.genProblema.value = snap.problema || '';
+            if (elements.genSolucion) elements.genSolucion.value = snap.solucion || '';
+            if (elements.genDescartes) elements.genDescartes.value = snap.descartes || '';
+            if (elements.genSot) elements.genSot.value = snap.sot || '';
+            if (elements.genContactId) elements.genContactId.value = snap.contactId || '';
+            if (elements.genCatResolucion) elements.genCatResolucion.value = snap.catResolucion || '';
+            if (elements.genServicio) {
+                elements.genServicio.value = snap.servicio || 'INTERNET';
+                populateProblems(snap.servicio || 'INTERNET', true);
+            }
+            state.selectedHashtags = new Set(snap.hashtags || []);
+            renderHashtagChips();
+            state.selectedDescartes = new Map(snap.selectedDescartes || []);
+            renderQuickDescartes();
+            state.cicloOverride = snap.cicloOverride;
+            state.callIds = new Set(snap.callIds || []);
+            state.chatIds = new Set(snap.chatIds || []);
+
+            renderGeneratorPreviews();
+            showToast('↩️ ¡Datos restaurados exitosamente!', 'success');
+            lastClearedSnapshot = null;
+            return true;
+        }
+
+        // Clear button for Case 1 (con soporte de snapshot para Deshacer / Undo)
         document.getElementById('btnClearForm').addEventListener('click', () => {
+            const hasContent = (elements.genTelefono?.value || '').trim() ||
+                (elements.genProblema?.value || '').trim() ||
+                (elements.genSolucion?.value || '').trim() ||
+                (elements.genDescartes?.value || '').trim() ||
+                (elements.genSot?.value || '').trim() ||
+                (elements.genContactId?.value || '').trim() ||
+                (elements.genCatResolucion?.value || '').trim() ||
+                state.selectedHashtags.size > 0 ||
+                state.callIds.size > 0;
+
+            if (hasContent) {
+                lastClearedSnapshot = {
+                    telefono: elements.genTelefono?.value || '',
+                    problema: elements.genProblema?.value || '',
+                    solucion: elements.genSolucion?.value || '',
+                    descartes: elements.genDescartes?.value || '',
+                    sot: elements.genSot?.value || '',
+                    contactId: elements.genContactId?.value || '',
+                    servicio: elements.genServicio?.value || 'INTERNET',
+                    catResolucion: elements.genCatResolucion?.value || '',
+                    hashtags: new Set(state.selectedHashtags),
+                    selectedDescartes: state.selectedDescartes ? new Map(state.selectedDescartes) : new Map(),
+                    cicloOverride: state.cicloOverride,
+                    callIds: new Set(state.callIds),
+                    chatIds: new Set(state.chatIds)
+                };
+            }
+
             elements.genTelefono.value = '';
             elements.genSot.value = '';
             elements.genContactId.value = '';
             elements.genSolucion.value = '';
             elements.genDescartes.value = '';
             if (elements.genCatResolucion) elements.genCatResolucion.value = '';
-            if (elements.genCatCausa) elements.genCatCausa.value = '';
             // Reset service to INTERNET and repopulate problems
             elements.genServicio.value = 'INTERNET';
             populateProblems('INTERNET');
@@ -1118,7 +1197,29 @@ document.addEventListener('DOMContentLoaded', () => {
             if (telefonoWarning) telefonoWarning.style.display = 'none';
 
             renderGeneratorPreviews();
-            showToast('Campos del Caso 1 limpiados');
+
+            if (hasContent) {
+                showToast('Campos limpiados', 'info', {
+                    text: '↩️ Deshacer (Ctrl+Z)',
+                    callback: restoreClearedFormSnapshot
+                });
+            } else {
+                showToast('Campos limpiados');
+            }
+        });
+
+        // Soporte de Atajo Global Ctrl+Z para restaurar formulario si fue limpiado por error
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !e.shiftKey) {
+                if (lastClearedSnapshot) {
+                    const active = document.activeElement;
+                    const isFormInput = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA');
+                    if (!isFormInput || !active.value.trim()) {
+                        e.preventDefault();
+                        restoreClearedFormSnapshot();
+                    }
+                }
+            }
         });
 
         // Autocompletar Categoría Logic
@@ -1234,7 +1335,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function populateProblems(serviceKey, keepCurrentValue = false) {
-        currentProblemList = BO_DATASET.problemsByService[serviceKey] || [];
+        currentProblemList = BO_DATASET.problemsByService[serviceKey] || (serviceKey === 'CLARO VIDEO' ? BO_DATASET.problemsByService['APPS'] : []) || [];
         renderProblemOptions(currentProblemList);
 
         if (!keepCurrentValue) {
@@ -1270,6 +1371,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 { label: "IMS / CBIO", states: ["Se valida registro en IMS / CBIO OK", "Falla de autenticación en IMS / CBIO"] },
                 { label: "Tono y Llamadas", states: ["Se valida tono de discado y tráfico de llamadas OK", "Sin tono de discado / no salen ni entran llamadas"] },
                 { label: "SGA OK", states: ["Se valida datos de SOT e historial de telefonía en SGA", "Datos desalineados en SGA"] },
+                { label: "Ciclo de Llamada", states: ["1er intento de contacto: Cliente no contesta, se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)", "2do intento de contacto: Cliente no contesta (2do ciclo)", "Se cumple ciclo de llamada 2x3 (3 intentos sin contacto), cliente nunca respondió, se procede con el cierre del caso"], icon: '📞 ' }
+            ],
+            "APPS": [
+                { label: "Base Datos Claro Video", states: ["Se valida usuario y suscripción activa en Base Perú / México", "Desalineado en Base Perú / México, se gestiona corrección"] },
+                { label: "AMCO / Incógnito", states: ["Se valida provisión y cuenta activa en AMCO", "Usuario no registrado / falla de aprovisionamiento en AMCO"] },
+                { label: "Reinicio / App", states: ["Se indica al cliente borrado de datos/caché y reinicio de app OK", "Falla persiste tras borrado de caché y reinstalación"] },
+                { label: "Ciclo de Llamada", states: ["1er intento de contacto: Cliente no contesta, se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)", "2do intento de contacto: Cliente no contesta (2do ciclo)", "Se cumple ciclo de llamada 2x3 (3 intentos sin contacto), cliente nunca respondió, se procede con el cierre del caso"], icon: '📞 ' }
+            ],
+            "CLARO VIDEO": [
+                { label: "Base Datos Claro Video", states: ["Se valida usuario y suscripción activa en Base Perú / México", "Desalineado en Base Perú / México, se gestiona corrección"] },
+                { label: "AMCO / Incógnito", states: ["Se valida provisión y cuenta activa en AMCO", "Usuario no registrado / falla de aprovisionamiento en AMCO"] },
+                { label: "Reinicio / App", states: ["Se indica al cliente borrado de datos/caché y reinicio de app OK", "Falla persiste tras borrado de caché y reinstalación"] },
                 { label: "Ciclo de Llamada", states: ["1er intento de contacto: Cliente no contesta, se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)", "2do intento de contacto: Cliente no contesta (2do ciclo)", "Se cumple ciclo de llamada 2x3 (3 intentos sin contacto), cliente nunca respondió, se procede con el cierre del caso"], icon: '📞 ' }
             ]
         };
@@ -1465,6 +1578,373 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // =========================================================================
+    // PREDICTIVE TEXT ENGINE (SMART GHOST TEXT + TAB AUTOCOMPLETE + DROPDOWN)
+    // =========================================================================
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    function learnSinglePhrase(category, phrase) {
+        if (!phrase) return;
+        const clean = phrase.trim().replace(/^[-*•\d.)\s]+/, '').trim();
+        if (clean.length < 6 || clean.toUpperCase() === 'N/A' || clean.startsWith('#')) return;
+
+        if (!state.learnedPhrases) {
+            state.learnedPhrases = { descartes: [], soluciones: [] };
+        }
+        if (!state.learnedPhrases[category]) {
+            state.learnedPhrases[category] = [];
+        }
+
+        const normClean = clean.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const exists = state.learnedPhrases[category].some(p => p.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') === normClean);
+        const inBase = ((BO_DATASET.predictiveCorpus && BO_DATASET.predictiveCorpus[category]) || []).some(p => p.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') === normClean);
+
+        if (!exists && !inBase) {
+            state.learnedPhrases[category].unshift(clean);
+            if (state.learnedPhrases[category].length > 500) {
+                state.learnedPhrases[category].pop();
+            }
+            try {
+                localStorage.setItem('bo_learned_phrases', JSON.stringify(state.learnedPhrases));
+            } catch (e) {
+                console.warn('Storage limit reached for learned phrases', e);
+            }
+        }
+    }
+
+    function learnFromActiveForm() {
+        if (elements.genSolucion && elements.genSolucion.value) {
+            learnSinglePhrase('soluciones', elements.genSolucion.value);
+        }
+        if (elements.genDescartes && elements.genDescartes.value) {
+            const lines = elements.genDescartes.value.split(/\n+/);
+            lines.forEach(line => {
+                learnSinglePhrase('descartes', line);
+            });
+        }
+    }
+
+    function initPredictiveTextEngine() {
+        const normalize = (str) => {
+            return (str || '')
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+        };
+
+        const getAllCorpus = (category) => {
+            const base = (BO_DATASET.predictiveCorpus && BO_DATASET.predictiveCorpus[category]) || [];
+            const learned = (state.learnedPhrases && state.learnedPhrases[category]) || [];
+            const seen = new Set();
+            const result = [];
+            [...learned, ...base].forEach(item => {
+                const norm = normalize(item);
+                if (norm && !seen.has(norm) && norm.length >= 4) {
+                    seen.add(norm);
+                    result.push(item.trim());
+                }
+            });
+            return result;
+        };
+
+        function getMatches(category, query) {
+            const normQ = normalize(query);
+            if (!normQ || normQ.length < 2) return [];
+
+            const corpus = getAllCorpus(category);
+            const startsWithMatches = [];
+            const wordMatches = [];
+
+            corpus.forEach(phrase => {
+                const normP = normalize(phrase);
+                if (normP.startsWith(normQ)) {
+                    startsWithMatches.push(phrase);
+                } else if (normP.includes(normQ)) {
+                    wordMatches.push(phrase);
+                }
+            });
+
+            return [...startsWithMatches, ...wordMatches].slice(0, 6);
+        }
+
+        function setupInputPredictor(inputEl, ghostEl, dropdownEl, category, isMultiline = false) {
+            if (!inputEl || !ghostEl || !dropdownEl) return;
+
+            let activeIndex = -1;
+            let currentMatches = [];
+            let currentGhostSuffix = '';
+
+            const syncGhostStyles = () => {
+                const computed = window.getComputedStyle(inputEl);
+                ghostEl.style.fontSize = computed.fontSize;
+                ghostEl.style.fontFamily = computed.fontFamily;
+                ghostEl.style.fontWeight = computed.fontWeight;
+                ghostEl.style.lineHeight = computed.lineHeight;
+                ghostEl.style.letterSpacing = computed.letterSpacing;
+                ghostEl.style.paddingTop = computed.paddingTop;
+                ghostEl.style.paddingRight = computed.paddingRight;
+                ghostEl.style.paddingBottom = computed.paddingBottom;
+                ghostEl.style.paddingLeft = computed.paddingLeft;
+                ghostEl.style.borderTopWidth = computed.borderTopWidth;
+                ghostEl.style.borderRightWidth = computed.borderRightWidth;
+                ghostEl.style.borderBottomWidth = computed.borderBottomWidth;
+                ghostEl.style.borderLeftWidth = computed.borderLeftWidth;
+                ghostEl.style.borderStyle = computed.borderStyle;
+                ghostEl.style.boxSizing = computed.boxSizing;
+                ghostEl.style.textAlign = computed.textAlign;
+            };
+
+            const syncScroll = () => {
+                ghostEl.scrollTop = inputEl.scrollTop;
+                ghostEl.scrollLeft = inputEl.scrollLeft;
+            };
+
+            inputEl.addEventListener('scroll', syncScroll);
+            window.addEventListener('resize', syncGhostStyles);
+            if (window.ResizeObserver) {
+                new ResizeObserver(syncGhostStyles).observe(inputEl);
+            }
+            syncGhostStyles();
+
+            const closeDropdown = () => {
+                dropdownEl.classList.remove('is-open');
+                dropdownEl.innerHTML = '';
+                activeIndex = -1;
+                currentMatches = [];
+            };
+
+            const clearGhost = () => {
+                ghostEl.innerHTML = '';
+                currentGhostSuffix = '';
+            };
+
+            const renderDropdown = (matches, query) => {
+                if (matches.length === 0) {
+                    closeDropdown();
+                    return;
+                }
+                currentMatches = matches;
+                activeIndex = 0;
+
+                dropdownEl.innerHTML = `
+                    <div class="predictive-dropdown-header">
+                        <span>⚡ Sugerencias Predictivas</span>
+                        <span>Tab ↹ o Enter ↵</span>
+                    </div>
+                `;
+
+                matches.forEach((phrase, idx) => {
+                    const item = document.createElement('div');
+                    item.className = `predictive-item ${idx === 0 ? 'is-selected' : ''}`;
+                    
+                    const normPhrase = normalize(phrase);
+                    const normQuery = normalize(query);
+                    const matchStart = normPhrase.indexOf(normQuery);
+                    let displayHtml = escapeHtml(phrase);
+                    if (matchStart !== -1) {
+                        const before = phrase.substring(0, matchStart);
+                        const matched = phrase.substring(matchStart, matchStart + query.length);
+                        const after = phrase.substring(matchStart + query.length);
+                        displayHtml = `${escapeHtml(before)}<span class="predictive-item-match">${escapeHtml(matched)}</span>${escapeHtml(after)}`;
+                    }
+
+                    item.innerHTML = `
+                        <div style="flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${displayHtml}</div>
+                        <span class="predictive-item-badge">${idx === 0 ? 'Tab ↹' : `↵`}</span>
+                    `;
+
+                    item.addEventListener('mousedown', (e) => {
+                        e.preventDefault();
+                        applySuggestion(phrase);
+                    });
+
+                    dropdownEl.appendChild(item);
+                });
+
+                dropdownEl.classList.add('is-open');
+            };
+
+            const updateSelection = () => {
+                const items = dropdownEl.querySelectorAll('.predictive-item');
+                items.forEach((it, idx) => {
+                    if (idx === activeIndex) {
+                        it.classList.add('is-selected');
+                        it.scrollIntoView({ block: 'nearest' });
+                    } else {
+                        it.classList.remove('is-selected');
+                    }
+                });
+            };
+
+            const applySuggestion = (fullPhrase) => {
+                if (!fullPhrase) return;
+                
+                if (!isMultiline) {
+                    inputEl.value = fullPhrase;
+                    inputEl.focus();
+                    inputEl.setSelectionRange(fullPhrase.length, fullPhrase.length);
+                } else {
+                    const val = inputEl.value;
+                    const cursor = inputEl.selectionStart;
+                    const textBefore = val.substring(0, cursor);
+                    const textAfter = val.substring(cursor);
+                    const lastNewline = textBefore.lastIndexOf('\n');
+                    
+                    const beforeLine = lastNewline === -1 ? '' : textBefore.substring(0, lastNewline + 1);
+                    const lineContent = lastNewline === -1 ? textBefore : textBefore.substring(lastNewline + 1);
+                    const leadingSpaces = (lineContent.match(/^\s*/) || [''])[0];
+                    
+                    const newLine = leadingSpaces + fullPhrase;
+                    const nextNewline = textAfter.indexOf('\n');
+                    const afterLine = nextNewline === -1 ? '' : textAfter.substring(nextNewline);
+                    
+                    inputEl.value = beforeLine + newLine + afterLine;
+                    const newCursorPos = beforeLine.length + newLine.length;
+                    inputEl.focus();
+                    inputEl.setSelectionRange(newCursorPos, newCursorPos);
+                }
+
+                learnSinglePhrase(category, fullPhrase);
+                clearGhost();
+                closeDropdown();
+                renderGeneratorPreviews();
+            };
+
+            const handleInputEvent = () => {
+                syncGhostStyles();
+                const val = inputEl.value;
+                const cursor = inputEl.selectionStart;
+
+                let prefix = '';
+
+                if (!isMultiline) {
+                    prefix = val.trim();
+                } else {
+                    const textBefore = val.substring(0, cursor);
+                    const lastNewline = textBefore.lastIndexOf('\n');
+                    const currentLine = lastNewline === -1 ? textBefore : textBefore.substring(lastNewline + 1);
+                    prefix = currentLine.trimStart();
+                }
+
+                if (prefix.length < 2) {
+                    clearGhost();
+                    closeDropdown();
+                    return;
+                }
+
+                const matches = getMatches(category, prefix);
+                if (matches.length === 0) {
+                    clearGhost();
+                    closeDropdown();
+                    return;
+                }
+
+                const topMatch = matches[0];
+                const normTop = normalize(topMatch);
+                const normPrefix = normalize(prefix);
+
+                if (normTop.startsWith(normPrefix)) {
+                    const matchedLen = prefix.length;
+                    const suffix = topMatch.substring(matchedLen);
+                    currentGhostSuffix = suffix;
+
+                    if (!isMultiline) {
+                        ghostEl.innerHTML = `<span style="visibility:hidden;">${escapeHtml(val)}</span><span>${escapeHtml(suffix)}</span>`;
+                    } else {
+                        const textBeforeGhost = val.substring(0, cursor);
+                        ghostEl.innerHTML = `<span style="visibility:hidden;">${escapeHtml(textBeforeGhost)}</span><span>${escapeHtml(suffix)}</span>`;
+                    }
+                } else {
+                    clearGhost();
+                }
+
+                renderDropdown(matches, prefix);
+                syncScroll();
+            };
+
+            inputEl.addEventListener('input', handleInputEvent);
+
+            inputEl.addEventListener('keydown', (e) => {
+                const isOpen = dropdownEl.classList.contains('is-open');
+                
+                // Tab or ArrowRight to accept ghost text or top match
+                if ((e.key === 'Tab' || (e.key === 'ArrowRight' && inputEl.selectionStart === inputEl.value.length)) && (currentGhostSuffix || (isOpen && currentMatches.length > 0))) {
+                    e.preventDefault();
+                    const targetPhrase = (activeIndex >= 0 && currentMatches[activeIndex]) ? currentMatches[activeIndex] : currentMatches[0];
+                    if (targetPhrase) {
+                        applySuggestion(targetPhrase);
+                    }
+                    return;
+                }
+
+                // Keyboard navigation in dropdown
+                if (isOpen) {
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        activeIndex = (activeIndex + 1) % currentMatches.length;
+                        updateSelection();
+                        return;
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        activeIndex = (activeIndex - 1 + currentMatches.length) % currentMatches.length;
+                        updateSelection();
+                        return;
+                    } else if (e.key === 'Enter') {
+                        if (activeIndex >= 0 && currentMatches[activeIndex]) {
+                            e.preventDefault();
+                            applySuggestion(currentMatches[activeIndex]);
+                            return;
+                        }
+                    } else if (e.key === 'Escape') {
+                        e.preventDefault();
+                        closeDropdown();
+                        clearGhost();
+                        return;
+                    }
+                }
+            });
+
+            inputEl.addEventListener('blur', () => {
+                setTimeout(() => {
+                    closeDropdown();
+                    clearGhost();
+                }, 200);
+            });
+
+            inputEl.addEventListener('click', () => {
+                syncScroll();
+            });
+        }
+
+        // Initialize predictors for genSolucion and genDescartes
+        setupInputPredictor(
+            elements.genSolucion,
+            document.getElementById('ghostGenSolucion'),
+            document.getElementById('dropdownGenSolucion'),
+            'soluciones',
+            false
+        );
+
+        setupInputPredictor(
+            elements.genDescartes,
+            document.getElementById('ghostGenDescartes'),
+            document.getElementById('dropdownGenDescartes'),
+            'descartes',
+            true
+        );
+    }
+
     function checkIsCiclo(descartesText) {
         const text = (descartesText || '').toUpperCase();
         if (text.includes('CICLO') ||
@@ -1544,6 +2024,147 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 10);
     }
+
+    function isFullTemplate(text) {
+        if (!text || typeof text !== 'string') return false;
+        const lower = text.toLowerCase();
+        const markers = [
+            /(?:tel[ée]fono|contacto)\s*:/i,
+            /(?:problema|problema detectado|falla)\s*:/i,
+            /(?:descartes|descartes realizados|decarte)\s*:/i,
+            /(?:soluci[óo]n)\s*:/i,
+            /(?:sot|remedy)\s*:/i,
+            /id\s*(?:call\/live|de llamada|llamada)\s*[:=-]?/i,
+            /back\s*office\s*2n\s*hitss/i,
+            /backoffice\s*hitss/i
+        ];
+        let matchCount = 0;
+        markers.forEach(m => {
+            if (m.test(text)) matchCount++;
+        });
+        return matchCount >= 2 || (matchCount >= 1 && (lower.includes('back office') || lower.includes('backoffice') || lower.includes('hitss')));
+    }
+
+    function parseSmartInput(rawText) {
+        if (!rawText || typeof rawText !== 'string') return false;
+        if (!isFullTemplate(rawText)) return false;
+
+        // 1. Teléfono / Contacto
+        const telMatch = rawText.match(/(?:tel[ée]fono|contacto)\s*:\s*([^\r\n]+)/i);
+        if (telMatch && elements.genTelefono) {
+            const cleanTel = telMatch[1].replace(/[^0-9]/g, '').trim();
+            if (cleanTel) elements.genTelefono.value = cleanTel;
+        }
+
+        // 2. Problema / Falla
+        const probMatch = rawText.match(/(?:problema detectado|problema|falla)\s*:\s*([^\r\n]+)/i);
+        if (probMatch && elements.genProblema) {
+            let cleanProb = probMatch[1].trim();
+            if (cleanProb && cleanProb.toUpperCase() !== 'N/A') {
+                elements.genProblema.value = cleanProb;
+            }
+        }
+
+        // 3. Solución
+        const solMatch = rawText.match(/(?:soluci[óo]n|solucion)\s*:\s*([^\r\n]+)/i);
+        if (solMatch && elements.genSolucion) {
+            const cleanSol = solMatch[1].trim();
+            if (cleanSol && cleanSol.toUpperCase() !== 'N/A') {
+                elements.genSolucion.value = cleanSol;
+            }
+        }
+
+        // 4. SOT / Remedy
+        const sotMatch = rawText.match(/(?:sot\s*\/\s*remedy|sot|remedy)\s*:\s*([^\r\n]+)/i);
+        if (sotMatch && elements.genSot) {
+            const cleanSot = sotMatch[1].trim();
+            if (cleanSot && cleanSot.toUpperCase() !== 'N/A') {
+                elements.genSot.value = cleanSot;
+            }
+        }
+
+        // 5. Contact ID (Llamada / Chat)
+        const contactMatch = rawText.match(/(?:id\s*call\/live|id\s*de\s*llamada|id\s*llamada|id\s*call)\s*[:=-]?\s*([^\r\n]+)/i);
+        if (contactMatch && elements.genContactId) {
+            processAndStoreContactText(contactMatch[1]);
+            updateContactInputField();
+        }
+
+        // 6. Servicio (Detección por palabra clave o problema)
+        const upper = rawText.toUpperCase();
+        let detectedService = null;
+        if (upper.includes('IPTV') || upper.includes('DECO')) detectedService = 'IPTV';
+        else if (upper.includes('CLARO VIDEO') || upper.includes('APPS')) detectedService = 'CLARO VIDEO';
+        else if (upper.includes('TELEFONIA') || upper.includes('TELEFONÍA') || upper.includes('LINEA') || upper.includes('LÍNEA')) detectedService = 'TELEFONÍA';
+        else if (upper.includes('INTERNET') || upper.includes('HFC') || upper.includes('FTTH') || upper.includes('ONT') || upper.includes('ROUTER')) detectedService = 'INTERNET';
+
+        if (detectedService && elements.genServicio) {
+            elements.genServicio.value = detectedService;
+            populateProblems(detectedService, true);
+        }
+
+        // 7. Descartes (Extraer bloque completo entre Descartes y el siguiente campo)
+        const lines = rawText.split(/\r?\n/);
+        let inDescartes = false;
+        const descartesLines = [];
+
+        for (let line of lines) {
+            const trimmed = line.trim();
+            if (/^(?:descartes\s*:|descartes realizados\s*:|decarte\s*:)/i.test(trimmed)) {
+                inDescartes = true;
+                const first = trimmed.replace(/^(?:descartes\s*:|descartes realizados\s*:|decarte\s*:)\s*/i, '').trim();
+                if (first && first.toUpperCase() !== 'N/A') {
+                    descartesLines.push(first);
+                }
+                continue;
+            }
+
+            if (inDescartes) {
+                if (/^(?:soluci[óo]n\s*:|sot|remedy|id\s*(?:call|live|de llamada|llamada)|contacto\s*:|tel[ée]fono\s*:)/i.test(trimmed)) {
+                    inDescartes = false;
+                    continue;
+                }
+                if (trimmed.length > 0 && !trimmed.startsWith('***') && !trimmed.startsWith('===')) {
+                    descartesLines.push(trimmed);
+                }
+            }
+        }
+
+        // Si no se encontró bloque "Descartes:", pero es formato Mantenimiento (primeras líneas son descartes)
+        if (descartesLines.length === 0) {
+            for (let line of lines) {
+                const trimmed = line.trim();
+                if (!trimmed || trimmed.startsWith('***') || trimmed.startsWith('BACK')) continue;
+                if (/^(?:contacto\s*:|tel[ée]fono\s*:|id\s*llamada|#)/i.test(trimmed)) break;
+                descartesLines.push(trimmed);
+            }
+        }
+
+        if (descartesLines.length > 0 && elements.genDescartes) {
+            elements.genDescartes.value = descartesLines.join('\n');
+        }
+
+        renderGeneratorPreviews();
+        showToast('✨ Plantilla detectada: campos autocompletados con éxito');
+        return true;
+    }
+
+    function setupSmartPasteListener(inputEl) {
+        if (!inputEl) return;
+        inputEl.addEventListener('paste', (e) => {
+            const pastedText = (e.clipboardData || window.clipboardData)?.getData('text');
+            if (pastedText && isFullTemplate(pastedText)) {
+                e.preventDefault();
+                parseSmartInput(pastedText);
+            }
+        });
+    }
+
+    // Configurar escucha inteligente de pegado de plantillas completas en los campos del generador
+    setupSmartPasteListener(elements.genDescartes);
+    setupSmartPasteListener(elements.genProblema);
+    setupSmartPasteListener(elements.genTelefono);
+    setupSmartPasteListener(elements.genSolucion);
 
     function formatDescartesLines(rawText) {
         if (!rawText || !rawText.trim()) return 'Descartes: N/A';
@@ -1650,7 +2271,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Actualizar UI del Switch de Plantilla (Estándar vs Oficial Cliente Claro)
         if (elements.btnToggleSiacMode && elements.labelSiacMode) {
             elements.labelSiacMode.textContent = isWsp ? 'Oficial Cliente Claro' : 'Estándar';
-            elements.btnToggleSiacMode.classList.remove('active');
+            if (isWsp) {
+                elements.btnToggleSiacMode.classList.add('active');
+            } else {
+                elements.btnToggleSiacMode.classList.remove('active');
+            }
         }
 
         // Actualizar UI del Switch / Badge de Ciclo (siempre disponible para alternar manualmente)
@@ -1709,8 +2334,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (elements.titleSiacCard) {
             elements.titleSiacCard.innerHTML = isCiclo
-                ? 'Plantilla SIAC / SGA <span style="font-size:0.75rem; color:#00ACC1; font-weight:bold; margin-left:0.3rem;">(📞 Ciclo de Llamada)</span>'
-                : 'Plantilla SIAC / Helix';
+                ? (isWsp ? 'Plantilla Oficial Claro <span style="font-size:0.75rem; color:#00ACC1; font-weight:bold; margin-left:0.3rem;">(📞 Ciclo de Llamada)</span>' : 'Plantilla SIAC / SGA <span style="font-size:0.75rem; color:#00ACC1; font-weight:bold; margin-left:0.3rem;">(📞 Ciclo de Llamada)</span>')
+                : (isWsp ? 'Plantilla Oficial Cliente Claro' : 'Plantilla SIAC / Helix');
         }
 
         if (elements.previewSiac) {
@@ -1810,10 +2435,11 @@ ${contactLines}`;
         const missingFieldNames = [];
         const missingElements = [];
 
-        // 1. Número de Contacto
+        // 1. Número de Contacto (Móvil 9 dígitos o Fijo mín. 6 dígitos)
         const telefono = (elements.genTelefono ? elements.genTelefono.value : '').trim();
-        if (!telefono || telefono.length < 6 || telefono.toUpperCase() === 'N/A') {
-            missingFieldNames.push('Número de Contacto');
+        const digitsOnly = telefono.replace(/\D/g, '');
+        if (!telefono || digitsOnly.length < 6 || telefono.toUpperCase() === 'N/A') {
+            missingFieldNames.push('Número de Contacto (Móvil 9 dígitos o Fijo de casa mín. 6 dígitos)');
             if (elements.genTelefono) missingElements.push(elements.genTelefono);
         }
 
@@ -4401,41 +5027,164 @@ ${contactLines}`;
     // ==========================================================================
 
     function addHistoryRecord(type, service, content) {
+        const currentFields = {
+            telefono: elements.genTelefono?.value || '',
+            problema: elements.genProblema?.value || '',
+            solucion: elements.genSolucion?.value || '',
+            descartes: elements.genDescartes?.value || '',
+            sot: elements.genSot?.value || '',
+            contactId: elements.genContactId?.value || '',
+            servicio: elements.genServicio?.value || 'INTERNET'
+        };
+
         const record = {
             id: Date.now(),
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+            dateStr: new Date().toLocaleDateString(),
             type: type,
             service: service,
-            summary: content.split('\n')[0] || 'Caso BackOffice',
-            content: content
+            summary: (content.split('\n')[0] || 'Caso BackOffice').substring(0, 80),
+            content: content,
+            fields: currentFields
         };
 
         state.history.unshift(record);
-        if (state.history.length > 25) state.history.pop();
+        if (state.history.length > 30) state.history.pop();
         localStorage.setItem('bo_history', JSON.stringify(state.history));
+
+        // Aprender automáticamente frases usadas en este caso
+        learnFromActiveForm();
+    }
+
+    // Modal de Detalle Completo de Caso
+    const caseDetailModal = document.getElementById('caseDetailModal');
+    const caseDetailModalClose = document.getElementById('caseDetailModalClose');
+    const btnCaseDetailClose = document.getElementById('btnCaseDetailClose');
+    const btnCaseDetailCopy = document.getElementById('btnCaseDetailCopy');
+    const btnCaseDetailLoad = document.getElementById('btnCaseDetailLoad');
+    const caseDetailContent = document.getElementById('caseDetailContent');
+    const caseDetailBadges = document.getElementById('caseDetailBadges');
+    const caseDetailTimestamp = document.getElementById('caseDetailTimestamp');
+    const caseDetailModalTitle = document.getElementById('caseDetailModalTitle');
+
+    let currentSelectedCase = null;
+
+    function openCaseDetailModal(item) {
+        if (!caseDetailModal || !item) return;
+        currentSelectedCase = item;
+
+        if (caseDetailModalTitle) {
+            caseDetailModalTitle.textContent = `📋 Detalle: ${item.type || 'Plantilla Generada'}`;
+        }
+
+        if (caseDetailBadges) {
+            caseDetailBadges.innerHTML = `
+                <span class="badge badge-info">${escapeHtml(item.type || 'Plantilla')}</span>
+                <span class="badge badge-success">${escapeHtml(item.service || 'INTERNET')}</span>
+            `;
+        }
+
+        if (caseDetailTimestamp) {
+            caseDetailTimestamp.innerHTML = `🕒 ${escapeHtml(item.timestamp || '')} ${item.dateStr ? `<span style="opacity:0.7;">(${escapeHtml(item.dateStr)})</span>` : ''}`;
+        }
+
+        if (caseDetailContent) {
+            caseDetailContent.textContent = item.content || '';
+        }
+
+        caseDetailModal.classList.add('active');
+    }
+
+    function closeCaseDetailModal() {
+        if (caseDetailModal) {
+            caseDetailModal.classList.remove('active');
+            currentSelectedCase = null;
+        }
+    }
+
+    if (caseDetailModalClose) caseDetailModalClose.addEventListener('click', closeCaseDetailModal);
+    if (btnCaseDetailClose) btnCaseDetailClose.addEventListener('click', closeCaseDetailModal);
+
+    if (caseDetailModal) {
+        caseDetailModal.addEventListener('click', (e) => {
+            if (e.target === caseDetailModal) closeCaseDetailModal();
+        });
+    }
+
+    if (btnCaseDetailCopy) {
+        btnCaseDetailCopy.addEventListener('click', () => {
+            if (currentSelectedCase && currentSelectedCase.content) {
+                copyToClipboard(currentSelectedCase.content, 'Plantilla completa copiada al portapapeles');
+            }
+        });
+    }
+
+    if (btnCaseDetailLoad) {
+        btnCaseDetailLoad.addEventListener('click', () => {
+            if (!currentSelectedCase) return;
+
+            if (currentSelectedCase.fields) {
+                if (elements.genTelefono) elements.genTelefono.value = currentSelectedCase.fields.telefono || '';
+                if (elements.genProblema) elements.genProblema.value = currentSelectedCase.fields.problema || '';
+                if (elements.genSolucion) elements.genSolucion.value = currentSelectedCase.fields.solucion || '';
+                if (elements.genDescartes) elements.genDescartes.value = currentSelectedCase.fields.descartes || '';
+                if (elements.genSot) elements.genSot.value = currentSelectedCase.fields.sot || '';
+                if (elements.genContactId) elements.genContactId.value = currentSelectedCase.fields.contactId || '';
+                if (elements.genServicio) {
+                    elements.genServicio.value = currentSelectedCase.fields.servicio || 'INTERNET';
+                    populateProblems(elements.genServicio.value, true);
+                }
+            } else if (currentSelectedCase.content) {
+                parseSmartInput(currentSelectedCase.content);
+            }
+
+            closeCaseDetailModal();
+            switchTab('tab-generator');
+            renderGeneratorPreviews();
+            showToast('✅ Caso restaurado en el Generador de Plantillas');
+        });
     }
 
     function renderHistoryTable() {
         elements.historyTableBody.innerHTML = '';
         if (state.history.length === 0) {
-            elements.historyTableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:1rem;">Sin historial de casos generados aún.</td></tr>';
+            elements.historyTableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:2rem 1rem;">Sin historial de casos generados aún. Cuando copies una plantilla, se registrará aquí.</td></tr>';
             return;
         }
 
-        state.history.forEach(item => {
+        state.history.forEach((item, index) => {
             const tr = document.createElement('tr');
+            tr.className = 'history-row';
+            tr.title = 'Haz clic para ver la plantilla completa de este caso';
             tr.innerHTML = `
-                <td style="padding:0.6rem; border-bottom:1px solid var(--border-color); font-size:0.85rem;">${item.timestamp}</td>
-                <td style="padding:0.6rem; border-bottom:1px solid var(--border-color);"><span class="badge badge-info">${item.type}</span></td>
-                <td style="padding:0.6rem; border-bottom:1px solid var(--border-color); font-size:0.85rem;">${item.service}</td>
-                <td style="padding:0.6rem; border-bottom:1px solid var(--border-color); font-size:0.85rem; max-width:250px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${item.summary}</td>
-                <td style="padding:0.6rem; border-bottom:1px solid var(--border-color);">
-                    <button class="btn btn-sm copy-hist-btn" data-id="${item.id}">📋 Copiar</button>
+                <td style="padding:0.65rem 0.6rem; border-bottom:1px solid var(--border-color); font-size:0.85rem; white-space:nowrap;">
+                    ${index === 0 ? '🔥 ' : ''}${item.timestamp}
+                </td>
+                <td style="padding:0.65rem 0.6rem; border-bottom:1px solid var(--border-color);"><span class="badge badge-info">${escapeHtml(item.type)}</span></td>
+                <td style="padding:0.65rem 0.6rem; border-bottom:1px solid var(--border-color); font-size:0.85rem; font-weight:600;">${escapeHtml(item.service)}</td>
+                <td style="padding:0.65rem 0.6rem; border-bottom:1px solid var(--border-color); font-size:0.85rem; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-muted);">
+                    ${escapeHtml(item.summary)}
+                </td>
+                <td style="padding:0.65rem 0.6rem; border-bottom:1px solid var(--border-color); text-align:right; white-space:nowrap;">
+                    <button class="btn btn-sm view-hist-btn" data-id="${item.id}" style="display:inline-flex; align-items:center; gap:0.35rem; background:rgba(59,130,246,0.15); color:var(--primary); margin-right:0.3rem;" title="Ver plantilla completa en ventana modal">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                        Ver
+                    </button>
+                    <button class="btn btn-sm copy-hist-btn" data-id="${item.id}" title="Copiar plantilla rápida">📋 Copiar</button>
                 </td>
             `;
-            tr.querySelector('.copy-hist-btn').addEventListener('click', () => {
-                copyToClipboard(item.content, 'Caso vuelto a copiar');
+
+            // Click en la fila abre el modal con la plantilla completa
+            tr.addEventListener('click', (e) => {
+                if (e.target.closest('.copy-hist-btn')) return; // No abrir modal si se presionó Copiar
+                openCaseDetailModal(item);
             });
+
+            tr.querySelector('.copy-hist-btn').addEventListener('click', (e) => {
+                e.stopPropagation();
+                copyToClipboard(item.content, 'Plantilla copiada al portapapeles');
+            });
+
             elements.historyTableBody.appendChild(tr);
         });
     }
@@ -4449,15 +5198,16 @@ ${contactLines}`;
         }
     });
 
-    // Export / Import Backup JSON
+    // Export / Import Backup JSON (incluye plantillas, historial y frases aprendidas)
     elements.btnExportJson.addEventListener('click', () => {
         const backupData = {
-            version: '1.0',
+            version: '2.4',
             exportDate: new Date().toISOString(),
             advisorName: state.advisorName,
             advisorCode: state.advisorCode,
             customTemplates: state.customTemplates,
-            history: state.history
+            history: state.history,
+            learnedPhrases: state.learnedPhrases || { descartes: [], soluciones: [] }
         };
 
         const jsonString = JSON.stringify(backupData, null, 2);
@@ -4472,8 +5222,29 @@ ${contactLines}`;
         a.click();
         document.body.removeChild(a);
 
-        showToast('Respaldo descargado como .txt');
+        showToast('Respaldo completo descargado como .txt');
     });
+
+    // Botón para Copiar Frases Aprendidas (JSON)
+    const btnCopyLearnedPhrases = document.getElementById('btnCopyLearnedPhrases');
+    if (btnCopyLearnedPhrases) {
+        btnCopyLearnedPhrases.addEventListener('click', () => {
+            const dataToCopy = JSON.stringify(state.learnedPhrases || { descartes: [], soluciones: [] }, null, 2);
+            copyToClipboard(dataToCopy, '📋 Diccionario de frases predictivas copiado al portapapeles');
+        });
+    }
+
+    // Botón para Limpiar Frases Aprendidas
+    const btnClearLearnedPhrases = document.getElementById('btnClearLearnedPhrases');
+    if (btnClearLearnedPhrases) {
+        btnClearLearnedPhrases.addEventListener('click', () => {
+            if (confirm('¿Deseas restablecer el diccionario de frases aprendidas al estado inicial?')) {
+                state.learnedPhrases = { descartes: [], soluciones: [] };
+                localStorage.setItem('bo_learned_phrases', JSON.stringify(state.learnedPhrases));
+                showToast('Diccionario de frases restablecido');
+            }
+        });
+    }
 
     elements.importJsonInput.addEventListener('change', (e) => {
         const file = e.target.files[0];
@@ -4483,14 +5254,27 @@ ${contactLines}`;
         reader.onload = (event) => {
             try {
                 const data = JSON.parse(event.target.result);
+                let countMsgs = [];
                 if (data.customTemplates && Array.isArray(data.customTemplates)) {
                     state.customTemplates = data.customTemplates;
                     localStorage.setItem('bo_custom_templates', JSON.stringify(state.customTemplates));
-                    showToast(`Importadas ${state.customTemplates.length} plantillas personalizadas`);
+                    countMsgs.push(`${state.customTemplates.length} plantillas`);
                     if (state.activeTab === 'tab-custom') renderCustomTemplates();
-                } else {
-                    alert('El archivo no contiene un formato de respaldo válido.');
                 }
+                if (data.history && Array.isArray(data.history)) {
+                    state.history = data.history;
+                    localStorage.setItem('bo_history', JSON.stringify(state.history));
+                    renderHistoryTable();
+                }
+                if (data.learnedPhrases) {
+                    state.learnedPhrases = {
+                        descartes: Array.from(new Set([...(state.learnedPhrases?.descartes || []), ...(data.learnedPhrases.descartes || [])])),
+                        soluciones: Array.from(new Set([...(state.learnedPhrases?.soluciones || []), ...(data.learnedPhrases.soluciones || [])]))
+                    };
+                    localStorage.setItem('bo_learned_phrases', JSON.stringify(state.learnedPhrases));
+                    countMsgs.push(`frases predictivas`);
+                }
+                showToast(`Respaldo importado (${countMsgs.join(', ') || 'OK'})`);
             } catch (err) {
                 alert('Error al leer el archivo JSON: ' + err.message);
             }
@@ -4523,19 +5307,47 @@ ${contactLines}`;
         document.body.removeChild(textarea);
     }
 
-    function showToast(message, type = 'success') {
+    function showToast(message, type = 'success', action = null) {
         const toast = document.createElement('div');
-        toast.className = `toast ${type === 'warning' ? 'toast-warning' : (type === 'danger' ? 'toast-danger' : '')}`;
+        toast.className = `toast ${type === 'warning' ? 'toast-warning' : (type === 'danger' ? 'toast-danger' : (type === 'info' ? 'toast-info' : ''))}`;
         const icon = type === 'warning' ? '⚠️' : (type === 'danger' ? '❌' : (type === 'info' ? 'ℹ️' : '✅'));
-        toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+        
+        toast.style.display = 'flex';
+        toast.style.alignItems = 'center';
+        toast.style.justifyContent = 'space-between';
+        toast.style.gap = '0.75rem';
+
+        const contentSpan = document.createElement('div');
+        contentSpan.style.display = 'flex';
+        contentSpan.style.alignItems = 'center';
+        contentSpan.style.gap = '0.4rem';
+        contentSpan.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+        toast.appendChild(contentSpan);
+
+        if (action && action.text && action.callback) {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.textContent = action.text;
+            btn.style.cssText = 'background: rgba(255,255,255,0.22); border: 1px solid rgba(255,255,255,0.35); color: #ffffff; border-radius: 5px; padding: 3px 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: all 0.2s; white-space: nowrap;';
+            btn.onmouseover = () => { btn.style.background = 'rgba(255,255,255,0.38)'; btn.style.transform = 'scale(1.03)'; };
+            btn.onmouseout = () => { btn.style.background = 'rgba(255,255,255,0.22)'; btn.style.transform = 'scale(1)'; };
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                action.callback();
+                toast.remove();
+            });
+            toast.appendChild(btn);
+        }
+
         if (elements.toastContainer) {
             elements.toastContainer.appendChild(toast);
+            const duration = action ? 6000 : 2500;
             setTimeout(() => {
                 toast.style.opacity = '0';
                 toast.style.transform = 'translateY(10px)';
                 toast.style.transition = 'all 0.3s ease';
                 setTimeout(() => toast.remove(), 300);
-            }, 2500);
+            }, duration);
         }
     }
 

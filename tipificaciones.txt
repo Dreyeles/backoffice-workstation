@@ -1,0 +1,176 @@
+1era LLAMADA + WSP
+BACKOFFICE HITSS
+TELEFONO:982280035
+PROBLEMA DETECTADO:lentitud e intermitencia
+DESCARTES: Se valida Schaman sin alertas, Se valida Incógnito provisionado con niveles fuera de rango y en status los, Sin luz roja de los Y sin ipes, Se realiza alta y baja, Se reinicia equipo fisicamente, Se valida equipo en estado online, Se valida sin ipes, Se trata de ingresar al remoto, Sin conexión, Se valida Incógnito con status dying gasp, Sin IP, Se genera SOT de mtto
+SOLUCION:Se genera SOT de mtto
+SOT / REMEDY: 90888521
+ID DE LLAMADA:7b0ab79d-927f-4b64-82d4-04021b7a394a/1789482206-2365852
+
+
+
+
+BACK OFFICE HITSS
+Teléfono: 922505809
+Problema: INT - PROBLEMA DE COBERTURA 
+Descartes: se valida consumo en tracer sin flags alarmados, se valida schaman sin alertas, se valida dashboard todo ok, con 25 equipos conectados, se valida que cliente cuenta con 2 repetidores de terceros, se le educa spbre los repetidores externos y los problemas que suelen causar, cliente indica que cuenta con cámaras, se le indica adquirir un repetidor
+Solución: se educa a cliente a adquirir repetidor homologado por claro
+ID call/live: 1789492975-3092886
+
+
+
+BACK OFFICE HITSS
+
+Teléfono:949742394 
+Problema:INT - SIN SERVICIO
+Descartes: se valida schaman sin alertas, se valida incognito con buena provision, se valida niveles en rango en incognito, se valida cliente plume, se valida en plume extensores desconectados, se intenta contactar al cliente, cliente no contesta se envia mensaje por live chat y se deja mensaje por buzon, se genera ciclo
+Solución: 
+ID call/live:1789494416-2968467
+
+BACK OFFICE HITSS
+Teléfono: 952480688
+Problema: BAJA VELOCIDAD VIA CABLEADO Y WIFI (LENTITUD)
+Descartes: Se valida consumo en Tracer y sin flags alarmados
+           Se valida provisión y online en Incógnito
+           Se valida Dashboard OK
+           Se logra contacto con cliente
+           Cliente indica que el servicio ya esta bien y no tiene lentitud
+Solución: Cliente confirma servicio optimo
+ID call/live: 1789497379-2889948
+
+
+BACK OFFICE HITSS
+Teléfono: 920677857
+Problema: BAJA VELOCIDAD VIA CABLEADO Y WIFI (LENTITUD)
+Descartes: Se valida consumo en Tracer y sin flags alarmados
+           Se valida provisión y online en Incógnito
+           Se valida dashboard con online en naranja
+           Er intento de contacto: Cliente no contesta
+           Se envía mensaje por LiveChat y se deja mensaje en buzón de voz ciclo
+Solución: N/A
+ID call/live: 1789498047-541900
+
+
+BACK OFFICE HITSS:
+Teléfono: 950791482
+Problema: BAJA VELOCIDAD VIA CABLEADO Y WIFI (LENTITUD)
+Descartes: Se valida provisión y online en Incógnito
+           Se valida Schaman sin alertas
+           Se valida consumo en Tracer y con flag de alerta de corte de energia activo
+           Er intento de contacto: Cliente no contesta
+           Se envía mensaje por LiveChat y se deja mensaje en buzón de voz
+Solución: N/A
+ID call/live: 1789498465-2361532
+
+BACK OFFICE HITSS
+Teléfono:988001342
+Problema: cliente no lelga a la velocidad contratada	 
+Descartes: se valida schaman sin alertas, se valida consumo en tracer, se valida todo ok en dashboard, cliente no se encuentra en su domicilio se le envia mensaje por live chat para que lo presione cuando tenga disponibilidad
+Solución: N/A
+ID call/live:1789504016-3092159
+
+
+BACK OFFICE  HITSS
+Teléfono: 969117010
+Problema: BAJA VELOCIDAD VIA CABLEADO Y WIFI (LENTITUD)
+Descartes: Se valida consumo en Tracer y sin flags alarmados
+           Se valida provisión y online en Incógnito
+           Se valida Schaman sin alertas
+           Se valida cliente Plume
+           Er intento de contacto: Cliente no contesta
+           Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)
+Solución: N/A
+ID call/live: 1789504734-338240
+
+BACK OFFICE  HITSS
+Teléfono: 969117010
+Problema: BAJA VELOCIDAD VIA CABLEADO Y WIFI (LENTITUD)
+Descartes: Se valida consumo minimo en Tracer y sin flags alarmados
+           Se valida provisión y online en Incógnito
+           Se valida Schaman sin alertas
+           Se valida cliente Plume
+           1Er intento de contacto: Cliente no contesta
+           Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)
+Solución: N/A
+ID call/live: 1789504734-338240
+
+BACK OFFICE  HITSS
+Teléfono: 966225445
+Problema: BAJA VELOCIDAD VIA CABLEADO Y WIFI (LENTITUD)
+Descartes: Se valida provisión y online en Incógnito sin ipes
+           Cliente contesta live chat
+           Se le envia mensaje para llamarlo
+           Cliente no contesta llamada
+           Se cierra chat ciclo
+Solución: N/A
+ID call/live: 1789505397-2493962 / 1789505472-2168209 / 82faa805-f940-4500-95c9-2822b4fc1f29
+
+BACK OFFICEHITSS
+Teléfono: 964998265
+Problema: SIN SERVICIO
+Descartes: Se valida consumo en Tracer y sin flags alarmados
+           Se valida provisión y online en Incógnito
+           Se valida Dashboard OK
+           Se valida datos de SOT e historial en SGA
+Solución: Se valida cliente con SOT en ejecuccion
+SOT / REMEDY: 90834627
+ID call/live: 1789506505-2951244
+
+BACK OFFICE HITSS
+Teléfono: 970144467
+Problema: BAJA VELOCIDAD VIA CABLEADO Y WIFI (LENTITUD)
+Descartes: Se valida provisión y online en Incógnito
+           Se valida consumo en Tracer y se valida que cliente apaga su equipo por las noches
+           Cliente contesta mensaje de live chat
+           Se le envia mensaje antes de llamarlo
+           Se le llama y no contesta
+           Se cierra chat
+Solución: N/A
+ID call/live: 1789506991-2372135
+
+BACK OFFICE HITSS
+Teléfono: 947693467
+Problema: PROBLEMA DE COBERTURA
+Descartes: Se valida consumo en Tracer y sin flags alarmados
+           Se valida provisión y online en Incógnito
+           Se valida TR69 con canales saturados
+           Se valida bandas unificadas
+           Se logra contacto con cliente
+           Indica que por el momento la red esta estable que ocurre en algunos momentos
+           Se le envia mensaje por live chat y se le indica presionar el boton ayuda asesor cuando ocurra la intermitencia
+Solución: Se deberia ofrecer un repetidor
+ID call/live: 1789507485-2301185
+
+BACK OFFICE HITSS
+Teléfono: 978665100
+Problema: BAJA VELOCIDAD VIA CABLEADO Y WIFI (LENTITUD)
+Descartes: Se valida provisión y online en Incógnito
+           Se valida dashboard con online en naranja
+           Se intenta contactar al cliente sin exito
+           Se deja mensaje por live chat y sin buzón
+Solución: N/A
+ID call/live: 1789508399-2374543
+
+BACK OFFICE HITSS
+Teléfono: 988001342
+Problema: NO LLEGA A VELOCIDAD CONTRATADA
+Descartes: Se valida provisión y online en Incógnito
+           Se valida Schaman sin alertas
+           Cliente contesta live chat
+           Se le envia mensaje antes de llamarlo
+           Cliente no contesta
+           Se cierra chat
+Solución: N/A
+ID call/live: 1789508791-11457 / ade5a8f1-ed28-4e89-b1f1-2c6ab46bfeb2
+
+BACK OFFICE HITSS
+Teléfono: 948721247
+Problema: BAJA COBERTURA
+Descartes: Se valida provisión y online en Incógnito
+           Se valida Dashboard con bandas separadas
+           Se valida servicio de 150mb
+           Se intenta contactar con cliente
+           Corta llamada
+           Se deja mensaje en buzón y se envia mensaje en ciclo
+Solución: N/A
+ID call/live: 1789509240-2491590

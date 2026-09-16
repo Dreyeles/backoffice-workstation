@@ -1,0 +1,56 @@
+BACK OFFICE 2N HITSS:
+************************
+Teléfono: 956129140
+Problema: LIMITACION DE HARDWARE DE CLIENTE
+Descartes: Se valida consumo en Tracer y sin flags alarmados
+           Se valida provisión y online en Incógnito
+           Se valida dashboard con online en naranja
+           Se reinicia desde Incógnito
+           Se hace reboot y resync desde dashboard
+           Sse valida Schaman sin alertas
+           Se hacen descartes fisicos
+           Prueba de velocidad
+           Se ejecuta NCPA.CPL para validar tarjeta de red de cliente
+           Se valida targeta de red de 100mps.
+Solución: Se educa al cliente sobre la limitacion de la targeta de red de su equipoó
+ID call/live: 1789392027-2830066
+
+*** NOTAS 14/09/2026 09:01:04 AM E761957 Tipo de acción: Rev. administrador
+BACK OFFICE 2N HITSS: ciclo
+************************
+Teléfono: 981446733
+Problema: PROBLEMA CON IP DE SERVIDOR
+Descartes: Se logra contacto con cliente
+           Se valida historial del caso
+           Cliente no puede acceder a un servidor de minecraft
+           Se solicitan datos como captura
+           Codigo de IP al cliente
+           No tiene disponiblidad por el momento
+           Se le envia live chat y se le indica presionarlo cuando tenga la disponiblidad
+Solución: Generar Remedy (pendiente)
+ID call/live: 1789393900-535326 / 9c50542a-07fa-478d-b077-6501f3f7b2e5
+
+BACK OFFICE 2N HITSS:
+************************
+Teléfono: 994549591
+Problema: PROBLEMA DE COBERTURA
+Descartes: Se valida consumo en Tracer y sin flags alarmados
+           Se valida provisión y online en Incógnito
+           Se valida Dashboard con online naranja
+           Se envia reinicio
+           Cliente indica que el problema esta solucionado
+           Se realiza reinicio se deja online en verde
+           Se valida cliente por plano se valida que cliente pudo estar en averia
+Solución: Cliente confirma problema solucionado
+ID call/live: 1789396470-2955630
+
+BACK OFFICE 2N HITSS - CICLO DE LLAMADA:
+************************
+Teléfono: 956254116
+Descartes: Se valida consumo en Tracer y sin flags alarmados
+           Se valida provisión y online en Incógnito
+           Se valida dashboard con online en naranja
+           Se valida Schaman sin alertas
+           Er intento de contacto: Cliente no contesta
+           Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)
+ID call/live: 1789397434-534969
