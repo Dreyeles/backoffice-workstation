@@ -7,7 +7,7 @@ Descartes: Se valida consumo en Tracer y sin flags alarmados
            Se valida dashboard con online en naranja
            Se reinicia desde Incógnito
            Se hace reboot y resync desde dashboard
-           Sse valida Schaman sin alertas
+           Se valida Schaman sin alertas
            Se hacen descartes fisicos
            Prueba de velocidad
            Se ejecuta NCPA.CPL para validar tarjeta de red de cliente

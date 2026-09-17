@@ -22,6 +22,39 @@ document.addEventListener('DOMContentLoaded', () => {
         chatIds: new Set()
     };
 
+    // Auto-clean any legacy typos (such as "Sse" -> "Se") from learnedPhrases in localStorage
+    if (state.learnedPhrases && typeof state.learnedPhrases === 'object') {
+        let cleanedPhrases = false;
+        ['descartes', 'soluciones'].forEach(cat => {
+            if (Array.isArray(state.learnedPhrases[cat])) {
+                const prev = state.learnedPhrases[cat].slice();
+                state.learnedPhrases[cat] = state.learnedPhrases[cat]
+                    .map(p => typeof p === 'string' ? p.replace(/^Sse\b/i, 'Se').trim() : '')
+                    .filter(p => p && !/^sse\s+/i.test(p));
+                
+                // Deduplicate with respect to base dataset
+                const seen = new Set();
+                state.learnedPhrases[cat] = state.learnedPhrases[cat].filter(p => {
+                    const norm = p.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+                    if (seen.has(norm)) return false;
+                    seen.add(norm);
+                    const inBase = ((BO_DATASET.predictiveCorpus && BO_DATASET.predictiveCorpus[cat]) || [])
+                        .some(b => b.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim() === norm);
+                    return !inBase;
+                });
+
+                if (JSON.stringify(prev) !== JSON.stringify(state.learnedPhrases[cat])) {
+                    cleanedPhrases = true;
+                }
+            }
+        });
+        if (cleanedPhrases) {
+            try {
+                localStorage.setItem('bo_learned_phrases', JSON.stringify(state.learnedPhrases));
+            } catch (e) {}
+        }
+    }
+
     // Default sample custom template if empty
     if (state.customTemplates.length === 0) {
         state.customTemplates = [];
@@ -176,9 +209,12 @@ document.addEventListener('DOMContentLoaded', () => {
         eqName: document.getElementById('eqName'),
         eqType: document.getElementById('eqType'),
         eqVersion: document.getElementById('eqVersion'),
+        eqRed: document.getElementById('eqRed'),
         eqRepetidor: document.getElementById('eqRepetidor'),
         eqSpeed: document.getElementById('eqSpeed'),
         eqStatus: document.getElementById('eqStatus'),
+        eqFirmware: document.getElementById('eqFirmware'),
+        eqPlataformas: document.getElementById('eqPlataformas'),
         eqDesc: document.getElementById('eqDesc'),
         eqCredentials: document.getElementById('eqCredentials'),
 
@@ -1594,7 +1630,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function learnSinglePhrase(category, phrase) {
         if (!phrase) return;
-        const clean = phrase.trim().replace(/^[-*•\d.)\s]+/, '').trim();
+        const clean = phrase.trim().replace(/^[-*•\d.)\s]+/, '').replace(/^Sse\b/i, 'Se').trim();
         if (clean.length < 6 || clean.toUpperCase() === 'N/A' || clean.startsWith('#')) return;
 
         if (!state.learnedPhrases) {
@@ -1623,10 +1659,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function learnFromActiveForm() {
         if (elements.genSolucion && elements.genSolucion.value) {
-            learnSinglePhrase('soluciones', elements.genSolucion.value);
+            const parts = elements.genSolucion.value.split(/[\n,;|]+/);
+            parts.forEach(p => learnSinglePhrase('soluciones', p));
         }
         if (elements.genDescartes && elements.genDescartes.value) {
-            const lines = elements.genDescartes.value.split(/\n+/);
+            const lines = elements.genDescartes.value.split(/[\n,;|]+/);
             lines.forEach(line => {
                 learnSinglePhrase('descartes', line);
             });
@@ -1658,24 +1695,167 @@ document.addEventListener('DOMContentLoaded', () => {
             return result;
         };
 
+        // Smart keyword & tool alias dictionary
+        const KEYWORD_ALIASES = {
+            'incog': ['incognito'],
+            'incogni': ['incognito'],
+            'incognito': ['incognito'],
+            'dash': ['dashboard'],
+            'das': ['dashboard'],
+            'dashboard': ['dashboard'],
+            'tr': ['tr69'],
+            'tr69': ['tr69'],
+            'tr-69': ['tr69'],
+            'shaman': ['schaman'],
+            'schaman': ['schaman'],
+            'rdp': ['escritorio', 'remoto'],
+            'remoto': ['escritorio', 'remoto'],
+            'escritorio': ['escritorio', 'remoto'],
+            'plume': ['plume'],
+            'live': ['livechat', 'chat'],
+            'chat': ['livechat', 'chat'],
+            'livechat': ['livechat'],
+            'wsp': ['whatsapp', 'livechat'],
+            'buzon': ['buzon', 'ciclo'],
+            'llamada': ['llamada', 'ciclo'],
+            'ciclo': ['ciclo', 'intento'],
+            'sot': ['sot', 'visita', 'mtto'],
+            'remedy': ['remedy', 'ticket'],
+            'wifi': ['wifi', 'bandas', 'ssid', 'canales'],
+            'vel': ['velocidad', '100', 'red'],
+            'velocidad': ['velocidad', '100', 'red'],
+            'speed': ['velocidad', 'red'],
+            'fisico': ['fisicos', 'fisico', 'conectado', 'los'],
+            'fisicos': ['fisicos', 'fisico', 'conectado', 'los']
+        };
+
+        const getPhraseTag = (phrase) => {
+            const p = normalize(phrase);
+            if (p.includes('tracer')) return 'Tracer';
+            if (p.includes('incognito')) return 'Incógnito';
+            if (p.includes('dashboard')) return 'Dashboard';
+            if (p.includes('tr69')) return 'TR69';
+            if (p.includes('schaman')) return 'Schaman';
+            if (p.includes('plume')) return 'Plume';
+            if (p.includes('remoto') || p.includes('escritorio')) return 'Remoto';
+            if (p.includes('livechat') || p.includes('chat')) return 'LiveChat';
+            if (p.includes('ciclo') || p.includes('intento') || p.includes('buzon')) return 'Ciclo';
+            if (p.includes('remedy')) return 'Remedy';
+            if (p.includes('sot')) return 'SOT';
+            if (p.includes('velocidad') || p.includes('tarjeta')) return 'Velocidad';
+            if (p.includes('wifi') || p.includes('bandas') || p.includes('ssid')) return 'Wi-Fi';
+            if (p.includes('fisico') || p.includes('red') || p.includes('los')) return 'Físico';
+            return '';
+        };
+
+        const highlightPhraseMatches = (phrase, query) => {
+            if (!phrase || !query) return escapeHtml(phrase);
+            const normP = normalize(phrase);
+            const normQ = normalize(query);
+            const words = normQ.split(/\s+/).filter(w => w.length >= 2);
+            
+            const intervals = [];
+            words.forEach(w => {
+                const aliases = KEYWORD_ALIASES[w] || [];
+                const searchTerms = [w, ...aliases].filter(t => t.length >= 3 || t === 'tr');
+                searchTerms.forEach(term => {
+                    let start = 0;
+                    while (start < normP.length) {
+                        const idx = normP.indexOf(term, start);
+                        if (idx === -1) break;
+                        intervals.push([idx, idx + term.length]);
+                        start = idx + term.length;
+                    }
+                });
+            });
+
+            if (intervals.length === 0) {
+                return escapeHtml(phrase);
+            }
+
+            intervals.sort((a, b) => a[0] - b[0]);
+            const merged = [];
+            let cur = intervals[0];
+            for (let i = 1; i < intervals.length; i++) {
+                if (intervals[i][0] <= cur[1]) {
+                    cur[1] = Math.max(cur[1], intervals[i][1]);
+                } else {
+                    merged.push(cur);
+                    cur = intervals[i];
+                }
+            }
+            merged.push(cur);
+
+            let result = '';
+            let lastIdx = 0;
+            merged.forEach(([start, end]) => {
+                if (start > lastIdx) {
+                    result += escapeHtml(phrase.substring(lastIdx, start));
+                }
+                result += `<span class="predictive-item-match">${escapeHtml(phrase.substring(start, end))}</span>`;
+                lastIdx = end;
+            });
+            if (lastIdx < phrase.length) {
+                result += escapeHtml(phrase.substring(lastIdx));
+            }
+            return result;
+        };
+
         function getMatches(category, query) {
             const normQ = normalize(query);
             if (!normQ || normQ.length < 2) return [];
 
+            const queryWords = normQ.split(/\s+/).filter(w => w.length > 0);
+            const expandedWords = queryWords.map(w => {
+                const aliases = KEYWORD_ALIASES[w] || [];
+                return [w, ...aliases];
+            });
+
             const corpus = getAllCorpus(category);
-            const startsWithMatches = [];
-            const wordMatches = [];
+            const scored = [];
 
             corpus.forEach(phrase => {
                 const normP = normalize(phrase);
+                let score = 0;
+
+                // Exact phrase prefix
                 if (normP.startsWith(normQ)) {
-                    startsWithMatches.push(phrase);
+                    score += 150;
                 } else if (normP.includes(normQ)) {
-                    wordMatches.push(phrase);
+                    score += 70;
+                }
+
+                // Multi-word & alias checking
+                const allWordsMatch = expandedWords.every(wordOptions => {
+                    return wordOptions.some(w => {
+                        if (w.length <= 3) {
+                            const reg = new RegExp('\\b' + w, 'i');
+                            return reg.test(normP);
+                        } else {
+                            return normP.includes(w);
+                        }
+                    });
+                });
+
+                if (allWordsMatch) {
+                    score += 45;
+                }
+
+                // Word boundary bonus
+                queryWords.forEach(w => {
+                    const regex = new RegExp('\\b' + w, 'i');
+                    if (regex.test(normP)) {
+                        score += 20;
+                    }
+                });
+
+                if (score > 0) {
+                    scored.push({ phrase, score });
                 }
             });
 
-            return [...startsWithMatches, ...wordMatches].slice(0, 6);
+            scored.sort((a, b) => b.score - a.score || a.phrase.length - b.phrase.length);
+            return scored.slice(0, 8).map(s => s.phrase);
         }
 
         function setupInputPredictor(inputEl, ghostEl, dropdownEl, category, isMultiline = false) {
@@ -1729,6 +1909,56 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentGhostSuffix = '';
             };
 
+            // Segment boundary resolver supporting \n, commas (,), semicolons (;), pipes (|) and bullet symbols
+            const getSegmentContext = () => {
+                const val = inputEl.value || '';
+                const cursor = (typeof inputEl.selectionStart === 'number') ? inputEl.selectionStart : val.length;
+                const textBefore = val.substring(0, cursor);
+                const textAfter = val.substring(cursor);
+
+                // Search backwards for the nearest separator (\n, comma, semicolon, pipe)
+                let lastSepIdx = -1;
+                for (let i = textBefore.length - 1; i >= 0; i--) {
+                    const ch = textBefore[i];
+                    if (ch === '\n' || ch === ',' || ch === ';' || ch === '|') {
+                        lastSepIdx = i;
+                        break;
+                    }
+                }
+
+                const beforeSegment = lastSepIdx === -1 ? '' : textBefore.substring(0, lastSepIdx + 1);
+                const rawSegment = lastSepIdx === -1 ? textBefore : textBefore.substring(lastSepIdx + 1);
+
+                // Detect leading whitespace or bullet marks (- , * , • )
+                const matchLeading = rawSegment.match(/^([\s\-\*•\d.)]*)/);
+                const leadingPrefix = matchLeading ? matchLeading[0] : '';
+                const prefix = rawSegment.substring(leadingPrefix.length).trimStart();
+
+                // Search forwards for next separator after cursor
+                let nextSepIdx = -1;
+                for (let i = 0; i < textAfter.length; i++) {
+                    const ch = textAfter[i];
+                    if (ch === '\n' || ch === ',' || ch === ';' || ch === '|') {
+                        nextSepIdx = i;
+                        break;
+                    }
+                }
+
+                const afterSegment = nextSepIdx === -1 ? '' : textAfter.substring(nextSepIdx);
+
+                return {
+                    val,
+                    cursor,
+                    textBefore,
+                    textAfter,
+                    beforeSegment,
+                    rawSegment,
+                    leadingPrefix,
+                    prefix,
+                    afterSegment
+                };
+            };
+
             const renderDropdown = (matches, query) => {
                 if (matches.length === 0) {
                     closeDropdown();
@@ -1748,19 +1978,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     const item = document.createElement('div');
                     item.className = `predictive-item ${idx === 0 ? 'is-selected' : ''}`;
                     
-                    const normPhrase = normalize(phrase);
-                    const normQuery = normalize(query);
-                    const matchStart = normPhrase.indexOf(normQuery);
-                    let displayHtml = escapeHtml(phrase);
-                    if (matchStart !== -1) {
-                        const before = phrase.substring(0, matchStart);
-                        const matched = phrase.substring(matchStart, matchStart + query.length);
-                        const after = phrase.substring(matchStart + query.length);
-                        displayHtml = `${escapeHtml(before)}<span class="predictive-item-match">${escapeHtml(matched)}</span>${escapeHtml(after)}`;
-                    }
+                    const displayHtml = highlightPhraseMatches(phrase, query);
+                    const tag = getPhraseTag(phrase);
+                    const tagHtml = tag ? `<span class="predictive-item-tag">${escapeHtml(tag)}</span>` : '';
 
                     item.innerHTML = `
-                        <div style="flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${displayHtml}</div>
+                        <div style="flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; display:flex; align-items:center; gap:6px;">
+                            ${tagHtml}
+                            <span style="overflow:hidden; text-overflow:ellipsis;">${displayHtml}</span>
+                        </div>
                         <span class="predictive-item-badge">${idx === 0 ? 'Tab ↹' : `↵`}</span>
                     `;
 
@@ -1790,30 +2016,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const applySuggestion = (fullPhrase) => {
                 if (!fullPhrase) return;
                 
-                if (!isMultiline) {
-                    inputEl.value = fullPhrase;
-                    inputEl.focus();
-                    inputEl.setSelectionRange(fullPhrase.length, fullPhrase.length);
-                } else {
-                    const val = inputEl.value;
-                    const cursor = inputEl.selectionStart;
-                    const textBefore = val.substring(0, cursor);
-                    const textAfter = val.substring(cursor);
-                    const lastNewline = textBefore.lastIndexOf('\n');
-                    
-                    const beforeLine = lastNewline === -1 ? '' : textBefore.substring(0, lastNewline + 1);
-                    const lineContent = lastNewline === -1 ? textBefore : textBefore.substring(lastNewline + 1);
-                    const leadingSpaces = (lineContent.match(/^\s*/) || [''])[0];
-                    
-                    const newLine = leadingSpaces + fullPhrase;
-                    const nextNewline = textAfter.indexOf('\n');
-                    const afterLine = nextNewline === -1 ? '' : textAfter.substring(nextNewline);
-                    
-                    inputEl.value = beforeLine + newLine + afterLine;
-                    const newCursorPos = beforeLine.length + newLine.length;
-                    inputEl.focus();
-                    inputEl.setSelectionRange(newCursorPos, newCursorPos);
+                const ctx = getSegmentContext();
+                let leading = ctx.leadingPrefix;
+                
+                // If previous separator was a comma, semicolon or pipe and has no space, add a single clean space
+                if (ctx.beforeSegment && /[,\;\|]$/.test(ctx.beforeSegment) && !leading) {
+                    leading = ' ';
                 }
+
+                const newSegment = leading + fullPhrase;
+                inputEl.value = ctx.beforeSegment + newSegment + ctx.afterSegment;
+
+                const newCursorPos = ctx.beforeSegment.length + newSegment.length;
+                inputEl.focus();
+                inputEl.setSelectionRange(newCursorPos, newCursorPos);
 
                 learnSinglePhrase(category, fullPhrase);
                 clearGhost();
@@ -1823,19 +2039,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const handleInputEvent = () => {
                 syncGhostStyles();
-                const val = inputEl.value;
-                const cursor = inputEl.selectionStart;
-
-                let prefix = '';
-
-                if (!isMultiline) {
-                    prefix = val.trim();
-                } else {
-                    const textBefore = val.substring(0, cursor);
-                    const lastNewline = textBefore.lastIndexOf('\n');
-                    const currentLine = lastNewline === -1 ? textBefore : textBefore.substring(lastNewline + 1);
-                    prefix = currentLine.trimStart();
-                }
+                const ctx = getSegmentContext();
+                const prefix = ctx.prefix;
 
                 if (prefix.length < 2) {
                     clearGhost();
@@ -1859,12 +2064,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     const suffix = topMatch.substring(matchedLen);
                     currentGhostSuffix = suffix;
 
-                    if (!isMultiline) {
-                        ghostEl.innerHTML = `<span style="visibility:hidden;">${escapeHtml(val)}</span><span>${escapeHtml(suffix)}</span>`;
-                    } else {
-                        const textBeforeGhost = val.substring(0, cursor);
-                        ghostEl.innerHTML = `<span style="visibility:hidden;">${escapeHtml(textBeforeGhost)}</span><span>${escapeHtml(suffix)}</span>`;
-                    }
+                    const textBeforeGhost = ctx.textBefore;
+                    ghostEl.innerHTML = `<span style="visibility:hidden;">${escapeHtml(textBeforeGhost)}</span><span>${escapeHtml(suffix)}</span>`;
                 } else {
                     clearGhost();
                 }
@@ -2049,8 +2250,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!rawText || typeof rawText !== 'string') return false;
         if (!isFullTemplate(rawText)) return false;
 
-        // 1. Teléfono / Contacto
-        const telMatch = rawText.match(/(?:tel[ée]fono|contacto)\s*:\s*([^\r\n]+)/i);
+        // 1. Teléfono / Celular / Contacto
+        const telMatch = rawText.match(/(?:tel[ée]fono|celular|contacto)\s*:\s*([^\r\n]+)/i);
         if (telMatch && elements.genTelefono) {
             const cleanTel = telMatch[1].replace(/[^0-9]/g, '').trim();
             if (cleanTel) elements.genTelefono.value = cleanTel;
@@ -2358,7 +2559,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (isCiclo) {
                 const descarteWspCiclo = formatDescarteWspCiclo(correctedDescartes);
                 const baseBody = `BACKOFFICE HITSS - CICLO DE LLAMADA
-TELEFONO: ${telefono}
+CELULAR: ${telefono}
 ${descarteWspCiclo}${sotSiacLine}
 ID DE LLAMADA: ${contactIdVal}`;
 
@@ -2366,7 +2567,7 @@ ID DE LLAMADA: ${contactIdVal}`;
                 siacTextCopy = baseBody;
             } else {
                 const baseBody = `BACKOFFICE HITSS
-TELEFONO: ${telefono}
+CELULAR: ${telefono}
 PROBLEMA DETECTADO: ${cleanProblema}
 ${descartesFormattedWsp}
 SOLUCION: ${solucion}${sotSiacLine}
@@ -3438,7 +3639,14 @@ ${contactLines}`;
                     // Buscar en dataset normalizado
                     const dataset = typeof equiposClaro !== 'undefined' ? equiposClaro : Object.keys(modelosData).map(k => ({
                         codigo: k,
+                        modelo: modelosData[k].modelo || k,
+                        vendor: modelosData[k].vendor || '',
                         nombre: modelosData[k].nombre,
+                        docsis: modelosData[k].docsis || '',
+                        wifi: modelosData[k].wifi || '',
+                        red: modelosData[k].red || (modelosData[k].nombre.includes('ONT') || k.startsWith('HG') || k.startsWith('ZX') || k.startsWith('F6') || k.includes('5670') ? 'FTTH' : 'HFC'),
+                        firmware: modelosData[k].firmware || '',
+                        plataformas: modelosData[k].plataformas || 'INCOGNITO / REMOTO',
                         tipo: modelosData[k].tipo || 'Router / ONT',
                         homologado: modelosData[k].homologado !== false,
                         imagen: modelosData[k].img,
@@ -3449,12 +3657,17 @@ ${contactLines}`;
 
                     const result = dataset.find(eq => {
                         const codeClean = (eq.codigo || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+                        const modelClean = (eq.modelo || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
                         const nameClean = (eq.nombre || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+                        const vendorClean = (eq.vendor || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
                         return codeClean.includes(cleanQuery) ||
                             cleanQuery.includes(codeClean) ||
+                            modelClean.includes(cleanQuery) ||
+                            cleanQuery.includes(modelClean) ||
                             nameClean.includes(cleanQuery) ||
                             eq.nombre.toUpperCase().includes(query) ||
-                            eq.codigo.toUpperCase().includes(query);
+                            eq.codigo.toUpperCase().includes(query) ||
+                            (cleanQuery.length >= 3 && vendorClean.includes(cleanQuery));
                     });
 
                     if (result) {
@@ -3462,40 +3675,41 @@ ${contactLines}`;
                         elements.eqName.textContent = result.nombre;
                         elements.eqType.textContent = result.tipo || 'Equipo Homologado';
 
-                        // Descripción técnica
-                        if (elements.eqDesc) {
-                            elements.eqDesc.innerHTML = `<strong>Características:</strong> ${result.descripcion || 'Sin descripción adicional'}`;
-                            elements.eqDesc.style.display = 'block';
+                        // Badge Red (HFC vs FTTH)
+                        if (elements.eqRed) {
+                            const isFtth = (result.red || '').toUpperCase() === 'FTTH' || (result.tipo || '').toUpperCase().includes('FTTH');
+                            if (isFtth) {
+                                elements.eqRed.textContent = '🌐 Red: FTTH (Fibra)';
+                                elements.eqRed.style.backgroundColor = 'rgba(20, 184, 166, 0.15)';
+                                elements.eqRed.style.color = '#0d9488';
+                                elements.eqRed.style.border = '1px solid rgba(20, 184, 166, 0.3)';
+                            } else {
+                                elements.eqRed.textContent = '🌐 Red: HFC (Coaxial)';
+                                elements.eqRed.style.backgroundColor = 'rgba(245, 158, 11, 0.15)';
+                                elements.eqRed.style.color = '#d97706';
+                                elements.eqRed.style.border = '1px solid rgba(245, 158, 11, 0.3)';
+                            }
+                            elements.eqRed.style.display = 'inline-block';
                         }
 
-                        // Badge Versión / Tecnología (DOCSIS 3.0 / DOCSIS 3.1 / FTTH Wi-Fi 6 / FTTH GPON)
+                        // Badge Versión / Wi-Fi & DOCSIS
                         if (elements.eqVersion) {
-                            const tipoStr = (result.tipo || '').toUpperCase();
-                            const isFtth = tipoStr.includes('FTTH') || tipoStr.includes('GPON') || (result.nombre || '').toUpperCase().includes('ONT');
-                            if (isFtth) {
-                                if (tipoStr.includes('WI-FI 6') || (result.nombre || '').toUpperCase().includes('F6600') || (result.nombre || '').toUpperCase().includes('5670')) {
-                                    elements.eqVersion.textContent = '📶 Wi-Fi 6 (FTTH)';
-                                    elements.eqVersion.style.backgroundColor = 'rgba(139, 92, 246, 0.15)';
-                                    elements.eqVersion.style.color = '#7c3aed';
-                                    elements.eqVersion.style.border = '1px solid rgba(139, 92, 246, 0.3)';
-                                } else {
-                                    elements.eqVersion.textContent = '🌐 GPON (FTTH)';
-                                    elements.eqVersion.style.backgroundColor = 'rgba(20, 184, 166, 0.15)';
-                                    elements.eqVersion.style.color = '#0d9488';
-                                    elements.eqVersion.style.border = '1px solid rgba(20, 184, 166, 0.3)';
-                                }
+                            const wifiStr = result.wifi || '';
+                            const docsisStr = result.docsis || (result.red === 'FTTH' ? 'GPON' : 'DOCSIS');
+                            elements.eqVersion.textContent = `📶 ${wifiStr ? wifiStr + ' ' : ''}(${docsisStr})`;
+
+                            if (wifiStr.toLowerCase().includes('wifi 6') || (result.tipo || '').toUpperCase().includes('WI-FI 6')) {
+                                elements.eqVersion.style.backgroundColor = 'rgba(139, 92, 246, 0.15)';
+                                elements.eqVersion.style.color = '#7c3aed';
+                                elements.eqVersion.style.border = '1px solid rgba(139, 92, 246, 0.3)';
+                            } else if (wifiStr.toLowerCase().includes('wifi 5') || (result.tipo || '').toUpperCase().includes('WI-FI 5')) {
+                                elements.eqVersion.style.backgroundColor = 'rgba(59, 130, 246, 0.15)';
+                                elements.eqVersion.style.color = '#2563eb';
+                                elements.eqVersion.style.border = '1px solid rgba(59, 130, 246, 0.3)';
                             } else {
-                                if (result.velocidad <= 30) {
-                                    elements.eqVersion.textContent = '📦 DOCSIS 3.0 (v3.0)';
-                                    elements.eqVersion.style.backgroundColor = 'rgba(245, 158, 11, 0.15)';
-                                    elements.eqVersion.style.color = '#d97706';
-                                    elements.eqVersion.style.border = '1px solid rgba(245, 158, 11, 0.3)';
-                                } else {
-                                    elements.eqVersion.textContent = '⚡ DOCSIS 3.1 (v3.1)';
-                                    elements.eqVersion.style.backgroundColor = 'rgba(6, 182, 212, 0.15)';
-                                    elements.eqVersion.style.color = '#0891b2';
-                                    elements.eqVersion.style.border = '1px solid rgba(6, 182, 212, 0.3)';
-                                }
+                                elements.eqVersion.style.backgroundColor = 'rgba(100, 116, 139, 0.15)';
+                                elements.eqVersion.style.color = '#64748b';
+                                elements.eqVersion.style.border = '1px solid rgba(100, 116, 139, 0.3)';
                             }
                             elements.eqVersion.style.display = 'inline-block';
                         }
@@ -3539,6 +3753,32 @@ ${contactLines}`;
                             elements.eqStatus.style.border = '1px solid rgba(220, 53, 69, 0.3)';
                         }
 
+                        // Firmware oficial
+                        if (elements.eqFirmware) {
+                            if (result.firmware) {
+                                elements.eqFirmware.innerHTML = `<strong>💾 Versión de FW Oficial:</strong> <span style="color:#60a5fa; font-weight:bold; font-family:monospace; margin-left:4px;">${escapeHtml(result.firmware)}</span>`;
+                                elements.eqFirmware.style.display = 'block';
+                            } else {
+                                elements.eqFirmware.style.display = 'none';
+                            }
+                        }
+
+                        // Plataformas de revisión
+                        if (elements.eqPlataformas) {
+                            if (result.plataformas) {
+                                elements.eqPlataformas.innerHTML = `<strong>🛠️ Plataforma de Revisión:</strong> <span style="color:#34d399; font-weight:600; margin-left:4px;">${escapeHtml(result.plataformas)}</span>`;
+                                elements.eqPlataformas.style.display = 'block';
+                            } else {
+                                elements.eqPlataformas.style.display = 'none';
+                            }
+                        }
+
+                        // Descripción técnica
+                        if (elements.eqDesc) {
+                            elements.eqDesc.innerHTML = `<strong>ℹ️ Características:</strong> ${result.descripcion || 'Sin descripción adicional'}`;
+                            elements.eqDesc.style.display = 'block';
+                        }
+
                         // Handle credentials
                         if (result.credenciales) {
                             elements.eqCredentials.innerHTML = result.credenciales.replace(/\|/g, '<br>');
@@ -3567,9 +3807,12 @@ ${contactLines}`;
                         elements.eqStatus.style.color = 'var(--text-muted)';
                         elements.eqStatus.style.border = '1px dashed var(--border-color)';
 
+                        if (elements.eqRed) elements.eqRed.style.display = 'none';
                         if (elements.eqVersion) elements.eqVersion.style.display = 'none';
                         if (elements.eqRepetidor) elements.eqRepetidor.style.display = 'none';
                         if (elements.eqSpeed) elements.eqSpeed.style.display = 'none';
+                        if (elements.eqFirmware) elements.eqFirmware.style.display = 'none';
+                        if (elements.eqPlataformas) elements.eqPlataformas.style.display = 'none';
                         if (elements.eqDesc) elements.eqDesc.style.display = 'none';
                         if (elements.eqCredentials) elements.eqCredentials.style.display = 'none';
 
@@ -5201,7 +5444,7 @@ ${contactLines}`;
     // Export / Import Backup JSON (incluye plantillas, historial y frases aprendidas)
     elements.btnExportJson.addEventListener('click', () => {
         const backupData = {
-            version: '2.4',
+            version: '2.5',
             exportDate: new Date().toISOString(),
             advisorName: state.advisorName,
             advisorCode: state.advisorCode,
@@ -5460,6 +5703,11 @@ ${contactLines}`;
         }
 
         function openSidebar() {
+            const manualsSidebar = document.getElementById('manualsSidebar');
+            const manualsOverlay = document.getElementById('manualsSidebarOverlay');
+            if (manualsSidebar) manualsSidebar.classList.remove('open');
+            if (manualsOverlay) manualsOverlay.classList.remove('active');
+
             if (sidebar) sidebar.classList.add('open');
             if (overlay) overlay.classList.add('active');
             if (searchInput) {
@@ -5729,8 +5977,249 @@ ${contactLines}`;
         renderSidebarLinks();
     }
 
+    // =========================================================================
+    // MANUALS & TECHNICAL GUIDES SIDEBAR MODULE
+    // =========================================================================
+    function initManualsSidebar() {
+        const sidebar = document.getElementById('manualsSidebar');
+        const overlay = document.getElementById('manualsSidebarOverlay');
+        const openBtn = document.getElementById('btnOpenManualsSidebar');
+        const closeBtn = document.getElementById('btnCloseManualsSidebar');
+        const searchInput = document.getElementById('sidebarManualSearch');
+        const filterBar = document.getElementById('manualsCategoryFilter');
+        const listContainer = document.getElementById('manualsListContainer');
+        const countBadge = document.getElementById('manualsCountBadge');
+        const headerBadge = document.getElementById('headerManualsBadge');
+
+        // Modal de Visualización de PDF
+        const viewerModal = document.getElementById('manualViewerModal');
+        const viewerContainer = document.getElementById('manualViewerContainer');
+        const viewerTitle = document.getElementById('manualViewerTitle');
+        const viewerCategory = document.getElementById('manualViewerCategory');
+        const viewerIcon = document.getElementById('manualViewerIcon');
+        const viewerFrame = document.getElementById('manualViewerFrame');
+        const btnCloseViewer = document.getElementById('btnCloseManualViewer');
+        const btnViewerDownload = document.getElementById('btnManualViewerDownload');
+        const btnViewerExternal = document.getElementById('btnManualViewerExternal');
+        const btnViewerFullscreen = document.getElementById('btnManualViewerFullscreen');
+
+        const manuals = (typeof manualesData !== 'undefined') ? manualesData : (window.manualesData || []);
+        if (countBadge) countBadge.textContent = manuals.length;
+        if (headerBadge) headerBadge.textContent = manuals.length;
+
+        let activeCategory = 'Todos';
+
+        function openManualViewer(manual) {
+            if (!viewerModal) return;
+            const fileUrl = `manuales/${encodeURIComponent(manual.filename)}`;
+
+            if (viewerTitle) viewerTitle.textContent = manual.title;
+            if (viewerCategory) viewerCategory.textContent = `${manual.category} • ${manual.size} • Guía Técnica`;
+            if (viewerIcon) viewerIcon.textContent = manual.icon || '📖';
+            if (btnViewerDownload) {
+                btnViewerDownload.href = fileUrl;
+                btnViewerDownload.download = manual.filename;
+            }
+            if (btnViewerExternal) {
+                btnViewerExternal.href = fileUrl;
+            }
+            if (viewerFrame) {
+                viewerFrame.src = fileUrl;
+            }
+
+            viewerModal.classList.add('active');
+            closeSidebar();
+        }
+
+        function closeManualViewer() {
+            if (!viewerModal) return;
+            viewerModal.classList.remove('active');
+            if (viewerContainer) viewerContainer.classList.remove('fullscreen');
+            if (viewerFrame) viewerFrame.src = 'about:blank';
+        }
+
+        function toggleViewerFullscreen() {
+            if (viewerContainer) {
+                viewerContainer.classList.toggle('fullscreen');
+                if (btnViewerFullscreen) {
+                    btnViewerFullscreen.textContent = viewerContainer.classList.contains('fullscreen') ? '🗗' : '⛶';
+                }
+            }
+        }
+
+        if (btnCloseViewer) btnCloseViewer.addEventListener('click', closeManualViewer);
+        if (btnViewerFullscreen) btnViewerFullscreen.addEventListener('click', toggleViewerFullscreen);
+        if (viewerModal) {
+            viewerModal.addEventListener('click', (e) => {
+                if (e.target === viewerModal) closeManualViewer();
+            });
+        }
+
+        function openSidebar() {
+            // Cerrar sidebar de links si estuviese abierto
+            const linksSidebar = document.getElementById('linksSidebar');
+            const linksOverlay = document.getElementById('linksSidebarOverlay');
+            if (linksSidebar) linksSidebar.classList.remove('open');
+            if (linksOverlay) linksOverlay.classList.remove('active');
+
+            if (sidebar) sidebar.classList.add('open');
+            if (overlay) overlay.classList.add('active');
+            if (searchInput) {
+                searchInput.value = '';
+                renderManuals();
+                setTimeout(() => searchInput.focus(), 150);
+            }
+        }
+
+        function closeSidebar() {
+            if (sidebar) sidebar.classList.remove('open');
+            if (overlay) overlay.classList.remove('active');
+        }
+
+        if (openBtn) openBtn.addEventListener('click', openSidebar);
+        if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+        if (overlay) overlay.addEventListener('click', closeSidebar);
+
+        // Atajo global: Alt + M para abrir/cerrar sidebar de manuales y Esc para cerrar modal/sidebar
+        document.addEventListener('keydown', (e) => {
+            if (e.altKey && (e.key === 'm' || e.key === 'M' || e.code === 'KeyM')) {
+                e.preventDefault();
+                if (viewerModal && viewerModal.classList.contains('active')) {
+                    closeManualViewer();
+                } else if (sidebar && sidebar.classList.contains('open')) {
+                    closeSidebar();
+                } else {
+                    openSidebar();
+                }
+            } else if (e.key === 'Escape') {
+                if (viewerModal && viewerModal.classList.contains('active')) {
+                    closeManualViewer();
+                } else if (sidebar && sidebar.classList.contains('open')) {
+                    closeSidebar();
+                }
+            }
+        });
+
+        if (searchInput) {
+            searchInput.addEventListener('input', renderManuals);
+        }
+
+        function renderCategoryFilterBar() {
+            if (!filterBar) return;
+            filterBar.innerHTML = '';
+
+            const categories = ['Todos', ...new Set(manuals.map(m => m.category))];
+
+            categories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = `manual-filter-chip ${cat === activeCategory ? 'active' : ''}`;
+                btn.textContent = cat;
+                btn.addEventListener('click', () => {
+                    activeCategory = cat;
+                    renderCategoryFilterBar();
+                    renderManuals();
+                });
+                filterBar.appendChild(btn);
+            });
+        }
+
+        function renderManuals() {
+            if (!listContainer) return;
+            listContainer.innerHTML = '';
+
+            const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
+
+            const filtered = manuals.filter(m => {
+                const matchesCategory = (activeCategory === 'Todos' || m.category === activeCategory);
+                if (!matchesCategory) return false;
+
+                if (!query) return true;
+
+                const searchTarget = [
+                    m.title,
+                    m.description,
+                    m.category,
+                    m.filename,
+                    ...(m.tags || [])
+                ].join(' ').toLowerCase();
+
+                const searchTerms = query.split(/\s+/).filter(Boolean);
+                return searchTerms.every(term => searchTarget.includes(term));
+            });
+
+            if (filtered.length === 0) {
+                listContainer.innerHTML = `
+                    <div style="text-align:center; padding: 2.5rem 1rem; color:var(--text-muted);">
+                        <div style="font-size:2rem; margin-bottom:0.5rem;">🔍</div>
+                        <div style="font-weight:600; font-size:0.9rem; color:var(--text-main);">No se encontraron manuales</div>
+                        <div style="font-size:0.78rem; margin-top:0.3rem;">Intenta buscar por palabra clave (ej. <em>Lentitud</em>, <em>TR69</em>, <em>Niveles</em>) o selecciona otra categoría.</div>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(m => {
+                const card = document.createElement('div');
+                card.className = 'manual-card';
+
+                const encodedFile = encodeURIComponent(m.filename);
+                const fileUrl = `manuales/${encodedFile}`;
+
+                const tagsHtml = (m.tags || []).map(t => `<span class="manual-tag-pill">#${t}</span>`).join('');
+
+                card.innerHTML = `
+                    <div class="manual-card-header" style="cursor:pointer;" title="Clic para ver en pantalla">
+                        <div class="manual-card-icon">${m.icon || '📄'}</div>
+                        <div class="manual-card-title-box">
+                            <div class="manual-card-title">${m.title}</div>
+                            <div class="manual-card-meta">
+                                <span class="manual-cat-badge">${m.category}</span>
+                                <span class="manual-size-badge">📁 ${m.size}</span>
+                                <span class="manual-size-badge">PDF</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="manual-card-desc">${m.description}</div>
+                    <div class="manual-card-tags">${tagsHtml}</div>
+                    <div class="manual-card-actions">
+                        <a href="${fileUrl}" download="${m.filename}" class="btn-manual-download" title="Descargar archivo en tu equipo">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; flex-shrink:0;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Descargar
+                        </a>
+                        <button type="button" class="btn-manual-open btn-view-manual-modal" title="Abrir visor en modal">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; flex-shrink:0;"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                            Ver Manual
+                        </button>
+                    </div>
+                `;
+
+                // Clic en Header de la tarjeta para abrir modal
+                const headerBox = card.querySelector('.manual-card-header');
+                if (headerBox) {
+                    headerBox.addEventListener('click', () => openManualViewer(m));
+                }
+
+                // Clic en botón "Ver Manual"
+                const btnViewModal = card.querySelector('.btn-view-manual-modal');
+                if (btnViewModal) {
+                    btnViewModal.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openManualViewer(m);
+                    });
+                }
+
+                listContainer.appendChild(card);
+            });
+        }
+
+        renderCategoryFilterBar();
+        renderManuals();
+    }
+
     // Initialize all modules
     initLinksSidebar();
+    initManualsSidebar();
     initGeneratorTab();
     initTrackerTab();
 });

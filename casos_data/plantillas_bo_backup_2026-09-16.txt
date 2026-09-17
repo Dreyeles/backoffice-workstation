@@ -1,0 +1,623 @@
+{
+  "version": "2.4",
+  "exportDate": "2026-09-16T21:59:51.637Z",
+  "customTemplates": [
+    {
+      "id": "tmpl_wsp_1",
+      "title": "CLIENTE CONTESTA WHATSAPP",
+      "category": "WhatsApp",
+      "content": "¡Perfecto! 👍 Lo estaremos llamando en estos momentos 📞, por favor conteste la llamada. 😉✨"
+    },
+    {
+      "id": "tmpl_wsp_2",
+      "title": "CLIENTE NO CONTESTA LLAMADA",
+      "category": "WhatsApp",
+      "content": "Estimado cliente 👋, estuvimos llamando a su número celular 📱, pero no tuvimos respuesta. Procedemos a finalizar esta conversación. Lo estaremos llamando en el transcurso del día o mañana. 🕒📞 ¡Que tenga un excelente día! 😊"
+    },
+    {
+      "id": "tmpl_1788443147637",
+      "title": "CLIENTE NO CONTESTA BUZON DE VOZ",
+      "category": "BUZON DE VOZ",
+      "content": "Hola le saluda xxxxx del soporte tecnico de claro, estuvimos llamandolo debido al inconveniente que estaba presentando, se le envio un mensaje al whatsapp solo presione el boton ayuda asesor para atenderlo muchas gracias!"
+    },
+    {
+      "id": "tmpl_visita_sot",
+      "title": "CONFIRMACIÓN VISITA TÉCNICA (SOT)",
+      "category": "WhatsApp",
+      "content": "Estimado(a) cliente 👋, le confirmamos que se ha generado la visita técnica con el Codigo: {sot} La atención se realizará en un plazo máximo de 48 horas 👨🔧🏠. El técnico se comunicará previamente con usted para coordinar el ingreso. ¡Muchas gracias por su tiempo y preferencia! 😊👍"
+    }
+  ],
+  "history": [
+    {
+      "id": 1789591271837,
+      "timestamp": "03:41:11 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nTELEFONO: 926496749\nPROBLEMA DETECTADO: SIN SERVICIO\nDESCARTES REALIZADOS: Se valida sin consumo en Tracer\n                      Con alerta de sin consumo anterior\n                      Se valida Incógnito con provisión\n                      Se valida en estado offline\n                      Se valida Schaman con alerta de equipo FTTH desconectado\n                      Se hacen descartes fisicos con liente\n                      Indica que el equipo se encuentra conectado y tiene una luz roja encendida en LOS se genera SOT\nSOLUCION: Se genera SOT de mtto\nSOT / REMEDY: 90928725\nID DE LLAMADA: 1789590681-2115601 / 6316fc56-ac59-401c-a55a-057e7ade88cf",
+      "fields": {
+        "telefono": "926496749",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "Se genera SOT de mtto",
+        "descartes": " Se valida sin consumo en Tracer\nCon alerta de sin consumo anterior\nSe valida Incógnito con provisión\nSe valida en estado offline\nSe valida Schaman con alerta de equipo FTTH desconectado, Se hacen descartes fisicos con liente, Indica que el equipo se encuentra conectado y tiene una luz roja encendida en LOS se genera SOT ",
+        "sot": "90928725",
+        "contactId": "1789590681-2115601 | 6316fc56-ac59-401c-a55a-057e7ade88cf",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789591249309,
+      "timestamp": "03:40:49 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Personalizada",
+      "service": "WhatsApp",
+      "summary": "Estimado(a) cliente 👋, le confirmamos que se ha generado la visita técnica con ",
+      "content": "Estimado(a) cliente 👋, le confirmamos que se ha generado la visita técnica con el Codigo: 90928725 La atención se realizará en un plazo máximo de 48 horas 👨🔧🏠. El técnico se comunicará previamente con usted para coordinar el ingreso. ¡Muchas gracias por su tiempo y preferencia! 😊👍",
+      "fields": {
+        "telefono": "926496749",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "Se genera SOT de mtto",
+        "descartes": " Se valida sin consumo en Tracer\nCon alerta de sin consumo anterior\nSe valida Incógnito con provisión\nSe valida en estado offline\nSe valida Schaman con alerta de equipo FTTH desconectado, Se hacen descartes fisicos con liente, Indica que el equipo se encuentra conectado y tiene una luz roja encendida en LOS se genera SOT ",
+        "sot": "90928725",
+        "contactId": "1789590681-2115601",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789591239349,
+      "timestamp": "03:40:39 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nTELEFONO: 926496749\nPROBLEMA DETECTADO: SIN SERVICIO\nDESCARTES REALIZADOS: Se valida sin consumo en Tracer\n                      Con alerta de sin consumo anterior\n                      Se valida Incógnito con provisión\n                      Se valida en estado offline\n                      Se valida Schaman con alerta de equipo FTTH desconectado\n                      Se hacen descartes fisicos con liente\n                      Indica que el equipo se encuentra conectado y tiene una luz roja encendida en LOS se genera SOT\nSOLUCION: Se genera SOT de mtto\nSOT / REMEDY: 90928725\nID DE LLAMADA: 1789590681-2115601",
+      "fields": {
+        "telefono": "926496749",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "Se genera SOT de mtto",
+        "descartes": " Se valida sin consumo en Tracer\nCon alerta de sin consumo anterior\nSe valida Incógnito con provisión\nSe valida en estado offline\nSe valida Schaman con alerta de equipo FTTH desconectado, Se hacen descartes fisicos con liente, Indica que el equipo se encuentra conectado y tiene una luz roja encendida en LOS se genera SOT ",
+        "sot": "90928725",
+        "contactId": "1789590681-2115601",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789591125286,
+      "timestamp": "03:38:45 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Generador Manto",
+      "service": "INTERNET",
+      "summary": "Se valida sin consumo en Tracer",
+      "content": "Se valida sin consumo en Tracer\nCon alerta de sin consumo anterior\nSe valida Incógnito con provisión\nSe valida en estado offline\nSe valida Schaman con alerta de equipo FTTH desconectado, Se hacen descartes fisicos con liente, Indica que el equipo se encuentra conectado y tiene una luz roja encendida en LOS se genera SOT\ncontacto: 926496749\nID llamada 1789590681-2115601",
+      "fields": {
+        "telefono": "926496749",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "Se genera SOT de mtto",
+        "descartes": " Se valida sin consumo en Tracer\nCon alerta de sin consumo anterior\nSe valida Incógnito con provisión\nSe valida en estado offline\nSe valida Schaman con alerta de equipo FTTH desconectado, Se hacen descartes fisicos con liente, Indica que el equipo se encuentra conectado y tiene una luz roja encendida en LOS se genera SOT ",
+        "sot": "",
+        "contactId": "1789590681-2115601",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789590987603,
+      "timestamp": "03:36:27 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Generador Manto",
+      "service": "INTERNET",
+      "summary": "Se valida sin consumo en Tracer",
+      "content": "Se valida sin consumo en Tracer\nCon alerta de sin consumo anterior\nSe valida Incógnito con provisión\nSe valida en estado offline\nSe valida Schaman con alerta de equipo FTTH desconectado, Se hacen descartes fisicos con liente, Indica que el equipo se encuentra conectado y tiene una luz roja encendida en LOS se genera SOT\ncontacto: 926496749\nID llamada 1789590681-2115601",
+      "fields": {
+        "telefono": "926496749",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "Se genera SOT de mtto",
+        "descartes": " Se valida sin consumo en Tracer\nCon alerta de sin consumo anterior\nSe valida Incógnito con provisión\nSe valida en estado offline\nSe valida Schaman con alerta de equipo FTTH desconectado, Se hacen descartes fisicos con liente, Indica que el equipo se encuentra conectado y tiene una luz roja encendida en LOS se genera SOT ",
+        "sot": "",
+        "contactId": "1789590681-2115601",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789590658576,
+      "timestamp": "03:30:58 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Personalizada",
+      "service": "WhatsApp",
+      "summary": "¡Perfecto! 👍 Lo estaremos llamando en estos momentos 📞, por favor conteste la ",
+      "content": "¡Perfecto! 👍 Lo estaremos llamando en estos momentos 📞, por favor conteste la llamada. 😉✨",
+      "fields": {
+        "telefono": "912920870",
+        "problema": "INT - BAJA VELOCIDAD VIA CABLEADO Y WIFI (LENTITUD)",
+        "solucion": "",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida TR69 todo OK con bandas separada, 1er intento de contacto: Cliente no contesta, Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)",
+        "sot": "",
+        "contactId": "1789590280-926268",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789590519677,
+      "timestamp": "03:28:39 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nTELEFONO: 912920870\nDECARTE: Se valida consumo en Tracer y sin flags alarmados\n         Se valida provisión y online en Incógnito\n         Se valida TR69 todo OK con bandas separada\n         er intento de contacto: Cliente no contesta\n         Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)\nID DE LLAMADA: 1789590280-926268",
+      "fields": {
+        "telefono": "912920870",
+        "problema": "INT - BAJA VELOCIDAD VIA CABLEADO Y WIFI (LENTITUD)",
+        "solucion": "",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida TR69 todo OK con bandas separada, 1er intento de contacto: Cliente no contesta, Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)",
+        "sot": "",
+        "contactId": "1789590280-926268",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789590459300,
+      "timestamp": "03:27:39 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nTELEFONO: 1789590280-926268\nDECARTE: Se valida consumo en Tracer y sin flags alarmados\n         Se valida provisión y online en Incógnito\n         Se valida TR69 todo OK con bandas separada\n         er intento de contacto: Cliente no contesta\n         Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)\nID DE LLAMADA: 1789590280-926268",
+      "fields": {
+        "telefono": "1789590280-926268",
+        "problema": "INT - BAJA VELOCIDAD VIA CABLEADO Y WIFI (LENTITUD)",
+        "solucion": "",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida TR69 todo OK con bandas separada, 1er intento de contacto: Cliente no contesta, Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)",
+        "sot": "",
+        "contactId": "1789590280-926268",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789589746697,
+      "timestamp": "03:15:46 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nTELEFONO: 926496749\nDECARTE: Se valida sin consumo en Tracer\n         Con alerta de sin consumo anterior\n         Se valida Incógnito con provisión\n         Se valida en estado offline\n         Se valida Schaman con alerta de equipo FTTH desconectado\n         Se intenta contactar a cliente contesta pero no dice nada\n         Se envia mensaje a live chat ciclo\nID DE LLAMADA: 1789589455-329458",
+      "fields": {
+        "telefono": "926496749",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "",
+        "descartes": "Se valida sin consumo en Tracer, Con alerta de sin consumo anterior, Se valida Incógnito con provisión, Se valida en estado offline, Se valida Schaman con alerta de equipo FTTH desconectado, Se intenta contactar a cliente contesta pero no dice nada, Se envia mensaje a live chat ciclo",
+        "sot": "",
+        "contactId": "1789589455-329458",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789585333906,
+      "timestamp": "02:02:13 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nTELEFONO: 976950208\nDECARTE: Se valida consumo en Tracer y sin flags alarmados\n         Se valida caída de servicio el día 15\n         Se valida provisión y online en Incógnito\n         Se valida TR69 con canales saturados\n         er intento de contacto: Cliente no contesta\n         Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)\nID DE LLAMADA: 1789585222-2163447",
+      "fields": {
+        "telefono": "976950208",
+        "problema": "INT - BAJA VELOCIDAD VIA CABLEADO Y WIFI (LENTITUD)",
+        "solucion": "",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida caída de servicio el día 15, Se valida provisión y online en Incógnito, Se valida TR69 con canales saturados, 1er intento de contacto: Cliente no contesta, Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)",
+        "sot": "",
+        "contactId": "1789585222-2163447",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789584652731,
+      "timestamp": "01:50:52 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nTELEFONO: 956178734\nDECARTE: Se valida que cliente fue llamado y desea devolucion de llamada a las 6pm\n         Se valida con asesor que se le envió mensaje por live chat para que presione el boton cuando tenga disponibilidad\nID DE LLAMADA: N/A",
+      "fields": {
+        "telefono": "956178734",
+        "problema": "INT - BAJA VELOCIDAD VIA CABLEADO (LENTITUD)",
+        "solucion": "",
+        "descartes": "Se valida que cliente fue llamado y desea devolucion de llamada a las 6pm, Se valida con asesor que se le envió mensaje por live chat para que presione el boton cuando tenga disponibilidad",
+        "sot": "",
+        "contactId": "",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789584342834,
+      "timestamp": "01:45:42 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nTELEFONO: 983414745\nDECARTE: Cliente contesta mensaje en live chat\n         Se le envia mensaje antes de llamar\n         Cliente no contesta llamada\n         Se cierra char\nID DE LLAMADA: 1789584227-328975 / 6e9e86fa-06aa-4d8e-9d4b-801bb1ebfa4c",
+      "fields": {
+        "telefono": "983414745",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "",
+        "descartes": "Cliente contesta mensaje en live chat, Se le envia mensaje antes de llamar, Cliente no contesta llamada, Se cierra char",
+        "sot": "",
+        "contactId": "1789584227-328975 | 6e9e86fa-06aa-4d8e-9d4b-801bb1ebfa4c",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789584275346,
+      "timestamp": "01:44:35 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Personalizada",
+      "service": "WhatsApp",
+      "summary": "Estimado cliente 👋, estuvimos llamando a su número celular 📱, pero no tuvimos ",
+      "content": "Estimado cliente 👋, estuvimos llamando a su número celular 📱, pero no tuvimos respuesta. Procedemos a finalizar esta conversación. Lo estaremos llamando en el transcurso del día o mañana. 🕒📞 ¡Que tenga un excelente día! 😊",
+      "fields": {
+        "telefono": "920293941",
+        "problema": "INT - CAMBIO DE CLAVE WIFI Y NOMBRE WIFI (SSID)",
+        "solucion": "",
+        "descartes": "Se valida provisión y online en Incógnito, Sin acceso al dashboard, Sin acceso al TR69, Se intenta ingresar al escritorio remoto sin exito, Se logra contacto con cliente, Indica que en ese momento no esta en su domicilio, Se le envia mensaje por live chat, No permite ingresar con credenciales, Se debe solicitar a cliente una foto de la parte de abajo del router",
+        "sot": "",
+        "contactId": "1789582718-2823775",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789584189593,
+      "timestamp": "01:43:09 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Personalizada",
+      "service": "WhatsApp",
+      "summary": "¡Perfecto! 👍 Lo estaremos llamando en estos momentos 📞, por favor conteste la ",
+      "content": "¡Perfecto! 👍 Lo estaremos llamando en estos momentos 📞, por favor conteste la llamada. 😉✨",
+      "fields": {
+        "telefono": "920293941",
+        "problema": "INT - CAMBIO DE CLAVE WIFI Y NOMBRE WIFI (SSID)",
+        "solucion": "",
+        "descartes": "Se valida provisión y online en Incógnito, Sin acceso al dashboard, Sin acceso al TR69, Se intenta ingresar al escritorio remoto sin exito, Se logra contacto con cliente, Indica que en ese momento no esta en su domicilio, Se le envia mensaje por live chat, No permite ingresar con credenciales, Se debe solicitar a cliente una foto de la parte de abajo del router",
+        "sot": "",
+        "contactId": "1789582718-2823775",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789583587881,
+      "timestamp": "01:33:07 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nTELEFONO: 920293941\nDECARTE: Se valida provisión y online en Incógnito\n         Sin acceso al dashboard\n         Sin acceso al TR69\n         Se intenta ingresar al escritorio remoto sin exito\n         Se logra contacto con cliente\n         Indica que en ese momento no esta en su domicilio\n         Se le envia mensaje por live chat\n         No permite ingresar con credenciales\n         Se debe solicitar a cliente una foto de la parte de abajo del router\nID DE LLAMADA: 1789582718-2823775",
+      "fields": {
+        "telefono": "920293941",
+        "problema": "INT - CAMBIO DE CLAVE WIFI Y NOMBRE WIFI (SSID)",
+        "solucion": "",
+        "descartes": "Se valida provisión y online en Incógnito, Sin acceso al dashboard, Sin acceso al TR69, Se intenta ingresar al escritorio remoto sin exito, Se logra contacto con cliente, Indica que en ese momento no esta en su domicilio, Se le envia mensaje por live chat, No permite ingresar con credenciales, Se debe solicitar a cliente una foto de la parte de abajo del router",
+        "sot": "",
+        "contactId": "1789582718-2823775",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789583415288,
+      "timestamp": "01:30:15 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nTELEFONO: 920293941\nDECARTE: Se valida provisión y online en Incógnito\n         Sin acceso al dashboard\n         Sin acceso al TR69\n         Se intenta ingresar al escritorio remoto sin exito\n         Se logra contacto con cliente\n         Indica que en ese momento no esta en su domicilio\n         Se le envia mensaje por live chat\n         No permite ingresar con credenciales\n         Se debe solicitar a cliente una foto de la parte de abajo del router\nID DE LLAMADA: 1789582718-2823775",
+      "fields": {
+        "telefono": "920293941",
+        "problema": "INT - CAMBIO DE CLAVE WIFI Y NOMBRE WIFI (SSID)",
+        "solucion": "",
+        "descartes": "Se valida provisión y online en Incógnito, Sin acceso al dashboard, Sin acceso al TR69, Se intenta ingresar al escritorio remoto sin exito, Se logra contacto con cliente, Indica que en ese momento no esta en su domicilio, Se le envia mensaje por live chat, No permite ingresar con credenciales, Se debe solicitar a cliente una foto de la parte de abajo del router",
+        "sot": "",
+        "contactId": "1789582718-2823775",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789582197281,
+      "timestamp": "01:09:57 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nTELEFONO: 925089803\nDECARTE: Se valida provisión y online en Incógnito\n         Se valida Dashboard OK\n         Se valida Schaman sin alertas\n         Se valida consumo en Tracer y sin flags alarmados\n         Se logra contacto con cliente\n         Informa que el servicio esta optimo en el momento pero que en la tarde y a veces al azar presenta lentitud\n         Se le envia mensaje por live chat\n         Se le indica presionarlo cuando tenga la interferencia\n         Ciclo\nID DE LLAMADA: 1789581725-343574",
+      "fields": {
+        "telefono": "925089803",
+        "problema": "INT - BAJA VELOCIDAD VIA CABLEADO Y WIFI (LENTITUD)",
+        "solucion": "",
+        "descartes": "Se valida provisión y online en Incógnito, Se valida Dashboard OK, Se valida Schaman sin alertas, Se valida consumo en Tracer y sin flags alarmados, Se logra contacto con cliente, Informa que el servicio esta optimo en el momento pero que en la tarde y a veces al azar presenta lentitud, Se le envia mensaje por live chat, Se le indica presionarlo cuando tenga la interferencia, Ciclo",
+        "sot": "",
+        "contactId": "1789581725-343574",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789582038991,
+      "timestamp": "01:07:18 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nTELEFONO: 925089803\nDECARTE: Se valida provisión y online en Incógnito\n         Se valida Dashboard OK\n         Se valida Schaman sin alertas\n         Se valida consumo en Tracer y sin flags alarmados\n         Se logra contacto con cliente\n         Informa que el servicio esta optimo en el momento pero que en la tarde y a veces al azar presenta lentitud\n         Se le envia mensaje por live chat\n         Se le indica presionarlo cuando tenga la interferencia\n         Ciclo\nID DE LLAMADA: 1789581725-343574",
+      "fields": {
+        "telefono": "925089803",
+        "problema": "INT - BAJA VELOCIDAD VIA CABLEADO Y WIFI (LENTITUD)",
+        "solucion": "",
+        "descartes": "Se valida provisión y online en Incógnito, Se valida Dashboard OK, Se valida Schaman sin alertas, Se valida consumo en Tracer y sin flags alarmados, Se logra contacto con cliente, Informa que el servicio esta optimo en el momento pero que en la tarde y a veces al azar presenta lentitud, Se le envia mensaje por live chat, Se le indica presionarlo cuando tenga la interferencia, Ciclo",
+        "sot": "",
+        "contactId": "1789581725-343574",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789581345257,
+      "timestamp": "12:55:45 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nTELEFONO: 975472914\nDECARTE: Se valida consumo en Tracer y sin flags alarmados\n         Se valida provisión y online en Incógnito\n         Se valida Dashboard OK\n         Se valida Schaman sin alertas\n         Cliente contesta live chat\n         Se le envia mensaje antes de llamarlo. cliente no contesta\n         Se cierra chat ciclo\nID DE LLAMADA: 1789581213-17368 / 6d800628-bbe8-43ac-a71e-cecc07b090e6",
+      "fields": {
+        "telefono": "975472914",
+        "problema": "INT - BAJA VELOCIDAD VIA CABLEADO Y WIFI (LENTITUD)",
+        "solucion": "",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Se valida Schaman sin alertas, Cliente contesta live chat, Se le envia mensaje antes de llamarlo. cliente no contesta, Se cierra chat ciclo",
+        "sot": "",
+        "contactId": "1789581213-17368 | 6d800628-bbe8-43ac-a71e-cecc07b090e6",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789581260369,
+      "timestamp": "12:54:20 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Personalizada",
+      "service": "WhatsApp",
+      "summary": "Estimado cliente 👋, estuvimos llamando a su número celular 📱, pero no tuvimos ",
+      "content": "Estimado cliente 👋, estuvimos llamando a su número celular 📱, pero no tuvimos respuesta. Procedemos a finalizar esta conversación. Lo estaremos llamando en el transcurso del día o mañana. 🕒📞 ¡Que tenga un excelente día! 😊",
+      "fields": {
+        "telefono": "900177420",
+        "problema": "INT - NO LLEGA A LA VELOCIDAD CONTRATADA",
+        "solucion": "",
+        "descartes": "Se valida provisión y online en Incógnito con niveles opticos dentro del, Se valida Schaman sin alertas, Se valida consumo en Tracer y sin flags alarmados, 1er intento de contacto: Cliente no contesta, Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)",
+        "sot": "",
+        "contactId": "1789580479-3090257",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789581168401,
+      "timestamp": "12:52:48 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Personalizada",
+      "service": "WhatsApp",
+      "summary": "¡Perfecto! 👍 Lo estaremos llamando en estos momentos 📞, por favor conteste la ",
+      "content": "¡Perfecto! 👍 Lo estaremos llamando en estos momentos 📞, por favor conteste la llamada. 😉✨",
+      "fields": {
+        "telefono": "900177420",
+        "problema": "INT - NO LLEGA A LA VELOCIDAD CONTRATADA",
+        "solucion": "",
+        "descartes": "Se valida provisión y online en Incógnito con niveles opticos dentro del, Se valida Schaman sin alertas, Se valida consumo en Tracer y sin flags alarmados, 1er intento de contacto: Cliente no contesta, Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)",
+        "sot": "",
+        "contactId": "1789580479-3090257",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789580698201,
+      "timestamp": "12:44:58 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nTELEFONO: 900177420\nDECARTE: Se valida provisión y online en Incógnito con niveles opticos dentro del\n         Se valida Schaman sin alertas\n         Se valida consumo en Tracer y sin flags alarmados\n         er intento de contacto: Cliente no contesta\n         Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)\nID DE LLAMADA: 1789580479-3090257",
+      "fields": {
+        "telefono": "900177420",
+        "problema": "INT - NO LLEGA A LA VELOCIDAD CONTRATADA",
+        "solucion": "",
+        "descartes": "Se valida provisión y online en Incógnito con niveles opticos dentro del, Se valida Schaman sin alertas, Se valida consumo en Tracer y sin flags alarmados, 1er intento de contacto: Cliente no contesta, Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)",
+        "sot": "",
+        "contactId": "1789580479-3090257",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789580246162,
+      "timestamp": "12:37:26 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nTELEFONO: 983414745\nDECARTE: Se valida Schaman con alerta de equipo FTTH desconectado\n         Se valida cliente cuenta con repetidor plume\n         Se valida Incógnito provisionado desconectado en offline\n         Se logra contacto con cliente indica que no se encuentra en el domicilio pero su esposo si\n         Se llama pero no contesta\n         Se envia mensaje por live chat ciclo\nID DE LLAMADA: 1789580028-3092932",
+      "fields": {
+        "telefono": "983414745",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "",
+        "descartes": "Se valida Schaman con alerta de equipo FTTH desconectado, Se valida cliente cuenta con repetidor plume, Se valida Incógnito provisionado desconectado en offline, Se logra contacto con cliente indica que no se encuentra en el domicilio pero su esposo si, Se llama pero no contesta, Se envia mensaje por live chat ciclo",
+        "sot": "",
+        "contactId": "1789580028-3092932",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789579499467,
+      "timestamp": "12:24:59 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nTELEFONO: 975472914\nDECARTE: Se valida consumo minimo en Tracer y sin flags alarmados\n         Se valida Schaman sin alertas\n         Se valida Incógnito con provisión y en online\n         Se valida dashboard ok\n         Se valida bandas separadas\n         er intento de contacto: Cliente no contesta\n         Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)\nID DE LLAMADA: 1789579327-2296899",
+      "fields": {
+        "telefono": "975472914",
+        "problema": "INT - BAJA VELOCIDAD VIA CABLEADO Y WIFI (LENTITUD)",
+        "solucion": "",
+        "descartes": "Se valida consumo minimo en Tracer y sin flags alarmados, Se valida Schaman sin alertas, Se valida Incógnito con provisión y en online, Se valida dashboard ok, Se valida bandas separadas, 1er intento de contacto: Cliente no contesta, Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)",
+        "sot": "",
+        "contactId": "1789579327-2296899",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789579010305,
+      "timestamp": "12:16:50 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nTELEFONO: 991833822\nPROBLEMA DETECTADO: PROBLEMAS DE ACCESO CON PAGINAS\nDESCARTES REALIZADOS: Cliente contesta mensaje de live chat\n                      Se valida problema de acceso a pagina: https://denuncias.policia.gob.pe/sidpol/Login.aspx?ReturnUrl=%2fsidpol%2f\n                      Se valida conexión con la red wifi\n                      No puede ingresar\n                      Usando sus datos si puede ingresar\n                      Se genera Remedy\nSOLUCION: Se escala a Remedy\nSOT / REMEDY: REQ000000138843\nID DE LLAMADA: 1789576974-920330 / 5cbb01fb-edd7-40c8-ba38-c74e978c01e3",
+      "fields": {
+        "telefono": "991833822",
+        "problema": "INT - PROBLEMAS DE ACCESO CON PAGINAS",
+        "solucion": "Se escala a Remedy",
+        "descartes": "Cliente contesta mensaje de live chat, Se valida problema de acceso a pagina: https://denuncias.policia.gob.pe/sidpol/Login.aspx?ReturnUrl=%2fsidpol%2f, Se valida conexión con la red wifi, No puede ingresar, Usando sus datos si puede ingresar, Se genera Remedy",
+        "sot": "REQ000000138843",
+        "contactId": "1789576974-920330 | 5cbb01fb-edd7-40c8-ba38-c74e978c01e3",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789578781145,
+      "timestamp": "12:13:01 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nTELEFONO: 991833822\nPROBLEMA DETECTADO: PROBLEMAS DE ACCESO CON PAGINAS\nDESCARTES REALIZADOS: Cliente contesta mensaje de live chat\n                      Se valida problema de acceso a pagina: https://denuncias.policia.gob.pe/sidpol/Login.aspx?ReturnUrl=%2fsidpol%2f\n                      Se valida conexión con la red wifi\n                      No puede ingresar\n                      Usando sus datos si puede ingresar\n                      Se genera Remedy\nSOLUCION: Se escala a Remedy\nSOT / REMEDY: REQ000000138843\nID DE LLAMADA: 1789576974-920330",
+      "fields": {
+        "telefono": "991833822",
+        "problema": "INT - PROBLEMAS DE ACCESO CON PAGINAS",
+        "solucion": "Se escala a Remedy",
+        "descartes": "Cliente contesta mensaje de live chat, Se valida problema de acceso a pagina: https://denuncias.policia.gob.pe/sidpol/Login.aspx?ReturnUrl=%2fsidpol%2f, Se valida conexión con la red wifi, No puede ingresar, Usando sus datos si puede ingresar, Se genera Remedy",
+        "sot": "REQ000000138843",
+        "contactId": "1789576974-920330",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789578730041,
+      "timestamp": "12:12:10 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nTELEFONO: 991833822\nPROBLEMA DETECTADO: PROBLEMAS DE ACCESO CON PAGINAS\nDESCARTES REALIZADOS: Cliente contesta mensaje de live chat\n                      Se valida problema de acceso a pagina: https://denuncias.policia.gob.pe/sidpol/Login.aspx?ReturnUrl=%2fsidpol%2f\n                      Se valida conexión con la red wifi\n                      No puede ingresar\n                      Usando sus datos si puede ingresar\n                      Se genera Remedy\nSOLUCION: Se escala a Remedy\nSOT / REMEDY: REQ000000138843\nID DE LLAMADA: 1789576974-920330",
+      "fields": {
+        "telefono": "991833822",
+        "problema": "INT - PROBLEMAS DE ACCESO CON PAGINAS",
+        "solucion": "Se escala a Remedy",
+        "descartes": "Cliente contesta mensaje de live chat, Se valida problema de acceso a pagina: https://denuncias.policia.gob.pe/sidpol/Login.aspx?ReturnUrl=%2fsidpol%2f, Se valida conexión con la red wifi, No puede ingresar, Usando sus datos si puede ingresar, Se genera Remedy",
+        "sot": "REQ000000138843",
+        "contactId": "1789576974-920330",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789578717057,
+      "timestamp": "12:11:57 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nTELEFONO: 991833822\nPROBLEMA DETECTADO: PROBLEMAS DE ACCESO CON PAGINAS\nDESCARTES REALIZADOS: Cliente contesta mensaje de live chat\n                      Se valida problema de acceso a pagina: https://denuncias.policia.gob.pe/sidpol/Login.aspx?ReturnUrl=%2fsidpol%2f\n                      Se valida conexión con la red wifi\n                      No puede ingresar\n                      Usando sus datos si puede ingresar\n                      Se genera Remedy\nSOLUCION: Se escala a Remedy\nSOT / REMEDY: REQ000000138843\nID DE LLAMADA: 1789576974-920330",
+      "fields": {
+        "telefono": "991833822",
+        "problema": "INT - PROBLEMAS DE ACCESO CON PAGINAS",
+        "solucion": "Se escala a Remedy",
+        "descartes": "Cliente contesta mensaje de live chat, Se valida problema de acceso a pagina: https://denuncias.policia.gob.pe/sidpol/Login.aspx?ReturnUrl=%2fsidpol%2f, Se valida conexión con la red wifi, No puede ingresar, Usando sus datos si puede ingresar, Se genera Remedy",
+        "sot": "REQ000000138843",
+        "contactId": "1789576974-920330",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789578700796,
+      "timestamp": "12:11:40 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nTELEFONO: 991833822\nPROBLEMA DETECTADO: PROBLEMAS DE ACCESO CON PAGINAS\nDESCARTES REALIZADOS: Cliente contesta mensaje de live chat\n                      Se valida problema de acceso a pagina: https://denuncias.policia.gob.pe/sidpol/Login.aspx?ReturnUrl=%2fsidpol%2f\n                      Se valida conexión con la red wifi\n                      No puede ingresar\n                      Usando sus datos si puede ingresar\n                      Se genera Remedy\nSOLUCION: Se escala a Remedy\nSOT / REMEDY: REQ000000138843\nID DE LLAMADA: 1789576974-920330",
+      "fields": {
+        "telefono": "991833822",
+        "problema": "INT - PROBLEMAS DE ACCESO CON PAGINAS",
+        "solucion": "Se escala a Remedy",
+        "descartes": "Cliente contesta mensaje de live chat, Se valida problema de acceso a pagina: https://denuncias.policia.gob.pe/sidpol/Login.aspx?ReturnUrl=%2fsidpol%2f, Se valida conexión con la red wifi, No puede ingresar, Usando sus datos si puede ingresar, Se genera Remedy",
+        "sot": "REQ000000138843",
+        "contactId": "1789576974-920330",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789578393467,
+      "timestamp": "12:06:33 p.m.",
+      "dateStr": "16/9/2026",
+      "type": "Remedy",
+      "service": "PDF Escalamiento RED",
+      "summary": "Doc: Remedy_RED_41850763_WALTER_DANIEL_HUAMAN_ACEVEDO",
+      "content": "Doc: Remedy_RED_41850763_WALTER_DANIEL_HUAMAN_ACEVEDO",
+      "fields": {
+        "telefono": "991833822",
+        "problema": "INT - PROBLEMAS DE ACCESO CON PAGINAS",
+        "solucion": "Se escala a Remedy",
+        "descartes": "Cliente contesta mensaje de live chat, Se valida problema de acceso a pagina: https://denuncias.policia.gob.pe/sidpol/Login.aspx?ReturnUrl=%2fsidpol%2f, Se valida conexión con la red wifi, No puede ingresar, Usando sus datos si puede ingresar, Se genera Remedy",
+        "sot": "",
+        "contactId": "1789576974-920330",
+        "servicio": "INTERNET"
+      }
+    }
+  ],
+  "learnedPhrases": {
+    "descartes": [
+      "Se valida Schaman con alerta de equipo FTTH desconectado, Se hacen descartes fisicos con liente, Indica que el equipo se encuentra conectado y tiene una luz roja encendida en LOS se genera SOT",
+      "Se valida en estado offline",
+      "Se valida Incógnito con provisión",
+      "Con alerta de sin consumo anterior",
+      "Se valida sin consumo en Tracer",
+      "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida TR69 todo OK con bandas separada, 1er intento de contacto: Cliente no contesta, Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)",
+      "Se valida sin consumo en Tracer, Con alerta de sin consumo anterior, Se valida Incógnito con provisión, Se valida en estado offline, Se valida Schaman con alerta de equipo FTTH desconectado, Se intenta contactar a cliente contesta pero no dice nada, Se envia mensaje a live chat ciclo",
+      "Se valida consumo en Tracer y sin flags alarmados, Se valida caída de servicio el día 15, Se valida provisión y online en Incógnito, Se valida TR69 con canales saturados, 1er intento de contacto: Cliente no contesta, Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)",
+      "Se valida que cliente fue llamado y desea devolucion de llamada a las 6pm, Se valida con asesor que se le envió mensaje por live chat para que presione el boton cuando tenga disponibilidad",
+      "Cliente contesta mensaje en live chat, Se le envia mensaje antes de llamar, Cliente no contesta llamada, Se cierra char",
+      "Se valida provisión y online en Incógnito, Sin acceso al dashboard, Sin acceso al TR69, Se intenta ingresar al escritorio remoto sin exito, Se logra contacto con cliente, Indica que en ese momento no esta en su domicilio, Se le envia mensaje por live chat, No permite ingresar con credenciales, Se debe solicitar a cliente una foto de la parte de abajo del router",
+      "Se valida provisión y online en Incógnito, Se valida Dashboard OK, Se valida Schaman sin alertas, Se valida consumo en Tracer y sin flags alarmados, Se logra contacto con cliente, Informa que el servicio esta optimo en el momento pero que en la tarde y a veces al azar presenta lentitud, Se le envia mensaje por live chat, Se le indica presionarlo cuando tenga la interferencia, Ciclo",
+      "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Se valida Schaman sin alertas, Cliente contesta live chat, Se le envia mensaje antes de llamarlo. cliente no contesta, Se cierra chat ciclo",
+      "Se valida provisión y online en Incógnito con niveles opticos dentro del, Se valida Schaman sin alertas, Se valida consumo en Tracer y sin flags alarmados, 1er intento de contacto: Cliente no contesta, Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)",
+      "Se valida Schaman con alerta de equipo FTTH desconectado, Se valida cliente cuenta con repetidor plume, Se valida Incógnito provisionado desconectado en offline, Se logra contacto con cliente indica que no se encuentra en el domicilio pero su esposo si, Se llama pero no contesta, Se envia mensaje por live chat ciclo",
+      "Se valida consumo minimo en Tracer y sin flags alarmados, Se valida Schaman sin alertas, Se valida Incógnito con provisión y en online, Se valida dashboard ok, Se valida bandas separadas, 1er intento de contacto: Cliente no contesta, Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)",
+      "Cliente contesta mensaje de live chat, Se valida problema de acceso a pagina: https://denuncias.policia.gob.pe/sidpol/Login.aspx?ReturnUrl=%2fsidpol%2f, Se valida conexión con la red wifi, No puede ingresar, Usando sus datos si puede ingresar, Se genera Remedy",
+      "Cliente contesta live se envia mensaje antes de llamar, Cliente no contesta llamada, Se cierra caso",
+      "Se valida consumo en Tracer y y con alerta de sin consumo hace 15 min, Se valida provisión y online en Incógnito, Se valida niveles dentro del rango, Se valida TR69 con auto select de channel desactivado, No permite ver canales saturados, Se logra contacto con cliente, Cliente indica que por el momento esta funcionando bien, Indica que las intereferencias ocurren al trascurso del día, Podria ser en la tarde, Se le envia mensaje por live chat y se le indica presionarlo cuando sienta la intermitencia",
+      "Se valida consumo en Tracer y con flag de consumo minimo, Se valida provisión y online en Incógnito, Se valida niveles dentro del rango, Se valida Schaman sin alertas, 1er intento de contacto: Cliente no contesta, Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)",
+      "Se valida provisión y online en Incógnito, Se valida Schaman sin alertas, Se valida consumo en Tracer y sin flags alarmados, Se logra contacto con cliente, Cliente indica que por el momento no tiene inconvenientes con su servicio indica que ocurre al azar, Se le envia mensaje por live chat, Se le indica presionarlo cuando sienta la interferencia",
+      "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Se valida Schaman sin alertas, Se logra contacto con cliente indica que en ese momento no esta en su domicilio pero que ha sentido mejoria en el servicio, Se le envia mensaje por live caht y se le indica presionarlo cuando este en su domicilio y sienta alguna intereferencia",
+      "Se valida provisión y online en Incógnito, Se valida consumo en Tracer y sin flags alarmados, Se valida Schaman sin alertas, Se valida TR69 todo con bandas unificadas, No se pueden ver los canales saturados, 1er intento de contacto: Cliente no contesta, Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)",
+      "Cliente nos contacta por live chat, Se le envia mensaje antes de llamarlo, Cliente indica que su problema es directamente con su datos moviles, Se valida mala derivacion de caso, Se cierra caso",
+      "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Con bandas unificadas, Se logra contacto con cliente, Indica que en ese momento el servicio esta estable pero que aveces ocurre la lentitud en la tarde, Se le envia mensaje por live chat se le indica presionar boton cuando sienta la intermitencia",
+      "NUNCA respondió",
+      "NO CONTESTA",
+      "BO.TEC NO CONTESTA",
+      "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Schaman con alerta de SOT en ejecución, Se valida datos de SOT en SIAC se valida SOT generada despues de caso, Se cierra caso",
+      "Se valida Schaman sin alertas, Se valida provisión y online en Incógnito, Se valida dashboard con online en naranja, Cliente contesta live char y se le llama, Indica que no tine disponibilidad por el momento, Se le vuelve a enviar mensaje por live chat se le indica presionarlo solo cuando tenga disponiblidad",
+      "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida niveles de potencia dentro del rango, Se valida Schaman sin alertas, Cliente contesta llamada, Indica que no tiene disponibilidad por el momento, Se le envia mensaje por live chat y se le indica presionarlo cuando tenga disponiblidad",
+      "Se valida provisión y online en Incógnito, Se valida Schaman sin alertas, Se valida cliente Plume, Se logra contacto con cliente, Este indica que suspendera su servicio, Se cierra caso",
+      "Se valida provisión y online en Incógnito, Se valida Schaman sin alertas, Se valida consumo minimo en Tracer y sin flags alarmados, 1er intento de contacto: al llamar al cliente suena como ocupado, Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)",
+      "Cliente contesta live chat, Indica que no tiene disponibilidad por el momento, Se envia mensaje por live chat nuevamente y se le indica presionarlo cuando tenga la disponibilidad",
+      "Se valida consumo en Tracer y sin flags alarmados, Se valida alarma de sin energia anteriores, Se valida Schaman sin alertas, Se valida Dashboard OK, 1er intento de contacto: Cliente no contesta, Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)",
+      "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Sin acceso al dashboard, Se valida Schaman sin alertas, 1er intento de contacto: Cliente no contesta, Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)",
+      "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Sin acceso al dashboard, 1er intento de contacto: Cliente no contesta, Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)",
+      "Se valida consumo en Tracer y sin flags alarmados, Se valida variacion de niveles de opticos, Tambien se valida sin consumo por algunas horas en grafica, Se valida Schaman sin alertas, 1er intento de contacto: Cliente no contesta, Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)",
+      "Se valida consumo minimo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, No deja ver IP ni niveles, Se valida dashboard con online en naranja, Se valida niveles opticos en el rango, No permite ver IP, Se contacta al cliente, Indica no conocer al titular, Se envia mensaje por live chat y se genera ciclo",
+      "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Schaman con alerta de SOT en ejecucion, Se valida datos de SOT en SIAC se valida SOT generada despues de caso, Se cierra",
+      "Se valida consumo en Tracer y sin flags alarmados, Se valida Schaman sin alertas, Se valida provisión y online en Incógnito, Validar con cliente la disponibilidad debido a que no se pueden agendar atenciones de mas de 2 días, 1er intento de contacto: Cliente no contesta, Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)",
+      "Se valida consumo en Tracer y sin flags alarmados, Se valida Schaman sin alertas, Se valida provisión y online en Incógnito, 1er intento de contacto: Cliente no contesta, Se envía mensaje por LiveChat y se deja mensaje en buzón de voz (1er ciclo)"
+    ],
+    "soluciones": [
+      "Se escala a Remedy",
+      "Se le indica comunicarse nuevamente con atención al cliente",
+      "Cliente Supendera su servicio"
+    ]
+  }
+}

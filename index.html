@@ -13,12 +13,16 @@
     <header class="app-header">
         <div class="brand">
             <div>
-                <div class="brand-title">WORKSTATION BACKOFFICE <span id="btnChangelog" style="display: inline-flex; align-items: center; border-radius: 4px; overflow: hidden; vertical-align: middle; margin-left: 0.5rem; font-size: 0.55em; letter-spacing: normal; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.4</span></span></div>
+                <div class="brand-title">WORKSTATION BACKOFFICE <span id="btnChangelog" style="display: inline-flex; align-items: center; border-radius: 4px; overflow: hidden; vertical-align: middle; margin-left: 0.5rem; font-size: 0.55em; letter-spacing: normal; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.5</span></span></div>
                 <div class="brand-subtitle">PLATAFORMA LOCAL DE PLANTILLAS Y SEGUIMIENTO PARA BO-FIJA</div>
             </div>
         </div>
 
         <div class="header-actions" style="display:flex; gap:0.5rem; align-items:center;">
+            <button id="btnOpenManualsSidebar" class="header-circle-btn" title="Manuales & Guías Técnicas (Alt+M)" style="position:relative;">
+                📖
+                <span class="header-btn-badge" id="headerManualsBadge">6</span>
+            </button>
             <button id="btnOpenLinksSidebar" class="header-circle-btn" title="Plataformas & Enlaces de Trabajo (Alt+L)">🌐</button>
             <button id="themeToggleBtn" class="theme-toggle-btn" title="Cambiar Tema (Oscuro/Claro)">🌙</button>
         </div>
@@ -406,12 +410,17 @@
                         
                         <div id="eqQuickChips" style="display:flex; flex-wrap:wrap; gap:0.3rem; margin-bottom:0.85rem;">
                             <span class="btn-xs eq-chip" data-model="TG3442" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">TG3442</span>
+                            <span class="btn-xs eq-chip" data-model="TG1662G" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">TG1662G</span>
+                            <span class="btn-xs eq-chip" data-model="FAST3284" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">FAST3284</span>
                             <span class="btn-xs eq-chip" data-model="CGA2121" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">CGA2121</span>
-                            <span class="btn-xs eq-chip" data-model="F6600P" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">F6600P</span>
-                            <span class="btn-xs eq-chip" data-model="ZXHNF680" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">F680</span>
-                            <span class="btn-xs eq-chip" data-model="FAST3686V22" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">FAST3686</span>
+                            <span class="btn-xs eq-chip" data-model="CGA4233CLP2" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">CGA4233</span>
+                            <span class="btn-xs eq-chip" data-model="FAST3890V3" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">FAST3890</span>
+                            <span class="btn-xs eq-chip" data-model="INFINITY601" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">Infinity601</span>
+                            <span class="btn-xs eq-chip" data-model="F6600PV9012" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">F6600P</span>
+                            <span class="btn-xs eq-chip" data-model="F680V6008" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">F680</span>
                             <span class="btn-xs eq-chip" data-model="FAST5670V2" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">FAST5670</span>
-                            <span class="btn-xs eq-chip" data-model="TG2482" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">TG2482</span>
+                            <span class="btn-xs eq-chip" data-model="HG8145X610" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">HG8145X6</span>
+                            <span class="btn-xs eq-chip" data-model="HG8145V5" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">HG8145V5</span>
                             <span class="btn-xs eq-chip" data-model="HG8245Q2" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">HG8245Q2</span>
                         </div>
                         
@@ -424,12 +433,15 @@
                             <div id="eqType" style="color:var(--text-muted); font-size:0.8rem; margin-bottom:0.6rem;">--</div>
                             
                             <div style="display:flex; justify-content:center; gap:0.35rem; flex-wrap:wrap; margin-bottom:0.6rem;">
+                                <span id="eqRed" style="padding:0.25rem 0.6rem; border-radius:12px; font-size:0.75rem; font-weight:600;">--</span>
                                 <span id="eqVersion" style="padding:0.25rem 0.6rem; border-radius:12px; font-size:0.75rem; font-weight:600;">--</span>
                                 <span id="eqRepetidor" style="padding:0.25rem 0.6rem; border-radius:12px; font-size:0.75rem; font-weight:600;">--</span>
                                 <span id="eqSpeed" style="padding:0.25rem 0.6rem; border-radius:12px; font-size:0.75rem; font-weight:600; background:rgba(59, 130, 246, 0.15); color:#2563eb; border:1px solid rgba(59, 130, 246, 0.3);">--</span>
                                 <span id="eqStatus" style="display:inline-block; padding:0.25rem 0.6rem; border-radius:12px; font-size:0.75rem; font-weight:600;">--</span>
                             </div>
 
+                            <div id="eqFirmware" style="font-size:0.8rem; color:var(--text-color); background:var(--bg-card); padding:0.45rem 0.65rem; border-radius:6px; border:1px solid var(--border-color); margin-top:0.4rem; text-align:left;">--</div>
+                            <div id="eqPlataformas" style="font-size:0.8rem; color:var(--text-color); background:var(--bg-card); padding:0.45rem 0.65rem; border-radius:6px; border:1px solid var(--border-color); margin-top:0.4rem; text-align:left;">--</div>
                             <div id="eqDesc" style="font-size:0.8rem; color:var(--text-color); background:var(--bg-card); padding:0.45rem 0.65rem; border-radius:6px; border:1px solid var(--border-color); margin-top:0.4rem; text-align:left;">--</div>
                             <div id="eqCredentials" style="display:none; font-family:monospace; background:rgba(0,0,0,0.2); padding:0.5rem; border-radius:6px; font-size:0.8rem; margin-top:0.5rem; color:var(--text-color); border:1px solid rgba(255,255,255,0.1);"></div>
                         </div>
@@ -667,22 +679,23 @@
 
     <!-- MODAL FOR CHANGELOG -->
     <div id="changelogModal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 660px;">
+        <div class="modal-content" style="max-width: 680px;">
             <div class="card-title">
-                <div class="card-title-text">🚀 Novedades de la Versión 2.4</div>
+                <div class="card-title-text">🚀 Novedades de la Versión 2.5</div>
                 <button id="changelogModalClose" class="btn btn-sm">✕</button>
             </div>
             <div style="font-size: 0.92rem; line-height: 1.55; color: var(--text-main); margin-top: 1rem;">
                 <ul style="padding-left: 1.3rem; margin-bottom: 1.3rem; display: flex; flex-direction: column; gap: 0.65rem;">
-                    <li><strong>⚡ Motor de Texto Predictivo Inteligente (Tab ↹ / Desplegable):</strong> Autocompletado tipo IDE en <em>Descartes</em> y <em>Solución</em> con soporte de texto fantasma, diccionario base extraído de casos reales y aprendizaje automático continuo de tus frases diarias.</li>
-                    <li><strong>📜 Registro de Historial con Modal de Detalle:</strong> Visualización de plantillas completas con el nuevo botón <em>Ver</em>. Permite inspeccionar el caso, copiarlo y restaurarlo directamente con el botón <strong>🔄 Cargar en el Generador</strong>.</li>
-                    <li><strong>↩️ Protección Deshacer (Undo / Ctrl+Z):</strong> Al presionar <em>Limpiar</em>, el sistema guarda una instantánea segura. Puedes recuperar todos los datos al instante usando <code>Ctrl + Z</code> o el botón <em>Deshacer</em> en la notificación.</li>
-                    <li><strong>🧠 Smart Template Parser al Pegar:</strong> Al pegar una plantilla completa en <em>Descartes Realizados</em> o cualquier campo, el sistema la desglosa y llena automáticamente en sus respectivas casillas (Teléfono, Problema, Descartes limpios, Solución, SOT, ID Llamada y Servicio).</li>
-                    <li><strong>☎️ Soporte de Teléfonos Fijos y Celulares:</strong> Validación inteligente que reconoce móviles (9 dígitos), fijos Lima/Callao (7-8 dígitos) y fijos provinciales (6-8 dígitos).</li>
-                    <li><strong>🎯 Modo Oficial Claro por Defecto:</strong> Carga predeterminada en la plantilla <em>Oficial Cliente Claro</em> y simplificación del formulario de Categorías de Cierre.</li>
+                    <li><strong>📖 Módulo de Manuales y Guías Técnicas (Alt + M):</strong> Nuevo panel lateral con catálogo completo de procedimientos operativos (TR69/RDP, Tracer/ZTE Dashboard, Lentitud e Intermitencia, Sin Servicio, Provisión y Niveles, Acceso a Páginas Web).</li>
+                    <li><strong>👁️ Visor PDF en Modal Integrado (In-App):</strong> Lectura interactiva de manuales directamente en la plataforma con soporte para pantalla completa (<code>⛶</code>), descarga directa (<code>⬇️</code>) y búsqueda en tiempo real.</li>
+                    <li><strong>⚡ Predictivo Multilínea & Reconocimiento de Separadores:</strong> El motor predictivo ahora detecta múltiples descartes separados por comas (<code>,</code>), punto y coma (<code>;</code>), plecas (<code>|</code>) o saltos de línea (<code>\n</code>).</li>
+                    <li><strong>🏷️ Búsqueda Inteligente por Palabras Clave y Plataformas:</strong> Escribe nombres como <em>incognito</em>, <em>tracer</em>, <em>tr69</em>, <em>dashboard</em>, <em>schaman</em>, <em>plume</em>, <em>remedy</em> o <em>ciclo</em> para ver todas las frases asociadas con etiquetas visuales y resaltado en vivo.</li>
+                    <li><strong>📡 Base de Datos de Equipos Actualizada (19 Modelos):</strong> Detector de routers y ONTs ampliado con especificación de Red (HFC / FTTH), Wi-Fi (Wi-Fi 4/5/6), DOCSIS/GPON, versión de Firmware homologado y plataformas de revisión asignadas.</li>
+                    <li><strong>📱 Plantilla Oficial Claro Actualizada (CELULAR):</strong> Estandarización de <code>CELULAR:</code> en reemplazo de <code>TELEFONO:</code> y soporte inteligente al pegar datos (Smart Paste).</li>
+                    <li><strong>✨ Iconografía Uniforme SVG:</strong> Estandarización estética con iconos vectoriales finos y homogéneos en toda la WorkStation.</li>
                 </ul>
                 <p style="color: var(--text-muted); font-size: 0.82rem; border-top: 1px dashed var(--border-color); padding-top: 0.8rem; text-align: center;">
-                    ¡WorkStation BackOffice v2.4 optimizado para máxima velocidad, precisión técnica y ergonomía operativa!
+                    ¡WorkStation BackOffice v2.5 &bull; Máxima productividad técnica, rapidez y herramientas centralizadas!
                 </p>
             </div>
         </div>
@@ -736,7 +749,7 @@
                                 <input type="text" id="remedyRedCustomerId" class="form-input" placeholder="Ej: 57200343">
                             </div>
                             <div class="form-group">
-                                <label class="form-label">MAC Cable Módem / ONT:</label>
+                                <label class="form-label">SN / MAC:</label>
                                 <input type="text" id="remedyRedMac" class="form-input" placeholder="Ej: A0:B1:C2:D3:E4:F5">
                             </div>
                         </div>
@@ -984,12 +997,73 @@
             <button type="button" id="btnCloseImageZoom" class="btn btn-sm" style="position: absolute; top: -14px; right: -14px; background: #dc2626; color: #fff; border: 2px solid #fff; border-radius: 50%; width: 34px; height: 34px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.5);" title="Cerrar (Esc)">✕</button>
         </div>
     </div>
+
+    <!-- MODAL VISOR DE MANUALES PDF EN VIVO -->
+    <div id="manualViewerModal" class="modal-overlay" style="z-index: 2200;">
+        <div id="manualViewerContainer" class="manual-viewer-content">
+            <!-- Modal Header -->
+            <div class="manual-viewer-header">
+                <div class="manual-viewer-title-box">
+                    <span id="manualViewerIcon" style="font-size: 1.4rem;">📖</span>
+                    <div>
+                        <div id="manualViewerTitle" class="manual-viewer-title">Visualizador de Manual</div>
+                        <div id="manualViewerCategory" class="manual-viewer-subtitle">Guías Técnicas BackOffice</div>
+                    </div>
+                </div>
+                <div class="manual-viewer-header-actions">
+                    <a id="btnManualViewerDownload" href="#" download class="btn btn-sm" style="background:var(--bg-input); border:1px solid var(--border-color); display:flex; align-items:center; gap:0.35rem;" title="Descargar PDF en tu equipo">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Descargar
+                    </a>
+                    <a id="btnManualViewerExternal" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-sm" style="background:var(--bg-input); border:1px solid var(--border-color); display:flex; align-items:center; gap:0.35rem;" title="Abrir en pestaña nueva">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        Pestaña
+                    </a>
+                    <button type="button" id="btnManualViewerFullscreen" class="btn btn-sm" style="background:var(--bg-input); border:1px solid var(--border-color); display:flex; align-items:center; justify-content:center; padding:0.3rem 0.5rem;" title="Pantalla Completa">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                    </button>
+                    <button type="button" id="btnCloseManualViewer" class="btn btn-sm" style="background:rgba(239, 68, 68, 0.15); color:var(--danger); border:1px solid var(--danger); font-weight:bold; font-size:1rem; padding:0.2rem 0.6rem; cursor:pointer;" title="Cerrar visor (Esc)">
+                        ✕
+                    </button>
+                </div>
+            </div>
+
+            <!-- Embedded PDF Frame -->
+            <div class="manual-viewer-body">
+                <iframe id="manualViewerFrame" src="" class="manual-pdf-frame" title="Visor de PDF"></iframe>
+            </div>
+        </div>
+    </div>
     <div id="toastContainer" class="toast-container"></div>
 
     <!-- FOOTER -->
     <footer class="app-footer">
         Creado por Drey E. Aymituma &copy; 2026 &bull; Aplicación Local Offline de Plantillas Back Office &bull; Inmune a Proxies
     </footer>
+
+    <!-- SIDEBAR DE MANUALES & GUÍAS TÉCNICAS -->
+    <div id="manualsSidebarOverlay" class="sidebar-overlay"></div>
+    <aside id="manualsSidebar" class="links-sidebar manuals-sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-title">
+                📖 Manuales & Guías Técnicas
+                <span class="manuals-count-badge" id="manualsCountBadge">6</span>
+            </div>
+            <button type="button" id="btnCloseManualsSidebar" class="sidebar-close-btn" title="Cerrar (Esc)">✕</button>
+        </div>
+
+        <div class="sidebar-search-box">
+            <input type="text" id="sidebarManualSearch" class="form-input" placeholder="🔍 Buscar manual o tema (ej. Lentitud, TR69, Tracer, Niveles)...">
+        </div>
+
+        <div class="manuals-filter-bar" id="manualsCategoryFilter">
+            <!-- Renderizado dinámico de chips de categorías -->
+        </div>
+
+        <div class="sidebar-body" style="padding-top: 0.8rem;">
+            <div id="manualsListContainer"></div>
+        </div>
+    </aside>
 
     <!-- SIDEBAR DE ENLACES & PLATAFORMAS DE TRABAJO -->
     <div id="linksSidebarOverlay" class="sidebar-overlay"></div>
