@@ -13,7 +13,7 @@
     <header class="app-header">
         <div class="brand">
             <div>
-                <div class="brand-title">WORKSTATION BACKOFFICE <span id="btnChangelog" style="display: inline-flex; align-items: center; border-radius: 4px; overflow: hidden; vertical-align: middle; margin-left: 0.5rem; font-size: 0.55em; letter-spacing: normal; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.5</span></span></div>
+                <div class="brand-title">WORKSTATION BACKOFFICE <span id="btnChangelog" style="display: inline-flex; align-items: center; border-radius: 4px; overflow: hidden; vertical-align: middle; margin-left: 0.5rem; font-size: 0.55em; letter-spacing: normal; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.6</span></span></div>
                 <div class="brand-subtitle">PLATAFORMA LOCAL DE PLANTILLAS Y SEGUIMIENTO PARA BO-FIJA</div>
             </div>
         </div>
@@ -679,23 +679,22 @@
 
     <!-- MODAL FOR CHANGELOG -->
     <div id="changelogModal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 680px;">
+        <div class="modal-content" style="max-width: 700px;">
             <div class="card-title">
-                <div class="card-title-text">🚀 Novedades de la Versión 2.5</div>
+                <div class="card-title-text">🚀 Novedades de la Versión 2.6</div>
                 <button id="changelogModalClose" class="btn btn-sm">✕</button>
             </div>
             <div style="font-size: 0.92rem; line-height: 1.55; color: var(--text-main); margin-top: 1rem;">
                 <ul style="padding-left: 1.3rem; margin-bottom: 1.3rem; display: flex; flex-direction: column; gap: 0.65rem;">
-                    <li><strong>📖 Módulo de Manuales y Guías Técnicas (Alt + M):</strong> Nuevo panel lateral con catálogo completo de procedimientos operativos (TR69/RDP, Tracer/ZTE Dashboard, Lentitud e Intermitencia, Sin Servicio, Provisión y Niveles, Acceso a Páginas Web).</li>
-                    <li><strong>👁️ Visor PDF en Modal Integrado (In-App):</strong> Lectura interactiva de manuales directamente en la plataforma con soporte para pantalla completa (<code>⛶</code>), descarga directa (<code>⬇️</code>) y búsqueda en tiempo real.</li>
-                    <li><strong>⚡ Predictivo Multilínea & Reconocimiento de Separadores:</strong> El motor predictivo ahora detecta múltiples descartes separados por comas (<code>,</code>), punto y coma (<code>;</code>), plecas (<code>|</code>) o saltos de línea (<code>\n</code>).</li>
-                    <li><strong>🏷️ Búsqueda Inteligente por Palabras Clave y Plataformas:</strong> Escribe nombres como <em>incognito</em>, <em>tracer</em>, <em>tr69</em>, <em>dashboard</em>, <em>schaman</em>, <em>plume</em>, <em>remedy</em> o <em>ciclo</em> para ver todas las frases asociadas con etiquetas visuales y resaltado en vivo.</li>
-                    <li><strong>📡 Base de Datos de Equipos Actualizada (19 Modelos):</strong> Detector de routers y ONTs ampliado con especificación de Red (HFC / FTTH), Wi-Fi (Wi-Fi 4/5/6), DOCSIS/GPON, versión de Firmware homologado y plataformas de revisión asignadas.</li>
-                    <li><strong>📱 Plantilla Oficial Claro Actualizada (CELULAR):</strong> Estandarización de <code>CELULAR:</code> en reemplazo de <code>TELEFONO:</code> y soporte inteligente al pegar datos (Smart Paste).</li>
-                    <li><strong>✨ Iconografía Uniforme SVG:</strong> Estandarización estética con iconos vectoriales finos y homogéneos en toda la WorkStation.</li>
+                    <li><strong>🎨 Logotipos Vectoriales Oficiales SVG (Sidebar Hub):</strong> Vectorización completa en alta definición de todas las herramientas operativas: <em>TR69 (ACS)</em>, <em>Incógnito (SAC)</em>, <em>Schaman</em>, <em>BMC Helix</em>, <em>Remedy (DWP)</em>, <em>LiveChat (Aivo)</em>, <em>AICC</em>, <em>Plume</em>, <em>Dashboard ZT</em>, <em>Tracer</em> y <em>SIAC Único</em>.</li>
+                    <li><strong>🧹 Depuración & Desduplicación Estricta del Sidebar:</strong> Algoritmo de normalización de texto y URLs con soporte de tildes para eliminar accesos obsoletos o mocks (<em>Incógnito Provisión</em>, <em>Tracer Consumo</em>) y asegurar instancias 100% únicas para cada plataforma.</li>
+                    <li><strong>📋 Formateo Continuo de Descartes ("De Largo"):</strong> Los descartes en la plantilla oficial Claro y en la plantilla de Ciclo ahora se formatean de forma continua separados por comas en una sola línea fluida, optimizando espacio y agilizando la lectura técnica.</li>
+                    <li><strong>⚡ Estandarización de Etiquetas y Nombres:</strong> Nombres de plataformas simplificados y estandarizados para mayor claridad en los accesos directos (<em>Incógnito</em>, <em>TR69</em>, <em>Remedy</em>, <em>Escritorio Remoto</em>, etc.).</li>
+                    <li><strong>📖 Catálogo de Manuales & Guías Técnicas (Alt + M):</strong> Procedimientos operativos consolidados con visor PDF interactivo integrado in-app.</li>
+                    <li><strong>⚡ Predictivo Inteligente con Multitérmino y Separadores:</strong> Detección avanzada de múltiples descartes mediante comas, puntos y comas o saltos de línea.</li>
                 </ul>
                 <p style="color: var(--text-muted); font-size: 0.82rem; border-top: 1px dashed var(--border-color); padding-top: 0.8rem; text-align: center;">
-                    ¡WorkStation BackOffice v2.5 &bull; Máxima productividad técnica, rapidez y herramientas centralizadas!
+                    ¡WorkStation BackOffice v2.6 &bull; Máxima productividad técnica, rapidez y herramientas centralizadas!
                 </p>
             </div>
         </div>

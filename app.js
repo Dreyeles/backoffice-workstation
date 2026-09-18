@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 state.learnedPhrases[cat] = state.learnedPhrases[cat]
                     .map(p => typeof p === 'string' ? p.replace(/^Sse\b/i, 'Se').trim() : '')
                     .filter(p => p && !/^sse\s+/i.test(p));
-                
+
                 // Deduplicate with respect to base dataset
                 const seen = new Set();
                 state.learnedPhrases[cat] = state.learnedPhrases[cat].filter(p => {
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (cleanedPhrases) {
             try {
                 localStorage.setItem('bo_learned_phrases', JSON.stringify(state.learnedPhrases));
-            } catch (e) {}
+            } catch (e) { }
         }
     }
 
@@ -1753,7 +1753,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const normP = normalize(phrase);
             const normQ = normalize(query);
             const words = normQ.split(/\s+/).filter(w => w.length >= 2);
-            
+
             const intervals = [];
             words.forEach(w => {
                 const aliases = KEYWORD_ALIASES[w] || [];
@@ -1977,7 +1977,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 matches.forEach((phrase, idx) => {
                     const item = document.createElement('div');
                     item.className = `predictive-item ${idx === 0 ? 'is-selected' : ''}`;
-                    
+
                     const displayHtml = highlightPhraseMatches(phrase, query);
                     const tag = getPhraseTag(phrase);
                     const tagHtml = tag ? `<span class="predictive-item-tag">${escapeHtml(tag)}</span>` : '';
@@ -2015,10 +2015,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const applySuggestion = (fullPhrase) => {
                 if (!fullPhrase) return;
-                
+
                 const ctx = getSegmentContext();
                 let leading = ctx.leadingPrefix;
-                
+
                 // If previous separator was a comma, semicolon or pipe and has no space, add a single clean space
                 if (ctx.beforeSegment && /[,\;\|]$/.test(ctx.beforeSegment) && !leading) {
                     leading = ' ';
@@ -2078,7 +2078,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             inputEl.addEventListener('keydown', (e) => {
                 const isOpen = dropdownEl.classList.contains('is-open');
-                
+
                 // Tab or ArrowRight to accept ghost text or top match
                 if ((e.key === 'Tab' || (e.key === 'ArrowRight' && inputEl.selectionStart === inputEl.value.length)) && (currentGhostSuffix || (isOpen && currentMatches.length > 0))) {
                     e.preventDefault();
@@ -2407,10 +2407,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (items.length === 0) return 'DESCARTES REALIZADOS: N/A';
 
-        const prefix = 'DESCARTES REALIZADOS: ';
-        const indent = '                      '; // 22 espacios para alinear bajo el primer descarte
-
-        return prefix + items[0] + (items.length > 1 ? '\n' + items.slice(1).map(l => indent + l).join('\n') : '');
+        return 'DESCARTES REALIZADOS: ' + items.join(', ');
     }
 
     function formatDescarteWspCiclo(rawText) {
@@ -2424,10 +2421,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .map(s => s.replace(/^[-*•\d.)\]]\s*/, '').trim())
             .filter(s => s.length > 0);
         if (items.length === 0) return 'DECARTE: NO RESPONDE N°XX DE LLAMADA';
-        if (items.length === 1) return `DECARTE: ${items[0]}`;
-        const prefix = 'DECARTE: ';
-        const indent = '         '; // 9 espacios para alinear bajo el primer descarte
-        return prefix + items[0] + '\n' + items.slice(1).map(l => indent + l).join('\n');
+        return `DECARTE: ${items.join(', ')}`;
     }
 
     function getFormattedContactLines() {
@@ -5444,7 +5438,7 @@ ${contactLines}`;
     // Export / Import Backup JSON (incluye plantillas, historial y frases aprendidas)
     elements.btnExportJson.addEventListener('click', () => {
         const backupData = {
-            version: '2.5',
+            version: '2.6',
             exportDate: new Date().toISOString(),
             advisorName: state.advisorName,
             advisorCode: state.advisorCode,
@@ -5554,7 +5548,7 @@ ${contactLines}`;
         const toast = document.createElement('div');
         toast.className = `toast ${type === 'warning' ? 'toast-warning' : (type === 'danger' ? 'toast-danger' : (type === 'info' ? 'toast-info' : ''))}`;
         const icon = type === 'warning' ? '⚠️' : (type === 'danger' ? '❌' : (type === 'info' ? 'ℹ️' : '✅'));
-        
+
         toast.style.display = 'flex';
         toast.style.alignItems = 'center';
         toast.style.justifyContent = 'space-between';
@@ -5601,44 +5595,108 @@ ${contactLines}`;
     // ==========================================================================
     function initLinksSidebar() {
         const defaultWorkLinks = [
-            { id: 'lnk_incognito', name: 'Incógnito (SAC)', url: 'http://prov.incognito.claro.com.pe/sac/Login_input', category: 'Internet & Diagnóstico', icon: '🌐', isQuick: true },
-            { id: 'lnk_dashboard', name: 'Dashboard ZT', url: 'http://172.19.196.16:8080/acs/index.xhtml', category: 'Internet & Diagnóstico', icon: '📊', isQuick: true },
-            { id: 'lnk_tr69', name: 'TR69 (ACS)', url: 'http://172.17.27.238:8080/auth/login', category: 'Internet & Diagnóstico', icon: '📡', isQuick: true },
-            { id: 'lnk_schaman', name: 'Schaman', url: 'https://atc-clperu.schaman.com/schaman-sso/login?callback=AAAADDfLhTpFXbSJETw3QhDILl0NLOiLN0QoI8dU3SWwSKTvrjlJU4lSPMmuHTIXFb5Ctr09Tz2H8Se6pOTmA6e2Qww%3D&app=AAAADGMbhcwoHsi4O778tEhNo5SvofJD%2FIcQCFAyhlXeSZE6Mg5jbA%3D%3D&customer=AAAADAcU2Ikxs028MO8BAUqzICiPfU1bCdWstG2p6BMKi4wqtw%3D%3D', category: 'Internet & Diagnóstico', icon: '🔍', isQuick: true },
-            { id: 'lnk_plume', name: 'Plume (Frontline Tier 1)', url: 'https://gamma.central.plume.com/', category: 'Internet & Diagnóstico', icon: '📶', isQuick: true },
-            { id: 'lnk_remotedesktop', name: 'Escritorio Remoto (RDP)', url: '172.29.0.101', category: 'Internet & Diagnóstico', icon: '🖥️', isQuick: true, isRdpInfo: true },
-            { id: 'lnk_tracer', name: 'Tracer', url: 'http://172.19.112.62/generador/', category: 'Internet & Diagnóstico', icon: '📈', isQuick: true },
-            { id: 'lnk_tracerplano', name: 'Tracer - Cliente por Plano', url: 'http://172.19.112.62/generador/hfc/ConexionesPlano', category: 'Internet & Diagnóstico', icon: '🗺️', isQuick: true },
+            { id: 'lnk_incognito', name: 'Incógnito', url: 'http://prov.incognito.claro.com.pe/sac/Login_input', category: 'Internet & Diagnóstico', icon: '<img src="img/incognito_logo.svg" class="link-custom-img-icon" alt="Incógnito SAC">', isQuick: true },
+            { id: 'lnk_dashboard', name: 'Dashboard ZT', url: 'http://172.19.196.16:8080/acs/index.xhtml', category: 'Internet & Diagnóstico', icon: '<img src="img/dashboard_logo.svg" class="link-custom-img-icon" alt="Dashboard ZT">', isQuick: true },
+            { id: 'lnk_tr69', name: 'TR69', url: 'http://172.17.27.238:8080/auth/login', category: 'Internet & Diagnóstico', icon: '<img src="img/tr69_logo.svg" class="link-custom-img-icon" alt="TR69 ACS">', isQuick: true },
+            { id: 'lnk_schaman', name: 'Schaman', url: 'https://atc-clperu.schaman.com/schaman-sso/login?callback=AAAADDfLhTpFXbSJETw3QhDILl0NLOiLN0QoI8dU3SWwSKTvrjlJU4lSPMmuHTIXFb5Ctr09Tz2H8Se6pOTmA6e2Qww%3D&app=AAAADGMbhcwoHsi4O778tEhNo5SvofJD%2FIcQCFAyhlXeSZE6Mg5jbA%3D%3D&customer=AAAADAcU2Ikxs028MO8BAUqzICiPfU1bCdWstG2p6BMKi4wqtw%3D%3D', category: 'Internet & Diagnóstico', icon: '<img src="img/schaman_logo.svg" class="link-custom-img-icon" alt="Schaman">', isQuick: true },
+            { id: 'lnk_plume', name: 'Plume', url: 'https://gamma.central.plume.com/', category: 'Internet & Diagnóstico', icon: '<img src="img/plume_logo.svg" class="link-custom-img-icon" alt="Plume">', isQuick: true },
+            { id: 'lnk_remotedesktop', name: 'Escritorio Remoto', url: '172.29.0.101', category: 'Internet & Diagnóstico', icon: '🖥️', isQuick: true, isRdpInfo: true },
+            { id: 'lnk_tracer', name: 'Tracer', url: 'http://172.19.112.62/generador/', category: 'Internet & Diagnóstico', icon: '<img src="img/claro_logo.svg" class="link-custom-img-icon" alt="Tracer">', isQuick: true },
+            { id: 'lnk_tracerplano', name: 'Tracer - Cliente por Plano', url: 'http://172.19.112.62/generador/hfc/ConexionesPlano', category: 'Internet & Diagnóstico', icon: '<img src="img/claro_logo.svg" class="link-custom-img-icon" alt="Tracer">', isQuick: true },
 
-            { id: 'lnk_remedy_helix', name: 'BMC Helix (Smart IT)', url: 'https://clarop-smartit.claro.pe/smartit/app/#/ticket-consoleStudio', category: 'Sistemas & Gestión', icon: '🛠️', isQuick: true },
-            { id: 'lnk_remedy_dwp', name: 'Remedy (DWP)', url: 'https://clarop-dwp.claro.pe/dwp/app/#/activity/events/details', category: 'Sistemas & Gestión', icon: '📋', isQuick: true },
+            { id: 'lnk_remedy_helix', name: 'BMC Helix', url: 'https://clarop-smartit.claro.pe/smartit/app/#/ticket-consoleStudio', category: 'Sistemas & Gestión', icon: '<img src="img/helix_logo.svg" class="link-custom-img-icon" alt="BMC Helix">', isQuick: true },
+            { id: 'lnk_remedy_dwp', name: 'Remedy', url: 'https://clarop-dwp.claro.pe/dwp/app/#/activity/events/details', category: 'Sistemas & Gestión', icon: '<img src="img/remedy_dwp_logo.svg" class="link-custom-img-icon" alt="Remedy DWP">', isQuick: true },
             { id: 'lnk_linktrabajo', name: 'Link de Trabajo', url: 'https://forms.cloud.microsoft/pages/responsepage.aspx?id=CkbVXyW03kmb0PzSYnDTDItamkezRqRIvBJVVnC0d0pUQkEyRTRHM1dWOFNTMTAzUEI0ODQySThXVi4u&route=shorturl', category: 'Sistemas & Gestión', icon: '📝', isQuick: true },
-            { id: 'lnk_livechat', name: 'LiveChat (Aivo)', url: 'https://live-us.aivo.co/chat', category: 'Canales & Comunicación', icon: '💬', isQuick: true },
-            { id: 'lnk_aicc', name: 'AICC (Huawei)', url: 'https://10.189.8.188:28090/service-cloud/aicc-web/index/index.html#/ManualAppointWorkbenchDetails?taskId=1061244585&orgId=1752727161880235604&appointId=175435461525835224677465120200&eventType=AgentEvent_Customer_Release&updateCallId=1754354624-11840&isFirst=true&AgentEvent_Call_Out_Fail=true', category: 'Canales & Comunicación', icon: '🎧', isQuick: true },
-            { id: 'lnk_siac', name: 'SIAC Único', url: 'https://siacunico.claro.com.pe/', category: 'Sistemas & Gestión', icon: '💻', isQuick: false }
+            { id: 'lnk_livechat', name: 'LiveChat (Aivo)', url: 'https://live-us.aivo.co/chat', category: 'Canales & Comunicación', icon: '<img src="img/livechat_logo.svg" class="link-custom-img-icon" alt="LiveChat">', isQuick: true },
+            { id: 'lnk_aicc', name: 'AICC', url: 'https://10.189.8.188:28090/service-cloud/aicc-web/index/index.html#/ManualAppointWorkbenchDetails?taskId=1061244585&orgId=1752727161880235604&appointId=175435461525835224677465120200&eventType=AgentEvent_Customer_Release&updateCallId=1754354624-11840&isFirst=true&AgentEvent_Call_Out_Fail=true', category: 'Canales & Comunicación', icon: '<img src="img/huawei_icc.svg" class="link-custom-img-icon" alt="AICC">', isQuick: true },
+            { id: 'lnk_siac', name: 'SIAC Único', url: 'https://siacunico.claro.com.pe/', category: 'Sistemas & Gestión', icon: '<img src="img/claro_logo.svg" class="link-custom-img-icon" alt="SIAC Único">', isQuick: false }
         ];
+
+        const stripAccents = str => (str || '').normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
 
         let workLinks = JSON.parse(localStorage.getItem('bo_work_links') || 'null');
         if (!workLinks || !Array.isArray(workLinks) || workLinks.length === 0) {
             workLinks = defaultWorkLinks;
         } else {
-            // Eliminar enlaces obsoletos o retirados
-            const removedIds = ['lnk_hygeia', 'lnk_sga', 'lnk_wsp'];
-            workLinks = workLinks.filter(l => !removedIds.includes(l.id) && !l.name.toLowerCase().includes('hygeia') && !l.name.toLowerCase().includes('sga') && !l.name.toLowerCase().includes('whatsapp'));
+            // Eliminar enlaces obsoletos o retirados (Hygeia, SGA, WhatsApp, Incognito Provision mock, Tracer Consumo mock/duplicado)
+            const removedIds = ['lnk_hygeia', 'lnk_sga', 'lnk_wsp', 'lnk_incognito_prov', 'lnk_incognito_provision', 'lnk_prov_incognito', 'lnk_tracer_consumo', 'lnk_tracerconsumo'];
+            workLinks = workLinks.filter(l => {
+                const normName = stripAccents(l.name);
+                const normUrl = (l.url || '').toLowerCase();
+                if (removedIds.includes(l.id)) return false;
+                if (normName.includes('hygeia') || normName.includes('sga') || normName.includes('whatsapp')) return false;
+                if (normName.includes('incognito') && (normName.includes('provisi') || normName.includes('prov')) && !normName.includes('sac')) return false;
+                if (normUrl.includes('incognito.claro.com.pe') && !normUrl.includes('/sac/')) return false;
+                if (normName.includes('tracer') && normName.includes('consumo')) return false;
+                return true;
+            });
 
-            // Fusión y actualización inteligente de URLs por defecto
+            // Desduplicar enlaces asegurando que solo exista 1 registro único de Schaman y de cada plataforma
+            const seenKeys = new Set();
+            workLinks = workLinks.filter(l => {
+                const normName = stripAccents(l.name);
+                const key = (l.id === 'lnk_schaman' || normName.includes('schaman')) ? 'schaman_uniq' :
+                    (l.id === 'lnk_incognito' || normName.includes('incognito')) ? 'incognito_uniq' :
+                        (l.id === 'lnk_dashboard' || normName.includes('dashboard')) ? 'dashboard_uniq' :
+                            (l.id === 'lnk_plume' || normName.includes('plume')) ? 'plume_uniq' :
+                                (l.id === 'lnk_tr69' || normName.includes('tr69') || normName.includes('tr-69')) ? 'tr69_uniq' :
+                                    (l.id === 'lnk_tracerplano' || normName.includes('plano')) ? 'tracerplano_uniq' :
+                                        (l.id === 'lnk_tracer' || normName === 'tracer') ? 'tracer_uniq' :
+                                            (l.id === 'lnk_siac' || normName.includes('siac')) ? 'siac_uniq' :
+                                                (l.id === 'lnk_livechat' || normName.includes('livechat')) ? 'livechat_uniq' :
+                                                    (l.id === 'lnk_aicc' || normName.includes('aicc') || normName === 'icc') ? 'aicc_uniq' :
+                                                        (l.id === 'lnk_remedy_helix' || (normName.includes('helix') && !normName.includes('dwp'))) ? 'helix_uniq' :
+                                                            (l.id === 'lnk_remedy_dwp' || (normName.includes('dwp') || (normName.includes('remedy') && !normName.includes('helix')))) ? 'dwp_uniq' :
+                                                                (l.id === 'lnk_remotedesktop' || normName.includes('escritorio') || normName.includes('rdp')) ? 'rdp_uniq' :
+                                                                    (l.id === 'lnk_linktrabajo' || normName.includes('trabajo')) ? 'trabajo_uniq' :
+                                                                        l.id || normName;
+                if (seenKeys.has(key)) return false;
+                seenKeys.add(key);
+                return true;
+            });
+
+            // Fusión y actualización inteligente de URLs e iconos por defecto
             defaultWorkLinks.forEach(defLnk => {
-                const existing = workLinks.find(l => l.id === defLnk.id || l.name.toLowerCase() === defLnk.name.toLowerCase() || (defLnk.id === 'lnk_dashboard' && l.name.toLowerCase().includes('dashboard')) || (defLnk.id === 'lnk_linktrabajo' && l.name.toLowerCase().includes('trabajo')) || (defLnk.id === 'lnk_livechat' && l.name.toLowerCase().includes('livechat')) || (defLnk.id === 'lnk_aicc' && l.name.toLowerCase().includes('aicc')) || (defLnk.id === 'lnk_remedy_helix' && (l.name.toLowerCase().includes('helix') || l.id === 'lnk_remedy')) || (defLnk.id === 'lnk_remedy_dwp' && (l.name.toLowerCase().includes('dwp') || l.id === 'lnk_remedy_dwp')) || (defLnk.id === 'lnk_schaman' && l.name.toLowerCase().includes('schaman')) || (defLnk.id === 'lnk_plume' && l.name.toLowerCase().includes('plume')) || (defLnk.id === 'lnk_tr69' && (l.name.toLowerCase().includes('tr69') || l.name.toLowerCase().includes('tr-69'))) || (defLnk.id === 'lnk_tracer' && l.name.toLowerCase() === 'tracer') || (defLnk.id === 'lnk_tracerplano' && l.name.toLowerCase().includes('plano')) || (defLnk.id === 'lnk_remotedesktop' && l.name.toLowerCase().includes('escritorio')));
+                const defNorm = stripAccents(defLnk.name);
+                const existing = workLinks.find(l => {
+                    const lNorm = stripAccents(l.name);
+                    return l.id === defLnk.id || lNorm === defNorm ||
+                        (defLnk.id === 'lnk_incognito' && lNorm.includes('incognito')) ||
+                        (defLnk.id === 'lnk_dashboard' && lNorm.includes('dashboard')) ||
+                        (defLnk.id === 'lnk_linktrabajo' && lNorm.includes('trabajo')) ||
+                        (defLnk.id === 'lnk_livechat' && lNorm.includes('livechat')) ||
+                        (defLnk.id === 'lnk_aicc' && (lNorm.includes('aicc') || lNorm === 'icc')) ||
+                        (defLnk.id === 'lnk_remedy_helix' && (lNorm.includes('helix') || l.id === 'lnk_remedy')) ||
+                        (defLnk.id === 'lnk_remedy_dwp' && (lNorm.includes('dwp') || (lNorm.includes('remedy') && !lNorm.includes('helix')))) ||
+                        (defLnk.id === 'lnk_schaman' && lNorm.includes('schaman')) ||
+                        (defLnk.id === 'lnk_plume' && lNorm.includes('plume')) ||
+                        (defLnk.id === 'lnk_tr69' && (lNorm.includes('tr69') || lNorm.includes('tr-69'))) ||
+                        (defLnk.id === 'lnk_tracer' && lNorm === 'tracer') ||
+                        (defLnk.id === 'lnk_tracerplano' && lNorm.includes('plano')) ||
+                        (defLnk.id === 'lnk_siac' && lNorm.includes('siac')) ||
+                        (defLnk.id === 'lnk_remotedesktop' && lNorm.includes('escritorio'));
+                });
                 if (existing) {
-                    if (defLnk.id === 'lnk_incognito' || defLnk.id === 'lnk_dashboard' || defLnk.id === 'lnk_linktrabajo' || defLnk.id === 'lnk_livechat' || defLnk.id === 'lnk_aicc' || defLnk.id === 'lnk_remedy_helix' || defLnk.id === 'lnk_remedy_dwp' || defLnk.id === 'lnk_schaman' || defLnk.id === 'lnk_plume' || defLnk.id === 'lnk_tr69' || defLnk.id === 'lnk_tracer' || defLnk.id === 'lnk_tracerplano' || defLnk.id === 'lnk_remotedesktop' || existing.url.includes('clarop-rsso')) {
-                        existing.url = defLnk.url;
-                        existing.name = defLnk.name;
-                        existing.isQuick = defLnk.isQuick;
-                        if (defLnk.isRdpInfo) existing.isRdpInfo = true;
-                    }
+                    existing.id = defLnk.id;
+                    existing.url = defLnk.url;
+                    existing.name = defLnk.name;
+                    existing.icon = defLnk.icon;
+                    if (defLnk.isRdpInfo) existing.isRdpInfo = true;
                 } else if (!workLinks.some(l => l.id === defLnk.id)) {
                     workLinks.push(defLnk);
                 }
+            });
+
+            // Pase final de desduplicación garantizada
+            const finalSeen = new Set();
+            workLinks = workLinks.filter(l => {
+                const norm = stripAccents(l.name);
+                const key = (l.id === 'lnk_schaman' || norm.includes('schaman')) ? 'schaman_uniq' :
+                    (l.id === 'lnk_incognito' || norm.includes('incognito')) ? 'incognito_uniq' :
+                        (l.id || norm);
+                if (finalSeen.has(key)) return false;
+                finalSeen.add(key);
+                return true;
             });
         }
         localStorage.setItem('bo_work_links', JSON.stringify(workLinks));

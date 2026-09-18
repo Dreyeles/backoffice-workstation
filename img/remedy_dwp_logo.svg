@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <defs>
+    <!-- Gradiente naranja brillante para Remedy Helix -->
+    <linearGradient id="remedyOrangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff6b00" />
+      <stop offset="50%" stop-color="#ff5500" />
+      <stop offset="100%" stop-color="#ea4300" />
+    </linearGradient>
+  </defs>
+
+  <!-- Contenedor cuadrado blanco redondeado con sutil borde -->
+  <rect x="2" y="2" width="96" height="96" rx="20" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" />
+
+  <!-- Símbolo Vectorial BMC Helix en naranja -->
+  <path d="M 33 37 L 33 19 L 80 37.5 L 48 50 L 80 62.5 L 33 81 L 33 63 L 48 50 Z"
+        stroke="url(#remedyOrangeGrad)"
+        stroke-width="9.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        fill="none" />
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" fill="none">
+  <defs>
+    <!-- Gradiente azul zafiro oficial de Aivo LiveChat -->
+    <linearGradient id="liveChatBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="35%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#0033a0" />
+    </linearGradient>
+  </defs>
+
+  <!-- 1. Anillo / Círculo superior derecho -->
+  <circle cx="56" cy="36" r="21"
+          stroke="url(#liveChatBlueGrad)"
+          stroke-width="8.5"
+          fill="none" />
+
+  <!-- 2. Arco envolvente inferior izquierdo (Sonrisa / Base del chat) -->
+  <path d="M 16 48 C 20 70, 38 80, 68 75"
+        stroke="url(#liveChatBlueGrad)"
+        stroke-width="8.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        fill="none" />
+</svg>
