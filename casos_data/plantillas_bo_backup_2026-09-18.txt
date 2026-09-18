@@ -1,0 +1,630 @@
+{
+  "version": "2.6",
+  "exportDate": "2026-09-18T17:43:51.352Z",
+  "customTemplates": [
+    {
+      "id": "tmpl_wsp_1",
+      "title": "CLIENTE CONTESTA WHATSAPP",
+      "category": "WhatsApp",
+      "content": "¡Perfecto! 👍 Lo estaremos llamando en estos momentos 📞, por favor conteste la llamada. 😉✨"
+    },
+    {
+      "id": "tmpl_wsp_2",
+      "title": "CLIENTE NO CONTESTA LLAMADA",
+      "category": "WhatsApp",
+      "content": "Estimado cliente 👋, estuvimos llamando a su número celular 📱, pero no tuvimos respuesta. Procedemos a finalizar esta conversación. Lo estaremos llamando en el transcurso del día o mañana. 🕒📞 ¡Que tenga un excelente día! 😊"
+    },
+    {
+      "id": "tmpl_visita_sot",
+      "title": "CONFIRMACIÓN VISITA TÉCNICA (SOT)",
+      "category": "WhatsApp",
+      "content": "Estimado(a) cliente 👋, le confirmamos que se ha generado la visita técnica con el Codigo: {sot} La atención se realizará en un plazo máximo de 48 horas 👨🔧🏠. El técnico se comunicará previamente con usted para coordinar el ingreso. ¡Muchas gracias por su tiempo y preferencia! 😊👍"
+    }
+  ],
+  "history": [
+    {
+      "id": 1789753282544,
+      "timestamp": "12:41:22 p.m.",
+      "dateStr": "18/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 962818022\nPROBLEMA DETECTADO: SIN SERVICIO\nDESCARTES REALIZADOS: Se valida sin consumo en Tracer y estado desconectado, Se valida sin provisión / offline en Incógnito, Se valida dashboard offline, Cliente menciona que no tiene servicio, 2 resets en Tracer\nSOLUCION: Se genera SOT de mtto\nSOT / REMEDY: 90983713\nID DE LLAMADA: #1789752502-12029",
+      "fields": {
+        "telefono": "962818022",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "Se genera SOT de mtto",
+        "descartes": "Se valida sin consumo en Tracer y estado desconectado, Se valida sin provisión / offline en Incógnito, Se valida dashboard offline, Cliente menciona que no tiene servicio, 62 resets en Tracer ",
+        "sot": "90983713",
+        "contactId": "#1789752502-12029",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789753082622,
+      "timestamp": "12:38:02 p.m.",
+      "dateStr": "18/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 962818022\nPROBLEMA DETECTADO: SIN SERVICIO\nDESCARTES REALIZADOS: Se valida sin consumo en Tracer y estado desconectado, Se valida sin provisión / offline en Incógnito, Se valida dashboard offline, Cliente menciona que no tiene servicio, 2 resets en Tracer\nSOLUCION: Se genera SOT de mtto\nSOT / REMEDY: 90983713\nID DE LLAMADA: #1789752502-12029",
+      "fields": {
+        "telefono": "962818022",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "Se genera SOT de mtto",
+        "descartes": "Se valida sin consumo en Tracer y estado desconectado, Se valida sin provisión / offline en Incógnito, Se valida dashboard offline, Cliente menciona que no tiene servicio, 62 resets en Tracer ",
+        "sot": "90983713",
+        "contactId": "#1789752502-12029",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789753040159,
+      "timestamp": "12:37:20 p.m.",
+      "dateStr": "18/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 962818022\nPROBLEMA DETECTADO: SIN SERVICIO\nDESCARTES REALIZADOS: Se valida sin consumo en Tracer y estado desconectado, Se valida sin provisión / offline en Incógnito, Se valida dashboard offline, Cliente menciona que no tiene servicio, 2 resets en Tracer\nSOLUCION: Se genera SOT de mtto\nID DE LLAMADA: #1789752502-12029",
+      "fields": {
+        "telefono": "962818022",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "Se genera SOT de mtto",
+        "descartes": "Se valida sin consumo en Tracer y estado desconectado, Se valida sin provisión / offline en Incógnito, Se valida dashboard offline, Cliente menciona que no tiene servicio, 62 resets en Tracer ",
+        "sot": "",
+        "contactId": "#1789752502-12029",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789751756479,
+      "timestamp": "12:15:56 p.m.",
+      "dateStr": "18/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 948287718\nPROBLEMA DETECTADO: BAJA VELOCIDAD VIA WIFI (LENTITUD)\nDESCARTES REALIZADOS: Se valida consumo en Tracer y sin flags alarmados, Se valida TR69 todo OK, Cliente menciona que quiere dar de baja el servicio si el problema persiste, Cliente tiene un repetidor mesh, Menciona que no llega la señal a su televisión y a sus celulares, Se genera SOT a solicitud del cliente\nSOLUCION: Se genera SOT a solicitud del cliente\nSOT / REMEDY: 90982479\nID DE LLAMADA: #1789750667-740465",
+      "fields": {
+        "telefono": "948287718",
+        "problema": "INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)",
+        "solucion": "Se genera SOT a solicitud del cliente",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida TR69 todo OK, Cliente menciona que quiere dar de baja el servicio si el problema persiste, Cliente tiene un repetidor mesh, Menciona que no llega la señal a su televisión y a sus celulares, Se genera SOT a solicitud del cliente",
+        "sot": "90982479",
+        "contactId": "#1789750667-740465",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789751738975,
+      "timestamp": "12:15:38 p.m.",
+      "dateStr": "18/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 948287718\nPROBLEMA DETECTADO: BAJA VELOCIDAD VIA WIFI (LENTITUD)\nDESCARTES REALIZADOS: Se valida consumo en Tracer y sin flags alarmados, Se valida TR69 todo OK, Cliente menciona que quiere dar de baja el servicio si el problema persiste, Cliente tiene un repetidor mesh, Menciona que no llega la señal a su televisión y a sus celulares, Se genera SOT a solicitud del cliente\nSOLUCION: Se genera SOT a solicitud del cliente\nID DE LLAMADA: #1789750667-740465",
+      "fields": {
+        "telefono": "948287718",
+        "problema": "INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)",
+        "solucion": "Se genera SOT a solicitud del cliente",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida TR69 todo OK, Cliente menciona que quiere dar de baja el servicio si el problema persiste, Cliente tiene un repetidor mesh, Menciona que no llega la señal a su televisión y a sus celulares, Se genera SOT a solicitud del cliente",
+        "sot": "",
+        "contactId": "#1789750667-740465",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789750590422,
+      "timestamp": "11:56:30 a.m.",
+      "dateStr": "18/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nCELULAR: 994747566\nDECARTE: Tercer intento de contacto: Cliente contesta y corta la llamada(3er ciclo)\nID DE LLAMADA: #1789750415-2233460",
+      "fields": {
+        "telefono": "994747566",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "",
+        "descartes": "Tercer intento de contacto: Cliente contesta y corta la llamada(3er ciclo)",
+        "sot": "",
+        "contactId": "#1789750415-2233460",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789750273395,
+      "timestamp": "11:51:13 a.m.",
+      "dateStr": "18/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 944813005\nPROBLEMA DETECTADO: SIN SERVICIO\nDESCARTES REALIZADOS: Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Cliente menciona que el servicio funciona correctamente\nSOLUCION: Cliente confirma problema solucionado\nID DE LLAMADA: #1789749949-406180",
+      "fields": {
+        "telefono": "944813005",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "Cliente confirma problema solucionado",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Cliente menciona que el servicio funciona correctamente",
+        "sot": "",
+        "contactId": "#1789749949-406180",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789749833728,
+      "timestamp": "11:43:53 a.m.",
+      "dateStr": "18/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 933857614\nPROBLEMA DETECTADO: SIN SERVICIO\nDESCARTES REALIZADOS: Cliente menciona que el servicio funciona correctamente, Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK\nSOLUCION: Cliente confirma servicio funciona\nID DE LLAMADA: #1789749643-2952866",
+      "fields": {
+        "telefono": "933857614",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "Cliente confirma servicio funciona",
+        "descartes": "Cliente menciona que el servicio funciona correctamente, Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK",
+        "sot": "",
+        "contactId": "#1789749643-2952866",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789749532677,
+      "timestamp": "11:38:52 a.m.",
+      "dateStr": "18/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nCELULAR: 998162410\nDECARTE: Do intento de contacto: Cliente no se encuentra en el domicilio (2do ciclo), Cliente menciona que lo llamen el día domingo o lunes, Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK\nID DE LLAMADA: #1789749193-73426",
+      "fields": {
+        "telefono": "998162410",
+        "problema": "INT - BAJA VELOCIDAD VIA CABLEADO Y WIFI (LENTITUD)",
+        "solucion": "",
+        "descartes": "2Do intento de contacto: Cliente no se encuentra en el domicilio (2do ciclo), Cliente menciona que lo llamen el día domingo o lunes, Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK",
+        "sot": "",
+        "contactId": "#1789749193-73426",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789748513273,
+      "timestamp": "11:21:53 a.m.",
+      "dateStr": "18/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 944066097\nPROBLEMA DETECTADO: SIN SERVICIO\nDESCARTES REALIZADOS: Cliente menciona que el internet funciona de manera correcta\n                      Cliente está conforme con el cambio de clave\n                      Se valida consumo en Tracer y sin flags alarmados\n                      Se valida provisión y online en Incógnito\n                      Se valida Dashboard OK\nSOLUCION: Cliente confirma servicio funciona\nID DE LLAMADA: #1789748282-280605",
+      "fields": {
+        "telefono": "944066097",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "Cliente confirma servicio funciona",
+        "descartes": "Cliente menciona que el internet funciona de manera correcta, Cliente está conforme con el cambio de clave, Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK",
+        "sot": "",
+        "contactId": "#1789748282-280605",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789748512865,
+      "timestamp": "11:21:52 a.m.",
+      "dateStr": "18/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 944066097\nPROBLEMA DETECTADO: SIN SERVICIO\nDESCARTES REALIZADOS: Cliente menciona que el internet funciona de manera correcta\n                      Cliente está conforme con el cambio de clave\n                      Se valida consumo en Tracer y sin flags alarmados\n                      Se valida provisión y online en Incógnito\n                      Se valida Dashboard OK\nSOLUCION: Cliente confirma servicio funciona\nID DE LLAMADA: #1789748282-280605",
+      "fields": {
+        "telefono": "944066097",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "Cliente confirma servicio funciona",
+        "descartes": "Cliente menciona que el internet funciona de manera correcta, Cliente está conforme con el cambio de clave, Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK",
+        "sot": "",
+        "contactId": "#1789748282-280605",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789748506242,
+      "timestamp": "11:21:46 a.m.",
+      "dateStr": "18/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 944066097\nPROBLEMA DETECTADO: SIN SERVICIO\nDESCARTES REALIZADOS: Cliente menciona que el internet funciona de manera correcta\n                      Cliente está conforme con el cambio de clave\n                      Se valida consumo en Tracer y sin flags alarmados\n                      Se valida provisión y online en Incógnito\n                      Se valida Dashboard OK\nSOLUCION: Cliente confirma servicio funciona\nID DE LLAMADA: #1789748282-280605",
+      "fields": {
+        "telefono": "944066097",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "Cliente confirma servicio funciona",
+        "descartes": "Cliente menciona que el internet funciona de manera correcta, Cliente está conforme con el cambio de clave, Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK",
+        "sot": "",
+        "contactId": "#1789748282-280605",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789693925532,
+      "timestamp": "08:12:05 p.m.",
+      "dateStr": "17/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 976526671\nPROBLEMA DETECTADO: BAJA VELOCIDAD VIA WIFI (LENTITUD)\nDESCARTES REALIZADOS: Se valida consumo en Tracer y sin flags alarmados\n                      Se valida provisión y online en Incógnito\n                      Se valida TR69 todo OK\n                      Se hace reinicio de fábrica desde Escritorio Remoto\n                      Cliente menciona que el servicio funciona correctamente\nSOLUCION: Se hace reinicio via Incógnito - se hace cambio de canal via escritorio remoto\nID DE LLAMADA: #1789691859-2426698",
+      "fields": {
+        "telefono": "976526671",
+        "problema": "INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)",
+        "solucion": "Se hace reinicio via Incógnito - se hace cambio de canal via escritorio remoto ",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida TR69 todo OK, Se hace reinicio de fábrica desde Escritorio Remoto, Cliente menciona que el servicio funciona correctamente",
+        "sot": "",
+        "contactId": "#1789691859-2426698",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789693840310,
+      "timestamp": "08:10:40 p.m.",
+      "dateStr": "17/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 976526671\nPROBLEMA DETECTADO: BAJA VELOCIDAD VIA WIFI (LENTITUD)\nDESCARTES REALIZADOS: Se valida consumo en Tracer y sin flags alarmados\n                      Se valida provisión y online en Incógnito\n                      Se valida TR69 todo OK\n                      Se hace reinicio de fábrica desde Escritorio Remoto\n                      Cliente menciona que el servicio funciona correctamente\nSOLUCION: Se hace reinicio via Incógnito - se hace cambio de canal via escritorio remoto\nID DE LLAMADA: #1789691859-2426698",
+      "fields": {
+        "telefono": "976526671",
+        "problema": "INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)",
+        "solucion": "Se hace reinicio via Incógnito - se hace cambio de canal via escritorio remoto ",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida TR69 todo OK, Se hace reinicio de fábrica desde Escritorio Remoto, Cliente menciona que el servicio funciona correctamente",
+        "sot": "",
+        "contactId": "#1789691859-2426698",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789688552902,
+      "timestamp": "06:42:32 p.m.",
+      "dateStr": "17/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 974471232\nPROBLEMA DETECTADO: BAJA VELOCIDAD VIA CABLEADO Y WIFI (LENTITUD)\nDESCARTES REALIZADOS: Cliente menciona que el servicio funciona correctamente\n                      Se valida consumo en Tracer y sin flags alarmados\n                      Se valida provisión y online en Incógnito\n                      Se valida Dashboard OK\nSOLUCION: Cliente confirma problema solucionado\nID DE LLAMADA: #1789688400-263713",
+      "fields": {
+        "telefono": "974471232",
+        "problema": "INT - BAJA VELOCIDAD VIA CABLEADO Y WIFI (LENTITUD)",
+        "solucion": "Cliente confirma problema solucionado",
+        "descartes": "Cliente menciona que el servicio funciona correctamente, Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK",
+        "sot": "",
+        "contactId": "#1789688400-263713",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789688268351,
+      "timestamp": "06:37:48 p.m.",
+      "dateStr": "17/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nCELULAR: 992761094\nDECARTE: To intento de contacto: Cliente no se encuentra en el domicilio (5to ciclo)\n         Llamar a las 8PM\nSOT / REMEDY: 90960592\nID DE LLAMADA: #1789687835-2240010",
+      "fields": {
+        "telefono": "992761094",
+        "problema": "INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)",
+        "solucion": "Cliente confirma servicio de innternet funciona ",
+        "descartes": " 5To intento de contacto: Cliente no se encuentra en el domicilio (5to ciclo), Llamar a las 8PM",
+        "sot": "90960592",
+        "contactId": "#1789687835-2240010",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789688207286,
+      "timestamp": "06:36:47 p.m.",
+      "dateStr": "17/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nCELULAR: 992761094\nDECARTE: Vo intento de contacto: Cliente no se encuentra en el domicilio (8vo ciclo)\nSOT / REMEDY: 90960592\nID DE LLAMADA: #1789687835-2240010",
+      "fields": {
+        "telefono": "992761094",
+        "problema": "INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)",
+        "solucion": "Cliente confirma servicio de innternet funciona ",
+        "descartes": " 8Vo intento de contacto: Cliente no se encuentra en el domicilio (8vo ciclo)",
+        "sot": "90960592",
+        "contactId": "#1789687835-2240010",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789687373549,
+      "timestamp": "06:22:53 p.m.",
+      "dateStr": "17/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 942128843\nPROBLEMA DETECTADO: SIN SERVICIO\nDESCARTES REALIZADOS: Se valida consumo en Tracer y sin flags alarmados\n                      Se valida provisión y online en Incógnito\n                      Se valida Dashboard OK\n                      Cliente menciona que su teléfono fijo no da señal ni tono\n                      El servicio de internet funciona correctamente\nSOLUCION: Cliente confirma servicio de innternet funciona\nSOT / REMEDY: 90960592\nID DE LLAMADA: #1789685592-543444",
+      "fields": {
+        "telefono": "942128843",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "Cliente confirma servicio de innternet funciona ",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Cliente menciona que su teléfono fijo no da señal ni tono, El servicio de internet funciona correctamente",
+        "sot": "90960592",
+        "contactId": "#1789685592-543444",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789687288237,
+      "timestamp": "06:21:28 p.m.",
+      "dateStr": "17/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 942128843\nPROBLEMA DETECTADO: SIN SERVICIO\nDESCARTES REALIZADOS: Se valida consumo en Tracer y sin flags alarmados\n                      Se valida provisión y online en Incógnito\n                      Se valida Dashboard OK\n                      Cliente menciona que su teléfono fijo no da señal ni tono\n                      El servicio de internet funciona correctamente\nSOLUCION: Cliente confirma servicio de innternet funciona\nSOT / REMEDY: 90960592\nID DE LLAMADA: #1789685592-543444",
+      "fields": {
+        "telefono": "942128843",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "Cliente confirma servicio de innternet funciona ",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Cliente menciona que su teléfono fijo no da señal ni tono, El servicio de internet funciona correctamente",
+        "sot": "90960592",
+        "contactId": "#1789685592-543444",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789687187611,
+      "timestamp": "06:19:47 p.m.",
+      "dateStr": "17/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 942128843\nPROBLEMA DETECTADO: SIN SERVICIO\nDESCARTES REALIZADOS: Se valida consumo en Tracer y sin flags alarmados\n                      Se valida provisión y online en Incógnito\n                      Se valida Dashboard OK\n                      Cliente menciona que su teléfono fijo no da señal ni tono\n                      El servicio de internet funciona correctamente\nSOLUCION: Cliente confirma servicio de innternet funciona\nSOT / REMEDY: 90960592\nID DE LLAMADA: #1789685592-543444",
+      "fields": {
+        "telefono": "942128843",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "Cliente confirma servicio de innternet funciona ",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Cliente menciona que su teléfono fijo no da señal ni tono, El servicio de internet funciona correctamente",
+        "sot": "90960592",
+        "contactId": "#1789685592-543444",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789687129747,
+      "timestamp": "06:18:49 p.m.",
+      "dateStr": "17/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 942128843\nPROBLEMA DETECTADO: SIN SERVICIO\nDESCARTES REALIZADOS: Se valida consumo en Tracer y sin flags alarmados\n                      Se valida provisión y online en Incógnito\n                      Se valida Dashboard OK\n                      Cliente menciona que su teléfono fijo no da señal ni tono\n                      El servicio de internet funciona correctamente\nSOLUCION: Cliente confirma servicio de innternet funciona\nID DE LLAMADA: #1789685592-543444",
+      "fields": {
+        "telefono": "942128843",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "Cliente confirma servicio de innternet funciona ",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Cliente menciona que su teléfono fijo no da señal ni tono, El servicio de internet funciona correctamente",
+        "sot": "",
+        "contactId": "#1789685592-543444",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789684594829,
+      "timestamp": "05:36:34 p.m.",
+      "dateStr": "17/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 949274461\nPROBLEMA DETECTADO: PROBLEMAS CON PLUME\nDESCARTES REALIZADOS: Cliente menciona que el servicio funciona correctamente\n                      Se valida consumo en Tracer y sin flags alarmados\n                      Se valida provisión y online en Incógnito\n                      Se valida cliente Plume\n                      Se valida TR69 todo OK\n                      Se hace cambio de puertos de los repetidores\nSOLUCION: Se hace cambio de puertos del repetidor\nID DE LLAMADA: #1789683794-9897",
+      "fields": {
+        "telefono": "949274461",
+        "problema": "INT - PROBLEMAS CON PLUME",
+        "solucion": "Se hace cambio de puertos del repetidor",
+        "descartes": "Cliente menciona que el servicio funciona correctamente, Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida cliente Plume, Se valida TR69 todo OK, Se hace cambio de puertos de los repetidores",
+        "sot": "",
+        "contactId": "#1789683794-9897",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789683164779,
+      "timestamp": "05:12:44 p.m.",
+      "dateStr": "17/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 995483200\nPROBLEMA DETECTADO: SIN SERVICIO\nDESCARTES REALIZADOS: Cliente menciona que el servicio funciona correctamente\n                      Se valida consumo en Tracer y sin flags alarmados\n                      Se valida provisión y online en Incógnito\n                      Se valida Dashboard OK\n                      Se verifica un problema de temperatura en 48°c via dashboard\nSOLUCION: Cliente confirma servicio funciona\nID DE LLAMADA: #1789682491-861584",
+      "fields": {
+        "telefono": "995483200",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "Cliente confirma servicio funciona",
+        "descartes": "Cliente menciona que el servicio funciona correctamente, Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Se verifica un problema de temperatura en 48°c via dashboard",
+        "sot": "",
+        "contactId": "#1789682491-861584",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789681677303,
+      "timestamp": "04:47:57 p.m.",
+      "dateStr": "17/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 998118326\nPROBLEMA DETECTADO: BAJA VELOCIDAD VIA WIFI (LENTITUD)\nDESCARTES REALIZADOS: Se valida consumo en Tracer y sin flags alarmados\n                      Se valida provisión y online en Incógnito\n                      Se valida Dashboard OK\n                      Cliente menciona que el decodificador IPTV ZTEATV45503620443 no funciona de manera correcta (pantalla negra lentitud)\n                      Cliente menciona que el internet funciona de manera correcta.\nSOLUCION: Se realiza reinicio y se valida servicio operativo\nSOT / REMEDY: 90956627\nID DE LLAMADA: #1789678127-2955115",
+      "fields": {
+        "telefono": "998118326",
+        "problema": "INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)",
+        "solucion": "Se realiza reinicio y se valida servicio operativo",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Cliente menciona que el decodificador IPTV ZTEATV45503620443 no funciona de manera correcta (pantalla negra lentitud), Cliente menciona que el internet funciona de manera correcta.",
+        "sot": "90956627",
+        "contactId": "#1789678127-2955115",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789681544022,
+      "timestamp": "04:45:44 p.m.",
+      "dateStr": "17/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 998118326\nPROBLEMA DETECTADO: BAJA VELOCIDAD VIA WIFI (LENTITUD)\nDESCARTES REALIZADOS: Se valida consumo en Tracer y sin flags alarmados\n                      Se valida provisión y online en Incógnito\n                      Se valida Dashboard OK\n                      Cliente menciona que el decodificador IPTV ZTEATV45503620443 no funciona de manera correcta (pantalla negra lentitud)\n                      Cliente menciona que el internet funciona de manera correcta.\nSOLUCION: Se realiza reinicio y se valida servicio operativo\nSOT / REMEDY: 90956627\nID DE LLAMADA: #1789678127-2955115",
+      "fields": {
+        "telefono": "998118326",
+        "problema": "INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)",
+        "solucion": "Se realiza reinicio y se valida servicio operativo",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Cliente menciona que el decodificador IPTV ZTEATV45503620443 no funciona de manera correcta (pantalla negra lentitud), Cliente menciona que el internet funciona de manera correcta.",
+        "sot": "90956627",
+        "contactId": "#1789678127-2955115",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789681506646,
+      "timestamp": "04:45:06 p.m.",
+      "dateStr": "17/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 998118326\nPROBLEMA DETECTADO: BAJA VELOCIDAD VIA WIFI (LENTITUD)\nDESCARTES REALIZADOS: Se valida consumo en Tracer y sin flags alarmados\n                      Se valida provisión y online en Incógnito\n                      Se valida Dashboard OK\n                      Cliente menciona que el decodificador IPTV ZTEATV45503620443 no funciona de manera correcta (pantalla negra lentitud)\n                      Cliente menciona que el internet funciona de manera correcta.\nSOLUCION: Se realiza reinicio y se valida servicio operativo\nID DE LLAMADA: #1789678127-2955115",
+      "fields": {
+        "telefono": "998118326",
+        "problema": "INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)",
+        "solucion": "Se realiza reinicio y se valida servicio operativo",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Cliente menciona que el decodificador IPTV ZTEATV45503620443 no funciona de manera correcta (pantalla negra lentitud), Cliente menciona que el internet funciona de manera correcta.",
+        "sot": "",
+        "contactId": "#1789678127-2955115",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789677738199,
+      "timestamp": "03:42:18 p.m.",
+      "dateStr": "17/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nCELULAR: 982300530\nDECARTE: Do intento de contacto: Cliente no contesta (2do ciclo)\nID DE LLAMADA: #1789677521-986258",
+      "fields": {
+        "telefono": "982300530",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "Cliente no contesta llamada",
+        "descartes": "2Do intento de contacto: Cliente no contesta (2do ciclo)",
+        "sot": "",
+        "contactId": "#1789677521-986258",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789677357278,
+      "timestamp": "03:35:57 p.m.",
+      "dateStr": "17/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 979199466\nPROBLEMA DETECTADO: SIN SERVICIO\nDESCARTES REALIZADOS: Se valida consumo en Tracer y sin flags alarmados\n                      Se valida provisión y online en Incógnito\n                      Se valida Dashboard OK\n                      Cliente menciona que el servicio funciona correctamente\nSOLUCION: Cliente confirma problema solucionado\nID DE LLAMADA: #1789677143-600644",
+      "fields": {
+        "telefono": "979199466",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "Cliente confirma problema solucionado",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Cliente menciona que el servicio funciona correctamente",
+        "sot": "",
+        "contactId": "#1789677143-600644",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789677348631,
+      "timestamp": "03:35:48 p.m.",
+      "dateStr": "17/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 979199466\nPROBLEMA DETECTADO: SIN SERVICIO\nDESCARTES REALIZADOS: Se valida consumo en Tracer y sin flags alarmados\n                      Se valida provisión y online en Incógnito\n                      Se valida Dashboard OK\n                      Cliente menciona que el servicio funciona correctamente\nSOLUCION: Cliente confirma problema solucionado\nID DE LLAMADA: #1789677143-600644",
+      "fields": {
+        "telefono": "979199466",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "Cliente confirma problema solucionado",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Cliente menciona que el servicio funciona correctamente",
+        "sot": "",
+        "contactId": "#1789677143-600644",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789676564384,
+      "timestamp": "03:22:44 p.m.",
+      "dateStr": "17/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 966427438\nPROBLEMA DETECTADO: BAJA VELOCIDAD VIA WIFI (LENTITUD)\nDESCARTES REALIZADOS: Cliente menciona que el servicio funciona correctamente después de procedimiento\n                      Se valida consumo en Tracer y sin flags alarmados\n                      Se valida provisión y online en Incógnito\n                      Se valida TR69 todo OK\nSOLUCION: Se hace reinicio via Incógnito\nID DE LLAMADA: #1789675866-2958397",
+      "fields": {
+        "telefono": "966427438",
+        "problema": "INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)",
+        "solucion": "Se hace reinicio via Incógnito ",
+        "descartes": "Cliente menciona que el servicio funciona correctamente después de procedimiento, Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida TR69 todo OK",
+        "sot": "",
+        "contactId": "#1789675866-2958397",
+        "servicio": "INTERNET"
+      }
+    }
+  ],
+  "learnedPhrases": {
+    "descartes": [
+      "resets en Tracer",
+      "Cliente menciona que no tiene servicio",
+      "Se valida dashboard offline",
+      "Se valida sin consumo en Tracer y estado desconectado",
+      "Se genera SOT a solicitud del cliente",
+      "Menciona que no llega la señal a su televisión y a sus celulares",
+      "Cliente tiene un repetidor mesh",
+      "Cliente menciona que quiere dar de baja el servicio si el problema persiste",
+      "Tercer intento de contacto: Cliente contesta y corta la llamada(3er ciclo)",
+      "Cliente menciona que lo llamen el día domingo o lunes",
+      "Cliente está conforme con el cambio de clave",
+      "Cliente menciona que el internet funciona de manera correcta",
+      "To intento de contacto: Cliente no se encuentra en el domicilio (5to ciclo)",
+      "Vo intento de contacto: Cliente no se encuentra en el domicilio (8vo ciclo)",
+      "El servicio de internet funciona correctamente",
+      "Cliente menciona que su teléfono fijo no da señal ni tono",
+      "Se hace cambio de puertos de los repetidores",
+      "Se verifica un problema de temperatura en 48°c via dashboard",
+      "Cliente menciona que el decodificador IPTV ZTEATV45503620443 no funciona de manera correcta (pantalla negra lentitud)",
+      "Cliente menciona que el servicio funciona correctamente después de procedimiento",
+      "Cliente menciona que el internet funciona de manera correcta.",
+      "Se valida sin consumo en Tracer y con flag alarmado (reinicios)",
+      "Cliente con SOT de migración tecnológica",
+      "Er intento de contacto: Cliente no contesta se deja mensaje en buzón de voz (1er ciclo)",
+      "Tercer intento de contacto: Cliente no se encuentra en el domicilio (3er ciclo)",
+      "Er intento de contacto: Cliente no se encuentra en el domicilio (3er ciclo)",
+      "Potencia Óptica RX (dBm)",
+      "Se verifica problema de niveles",
+      "Cliente menciona que el servicio tiene intermitencia",
+      "Se valida provisión y niveles desalineados en Incógnito",
+      "Se valida sin consumo en Tracer y con flag alarmado de conexión in house",
+      "To intento de contacto: Cliente no contesta (4to ciclo) llamar a las 6pm",
+      "Llamar a las 8pm",
+      "Do intento de contacto: Cliente no se encuentra en el domicilio (2do ciclo)",
+      "Ningún descarte posible con el servicio desactivado, Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Cliente brinda conformidad con el servicio",
+      "Ningún descarte posible con el servicio desactivado, Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK",
+      "Ningún descarte posible con el servicio desactivado",
+      "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida TR69 todo OK, Cliente brinda conformidad con el servicio",
+      "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Cliente menciona que el servicio funciona correctamente, Cliente menciona que dará de baja el servicio",
+      "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Cliente menciona que el servicio funciona correctamente (pagina web)",
+      "Cliente no reconoce el servicio, Cliente no desea atención",
+      "Cliente no colabora con la resolución del caso, No brinda facilidades, Cuelga llamada, No quieren que lo llamen",
+      ", Se valida sin provisión, Error de etiquetas en Incógnito, Cliente sin servicio",
+      "Do intento de contacto: Cliente no contesta (2do ciclo)",
+      "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida dashboard con online en naranja, 1er intento de contacto: Cliente no contesta se deja mensaje en buzón de voz (1er ciclo)",
+      "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Cliente con repetidor ajeno a la empresa, El servicio funciona correctamente, Se edua al cliente sobre el problema de tener un repetidor propio",
+      "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, 1er intento de contacto: Cliente no contesta, Se deja mensaje en buzón de voz (1er ciclo)",
+      "To intento de contacto: Cliente no contesta (4to ciclo)",
+      "Se valida consumo en Tracer y sin flags alarmados, Se valida Dashboard OK, Se valida provisión y online en Incógnito, Cliente brinda conformidad con el servicio",
+      "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Cliente menciona que el servicio funciona correctamente",
+      "Se valida consumo en Tracer y sin flags alarmados, Se valida sin provisión / offline en Incógnito"
+    ],
+    "soluciones": [
+      "Se genera SOT a solicitud del cliente",
+      "Se hace reinicio via Incógnito - se hace cambio de canal via escritorio remoto",
+      "Cliente confirma servicio de innternet funciona",
+      "Se hace cambio de puertos del repetidor",
+      "Se hace reinicio via Incógnito",
+      "Cliente confirma servicio funciona",
+      "Se genera Remedy"
+    ]
+  }
+}

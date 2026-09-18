@@ -2386,9 +2386,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (items.length === 0) return 'Descartes: N/A';
 
         const prefix = 'Descartes: ';
-        const indent = '           '; // 11 espacios para alinear bajo el primer descarte
-
-        return prefix + items[0] + (items.length > 1 ? '\n' + items.slice(1).map(l => indent + l).join('\n') : '');
+        return prefix + items[0] + (items.length > 1 ? '\n' + items.slice(1).join('\n') : '');
     }
 
     function formatDescartesLinesWsp(rawText) {
@@ -2407,7 +2405,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (items.length === 0) return 'DESCARTES REALIZADOS: N/A';
 
-        return 'DESCARTES REALIZADOS: ' + items.join(', ');
+        const prefix = 'DESCARTES REALIZADOS: ';
+        return prefix + items[0] + (items.length > 1 ? '\n' + items.slice(1).join('\n') : '');
     }
 
     function formatDescarteWspCiclo(rawText) {
@@ -2421,7 +2420,8 @@ document.addEventListener('DOMContentLoaded', () => {
             .map(s => s.replace(/^[-*•\d.)\]]\s*/, '').trim())
             .filter(s => s.length > 0);
         if (items.length === 0) return 'DECARTE: NO RESPONDE N°XX DE LLAMADA';
-        return `DECARTE: ${items.join(', ')}`;
+        const prefix = 'DECARTE: ';
+        return prefix + items[0] + (items.length > 1 ? '\n' + items.slice(1).join('\n') : '');
     }
 
     function getFormattedContactLines() {
@@ -2904,14 +2904,6 @@ ${contactLines}`;
             }
         });
 
-        // Init Speech Buttons
-        document.querySelectorAll('.copy-speech-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const speechCard = e.target.closest('.speech-card');
-                const text = speechCard.querySelector('.speech-text').textContent;
-                copyToClipboard(text, 'Speech copiado');
-            });
-        });
 
         // Incognito Validator Logic
         const runIncognitoValidation = () => {
@@ -3928,6 +3920,7 @@ ${contactLines}`;
     const btnChangelog = document.getElementById('btnChangelog');
     const changelogModal = document.getElementById('changelogModal');
     const changelogModalClose = document.getElementById('changelogModalClose');
+    const APP_VERSION = '2.6.1';
 
     if (btnChangelog && changelogModal) {
         btnChangelog.addEventListener('click', () => {
@@ -3938,6 +3931,26 @@ ${contactLines}`;
         changelogModalClose.addEventListener('click', () => {
             changelogModal.classList.remove('active');
         });
+    }
+    if (changelogModal) {
+        changelogModal.addEventListener('click', (e) => {
+            if (e.target === changelogModal) {
+                changelogModal.classList.remove('active');
+            }
+        });
+
+        // Abrir automáticamente el modal de novedades solo una vez por versión en el navegador
+        try {
+            const seenVersion = localStorage.getItem('bo_seen_changelog_version');
+            if (seenVersion !== APP_VERSION) {
+                setTimeout(() => {
+                    changelogModal.classList.add('active');
+                    localStorage.setItem('bo_seen_changelog_version', APP_VERSION);
+                }, 600);
+            }
+        } catch (e) {
+            console.warn('No se pudo acceder a localStorage para changelog version', e);
+        }
     }
 
     // Setup Remedy Modal & Logic (Soporte Multi-Servicio: INTERNET vs IPTV / Falla General)
@@ -5438,7 +5451,7 @@ ${contactLines}`;
     // Export / Import Backup JSON (incluye plantillas, historial y frases aprendidas)
     elements.btnExportJson.addEventListener('click', () => {
         const backupData = {
-            version: '2.6',
+            version: '2.6.1',
             exportDate: new Date().toISOString(),
             advisorName: state.advisorName,
             advisorCode: state.advisorCode,
