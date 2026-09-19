@@ -5619,6 +5619,7 @@ ${contactLines}`;
 
             { id: 'lnk_remedy_helix', name: 'BMC Helix', url: 'https://clarop-smartit.claro.pe/smartit/app/#/ticket-consoleStudio', category: 'Sistemas & Gestión', icon: '<img src="img/helix_logo.svg" class="link-custom-img-icon" alt="BMC Helix">', isQuick: true },
             { id: 'lnk_remedy_dwp', name: 'Remedy', url: 'https://clarop-dwp.claro.pe/dwp/app/#/activity/events/details', category: 'Sistemas & Gestión', icon: '<img src="img/remedy_dwp_logo.svg" class="link-custom-img-icon" alt="Remedy DWP">', isQuick: true },
+            { id: 'lnk_ces', name: 'CES', url: 'http://intranetces.tim.com.pe/', category: 'Sistemas & Gestión', icon: '<img src="img/claro_logo.svg" class="link-custom-img-icon" alt="CES">', isQuick: true },
             { id: 'lnk_linktrabajo', name: 'Link de Trabajo', url: 'https://forms.cloud.microsoft/pages/responsepage.aspx?id=CkbVXyW03kmb0PzSYnDTDItamkezRqRIvBJVVnC0d0pUQkEyRTRHM1dWOFNTMTAzUEI0ODQySThXVi4u&route=shorturl', category: 'Sistemas & Gestión', icon: '📝', isQuick: true },
             { id: 'lnk_livechat', name: 'LiveChat (Aivo)', url: 'https://live-us.aivo.co/chat', category: 'Canales & Comunicación', icon: '<img src="img/livechat_logo.svg" class="link-custom-img-icon" alt="LiveChat">', isQuick: true },
             { id: 'lnk_aicc', name: 'AICC', url: 'https://10.189.8.188:28090/service-cloud/aicc-web/index/index.html#/ManualAppointWorkbenchDetails?taskId=1061244585&orgId=1752727161880235604&appointId=175435461525835224677465120200&eventType=AgentEvent_Customer_Release&updateCallId=1754354624-11840&isFirst=true&AgentEvent_Call_Out_Fail=true', category: 'Canales & Comunicación', icon: '<img src="img/huawei_icc.svg" class="link-custom-img-icon" alt="AICC">', isQuick: true },
@@ -5655,14 +5656,15 @@ ${contactLines}`;
                                 (l.id === 'lnk_tr69' || normName.includes('tr69') || normName.includes('tr-69')) ? 'tr69_uniq' :
                                     (l.id === 'lnk_tracerplano' || normName.includes('plano')) ? 'tracerplano_uniq' :
                                         (l.id === 'lnk_tracer' || normName === 'tracer') ? 'tracer_uniq' :
-                                            (l.id === 'lnk_siac' || normName.includes('siac')) ? 'siac_uniq' :
-                                                (l.id === 'lnk_livechat' || normName.includes('livechat')) ? 'livechat_uniq' :
-                                                    (l.id === 'lnk_aicc' || normName.includes('aicc') || normName === 'icc') ? 'aicc_uniq' :
-                                                        (l.id === 'lnk_remedy_helix' || (normName.includes('helix') && !normName.includes('dwp'))) ? 'helix_uniq' :
-                                                            (l.id === 'lnk_remedy_dwp' || (normName.includes('dwp') || (normName.includes('remedy') && !normName.includes('helix')))) ? 'dwp_uniq' :
-                                                                (l.id === 'lnk_remotedesktop' || normName.includes('escritorio') || normName.includes('rdp')) ? 'rdp_uniq' :
-                                                                    (l.id === 'lnk_linktrabajo' || normName.includes('trabajo')) ? 'trabajo_uniq' :
-                                                                        l.id || normName;
+                                            (l.id === 'lnk_ces' || normName === 'ces' || normName.includes('intranetces') || (l.url && l.url.includes('intranetces'))) ? 'ces_uniq' :
+                                                (l.id === 'lnk_siac' || normName.includes('siac')) ? 'siac_uniq' :
+                                                    (l.id === 'lnk_livechat' || normName.includes('livechat')) ? 'livechat_uniq' :
+                                                        (l.id === 'lnk_aicc' || normName.includes('aicc') || normName === 'icc') ? 'aicc_uniq' :
+                                                            (l.id === 'lnk_remedy_helix' || (normName.includes('helix') && !normName.includes('dwp'))) ? 'helix_uniq' :
+                                                                (l.id === 'lnk_remedy_dwp' || (normName.includes('dwp') || (normName.includes('remedy') && !normName.includes('helix')))) ? 'dwp_uniq' :
+                                                                    (l.id === 'lnk_remotedesktop' || normName.includes('escritorio') || normName.includes('rdp')) ? 'rdp_uniq' :
+                                                                        (l.id === 'lnk_linktrabajo' || normName.includes('trabajo')) ? 'trabajo_uniq' :
+                                                                            l.id || normName;
                 if (seenKeys.has(key)) return false;
                 seenKeys.add(key);
                 return true;
@@ -5681,6 +5683,7 @@ ${contactLines}`;
                         (defLnk.id === 'lnk_aicc' && (lNorm.includes('aicc') || lNorm === 'icc')) ||
                         (defLnk.id === 'lnk_remedy_helix' && (lNorm.includes('helix') || l.id === 'lnk_remedy')) ||
                         (defLnk.id === 'lnk_remedy_dwp' && (lNorm.includes('dwp') || (lNorm.includes('remedy') && !lNorm.includes('helix')))) ||
+                        (defLnk.id === 'lnk_ces' && (lNorm === 'ces' || lNorm.includes('ces') || (l.url && l.url.includes('intranetces')))) ||
                         (defLnk.id === 'lnk_schaman' && lNorm.includes('schaman')) ||
                         (defLnk.id === 'lnk_plume' && lNorm.includes('plume')) ||
                         (defLnk.id === 'lnk_tr69' && (lNorm.includes('tr69') || lNorm.includes('tr-69'))) ||
@@ -5706,7 +5709,8 @@ ${contactLines}`;
                 const norm = stripAccents(l.name);
                 const key = (l.id === 'lnk_schaman' || norm.includes('schaman')) ? 'schaman_uniq' :
                     (l.id === 'lnk_incognito' || norm.includes('incognito')) ? 'incognito_uniq' :
-                        (l.id || norm);
+                        (l.id === 'lnk_ces' || norm === 'ces' || norm.includes('intranetces') || (l.url && l.url.includes('intranetces'))) ? 'ces_uniq' :
+                            (l.id || norm);
                 if (finalSeen.has(key)) return false;
                 finalSeen.add(key);
                 return true;
