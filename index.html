@@ -13,16 +13,13 @@
     <header class="app-header">
         <div class="brand">
             <div>
-                <div class="brand-title">WORKSTATION BACKOFFICE <span id="btnChangelog" style="display: inline-flex; align-items: center; border-radius: 4px; overflow: hidden; vertical-align: middle; margin-left: 0.5rem; font-size: 0.55em; letter-spacing: normal; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.6.1</span></span></div>
+                <div class="brand-title">WORKSTATION BACKOFFICE <span id="btnChangelog" style="display: inline-flex; align-items: center; border-radius: 4px; overflow: hidden; vertical-align: middle; margin-left: 0.5rem; font-size: 0.55em; letter-spacing: normal; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.6.2</span></span></div>
                 <div class="brand-subtitle">PLATAFORMA LOCAL DE PLANTILLAS Y SEGUIMIENTO PARA BO-FIJA</div>
             </div>
         </div>
 
         <div class="header-actions" style="display:flex; gap:0.5rem; align-items:center;">
-            <button id="btnOpenManualsSidebar" class="header-circle-btn" title="Manuales & Guías Técnicas (Alt+M)" style="position:relative;">
-                📖
-                <span class="header-btn-badge" id="headerManualsBadge">6</span>
-            </button>
+            <button id="btnOpenManualsSidebar" class="header-circle-btn" title="Manuales & Guías Técnicas (Alt+M)">📖</button>
             <button id="btnOpenLinksSidebar" class="header-circle-btn" title="Plataformas & Enlaces de Trabajo (Alt+L)">🌐</button>
             <button id="themeToggleBtn" class="theme-toggle-btn" title="Cambiar Tema (Oscuro/Claro)">🌙</button>
         </div>
@@ -132,7 +129,6 @@
                             <label class="form-label" for="genDescartes">
                                 Descartes Realizados <span style="color:var(--danger); font-weight:bold;">*</span> 
                                 <span style="font-size:0.75rem; text-transform:none; font-weight:normal; color:var(--text-muted);">(Mínimo 1 descarte)</span>
-                                <span class="predictive-tab-hint" title="Presiona Tab o flecha derecha para autocompletar"> Predictivo BETA</span>
                             </label>
                             <div class="predictive-wrapper" id="wrapperGenDescartes">
                                 <div class="predictive-wrapper-bg"></div>
@@ -643,20 +639,19 @@
     <div id="changelogModal" class="modal-overlay">
         <div class="modal-content" style="max-width: 700px;">
             <div class="card-title">
-                <div class="card-title-text">🚀 Novedades de la Versión 2.6.1</div>
+                <div class="card-title-text">🚀 Novedades de la Versión 2.6.2</div>
                 <button id="changelogModalClose" class="btn btn-sm">✕</button>
             </div>
             <div style="font-size: 0.92rem; line-height: 1.55; color: var(--text-main); margin-top: 1rem;">
                 <ul style="padding-left: 1.3rem; margin-bottom: 1.3rem; display: flex; flex-direction: column; gap: 0.65rem;">
-                    <li><strong>📋 Formateo de Descartes en Lista Limpia (Sin Sangría):</strong> Los descartes en las plantillas oficiales y estándar ahora se generan de forma vertical línea por línea alineados al margen izquierdo, sin sangrías ni comas corridas, asegurando máxima claridad visual.</li>
-                    <li><strong>🧠 Enriquecimiento del Motor Predictivo (Casos 18/09):</strong> Integración y normalización de más de 30 nuevas casuísticas reales validadas: diagnóstico de flags en <em>Tracer</em> (reinicios e in-house), gestión de puertos en <em>Repetidores Mesh / Plume</em>, alertas térmicas en <em>Dashboard</em>, descartes de <em>IPTV</em>, ciclos de llamada extendidos (2x3 con reagendamiento) y nuevas soluciones operativas.</li>
-                    <li><strong>🧹 Optimización del Módulo de Ayuda y Seguimiento:</strong> Depuración de tarjetas redundantes de manuales y speeches en la pestaña de seguimiento, priorizando el <em>Validador de Niveles (HFC/FTTH)</em> y el <em>Identificador de Equipos</em>.</li>
-                    <li><strong>📖 Centralización de Manuales & Guías Técnicas (Alt + M):</strong> Acceso unificado e interactivo a todos los manuales y procedimientos operativos en PDF directamente desde la cabecera principal y visor integrado in-app.</li>
-                    <li><strong>🎨 Logotipos Vectoriales Oficiales SVG (Sidebar Hub):</strong> Vectorización completa en alta definición de todas las herramientas operativas: <em>TR69 (ACS)</em>, <em>Incógnito (SAC)</em>, <em>Schaman</em>, <em>BMC Helix</em>, <em>Remedy (DWP)</em>, <em>LiveChat (Aivo)</em>, <em>AICC</em>, <em>Plume</em>, <em>Dashboard ZT</em>, <em>Tracer</em> y <em>SIAC Único</em>.</li>
-                    <li><strong>⚡ Predictivo Inteligente con Multitérmino y Separadores:</strong> Detección avanzada de múltiples descartes mediante comas, puntos y comas o saltos de línea con autocorrección en tiempo real.</li>
+                    <li><strong>🧠 Ampliación del Dataset Predictivo (Casos 19 y 20 de Setiembre):</strong> Integración de más de 60 nuevas frases técnicas de descarte y solución: operaciones por <em>Escritorio Remoto (RDP)</em> para separación de bandas 2.4/5 GHz y cambio de claves, diagnósticos <em>TR69</em> (auto select de canal, saturación, bandas unificadas), alertas en <em>Schaman</em> (migración tecnológica, eventos de alto impacto, SOT en ejecución), diagnósticos <em>Plume</em> (cobertura baja crónica y QoE), validación de planos de avería masiva, reaprovisionamiento <em>SGA</em> y verificación de cableado Cat5 vs Cat6.</li>
+                    <li><strong>🐞 Corrección de Truncamiento en Ciclos de Llamada:</strong> Solución definitiva al inconveniente que eliminaba el número ordinal inicial al formatear descartes de ciclo (ej. <code>2do intento...</code> se copiaba erróneamente como <code>Do intento...</code>). Ahora se preservan fielmente los ordinales (<code>1er</code>, <code>2do</code>, <code>3er</code>, <code>4to</code>) y los valores numéricos y decimales.</li>
+                    <li><strong>🔍 Búsqueda Predictiva Expandida con Nuevos Aliases:</strong> Incorporación de sinónimos inteligentes para agilizar la búsqueda: <em>sga</em>, <em>plano</em>, <em>averia</em>, <em>cable</em>, <em>cat5</em>, <em>cat6</em>, <em>clave</em>, <em>repetidor</em>, <em>mesh</em>, <em>cobertura</em> y <em>migracion</em>.</li>
+                    <li><strong>🏷️ Limpieza Visual de la Interfaz:</strong> Se removió la insignia <em>Predictivo BETA</em> de los campos del generador para un entorno más limpio y despejado.</li>
+                    <li><strong>📖 Optimización del Módulo de Manuales:</strong> Retiro del indicador numérico tipo notificación en la barra superior y simplificación de las tarjetas y visor de manuales sin iconos innecesarios para una lectura ágil y profesional.</li>
                 </ul>
                 <p style="color: var(--text-muted); font-size: 0.82rem; border-top: 1px dashed var(--border-color); padding-top: 0.8rem; text-align: center;">
-                    ¡WorkStation BackOffice v2.6.1 &bull; Máxima productividad técnica, rapidez y herramientas centralizadas!
+                    ¡WorkStation BackOffice v2.6.2 &bull; Máxima productividad técnica, rapidez y herramientas centralizadas!
                 </p>
             </div>
         </div>
@@ -965,7 +960,6 @@
             <!-- Modal Header -->
             <div class="manual-viewer-header">
                 <div class="manual-viewer-title-box">
-                    <span id="manualViewerIcon" style="font-size: 1.4rem;">📖</span>
                     <div>
                         <div id="manualViewerTitle" class="manual-viewer-title">Visualizador de Manual</div>
                         <div id="manualViewerCategory" class="manual-viewer-subtitle">Guías Técnicas BackOffice</div>

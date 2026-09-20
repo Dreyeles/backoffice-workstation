@@ -1,0 +1,499 @@
+{
+  "version": "2.6.1",
+  "exportDate": "2026-09-20T01:22:14.997Z",
+  "customTemplates": [
+    {
+      "id": "tmpl_wsp_1",
+      "title": "CLIENTE CONTESTA WHATSAPP",
+      "category": "WhatsApp",
+      "content": "¡Perfecto! 👍 Lo estaremos llamando en estos momentos 📞, por favor conteste la llamada. 😉✨"
+    },
+    {
+      "id": "tmpl_wsp_2",
+      "title": "CLIENTE NO CONTESTA LLAMADA",
+      "category": "WhatsApp",
+      "content": "Estimado cliente 👋, estuvimos llamando a su número celular 📱, pero no tuvimos respuesta. Procedemos a finalizar esta conversación. Lo estaremos llamando en el transcurso del día o mañana. 🕒📞 ¡Que tenga un excelente día! 😊"
+    },
+    {
+      "id": "tmpl_visita_sot",
+      "title": "CONFIRMACIÓN VISITA TÉCNICA (SOT)",
+      "category": "WhatsApp",
+      "content": "Estimado(a) cliente 👋, le confirmamos que se ha generado la visita técnica con el Codigo: {sot} La atención se realizará en un plazo máximo de 48 horas 👨🔧🏠. El técnico se comunicará previamente con usted para coordinar el ingreso. ¡Muchas gracias por su tiempo y preferencia! 😊👍"
+    }
+  ],
+  "history": [
+    {
+      "id": 1789867162877,
+      "timestamp": "20:19:22",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 951899699\nPROBLEMA DETECTADO: BAJA VELOCIDAD VIA WIFI (LENTITUD)\nDESCARTES REALIZADOS: Se valida consumo en Tracer y sin flags alarmados\nSe valida provisión y online en Incógnito\nSe valida TR69 todo OK\nSe hace cambio de contraseña\nSe hace separación de bandas via escritorio remoto\nCliente brinda conformidad con el servicio operativo\nSOLUCION: Se hace el cambio de clave y nombre via Escritorio - Separación de bandas\nID DE LLAMADA: #1789863807-2233514",
+      "fields": {
+        "telefono": "951899699",
+        "problema": "INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)",
+        "solucion": "Se hace el cambio de clave y nombre via Escritorio - Separación de bandas",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida TR69 todo OK, Se hace cambio de contraseña, Se hace separación de bandas via escritorio remoto, Cliente brinda conformidad con el servicio operativo",
+        "sot": "",
+        "contactId": "#1789863807-2233514",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789867119070,
+      "timestamp": "20:18:39",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 951899699\nPROBLEMA DETECTADO: BAJA VELOCIDAD VIA WIFI (LENTITUD)\nDESCARTES REALIZADOS: Se valida consumo en Tracer y sin flags alarmados\nSe valida provisión y online en Incógnito\nSe valida TR69 todo OK\nSe hace cambio de contraseña\nSe hace separación de bandas via escritorio remoto\nCliente brinda conformidad con el servicio operativo\nSOLUCION: Se hace el cambio de clave y nombre via Escritorio - Separación de bandas\nID DE LLAMADA: #1789863807-2233514",
+      "fields": {
+        "telefono": "951899699",
+        "problema": "INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)",
+        "solucion": "Se hace el cambio de clave y nombre via Escritorio - Separación de bandas",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida TR69 todo OK, Se hace cambio de contraseña, Se hace separación de bandas via escritorio remoto, Cliente brinda conformidad con el servicio operativo",
+        "sot": "",
+        "contactId": "#1789863807-2233514",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789866997462,
+      "timestamp": "20:16:37",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 951899699\nPROBLEMA DETECTADO: BAJA VELOCIDAD VIA WIFI (LENTITUD)\nDESCARTES REALIZADOS: Se valida consumo en Tracer y sin flags alarmados\nSe valida provisión y online en Incógnito\nSe valida TR69 todo OK\nSe hace cambio de contraseña\nSe hace separación de bandas via escritorio remoto\nCliente brinda conformidad con el servicio operativo\nSOLUCION: Se hace el cambio de clave y nombre via Escritorio - Separación de bandas\nID DE LLAMADA: #1789863807-2233514",
+      "fields": {
+        "telefono": "951899699",
+        "problema": "INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)",
+        "solucion": "Se hace el cambio de clave y nombre via Escritorio - Separación de bandas",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida TR69 todo OK, Se hace cambio de contraseña, Se hace separación de bandas via escritorio remoto, Cliente brinda conformidad con el servicio operativo",
+        "sot": "",
+        "contactId": "#1789863807-2233514",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789863616394,
+      "timestamp": "19:20:16",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 921561487\nPROBLEMA DETECTADO: BAJA VELOCIDAD VIA WIFI (LENTITUD)\nDESCARTES REALIZADOS: Se valida consumo en Tracer y sin flags alarmados\nSe valida provisión y online en Incógnito\nSe valida Dashboard OK\nCliente menciona que el servicio funciona correctamente\nSOLUCION: Cliente confirma servicio funciona\nID DE LLAMADA: #1789862934-661276",
+      "fields": {
+        "telefono": "921561487",
+        "problema": "INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)",
+        "solucion": "Cliente confirma servicio funciona",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Cliente menciona que el servicio funciona correctamente",
+        "sot": "",
+        "contactId": "#1789862934-661276",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789863608762,
+      "timestamp": "19:20:08",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 921561487\nPROBLEMA DETECTADO: BAJA VELOCIDAD VIA WIFI (LENTITUD)\nDESCARTES REALIZADOS: Se valida consumo en Tracer y sin flags alarmados\nSe valida provisión y online en Incógnito\nSe valida Dashboard OK\nCliente menciona que el servicio funciona correctamente\nSOLUCION: Cliente confirma servicio funciona\nID DE LLAMADA: #1789862934-661276",
+      "fields": {
+        "telefono": "921561487",
+        "problema": "INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)",
+        "solucion": "Cliente confirma servicio funciona",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Cliente menciona que el servicio funciona correctamente",
+        "sot": "",
+        "contactId": "#1789862934-661276",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789862934517,
+      "timestamp": "19:08:54",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nCELULAR: 984981710\nDECARTE: Er intento de contacto se deja mensaje en buzón de voz (1er ciclo)\nSe valida consumo en Tracer y sin flags alarmados\nSe valida provisión y online en Incógnito\nSe valida TR69 con canales saturados\nID DE LLAMADA: #1789862426-460643",
+      "fields": {
+        "telefono": "984981710",
+        "problema": "INT - INTERMITENCIA EN RANGOS HORARIOS WIFI",
+        "solucion": "",
+        "descartes": "1Er intento de contacto se deja mensaje en buzón de voz (1er ciclo), Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida TR69 con canales saturados",
+        "sot": "",
+        "contactId": "#1789862426-460643",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789862852901,
+      "timestamp": "19:07:32",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nCELULAR: 984981710\nDECARTE: Er intento de contacto se deja mensaje en buzón de voz (1er ciclo)\nSe valida consumo en Tracer y sin flags alarmados\nSe valida provisión y online en Incógnito\nSe valida TR69 con canales saturados\nID DE LLAMADA: #1789862426-460643",
+      "fields": {
+        "telefono": "984981710",
+        "problema": "INT - INTERMITENCIA EN RANGOS HORARIOS WIFI",
+        "solucion": "",
+        "descartes": "1Er intento de contacto se deja mensaje en buzón de voz (1er ciclo), Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida TR69 con canales saturados",
+        "sot": "",
+        "contactId": "#1789862426-460643",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789862003217,
+      "timestamp": "18:53:23",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 983758731\nPROBLEMA DETECTADO: CAMBIO DE CLAVE WIFI Y NOMBRE WIFI (SSID)\nDESCARTES REALIZADOS: Se valida consumo en Tracer y sin flags alarmados\nSe valida provisión y online en Incógnito\nSe valida Dashboard OK\nCliente está conforme con el cambio de clave\nCambio manual por parte del cliente (HUAWEI HG8245W5-6T)\nSOLUCION: Se hace cambio de contraseña (manual)\nID DE LLAMADA: #1789860471-796322",
+      "fields": {
+        "telefono": "983758731",
+        "problema": "INT - CAMBIO DE CLAVE WIFI Y NOMBRE WIFI (SSID)",
+        "solucion": "Se hace cambio de contraseña (manual)",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Cliente está conforme con el cambio de clave, Cambio manual por parte del cliente (HUAWEI HG8245W5-6T)",
+        "sot": "",
+        "contactId": "#1789860471-796322",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789861954266,
+      "timestamp": "18:52:34",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 983758731\nPROBLEMA DETECTADO: CAMBIO DE CLAVE WIFI Y NOMBRE WIFI (SSID)\nDESCARTES REALIZADOS: Se valida consumo en Tracer y sin flags alarmados\nSe valida provisión y online en Incógnito\nSe valida Dashboard OK\nCliente está conforme con el cambio de clave\nCambio manual por parte del cliente (HUAWEI HG8245W5-6T)\nSOLUCION: Se hace cambio de contraseña (manual)\nID DE LLAMADA: #1789860471-796322",
+      "fields": {
+        "telefono": "983758731",
+        "problema": "INT - CAMBIO DE CLAVE WIFI Y NOMBRE WIFI (SSID)",
+        "solucion": "Se hace cambio de contraseña (manual)",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Cliente está conforme con el cambio de clave, Cambio manual por parte del cliente (HUAWEI HG8245W5-6T)",
+        "sot": "",
+        "contactId": "#1789860471-796322",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789860023701,
+      "timestamp": "18:20:23",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nCELULAR: 951724158\nDECARTE: Er intento de contacto: Cliente no contesta\nSe deja mensaje en buzón de voz (1er ciclo)\nID DE LLAMADA: #1789859665-2246059",
+      "fields": {
+        "telefono": "951724158",
+        "problema": "INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)",
+        "solucion": "",
+        "descartes": "1Er intento de contacto: Cliente no contesta, Se deja mensaje en buzón de voz (1er ciclo)",
+        "sot": "",
+        "contactId": "#1789859665-2246059",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789859939462,
+      "timestamp": "18:18:59",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nCELULAR: 951724158\nDECARTE: Er intento de contacto: Cliente no contesta\nSe deja mensaje en buzón de voz (1er ciclo)\nID DE LLAMADA: #1789859665-2246059",
+      "fields": {
+        "telefono": "951724158",
+        "problema": "INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)",
+        "solucion": "",
+        "descartes": "1Er intento de contacto: Cliente no contesta, Se deja mensaje en buzón de voz (1er ciclo)",
+        "sot": "",
+        "contactId": "#1789859665-2246059",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789859180572,
+      "timestamp": "18:06:20",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 951724158\nPROBLEMA DETECTADO: BAJA VELOCIDAD VIA WIFI (LENTITUD)\nDESCARTES REALIZADOS: Cliente con SOT\nSe valida consumo en Tracer y sin flags alarmados\nSe valida provisión y online en Incógnito\nSe valida Dashboard OK\nCliente tiene conocimiento de la SOT de migración tecnológica se mantiene en espera.\nSOLUCION: Se valida cliente con SOT (migración tecnológica)\nID DE LLAMADA: #1789858468-660637",
+      "fields": {
+        "telefono": "951724158",
+        "problema": "INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)",
+        "solucion": "Se valida cliente con SOT (migración tecnológica)",
+        "descartes": "Cliente con SOT, Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Cliente tiene conocimiento de la SOT de migración tecnológica se mantiene en espera.",
+        "sot": "",
+        "contactId": "#1789858468-660637",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789859180010,
+      "timestamp": "18:06:20",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 951724158\nPROBLEMA DETECTADO: BAJA VELOCIDAD VIA WIFI (LENTITUD)\nDESCARTES REALIZADOS: Cliente con SOT\nSe valida consumo en Tracer y sin flags alarmados\nSe valida provisión y online en Incógnito\nSe valida Dashboard OK\nCliente tiene conocimiento de la SOT de migración tecnológica se mantiene en espera.\nSOLUCION: Se valida cliente con SOT (migración tecnológica)\nID DE LLAMADA: #1789858468-660637",
+      "fields": {
+        "telefono": "951724158",
+        "problema": "INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)",
+        "solucion": "Se valida cliente con SOT (migración tecnológica)",
+        "descartes": "Cliente con SOT, Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Cliente tiene conocimiento de la SOT de migración tecnológica se mantiene en espera.",
+        "sot": "",
+        "contactId": "#1789858468-660637",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789857410201,
+      "timestamp": "17:36:50",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 950753622\nPROBLEMA DETECTADO: PROBLEMAS DE ACCESO CON PAGINAS\nDESCARTES REALIZADOS: Cliete con Remedy (acceso a paginas)\nSOLUCION: Cliente con Remedy en ejecución\nSOT / REMEDY: REQ000000140911\nID DE LLAMADA: #1789856870-2560581",
+      "fields": {
+        "telefono": "950753622",
+        "problema": "INT - PROBLEMAS DE ACCESO CON PAGINAS",
+        "solucion": "Cliente con Remedy en ejecución",
+        "descartes": "Cliete con Remedy (acceso a paginas)",
+        "sot": "REQ000000140911",
+        "contactId": "#1789856870-2560581",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789857140459,
+      "timestamp": "17:32:20",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 950753622\nPROBLEMA DETECTADO: PROBLEMAS DE ACCESO CON PAGINAS\nDESCARTES REALIZADOS: Cliete con Remedy (acceso a paginas)\nSOLUCION: Cliente con Remedy en ejecución\nSOT / REMEDY: REQ000000140911\nID DE LLAMADA: #1789856870-2560581",
+      "fields": {
+        "telefono": "950753622",
+        "problema": "INT - PROBLEMAS DE ACCESO CON PAGINAS",
+        "solucion": "Cliente con Remedy en ejecución",
+        "descartes": "Cliete con Remedy (acceso a paginas)",
+        "sot": "REQ000000140911",
+        "contactId": "#1789856870-2560581",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789857132011,
+      "timestamp": "17:32:12",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 950753622\nPROBLEMA DETECTADO: PROBLEMAS DE ACCESO CON PAGINAS\nDESCARTES REALIZADOS: Cliete con Remedy (acceso a paginas)\nSOLUCION: Cliente con Remedy en ejecución\nSOT / REMEDY: REQ000000140911\nID DE LLAMADA: #1789856870-2560581",
+      "fields": {
+        "telefono": "950753622",
+        "problema": "INT - PROBLEMAS DE ACCESO CON PAGINAS",
+        "solucion": "Cliente con Remedy en ejecución",
+        "descartes": "Cliete con Remedy (acceso a paginas)",
+        "sot": "REQ000000140911",
+        "contactId": "#1789856870-2560581",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789856533685,
+      "timestamp": "17:22:13",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nCELULAR: 980556242\nDECARTE: Er intento de contacto: Cliente no contesta\nSe deja mensaje en buzón de voz (1er ciclo)\nID DE LLAMADA: #1789856230-2704618",
+      "fields": {
+        "telefono": "980556242",
+        "problema": "INT - INTERMITENCIA EN RANGOS HORARIOS WIFI",
+        "solucion": "",
+        "descartes": "1Er intento de contacto: Cliente no contesta, Se deja mensaje en buzón de voz (1er ciclo)",
+        "sot": "",
+        "contactId": "#1789856230-2704618",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789856484680,
+      "timestamp": "17:21:24",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nCELULAR: 980556242\nDECARTE: Er intento de contacto: Cliente no contesta\nSe deja mensaje en buzón de voz (1er ciclo)\nID DE LLAMADA: #1789856230-2704618",
+      "fields": {
+        "telefono": "980556242",
+        "problema": "INT - INTERMITENCIA EN RANGOS HORARIOS WIFI",
+        "solucion": "",
+        "descartes": "1Er intento de contacto: Cliente no contesta, Se deja mensaje en buzón de voz (1er ciclo)",
+        "sot": "",
+        "contactId": "#1789856230-2704618",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789856058216,
+      "timestamp": "17:14:18",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nCELULAR: 956725765\nDECARTE: Er intento de contacto: Cliente no contesta se deja mensaje en buzón de voz (1er ciclo)\nID DE LLAMADA: #1789855625-2626040",
+      "fields": {
+        "telefono": "956725765",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "",
+        "descartes": "1Er intento de contacto: Cliente no contesta se deja mensaje en buzón de voz (1er ciclo)",
+        "sot": "",
+        "contactId": "#1789855625-2626040",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789855901225,
+      "timestamp": "17:11:41",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nCELULAR: 956725765\nDECARTE: Er intento de contacto: Cliente no contesta se deja mensaje en buzón de voz (1er ciclo)\nID DE LLAMADA: #1789855625-2626040",
+      "fields": {
+        "telefono": "956725765",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "",
+        "descartes": "1Er intento de contacto: Cliente no contesta se deja mensaje en buzón de voz (1er ciclo)",
+        "sot": "",
+        "contactId": "#1789855625-2626040",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789855853584,
+      "timestamp": "17:10:53",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nCELULAR: 956725765\nDECARTE: Er intento de contacto: Cliente no contesta se deja mensaje en buzón de voz (1er ciclo)\nID DE LLAMADA: #1789855625-2626040",
+      "fields": {
+        "telefono": "956725765",
+        "problema": "INT - SIN SERVICIO",
+        "solucion": "",
+        "descartes": "1Er intento de contacto: Cliente no contesta se deja mensaje en buzón de voz (1er ciclo)",
+        "sot": "",
+        "contactId": "#1789855625-2626040",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789855487251,
+      "timestamp": "17:04:47",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nCELULAR: 982130522\nDECARTE: Do intento de contacto: Cliente no contesta (2do ciclo)\nID DE LLAMADA: #1789854356-2763724",
+      "fields": {
+        "telefono": "982130522",
+        "problema": "INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)",
+        "solucion": "",
+        "descartes": "2Do intento de contacto: Cliente no contesta (2do ciclo)",
+        "sot": "",
+        "contactId": "#1789854356-2763724",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789854525101,
+      "timestamp": "16:48:45",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nCELULAR: 982130522\nDECARTE: Do intento de contacto: Cliente no contesta (2do ciclo)\nID DE LLAMADA: #1789854356-2763724",
+      "fields": {
+        "telefono": "982130522",
+        "problema": "INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)",
+        "solucion": "",
+        "descartes": "2Do intento de contacto: Cliente no contesta (2do ciclo)",
+        "sot": "",
+        "contactId": "#1789854356-2763724",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789853592427,
+      "timestamp": "16:33:12",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Ciclo",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS - CICLO DE LLAMADA",
+      "content": "BACKOFFICE HITSS - CICLO DE LLAMADA\nCELULAR: 931033248\nDECARTE: 3er intento de contacto: Cliente no se encuentra en el domicilio (3er ciclo)\nID DE LLAMADA: #1789853380-2627578",
+      "fields": {
+        "telefono": "931033248",
+        "problema": "INT - BAJA VELOCIDAD VIA WIFI (LENTITUD)",
+        "solucion": "",
+        "descartes": "33er intento de contacto: Cliente no se encuentra en el domicilio (3er ciclo) ",
+        "sot": "",
+        "contactId": "#1789853380-2627578",
+        "servicio": "INTERNET"
+      }
+    },
+    {
+      "id": 1789852212366,
+      "timestamp": "16:10:12",
+      "dateStr": "19/9/2026",
+      "type": "Generador Oficial Claro",
+      "service": "INTERNET",
+      "summary": "BACKOFFICE HITSS",
+      "content": "BACKOFFICE HITSS\nCELULAR: 920293941\nPROBLEMA DETECTADO: CAMBIO DE CLAVE WIFI Y NOMBRE WIFI (SSID)\nDESCARTES REALIZADOS: Se valida consumo en Tracer y sin flags alarmados\nSe valida provisión y online en Incógnito\nSe valida Dashboard OK\nCliente confirma que los cambios se han hecho correctamente\nSOLUCION: Se hace el cambio de clave y nombre\nID DE LLAMADA: #1789850747-2505736",
+      "fields": {
+        "telefono": "920293941",
+        "problema": "INT - CAMBIO DE CLAVE WIFI Y NOMBRE WIFI (SSID)",
+        "solucion": "Se hace el cambio de clave y nombre ",
+        "descartes": "Se valida consumo en Tracer y sin flags alarmados, Se valida provisión y online en Incógnito, Se valida Dashboard OK, Cliente confirma que los cambios se han hecho correctamente",
+        "sot": "",
+        "contactId": "#1789850747-2505736",
+        "servicio": "INTERNET"
+      }
+    }
+  ],
+  "learnedPhrases": {
+    "descartes": [
+      "Se hace separación de bandas via escritorio remoto",
+      "Se hace cambio de contraseña",
+      "Er intento de contacto se deja mensaje en buzón de voz (1er ciclo)",
+      "Cambio manual por parte del cliente (HUAWEI HG8245W5-6T)",
+      "Cliente tiene conocimiento de la SOT de migración tecnológica se mantiene en espera.",
+      "Cliente con SOT",
+      "Cliete con Remedy (acceso a paginas)",
+      "Er intento de contacto: Cliente no contesta",
+      "Er intento de contacto: Cliente no contesta se deja mensaje en buzón de voz (1er ciclo)",
+      "Do intento de contacto: Cliente no contesta (2do ciclo)",
+      "er intento de contacto: Cliente no se encuentra en el domicilio (3er ciclo)",
+      "Cliente confirma que los cambios se han hecho correctamente"
+    ],
+    "soluciones": [
+      "Se hace el cambio de clave y nombre via Escritorio - Separación de bandas",
+      "Se hace cambio de contraseña (manual)",
+      "Se valida cliente con SOT (migración tecnológica)",
+      "Cliente con Remedy en ejecución",
+      "Se hace el cambio de clave y nombre"
+    ]
+  }
+}

@@ -38,7 +38,8 @@ const BO_DATASET = {
         "INT - CAMBIO DE CLAVE WIFI Y NOMBRE WIFI (SSID)",
         "INT - DISPOSITIVOS NO SE CONECTAN AL WIFI",
         "INT - LOS EN ROJO",
-        "INT - INFORMACION DE USO"
+        "INT - INFORMACION DE USO",
+        "INT - MALA COBERTURA WIFI"
     ],
     "TELEFONIA": [
         "TEL - SIN TONO",
@@ -1100,7 +1101,7 @@ if (typeof BO_DATASET !== 'undefined') {
     
     BO_DATASET.predictiveCorpus = {
         descartes: [
-            "Se valida consumo en Tracer y sin flags alarmados",
+                        "Se valida consumo en Tracer y sin flags alarmados",
             "Se valida sin consumo en Tracer y con flag alarmado",
             "Se valida sin consumo en Tracer y estado desconectado",
             "Se valida sin consumo en Tracer y con flag alarmado (reinicios)",
@@ -1240,10 +1241,56 @@ if (typeof BO_DATASET !== 'undefined') {
             "Cliente indica que no desea recibir llamadas en este momento",
             "Se escala y genera ticket Remedy",
             "Se genera SOT de mtto",
-            "Se genera SOT a solicitud del cliente"
+            "Se genera SOT a solicitud del cliente",
+            "Se hace separación de bandas vía Escritorio Remoto",
+            "Se hace separación de bandas a solicitud del cliente",
+            "Se hace cambio de contraseña vía Escritorio Remoto",
+            "Cambio manual de clave y nombre Wi-Fi por parte del cliente (Huawei HG8245W5-6T)",
+            "Se valida TR69 con auto select de canal desactivado",
+            "Se valida TR69 con bandas separadas y canales saturados",
+            "Se valida TR69 con canales saturados y bandas unificadas",
+            "Se valida Dashboard con bandas unificadas",
+            "Se valida Dashboard OK con equipos conectados por Wi-Fi",
+            "Se valida Dashboard sin acceso / inalcanzable",
+            "Se valida Schaman con alerta de SOT en ejecución",
+            "Se valida Schaman con alerta de migración tecnológica",
+            "Se valida Schaman con alerta de evento de alto impacto",
+            "Se valida Schaman con alerta de velocidad menor a la contratada",
+            "Se valida Plume con extensores conectados y con buena señal",
+            "Se valida alerta de cobertura baja crónica en Plume y afectación en QoE",
+            "Se valida cliente Plume con repetidor conectado y múltiples dispositivos",
+            "Se valida cliente con repetidor externo no homologado generando red independiente",
+            "Se valida cable de red Cat5 de cliente; se asesora adquirir cable Cat6",
+            "Se valida variación de niveles ópticos en gráfica de Tracer",
+            "Se valida consumo en Tracer con flag de equipo contratado para servicio en rojo",
+            "Se valida consumo en Tracer con alerta de corte de energía en periodos anteriores",
+            "Se valida plano sin avería masiva en la zona del cliente",
+            "Se valida cliente por plano no afectado por avería masiva",
+            "Se valida provisión y online en Incógnito sin visualización de IP ni niveles",
+            "Se realiza baja y alta / reaprovisionamiento desde SGA",
+            "Se realiza reinicio físico de ONT y equipos del cliente",
+            "Se prueba conectividad en todos los puertos LAN",
+            "Se valida que el cliente cuenta con SOT de migración tecnológica en espera",
+            "Se valida cliente con SOT generada con posterioridad a la creación del caso",
+            "Se valida cliente con ticket Remedy en ejecución por acceso a páginas",
+            "Se valida mala derivación de caso / inconveniente exclusivo en datos móviles",
+            "Cliente confirma que los cambios de clave y nombre se aplicaron correctamente",
+            "Cliente confirma servicio restablecido y operando con normalidad",
+            "Cliente indica que la lentitud o intermitencia ocurre mayormente en horas de la tarde/noche",
+            "Cliente indica que recientemente movió de lugar el router/ONT junto a otros artefactos",
+            "Cliente indica que no tiene disponibilidad en el momento para realizar descartes",
+            "Cliente indica corte de energía eléctrica en su domicilio durante la llamada",
+            "Se asesora al cliente cambiar de ubicación el router para evitar interferencias",
+            "Se asesora al cliente sobre separación de bandas y reseteo manual de repetidor",
+            "Se envía mensaje por LiveChat solicitando pulsar botón de ayuda al presentar lentitud o falla",
+            "Se envía mensaje por LiveChat solicitando pulsar botón de ayuda cuando tenga disponibilidad",
+            "1er intento de contacto: línea suena ocupada, se envía LiveChat y se deja buzón de voz (1er ciclo)",
+            "1er intento de contacto: Cliente no contesta, se envía mensaje por LiveChat y buzón de voz (1er ciclo)",
+            "2do intento de contacto: Cliente no contesta, se reitera mensaje en LiveChat (2do ciclo)",
+            "3er intento de contacto: Cliente no se encuentra en domicilio, se reitera mensaje en LiveChat (3er ciclo)"
         ],
         soluciones: [
-            "Cliente confirma problema solucionado",
+                        "Cliente confirma problema solucionado",
             "Cliente confirma servicio óptimo",
             "Cliente confirma servicio funciona",
             "Cliente confirma servicio de internet funciona",
@@ -1266,7 +1313,23 @@ if (typeof BO_DATASET !== 'undefined') {
             "Cliente no tiene servicio por falta de pagos",
             "Cliente no colabora con la resolución del servicio",
             "Cliente no contesta llamada",
-            "N/A"
+            "N/A",
+            "Se hace el cambio de clave y nombre vía Escritorio Remoto - Separación de bandas",
+            "Se hace cambio de contraseña manual con asistencia al cliente",
+            "Se separan bandas Wi-Fi (2.4 GHz y 5 GHz) y se reinicia router",
+            "Se separan bandas Wi-Fi y se optimizan canales",
+            "Se valida cable ethernet de cliente Cat5 y se asesora adquisición de cable Cat6",
+            "Se educa al cliente sobre cobertura Wi-Fi y se asesora adquisición de repetidor homologado",
+            "Se asesora cambio de ubicación física del router para mitigar interferencias",
+            "Se valida cliente con SOT de migración tecnológica en ejecución",
+            "Se valida cliente con SOT atendida y ejecutada",
+            "Se genera SOT por mejora tecnológica / migración",
+            "Se escala caso a Remedy / TI por problema de acceso a páginas",
+            "Cliente confirma servicio restablecido",
+            "Cliente confirma cambio de contraseña y red operativa",
+            "Cliente indica que ya no desea realizar el cambio de clave Wi-Fi",
+            "Cliente suspenderá su servicio / solicita baja",
+            "Fin de ciclo: cliente nunca contestó llamadas ni mensajes"
         ]
     };
 }
@@ -1278,7 +1341,6 @@ const manualesData = [
         filename: "CONFIGURACIONES TR69 - ESCRITORIO REMOTO.pdf.pdf",
         category: "Plataformas & Conexión",
         size: "5.8 MB",
-        icon: "🖥️",
         description: "Guía ilustrada paso a paso para acceso seguro, credenciales de red, configuración en TR69 y Escritorio Remoto (RDP).",
         tags: ["TR69", "Escritorio Remoto", "RDP", "Credenciales", "ZTE", "Configuración"]
     },
@@ -1288,7 +1350,6 @@ const manualesData = [
         filename: "DESCARTE TRACER - ZTE DASHBOARD.pdf",
         category: "Diagnóstico & Niveles",
         size: "8.8 MB",
-        icon: "📊",
         description: "Manual para análisis de tráfico, estado de puerto PON, potencia óptica Tx/Rx y descarte técnico en Tracer y ZTE Dashboard.",
         tags: ["Tracer", "ZTE Dashboard", "Potencia Óptica", "PON", "Niveles", "Gráficos"]
     },
@@ -1298,7 +1359,6 @@ const manualesData = [
         filename: "DESCARTE Y SONDEO - LENTITUD E INTERMITENCIA INTERNET.pdf",
         category: "Guías de Descarte",
         size: "12.6 MB",
-        icon: "⚡",
         description: "Procedimiento de atención para sondeo técnico al cliente, pruebas de velocidad cable/WiFi, canales 2.4/5GHz y descarte de saturación.",
         tags: ["Lentitud", "Intermitencia", "Sondeo", "WiFi 2.4/5GHz", "Speedtest", "Canales"]
     },
@@ -1308,7 +1368,6 @@ const manualesData = [
         filename: "DESCARTE Y SONDEO CLIENTE - SIN SERVICIO INTERNET.pdf",
         category: "Guías de Descarte",
         size: "22.6 MB",
-        icon: "🚫",
         description: "Flujo paso a paso para casos de corte total, validación de luces en ONT/Módem (Power, PON, LOS, LAN) y pruebas de reconexión.",
         tags: ["Sin Servicio", "Luces ONT", "LOS Rojo", "Caída Total", "Reinicio", "Avería"]
     },
@@ -1318,7 +1377,6 @@ const manualesData = [
         filename: "DESCARTES DE PROVISION Y NIVELES - INTERNET.pdf",
         category: "Diagnóstico & Niveles",
         size: "11.8 MB",
-        icon: "📈",
         description: "Verificación de perfil de velocidad aprovisionado en Incógnito/SGA, parámetros HFC (Downstream, Upstream, SNR) y FTTH (Rx/Tx dBm).",
         tags: ["Provisión", "Niveles HFC", "Niveles FTTH", "SNR", "Tx / Rx", "Incógnito", "SGA"]
     },
@@ -1328,7 +1386,6 @@ const manualesData = [
         filename: "PROBLEMAS CON ACCESO A PAGINAS.pdf",
         category: "Casos Especiales",
         size: "4.6 MB",
-        icon: "🌐",
         description: "Guía para descarte de fallas de DNS, CGNAT, MTU, bloqueo de puertos, acceso a páginas bancarias o plataformas institucionales.",
         tags: ["DNS", "Acceso Web", "CGNAT", "Páginas Bancarias", "Flush DNS", "Rutas"]
     }

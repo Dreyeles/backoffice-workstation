@@ -22,14 +22,21 @@ document.addEventListener('DOMContentLoaded', () => {
         chatIds: new Set()
     };
 
-    // Auto-clean any legacy typos (such as "Sse" -> "Se") from learnedPhrases in localStorage
+    // Auto-clean any legacy typos (such as "Sse" -> "Se", "Er intento" -> "1er intento") from learnedPhrases in localStorage
     if (state.learnedPhrases && typeof state.learnedPhrases === 'object') {
         let cleanedPhrases = false;
         ['descartes', 'soluciones'].forEach(cat => {
             if (Array.isArray(state.learnedPhrases[cat])) {
                 const prev = state.learnedPhrases[cat].slice();
                 state.learnedPhrases[cat] = state.learnedPhrases[cat]
-                    .map(p => typeof p === 'string' ? p.replace(/^Sse\b/i, 'Se').trim() : '')
+                    .map(p => {
+                        if (typeof p !== 'string') return '';
+                        let s = p.replace(/^Sse\b/i, 'Se').trim();
+                        s = s.replace(/^Er\s+intento\b/i, '1er intento');
+                        s = s.replace(/^Do\s+intento\b/i, '2do intento');
+                        s = s.replace(/^33er\s+intento\b/i, '3er intento');
+                        return s;
+                    })
                     .filter(p => p && !/^sse\s+/i.test(p));
 
                 // Deduplicate with respect to base dataset
@@ -431,8 +438,8 @@ document.addEventListener('DOMContentLoaded', () => {
         cleaned = cleaned.split('\n').map(line => {
             if (!line) return '';
 
-            // 1. Capitalizar inicio de línea o tras viñetas (- , * , • , 1. , 1) )
-            let res = line.replace(/^(\s*[-*•\d.)\]]\s*)([a-záéíóúñ])/i, (m, prefix, char) => prefix + char.toUpperCase())
+            // 1. Capitalizar tras viñetas reales (- , * , • , 1. , 1) ) o inicio de línea
+            let res = line.replace(/^(\s*[-*•]\s*|\s*\d+[\.\)\]]\s+|\s*\d+\s*[-–]\s+)([a-záéíóúñ])/i, (m, prefix, char) => prefix + char.toUpperCase())
                 .replace(/^(\s*)([a-záéíóúñ])/i, (m, prefix, char) => prefix + char.toUpperCase());
 
             // 2. Capitalizar la primera letra después de cada coma o punto y coma seguido de espacio
@@ -1630,7 +1637,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function learnSinglePhrase(category, phrase) {
         if (!phrase) return;
-        const clean = phrase.trim().replace(/^[-*•\d.)\s]+/, '').replace(/^Sse\b/i, 'Se').trim();
+        const clean = phrase.trim()
+            .replace(/^(\s*[-*•]\s*|\s*\d+[\.\)\]]\s+|\s*\d+\s*[-–]\s+)/, '')
+            .replace(/^Sse\b/i, 'Se')
+            .replace(/^Er\s+intento\b/i, '1er intento')
+            .replace(/^Do\s+intento\b/i, '2do intento')
+            .replace(/^33er\s+intento\b/i, '3er intento')
+            .trim();
         if (clean.length < 6 || clean.toUpperCase() === 'N/A' || clean.startsWith('#')) return;
 
         if (!state.learnedPhrases) {
@@ -1711,7 +1724,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'rdp': ['escritorio', 'remoto'],
             'remoto': ['escritorio', 'remoto'],
             'escritorio': ['escritorio', 'remoto'],
-            'plume': ['plume'],
+            'plume': ['plume', 'extensores'],
             'live': ['livechat', 'chat'],
             'chat': ['livechat', 'chat'],
             'livechat': ['livechat'],
@@ -1719,14 +1732,28 @@ document.addEventListener('DOMContentLoaded', () => {
             'buzon': ['buzon', 'ciclo'],
             'llamada': ['llamada', 'ciclo'],
             'ciclo': ['ciclo', 'intento'],
-            'sot': ['sot', 'visita', 'mtto'],
+            'sot': ['sot', 'visita', 'mtto', 'migracion'],
             'remedy': ['remedy', 'ticket'],
             'wifi': ['wifi', 'bandas', 'ssid', 'canales'],
             'vel': ['velocidad', '100', 'red'],
             'velocidad': ['velocidad', '100', 'red'],
             'speed': ['velocidad', 'red'],
             'fisico': ['fisicos', 'fisico', 'conectado', 'los'],
-            'fisicos': ['fisicos', 'fisico', 'conectado', 'los']
+            'fisicos': ['fisicos', 'fisico', 'conectado', 'los'],
+            'sga': ['sga', 'alta', 'baja', 'provision'],
+            'plano': ['plano', 'averia', 'masiva'],
+            'averia': ['plano', 'averia', 'masiva'],
+            'cable': ['cable', 'cat5', 'cat6', 'ethernet'],
+            'cat5': ['cable', 'cat5', 'cat6', 'ethernet'],
+            'cat6': ['cable', 'cat5', 'cat6', 'ethernet'],
+            'clave': ['clave', 'contrasena', 'nombre', 'ssid'],
+            'contra': ['contrasena', 'clave'],
+            'contrasena': ['contrasena', 'clave'],
+            'repetidor': ['repetidor', 'mesh', 'plume', 'cobertura'],
+            'mesh': ['repetidor', 'mesh', 'cobertura'],
+            'cobertura': ['cobertura', 'repetidor', 'mesh', 'senal'],
+            'migracion': ['migracion', 'tecnologica', 'sot'],
+            'migra': ['migracion', 'tecnologica', 'sot']
         };
 
         const getPhraseTag = (phrase) => {
@@ -1737,13 +1764,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (p.includes('tr69')) return 'TR69';
             if (p.includes('schaman')) return 'Schaman';
             if (p.includes('plume')) return 'Plume';
+            if (p.includes('sga')) return 'SGA';
+            if (p.includes('plano') || p.includes('averia')) return 'Plano';
             if (p.includes('remoto') || p.includes('escritorio')) return 'Remoto';
             if (p.includes('livechat') || p.includes('chat')) return 'LiveChat';
             if (p.includes('ciclo') || p.includes('intento') || p.includes('buzon')) return 'Ciclo';
             if (p.includes('remedy')) return 'Remedy';
-            if (p.includes('sot')) return 'SOT';
+            if (p.includes('sot') || p.includes('migracion')) return 'SOT';
             if (p.includes('velocidad') || p.includes('tarjeta')) return 'Velocidad';
-            if (p.includes('wifi') || p.includes('bandas') || p.includes('ssid')) return 'Wi-Fi';
+            if (p.includes('cable') || p.includes('cat5') || p.includes('cat6')) return 'Cable';
+            if (p.includes('repetidor') || p.includes('mesh')) return 'Repetidor';
+            if (p.includes('wifi') || p.includes('bandas') || p.includes('ssid') || p.includes('clave')) return 'Wi-Fi';
             if (p.includes('fisico') || p.includes('red') || p.includes('los')) return 'Físico';
             return '';
         };
@@ -2375,10 +2406,14 @@ document.addEventListener('DOMContentLoaded', () => {
             .map(s => s.trim())
             .filter(s => s.length > 0)
             .map(s => {
-                // Limpiar viñetas si las tuviera al inicio (- , * , • , 1. )
-                let clean = s.replace(/^[-*•\d.)\]]\s*/, '').trim();
+                // Limpiar viñetas si las tuviera al inicio (- , * , • , 1. , 1) )
+                let clean = s.replace(/^(\s*[-*•]\s*|\s*\d+[\.\)\]]\s+|\s*\d+\s*[-–]\s+)/, '')
+                    .replace(/^Er\s+intento\b/i, '1er intento')
+                    .replace(/^Do\s+intento\b/i, '2do intento')
+                    .replace(/^33er\s+intento\b/i, '3er intento')
+                    .trim();
                 if (!clean) return '';
-                // Asegurar mayúscula inicial en cada elemento de descarte
+                // Asegurar mayúscula inicial en cada elemento de descarte si no empieza por número
                 return clean.charAt(0).toUpperCase() + clean.slice(1);
             })
             .filter(s => s.length > 0);
@@ -2397,7 +2432,11 @@ document.addEventListener('DOMContentLoaded', () => {
             .map(s => s.trim())
             .filter(s => s.length > 0)
             .map(s => {
-                let clean = s.replace(/^[-*•\d.)\]]\s*/, '').trim();
+                let clean = s.replace(/^(\s*[-*•]\s*|\s*\d+[\.\)\]]\s+|\s*\d+\s*[-–]\s+)/, '')
+                    .replace(/^Er\s+intento\b/i, '1er intento')
+                    .replace(/^Do\s+intento\b/i, '2do intento')
+                    .replace(/^33er\s+intento\b/i, '3er intento')
+                    .trim();
                 if (!clean) return '';
                 return clean.charAt(0).toUpperCase() + clean.slice(1);
             })
@@ -2417,7 +2456,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const items = clean.split(/[\r\n,;]+/)
             .map(s => s.trim())
             .filter(s => s.length > 0)
-            .map(s => s.replace(/^[-*•\d.)\]]\s*/, '').trim())
+            .map(s => s.replace(/^(\s*[-*•]\s*|\s*\d+[\.\)\]]\s+|\s*\d+\s*[-–]\s+)/, '')
+                .replace(/^Er\s+intento\b/i, '1er intento')
+                .replace(/^Do\s+intento\b/i, '2do intento')
+                .replace(/^33er\s+intento\b/i, '3er intento')
+                .trim())
             .filter(s => s.length > 0);
         if (items.length === 0) return 'DECARTE: NO RESPONDE N°XX DE LLAMADA';
         const prefix = 'DECARTE: ';
@@ -3920,7 +3963,7 @@ ${contactLines}`;
     const btnChangelog = document.getElementById('btnChangelog');
     const changelogModal = document.getElementById('changelogModal');
     const changelogModalClose = document.getElementById('changelogModalClose');
-    const APP_VERSION = '2.6.1';
+    const APP_VERSION = '2.6.2';
 
     if (btnChangelog && changelogModal) {
         btnChangelog.addEventListener('click', () => {
@@ -5451,7 +5494,7 @@ ${contactLines}`;
     // Export / Import Backup JSON (incluye plantillas, historial y frases aprendidas)
     elements.btnExportJson.addEventListener('click', () => {
         const backupData = {
-            version: '2.6.1',
+            version: '2.6.2',
             exportDate: new Date().toISOString(),
             advisorName: state.advisorName,
             advisorCode: state.advisorCode,
@@ -6090,7 +6133,6 @@ ${contactLines}`;
 
             if (viewerTitle) viewerTitle.textContent = manual.title;
             if (viewerCategory) viewerCategory.textContent = `${manual.category} • ${manual.size} • Guía Técnica`;
-            if (viewerIcon) viewerIcon.textContent = manual.icon || '📖';
             if (btnViewerDownload) {
                 btnViewerDownload.href = fileUrl;
                 btnViewerDownload.download = manual.filename;
@@ -6245,12 +6287,11 @@ ${contactLines}`;
 
                 card.innerHTML = `
                     <div class="manual-card-header" style="cursor:pointer;" title="Clic para ver en pantalla">
-                        <div class="manual-card-icon">${m.icon || '📄'}</div>
                         <div class="manual-card-title-box">
                             <div class="manual-card-title">${m.title}</div>
                             <div class="manual-card-meta">
                                 <span class="manual-cat-badge">${m.category}</span>
-                                <span class="manual-size-badge">📁 ${m.size}</span>
+                                <span class="manual-size-badge">${m.size}</span>
                                 <span class="manual-size-badge">PDF</span>
                             </div>
                         </div>
