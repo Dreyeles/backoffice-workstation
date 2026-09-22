@@ -1269,34 +1269,80 @@ document.addEventListener('DOMContentLoaded', () => {
         if (elements.btnPredictCategory) {
             elements.btnPredictCategory.addEventListener('click', (e) => {
                 if (e) e.stopPropagation();
-                const descartes = (elements.genDescartes.value || '').toUpperCase();
-                const sot = (elements.genSot.value || '').trim();
-                const solucion = (elements.genSolucion && elements.genSolucion.value) ? elements.genSolucion.value.toUpperCase() : '';
+                const rawDescartes = (elements.genDescartes ? elements.genDescartes.value : '') || '';
+                const descartesNorm = rawDescartes.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                const sot = (elements.genSot ? elements.genSot.value : '').trim();
+                const solucionNorm = ((elements.genSolucion && elements.genSolucion.value) ? elements.genSolucion.value : '').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
                 let predictedCategory = '';
 
-                // Prioridad Alta: Remedy
-                if (descartes.includes('REMEDY')) {
+                // Detección de SOT creada/generada luego o después del caso (SOT post-caso)
+                const isSotPostCaso = /SOT\s+(?:CREADA|GENERADA|EMITIDA|REGISTRADA|EN\s+EJECUCION)?\s*(?:LUEGO|DESPUES|POSTERIOR)\s+(?:DEL?|AL)\s+CASO/i.test(descartesNorm) ||
+                    /SE\s+VALIDA\s+SOT\s+(?:CREADA|GENERADA|EMITIDA|REGISTRADA)?\s*(?:LUEGO|DESPUES|POSTERIOR)/i.test(descartesNorm) ||
+                    /SOT\s+(?:CREADA|GENERADA|EMITIDA)\s+(?:LUEGO|DESPUES|POSTERIOR)/i.test(descartesNorm) ||
+                    /(?:LUEGO|DESPUES|POSTERIOR)\s+DEL?\s+CASO/i.test(descartesNorm) ||
+                    /(?:LUEGO|DESPUES|POSTERIOR)\s+DE\s+CASO/i.test(descartesNorm) ||
+                    /SOT\s+GENERADA\s+DESPUES\s+DE\s+CASO/i.test(descartesNorm) ||
+                    /SOT\s+CREADA\s+LUEGO\s+DEL\s+CASO/i.test(descartesNorm);
+
+                // Detección de SOT generada en el mismo lapso del caso o antes/previa al caso / Con SOT en ejecución preexistente
+                const isSotPreCasoOrMismoLapso = !isSotPostCaso && (
+                    /(?:MISMO\s+LAPSO|LAPSO\s+DE\s+GENERACION|MISMO\s+TIEMPO)/i.test(descartesNorm) ||
+                    /SOT\s+(?:CREADA|GENERADA|EMITIDA|REGISTRADA)?\s*(?:ANTES|PREVIA|PREVIO|ANTERIOR)\s+(?:DEL?|AL)\s+CASO/i.test(descartesNorm) ||
+                    /(?:ANTES|PREVIA|PREVIO|ANTERIOR)\s+(?:DEL?|AL)\s+CASO/i.test(descartesNorm) ||
+                    /(?:ANTES|PREVIA|PREVIO|ANTERIOR)\s+DE\s+CASO/i.test(descartesNorm) ||
+                    /SOT\s+(?:CREADA|GENERADA|REGISTRADA)\s+(?:ANTES|PREVIA|ANTERIOR)/i.test(descartesNorm) ||
+                    /CON\s+SOT\s+EN\s+EJECUCI?ON/i.test(descartesNorm) ||
+                    /CIERRA\s+CASO\s+SOT\s+EN\s+EJECUCI?ON/i.test(descartesNorm) ||
+                    /CUENTA\s+CON\s+SOT\s+EN\s+EJECUCI?ON/i.test(descartesNorm) ||
+                    /SOT\s+EN\s+EJECUCI?ON\s+PREVIA/i.test(descartesNorm) ||
+                    /ERROR\s+OPERATIVO/i.test(descartesNorm) ||
+                    /ERROR\s+OPERATIVO/i.test(solucionNorm) ||
+                    /CON\s+SOT\s+EN\s+EJECUCI?ON/i.test(solucionNorm)
+                );
+
+                // Prioridad Alta: Remedy / Bloqueo Web
+                if (descartesNorm.includes('REMEDY') || descartesNorm.includes('INCIDENCIA WEB') || descartesNorm.includes('INACCESIBILIDAD')) {
                     predictedCategory = 'BO.TEC SOLUCIONADO > REMEDY > NO ACCEDE A PAGINA WEB';
                 }
-                // Regla 1: No contesta
-                else if (descartes.includes('CLIENTE NO CONTESTA') || descartes.includes('BUZON')) {
+                // Regla 1A: SOT creada luego/después del caso -> No contesta / Nunca respondió
+                else if (isSotPostCaso) {
                     predictedCategory = 'BO.TEC NO CONTESTA > NO CONTESTA > NUNCA RESPONDIO';
                 }
-                // Regla 2: SOT Generada
-                else if (sot !== '') {
-                    if (descartes.includes('A SOLICITUD')) {
+                // Regla 1B: SOT generada en el mismo lapso del caso, antes del caso o con SOT en ejecución -> Error Operativo / Con SOT en ejecución
+                else if (isSotPreCasoOrMismoLapso) {
+                    predictedCategory = 'BO.TEC ERROR OPERATIVO > ADMINISTRATIVO > CON SOT EN EJECUCION';
+                }
+                // Regla 2: Cliente No Contesta / Buzón / Fin de Ciclo / Nunca Respondió
+                else if (
+                    descartesNorm.includes('CLIENTE NO CONTESTA') ||
+                    descartesNorm.includes('NO CONTESTA') ||
+                    descartesNorm.includes('NUNCA RESPONDIO') ||
+                    descartesNorm.includes('NO RESPONDE') ||
+                    descartesNorm.includes('BUZON') ||
+                    descartesNorm.includes('CORTE DE LLAMADA') ||
+                    descartesNorm.includes('LLAMADA CORTADA') ||
+                    descartesNorm.includes('SIN RESPUESTA') ||
+                    descartesNorm.includes('CUMPLE CICLO') ||
+                    descartesNorm.includes('FIN DE CICLO') ||
+                    descartesNorm.includes('3 INTENTOS')
+                ) {
+                    predictedCategory = 'BO.TEC NO CONTESTA > NO CONTESTA > NUNCA RESPONDIO';
+                }
+                // Regla 3: SOT Generada durante la gestión técnica
+                else if (sot !== '' && sot.toUpperCase() !== 'N/A') {
+                    if (descartesNorm.includes('A SOLICITUD') || descartesNorm.includes('SOLICITUD DEL CLIENTE')) {
                         predictedCategory = 'BO.TEC SOT GENERADA > A SOLICITUD > USO DE SERVICIO';
-                    } else if (descartes.includes('SIN DESCARTES') || descartes.length <= 20) {
+                    } else if (descartesNorm.includes('SIN DESCARTES') || descartesNorm.length <= 20) {
                         predictedCategory = 'BO.TEC SOT GENERADA > A SOLICITUD > SIN DESCARTES';
                     } else {
-                        // Falla física asumiendo que sí hubo descartes y no fue a solicitud
+                        // Falla física asumiendo que sí hubo descartes técnicos
                         predictedCategory = 'BO.TEC SOT GENERADA > EQUIPOS CLARO > EQUIPO/CABLEADO AVERIADO';
                     }
                 }
-                // Regla 3: Solucionado en línea / Provisión
-                else if (solucion !== '') {
-                    if (descartes.includes('PROVISIÓN') || descartes.includes('INCÓGNITO')) {
+                // Regla 4: Solucionado en línea / Provisión
+                else if (solucionNorm !== '') {
+                    if (descartesNorm.includes('PROVISION') || descartesNorm.includes('INCOGNITO') || descartesNorm.includes('ALTA Y BAJA')) {
                         predictedCategory = 'BO.TEC SOLUCIONADO > PROVISIÓN > INCOGNITO-EQUIPOS';
                     } else {
                         predictedCategory = 'BO.TEC SOLUCIONADO > EQUIPOS CLARO > REINICIO DE FABRICA';
@@ -1310,7 +1356,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (elements.genCatResolucion) {
                     elements.genCatResolucion.value = predictedCategory;
                     renderGeneratorPreviews();
-                    showToast('Categoría autocompletada (Fase BETA)', 'info');
+                    showToast('Categoría autocompletada: ' + predictedCategory.split('>')[0].trim(), 'info');
                 }
 
                 // Mostrar globo informativo BETA
@@ -3192,8 +3238,14 @@ ${contactLines}`;
                     ).trim();
 
                     if (current.type === 'modelo') {
-                        const modelMatch = rawContent.match(/[a-zA-Z0-9\-_.]+/);
-                        if (modelMatch) extracted.modelo = modelMatch[0];
+                        const firstLine = rawContent.split(/\r?\n/)[0].trim();
+                        const modelMatch = firstLine.match(/^[a-zA-Z0-9@\-_. /()]+/);
+                        if (modelMatch) {
+                            extracted.modelo = modelMatch[0].trim();
+                        } else {
+                            const fallbackMatch = rawContent.match(/[a-zA-Z0-9@\-_.]+/);
+                            if (fallbackMatch) extracted.modelo = fallbackMatch[0].trim();
+                        }
                     } else if (current.type !== 'ignore') {
                         const numMatches = rawContent.match(/-?\d+(\.\d+)?/g);
                         if (numMatches && numMatches.length > 0) {
@@ -3224,7 +3276,7 @@ ${contactLines}`;
                 }
                 if (!extracted.modelo && /modelo\s*:/i.test(line)) {
                     const parts = line.split(/modelo\s*:/i);
-                    if (parts[1]) extracted.modelo = parts[1].trim().split(/\s+/)[0];
+                    if (parts[1]) extracted.modelo = parts[1].trim();
                 }
             }
 
@@ -3655,15 +3707,18 @@ ${contactLines}`;
                     return;
                 }
 
-                // Mostrar aviso flotante BETA
-                const betaEquiposPopover = document.getElementById('betaEquiposPopover');
-                if (betaEquiposPopover) {
-                    betaEquiposPopover.classList.add('active');
-                }
-
                 // Search in dataset (equiposClaro / modelosData)
                 if (typeof equiposClaro !== 'undefined' || typeof modelosData !== 'undefined') {
+                    const normalizeEquip = (str) => {
+                        if (!str) return '';
+                        return str.toString().toUpperCase()
+                            .replace(/@/g, 'A')
+                            .replace(/\bCM\b/g, '')
+                            .replace(/[^A-Z0-9]/g, '');
+                    };
+
                     const cleanQuery = query.replace(/[^A-Z0-9]/g, '');
+                    const normQuery = normalizeEquip(query);
 
                     // Buscar en dataset normalizado
                     const dataset = typeof equiposClaro !== 'undefined' ? equiposClaro : Object.keys(modelosData).map(k => ({
@@ -3671,6 +3726,7 @@ ${contactLines}`;
                         modelo: modelosData[k].modelo || k,
                         vendor: modelosData[k].vendor || '',
                         nombre: modelosData[k].nombre,
+                        aliases: modelosData[k].aliases || [],
                         docsis: modelosData[k].docsis || '',
                         wifi: modelosData[k].wifi || '',
                         red: modelosData[k].red || (modelosData[k].nombre.includes('ONT') || k.startsWith('HG') || k.startsWith('ZX') || k.startsWith('F6') || k.includes('5670') ? 'FTTH' : 'HFC'),
@@ -3686,17 +3742,43 @@ ${contactLines}`;
 
                     const result = dataset.find(eq => {
                         const codeClean = (eq.codigo || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+                        const codeNorm = normalizeEquip(eq.codigo);
                         const modelClean = (eq.modelo || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+                        const modelNorm = normalizeEquip(eq.modelo);
                         const nameClean = (eq.nombre || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+                        const nameNorm = normalizeEquip(eq.nombre);
                         const vendorClean = (eq.vendor || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+
+                        // Verificación directa en lista de aliases
+                        const aliases = Array.isArray(eq.aliases) ? eq.aliases : [];
+                        const aliasMatch = aliases.some(alias => {
+                            const aClean = alias.toUpperCase().replace(/[^A-Z0-9]/g, '');
+                            const aNorm = normalizeEquip(alias);
+                            return aClean === cleanQuery ||
+                                aNorm === normQuery ||
+                                aClean === normQuery ||
+                                aNorm === cleanQuery ||
+                                ((cleanQuery.length >= 3 || normQuery.length >= 3) && (
+                                    (cleanQuery && (aClean.includes(cleanQuery) || cleanQuery.includes(aClean))) ||
+                                    (normQuery && (aNorm.includes(normQuery) || normQuery.includes(aNorm)))
+                                ));
+                        });
+
+                        if (aliasMatch) return true;
+
                         return codeClean.includes(cleanQuery) ||
+                            (normQuery && codeNorm.includes(normQuery)) ||
                             cleanQuery.includes(codeClean) ||
+                            (normQuery && normQuery.includes(codeNorm)) ||
                             modelClean.includes(cleanQuery) ||
+                            (normQuery && modelNorm.includes(normQuery)) ||
                             cleanQuery.includes(modelClean) ||
+                            (normQuery && normQuery.includes(modelNorm)) ||
                             nameClean.includes(cleanQuery) ||
+                            (normQuery && nameNorm.includes(normQuery)) ||
                             eq.nombre.toUpperCase().includes(query) ||
-                            eq.codigo.toUpperCase().includes(query) ||
-                            (cleanQuery.length >= 3 && vendorClean.includes(cleanQuery));
+                            (eq.codigo || '').toUpperCase().includes(query) ||
+                            ((cleanQuery.length >= 3 || normQuery.length >= 3) && vendorClean.includes(cleanQuery || normQuery));
                     });
 
                     if (result) {
@@ -3963,7 +4045,7 @@ ${contactLines}`;
     const btnChangelog = document.getElementById('btnChangelog');
     const changelogModal = document.getElementById('changelogModal');
     const changelogModalClose = document.getElementById('changelogModalClose');
-    const APP_VERSION = '2.6.2';
+    const APP_VERSION = '2.6.4';
 
     if (btnChangelog && changelogModal) {
         btnChangelog.addEventListener('click', () => {
@@ -5206,7 +5288,6 @@ ${contactLines}`;
         btnBetaInfo.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            if (betaEquiposPopover) betaEquiposPopover.classList.remove('active');
             betaInfoPopover.classList.toggle('active');
         });
     }
@@ -5214,26 +5295,6 @@ ${contactLines}`;
         btnCloseBetaInfoPopover.addEventListener('click', (e) => {
             e.stopPropagation();
             betaInfoPopover.classList.remove('active');
-        });
-    }
-
-    // Setup Beta Equipos Popover
-    const btnBetaEquipos = document.getElementById('btnBetaEquipos');
-    const betaEquiposPopover = document.getElementById('betaEquiposPopover');
-    const btnCloseBetaEquiposPopover = document.getElementById('btnCloseBetaEquiposPopover');
-
-    if (btnBetaEquipos && betaEquiposPopover) {
-        btnBetaEquipos.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (betaInfoPopover) betaInfoPopover.classList.remove('active');
-            betaEquiposPopover.classList.toggle('active');
-        });
-    }
-    if (btnCloseBetaEquiposPopover && betaEquiposPopover) {
-        btnCloseBetaEquiposPopover.addEventListener('click', (e) => {
-            e.stopPropagation();
-            betaEquiposPopover.classList.remove('active');
         });
     }
 
@@ -5245,15 +5306,6 @@ ${contactLines}`;
                 e.target.closest('#btnPredictCategory');
             if (!isInsideBetaInfo) {
                 betaInfoPopover.classList.remove('active');
-            }
-        }
-
-        if (betaEquiposPopover && betaEquiposPopover.classList.contains('active')) {
-            const isInsideBetaEquipos = e.target.closest('#betaEquiposPopover') ||
-                e.target.closest('#btnBetaEquipos') ||
-                e.target.closest('#eqSearchInput');
-            if (!isInsideBetaEquipos) {
-                betaEquiposPopover.classList.remove('active');
             }
         }
     });
@@ -5494,7 +5546,7 @@ ${contactLines}`;
     // Export / Import Backup JSON (incluye plantillas, historial y frases aprendidas)
     elements.btnExportJson.addEventListener('click', () => {
         const backupData = {
-            version: '2.6.2',
+            version: '2.6.4',
             exportDate: new Date().toISOString(),
             advisorName: state.advisorName,
             advisorCode: state.advisorCode,
@@ -5659,11 +5711,15 @@ ${contactLines}`;
             { id: 'lnk_remotedesktop', name: 'Escritorio Remoto', url: '172.29.0.101', category: 'Internet & Diagnóstico', icon: '🖥️', isQuick: true, isRdpInfo: true },
             { id: 'lnk_tracer', name: 'Tracer', url: 'http://172.19.112.62/generador/', category: 'Internet & Diagnóstico', icon: '<img src="img/claro_logo.svg" class="link-custom-img-icon" alt="Tracer">', isQuick: true },
             { id: 'lnk_tracerplano', name: 'Tracer - Cliente por Plano', url: 'http://172.19.112.62/generador/hfc/ConexionesPlano', category: 'Internet & Diagnóstico', icon: '<img src="img/claro_logo.svg" class="link-custom-img-icon" alt="Tracer">', isQuick: true },
+            { id: 'lnk_youbora', name: 'Youbora', url: 'https://suite.npaw.com/login?redirect=/v/clarovideo_peru/analytics/tracking/video', category: 'Internet & Diagnóstico', icon: '<img src="img/youbora_logo.svg" class="link-custom-img-icon" alt="Youbora">', isQuick: true },
+            { id: 'lnk_skyway', name: 'Skyway', url: 'https://www.skywayplatform.com/skyway-platform/login?tenantCode=1086&backUrl=%252Ftms%252Fmanagement%252Fdevice', category: 'Internet & Diagnóstico', icon: '<img src="img/skyway_logo.svg" class="link-custom-img-icon" alt="Skyway">', isQuick: true },
 
             { id: 'lnk_remedy_helix', name: 'BMC Helix', url: 'https://clarop-smartit.claro.pe/smartit/app/#/ticket-consoleStudio', category: 'Sistemas & Gestión', icon: '<img src="img/helix_logo.svg" class="link-custom-img-icon" alt="BMC Helix">', isQuick: true },
             { id: 'lnk_remedy_dwp', name: 'Remedy', url: 'https://clarop-dwp.claro.pe/dwp/app/#/activity/events/details', category: 'Sistemas & Gestión', icon: '<img src="img/remedy_dwp_logo.svg" class="link-custom-img-icon" alt="Remedy DWP">', isQuick: true },
             { id: 'lnk_ces', name: 'CES', url: 'http://intranetces.tim.com.pe/', category: 'Sistemas & Gestión', icon: '<img src="img/claro_logo.svg" class="link-custom-img-icon" alt="CES">', isQuick: true },
+            { id: 'lnk_portal_apps', name: 'Portal de Aplicaciones', url: 'http://intranetwebapp/aplicaciones/inicio.aspx', category: 'Sistemas & Gestión', icon: '<img src="img/claro_logo.svg" class="link-custom-img-icon" alt="Portal de Aplicaciones">', isQuick: true },
             { id: 'lnk_linktrabajo', name: 'Link de Trabajo', url: 'https://forms.cloud.microsoft/pages/responsepage.aspx?id=CkbVXyW03kmb0PzSYnDTDItamkezRqRIvBJVVnC0d0pUQkEyRTRHM1dWOFNTMTAzUEI0ODQySThXVi4u&route=shorturl', category: 'Sistemas & Gestión', icon: '📝', isQuick: true },
+            { id: 'lnk_powerbi', name: 'Microsoft Power BI', url: 'https://app.powerbi.com/view?r=eyJrIjoiZThhMzY4MjEtZTU5MS00YzFjLWE4OGMtYmI1NWFiOWJlMzgyIiwidCI6IjVmZDU0NjBhLWI0MjUtNDlkZS05YmQwLWZjZDI2MjcwZDMwYyIsImMiOjR9', category: 'Sistemas & Gestión', icon: '<img src="img/powerbi_logo.svg" class="link-custom-img-icon" alt="Power BI">', isQuick: true },
             { id: 'lnk_livechat', name: 'LiveChat (Aivo)', url: 'https://live-us.aivo.co/chat', category: 'Canales & Comunicación', icon: '<img src="img/livechat_logo.svg" class="link-custom-img-icon" alt="LiveChat">', isQuick: true },
             { id: 'lnk_aicc', name: 'AICC', url: 'https://10.189.8.188:28090/service-cloud/aicc-web/index/index.html#/ManualAppointWorkbenchDetails?taskId=1061244585&orgId=1752727161880235604&appointId=175435461525835224677465120200&eventType=AgentEvent_Customer_Release&updateCallId=1754354624-11840&isFirst=true&AgentEvent_Call_Out_Fail=true', category: 'Canales & Comunicación', icon: '<img src="img/huawei_icc.svg" class="link-custom-img-icon" alt="AICC">', isQuick: true },
             { id: 'lnk_siac', name: 'SIAC Único', url: 'https://siacunico.claro.com.pe/', category: 'Sistemas & Gestión', icon: '<img src="img/claro_logo.svg" class="link-custom-img-icon" alt="SIAC Único">', isQuick: false }
@@ -5699,15 +5755,19 @@ ${contactLines}`;
                                 (l.id === 'lnk_tr69' || normName.includes('tr69') || normName.includes('tr-69')) ? 'tr69_uniq' :
                                     (l.id === 'lnk_tracerplano' || normName.includes('plano')) ? 'tracerplano_uniq' :
                                         (l.id === 'lnk_tracer' || normName === 'tracer') ? 'tracer_uniq' :
-                                            (l.id === 'lnk_ces' || normName === 'ces' || normName.includes('intranetces') || (l.url && l.url.includes('intranetces'))) ? 'ces_uniq' :
-                                                (l.id === 'lnk_siac' || normName.includes('siac')) ? 'siac_uniq' :
-                                                    (l.id === 'lnk_livechat' || normName.includes('livechat')) ? 'livechat_uniq' :
-                                                        (l.id === 'lnk_aicc' || normName.includes('aicc') || normName === 'icc') ? 'aicc_uniq' :
-                                                            (l.id === 'lnk_remedy_helix' || (normName.includes('helix') && !normName.includes('dwp'))) ? 'helix_uniq' :
-                                                                (l.id === 'lnk_remedy_dwp' || (normName.includes('dwp') || (normName.includes('remedy') && !normName.includes('helix')))) ? 'dwp_uniq' :
-                                                                    (l.id === 'lnk_remotedesktop' || normName.includes('escritorio') || normName.includes('rdp')) ? 'rdp_uniq' :
-                                                                        (l.id === 'lnk_linktrabajo' || normName.includes('trabajo')) ? 'trabajo_uniq' :
-                                                                            l.id || normName;
+                                            (l.id === 'lnk_youbora' || normName.includes('youbora') || normName.includes('npaw')) ? 'youbora_uniq' :
+                                                (l.id === 'lnk_skyway' || normName.includes('skyway')) ? 'skyway_uniq' :
+                                                    (l.id === 'lnk_ces' || normName === 'ces' || normName.includes('intranetces') || (l.url && l.url.includes('intranetces'))) ? 'ces_uniq' :
+                                                        (l.id === 'lnk_portal_apps' || normName.includes('portal de aplicaciones') || normName.includes('intranetwebapp') || (l.url && l.url.includes('intranetwebapp'))) ? 'portalapps_uniq' :
+                                                            (l.id === 'lnk_siac' || normName.includes('siac')) ? 'siac_uniq' :
+                                                                (l.id === 'lnk_powerbi' || normName.includes('powerbi') || normName.includes('power bi')) ? 'powerbi_uniq' :
+                                                                    (l.id === 'lnk_livechat' || normName.includes('livechat')) ? 'livechat_uniq' :
+                                                                        (l.id === 'lnk_aicc' || normName.includes('aicc') || normName === 'icc') ? 'aicc_uniq' :
+                                                                            (l.id === 'lnk_remedy_helix' || (normName.includes('helix') && !normName.includes('dwp'))) ? 'helix_uniq' :
+                                                                                (l.id === 'lnk_remedy_dwp' || (normName.includes('dwp') || (normName.includes('remedy') && !normName.includes('helix')))) ? 'dwp_uniq' :
+                                                                                    (l.id === 'lnk_remotedesktop' || normName.includes('escritorio') || normName.includes('rdp')) ? 'rdp_uniq' :
+                                                                                        (l.id === 'lnk_linktrabajo' || normName.includes('trabajo')) ? 'trabajo_uniq' :
+                                                                                            l.id || normName;
                 if (seenKeys.has(key)) return false;
                 seenKeys.add(key);
                 return true;
@@ -5722,6 +5782,10 @@ ${contactLines}`;
                         (defLnk.id === 'lnk_incognito' && lNorm.includes('incognito')) ||
                         (defLnk.id === 'lnk_dashboard' && lNorm.includes('dashboard')) ||
                         (defLnk.id === 'lnk_linktrabajo' && lNorm.includes('trabajo')) ||
+                        (defLnk.id === 'lnk_portal_apps' && (lNorm.includes('portal de aplicaciones') || lNorm.includes('intranetwebapp') || (l.url && l.url.includes('intranetwebapp')))) ||
+                        (defLnk.id === 'lnk_powerbi' && (lNorm.includes('powerbi') || lNorm.includes('power bi'))) ||
+                        (defLnk.id === 'lnk_youbora' && (lNorm.includes('youbora') || lNorm.includes('npaw') || (l.url && l.url.includes('npaw.com')))) ||
+                        (defLnk.id === 'lnk_skyway' && (lNorm.includes('skyway') || (l.url && l.url.includes('skywayplatform.com')))) ||
                         (defLnk.id === 'lnk_livechat' && lNorm.includes('livechat')) ||
                         (defLnk.id === 'lnk_aicc' && (lNorm.includes('aicc') || lNorm === 'icc')) ||
                         (defLnk.id === 'lnk_remedy_helix' && (lNorm.includes('helix') || l.id === 'lnk_remedy')) ||
@@ -5753,7 +5817,11 @@ ${contactLines}`;
                 const key = (l.id === 'lnk_schaman' || norm.includes('schaman')) ? 'schaman_uniq' :
                     (l.id === 'lnk_incognito' || norm.includes('incognito')) ? 'incognito_uniq' :
                         (l.id === 'lnk_ces' || norm === 'ces' || norm.includes('intranetces') || (l.url && l.url.includes('intranetces'))) ? 'ces_uniq' :
-                            (l.id || norm);
+                            (l.id === 'lnk_portal_apps' || norm.includes('portal de aplicaciones') || norm.includes('intranetwebapp')) ? 'portalapps_uniq' :
+                                (l.id === 'lnk_youbora' || norm.includes('youbora') || norm.includes('npaw')) ? 'youbora_uniq' :
+                                    (l.id === 'lnk_skyway' || norm.includes('skyway')) ? 'skyway_uniq' :
+                                        (l.id === 'lnk_powerbi' || norm.includes('powerbi') || norm.includes('power bi')) ? 'powerbi_uniq' :
+                                            (l.id || norm);
                 if (finalSeen.has(key)) return false;
                 finalSeen.add(key);
                 return true;

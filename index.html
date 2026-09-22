@@ -13,7 +13,7 @@
     <header class="app-header">
         <div class="brand">
             <div>
-                <div class="brand-title">WORKSTATION BACKOFFICE <span id="btnChangelog" style="display: inline-flex; align-items: center; border-radius: 4px; overflow: hidden; vertical-align: middle; margin-left: 0.5rem; font-size: 0.55em; letter-spacing: normal; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.6.2</span></span></div>
+                <div class="brand-title">WORKSTATION BACKOFFICE <span id="btnChangelog" style="display: inline-flex; align-items: center; border-radius: 4px; overflow: hidden; vertical-align: middle; margin-left: 0.5rem; font-size: 0.55em; letter-spacing: normal; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.6.4</span></span></div>
                 <div class="brand-subtitle">PLATAFORMA LOCAL DE PLANTILLAS Y SEGUIMIENTO PARA BO-FIJA</div>
             </div>
         </div>
@@ -380,21 +380,6 @@
                         <div class="card-title">
                             <div class="card-title-text" style="display:flex; align-items:center; gap:0.5rem;">
                                 📡 Identificador de Equipos
-                                <div class="beta-popover-wrapper">
-                                    <span id="btnBetaEquipos" class="beta-badge">BETA</span>
-                                    <div id="betaEquiposPopover" class="beta-popover">
-                                        <div class="beta-popover-header">
-                                            <span>🧪 Función en Fase Experimental</span>
-                                            <button type="button" class="beta-popover-close" id="btnCloseBetaEquiposPopover" title="Cerrar">✕</button>
-                                        </div>
-                                        <div class="beta-popover-body">
-                                            El catálogo e identificador de equipos se encuentra en <strong>fase experimental</strong> de prueba.
-                                            <div class="beta-popover-warning">
-                                                ⚠️ <strong>Aviso Importante:</strong> El catálogo de modelos, fotos y credenciales técnicas se actualiza constantemente.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">
@@ -408,6 +393,7 @@
                             <span class="btn-xs eq-chip" data-model="TG3442" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">TG3442</span>
                             <span class="btn-xs eq-chip" data-model="TG1662G" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">TG1662G</span>
                             <span class="btn-xs eq-chip" data-model="FAST3284" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">FAST3284</span>
+                            <span class="btn-xs eq-chip" data-model="FAST3686V22" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">FAST3686</span>
                             <span class="btn-xs eq-chip" data-model="CGA2121" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">CGA2121</span>
                             <span class="btn-xs eq-chip" data-model="CGA4233CLP2" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">CGA4233</span>
                             <span class="btn-xs eq-chip" data-model="FAST3890V3" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">FAST3890</span>
@@ -637,21 +623,37 @@
 
     <!-- MODAL FOR CHANGELOG -->
     <div id="changelogModal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 700px;">
+        <div class="modal-content" style="max-width: 720px;">
             <div class="card-title">
-                <div class="card-title-text">🚀 Novedades de la Versión 2.6.2</div>
+                <div class="card-title-text">🚀 Novedades de la Versión 2.6.4</div>
                 <button id="changelogModalClose" class="btn btn-sm">✕</button>
             </div>
             <div style="font-size: 0.92rem; line-height: 1.55; color: var(--text-main); margin-top: 1rem;">
                 <ul style="padding-left: 1.3rem; margin-bottom: 1.3rem; display: flex; flex-direction: column; gap: 0.65rem;">
-                    <li><strong>🧠 Ampliación del Dataset Predictivo (Casos 19 y 20 de Setiembre):</strong> Integración de más de 60 nuevas frases técnicas de descarte y solución: operaciones por <em>Escritorio Remoto (RDP)</em> para separación de bandas 2.4/5 GHz y cambio de claves, diagnósticos <em>TR69</em> (auto select de canal, saturación, bandas unificadas), alertas en <em>Schaman</em> (migración tecnológica, eventos de alto impacto, SOT en ejecución), diagnósticos <em>Plume</em> (cobertura baja crónica y QoE), validación de planos de avería masiva, reaprovisionamiento <em>SGA</em> y verificación de cableado Cat5 vs Cat6.</li>
-                    <li><strong>🐞 Corrección de Truncamiento en Ciclos de Llamada:</strong> Solución definitiva al inconveniente que eliminaba el número ordinal inicial al formatear descartes de ciclo (ej. <code>2do intento...</code> se copiaba erróneamente como <code>Do intento...</code>). Ahora se preservan fielmente los ordinales (<code>1er</code>, <code>2do</code>, <code>3er</code>, <code>4to</code>) y los valores numéricos y decimales.</li>
-                    <li><strong>🔍 Búsqueda Predictiva Expandida con Nuevos Aliases:</strong> Incorporación de sinónimos inteligentes para agilizar la búsqueda: <em>sga</em>, <em>plano</em>, <em>averia</em>, <em>cable</em>, <em>cat5</em>, <em>cat6</em>, <em>clave</em>, <em>repetidor</em>, <em>mesh</em>, <em>cobertura</em> y <em>migracion</em>.</li>
-                    <li><strong>🏷️ Limpieza Visual de la Interfaz:</strong> Se removió la insignia <em>Predictivo BETA</em> de los campos del generador para un entorno más limpio y despejado.</li>
-                    <li><strong>📖 Optimización del Módulo de Manuales:</strong> Retiro del indicador numérico tipo notificación en la barra superior y simplificación de las tarjetas y visor de manuales sin iconos innecesarios para una lectura ágil y profesional.</li>
+                    <li><strong>⚖️ Motor Predictivo de Cierre & Resolución SIAC/Helix (Reglas de SOTs):</strong>
+                        <ul style="margin-top: 0.35rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.3rem;">
+                            <li><strong>SOT Post-Caso:</strong> Si el descarte indica que la SOT fue creada/generada luego o después del caso (ej. <em>"SOT creada luego del caso"</em>, <em>"SOT generada despues de caso"</em>, <em>"SOT posterior al caso"</em>), la categoría se asigna automáticamente a <code>BO.TEC NO CONTESTA &gt; NO CONTESTA &gt; NUNCA RESPONDIO</code>.</li>
+                            <li><strong>SOT en Mismo Lapso / Antes del Caso:</strong> Si la SOT fue generada en el mismo lapso del caso, antes del caso o existe SOT en ejecución previa (ej. <em>"SOT generada en el mismo lapso del caso"</em>, <em>"SOT creada antes del caso"</em>, <em>"Con SOT en ejecucion"</em>), se clasifica como <code>BO.TEC ERROR OPERATIVO &gt; ADMINISTRATIVO &gt; CON SOT EN EJECUCION</code>.</li>
+                        </ul>
+                    </li>
+                    <li><strong>📡 Identificador de Equipos Oficial & Soporte Sagemcom (F@ST3686):</strong>
+                        <ul style="margin-top: 0.35rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.3rem;">
+                            <li>Módulo 100% estable en producción (retirado aviso experimental y badge BETA).</li>
+                            <li>Detección y normalización automática de modelos como <code>F@ST3686</code>, <code>F@ST 3686</code>, <code>FAST3686V2.2 CM</code> y <code>FAST3686 CM</code> a <em>SAGEMCOM FAST3686v2 (2.2)</em> tanto en Pegado Inteligente como en el Identificador. Se añadió el botón chip rápido <code>FAST3686</code>.</li>
+                        </ul>
+                    </li>
+                    <li><strong>🌐 Nuevas Plataformas Integradas en el Sidebar (Alt + L):</strong> Incorporación de 4 herramientas clave con logotipos vectoriales de alta fidelidad:
+                        <ul style="margin-top: 0.35rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.3rem;">
+                            <li><strong>Microsoft Power BI:</strong> Visor de dashboards e indicadores con logo SVG oficial.</li>
+                            <li><strong>Portal de Aplicaciones:</strong> Enlace centralizado a <code>intranetwebapp</code> con icono corporativo Claro.</li>
+                            <li><strong>Youbora:</strong> Portal de analítica de video/streaming NPAW Suite con isotipo facetado vectorizado.</li>
+                            <li><strong>Skyway:</strong> Gestión de dispositivos TMS con isotipo del colibrí vectorizado.</li>
+                        </ul>
+                    </li>
+                    <li><strong>🧠 Ampliación del Dataset Predictivo (Casos al 22 de Septiembre):</strong> Incorporación de más de 397 descartes técnicos y 61 soluciones reales, incluyendo diagnósticos de repetidores MESH/Plume, sondeos en horas pico, fallas exclusivas de navegador y flujos de LiveChat.</li>
                 </ul>
                 <p style="color: var(--text-muted); font-size: 0.82rem; border-top: 1px dashed var(--border-color); padding-top: 0.8rem; text-align: center;">
-                    ¡WorkStation BackOffice v2.6.2 &bull; Máxima productividad técnica, rapidez y herramientas centralizadas!
+                    ¡WorkStation BackOffice v2.6.4 &bull; Máxima productividad técnica, rapidez y herramientas centralizadas!
                 </p>
             </div>
         </div>

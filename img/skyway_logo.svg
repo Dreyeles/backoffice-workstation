@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80" width="100%" height="100%">
+  <defs>
+    <linearGradient id="skywayBodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b8e048" />
+      <stop offset="50%" stop-color="#70c638" />
+      <stop offset="100%" stop-color="#059640" />
+    </linearGradient>
+  </defs>
+
+  <!-- Red Crown & Beak -->
+  <path d="M 15 21 L 32 23 C 35 20, 39 18, 43 19 C 46 20, 48 24, 48 29 C 47 25, 44 20.5, 41 20 C 37 19.5, 33 22, 30 25 L 15 21 Z" 
+        fill="#e61c24" />
+  <!-- Eye -->
+  <circle cx="37.5" cy="24.5" r="1.5" fill="#e61c24" />
+
+  <!-- Green Body & Tail -->
+  <path d="M 35 30 C 38 34, 41 42, 43 51 C 45 60, 52 70, 71 80 C 60 74, 48 65, 41 53 C 36 43, 34 35, 35 30 Z" 
+        fill="url(#skywayBodyGrad)" />
+
+  <!-- Blue Wing Base & Primary Feathers -->
+  <path d="M 49 33 C 58 27, 72 23, 84 23 C 86 23, 87 25, 84 27 C 76 33, 66 41, 55 49 C 62 44, 70 38, 79 34 C 82 33, 83 34, 80 36 C 73 42, 65 48, 57 53 C 64 49, 70 45, 76 41 C 78 40, 78 41, 75 43 C 69 48, 62 53, 56 56 C 60 54, 65 50, 70 47 C 72 46, 72 47, 69 49 C 64 54, 57 58, 54 60 C 56 55, 54 44, 49 33 Z" 
+        fill="#0072ce" />
+</svg>
