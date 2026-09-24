@@ -13,7 +13,7 @@
     <header class="app-header">
         <div class="brand">
             <div>
-                <div class="brand-title">WORKSTATION BACKOFFICE <span id="btnChangelog" style="display: inline-flex; align-items: center; border-radius: 4px; overflow: hidden; vertical-align: middle; margin-left: 0.5rem; font-size: 0.55em; letter-spacing: normal; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.6.4</span></span></div>
+                <div class="brand-title">WORKSTATION BACKOFFICE <span id="btnChangelog" style="display: inline-flex; align-items: center; border-radius: 4px; overflow: hidden; vertical-align: middle; margin-left: 0.5rem; font-size: 0.55em; letter-spacing: normal; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.6.5</span></span></div>
                 <div class="brand-subtitle">PLATAFORMA LOCAL DE PLANTILLAS Y SEGUIMIENTO PARA BO-FIJA</div>
             </div>
         </div>
@@ -625,35 +625,36 @@
     <div id="changelogModal" class="modal-overlay">
         <div class="modal-content" style="max-width: 720px;">
             <div class="card-title">
-                <div class="card-title-text">🚀 Novedades de la Versión 2.6.4</div>
+                <div class="card-title-text">🚀 Novedades de la Versión 2.6.5</div>
                 <button id="changelogModalClose" class="btn btn-sm">✕</button>
             </div>
             <div style="font-size: 0.92rem; line-height: 1.55; color: var(--text-main); margin-top: 1rem;">
                 <ul style="padding-left: 1.3rem; margin-bottom: 1.3rem; display: flex; flex-direction: column; gap: 0.65rem;">
-                    <li><strong>⚖️ Motor Predictivo de Cierre & Resolución SIAC/Helix (Reglas de SOTs):</strong>
+                    <li><strong>⚖️ Motor Predictivo de Causa Raíz (No Titular / Número Errado / Fin de Ciclo):</strong>
                         <ul style="margin-top: 0.35rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.3rem;">
-                            <li><strong>SOT Post-Caso:</strong> Si el descarte indica que la SOT fue creada/generada luego o después del caso (ej. <em>"SOT creada luego del caso"</em>, <em>"SOT generada despues de caso"</em>, <em>"SOT posterior al caso"</em>), la categoría se asigna automáticamente a <code>BO.TEC NO CONTESTA &gt; NO CONTESTA &gt; NUNCA RESPONDIO</code>.</li>
-                            <li><strong>SOT en Mismo Lapso / Antes del Caso:</strong> Si la SOT fue generada en el mismo lapso del caso, antes del caso o existe SOT en ejecución previa (ej. <em>"SOT generada en el mismo lapso del caso"</em>, <em>"SOT creada antes del caso"</em>, <em>"Con SOT en ejecucion"</em>), se clasifica como <code>BO.TEC ERROR OPERATIVO &gt; ADMINISTRATIVO &gt; CON SOT EN EJECUCION</code>.</li>
+                            <li>Detección inteligente y cierre automático con <code>BO.TEC NO CONTESTA &gt; NO CONTESTA &gt; NUNCA RESPONDIO</code> cuando el cliente indica <em>no ser el titular</em>, <em>no es su número</em>, <em>desconoce el servicio</em>, <em>número errado/no existe</em>, <em>cierre/fin de ciclo</em> o <em>corta/cuelga la llamada</em>.</li>
+                            <li>Clasificación precisa de reglas SOT Post-Caso vs SOT en mismo lapso/ejecución previa (<code>BO.TEC ERROR OPERATIVO</code>).</li>
                         </ul>
                     </li>
-                    <li><strong>📡 Identificador de Equipos Oficial & Soporte Sagemcom (F@ST3686):</strong>
+                    <li><strong>🧹 Limpieza Universal de Prefijos de Servicio:</strong>
                         <ul style="margin-top: 0.35rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.3rem;">
-                            <li>Módulo 100% estable en producción (retirado aviso experimental y badge BETA).</li>
-                            <li>Detección y normalización automática de modelos como <code>F@ST3686</code>, <code>F@ST 3686</code>, <code>FAST3686V2.2 CM</code> y <code>FAST3686 CM</code> a <em>SAGEMCOM FAST3686v2 (2.2)</em> tanto en Pegado Inteligente como en el Identificador. Se añadió el botón chip rápido <code>FAST3686</code>.</li>
+                            <li>Eliminación total de los prefijos heredados de Excel (<code>INT - </code>, <code>TEL - </code>, <code>IPTV - </code>, <code>CABLE - </code>) en el catálogo, selector y previsualización.</li>
+                            <li>Búsqueda más rápida y fidelidad visual 1:1 entre lo que ves en el formulario y lo que se copia.</li>
                         </ul>
                     </li>
-                    <li><strong>🌐 Nuevas Plataformas Integradas en el Sidebar (Alt + L):</strong> Incorporación de 4 herramientas clave con logotipos vectoriales de alta fidelidad:
+                    <li><strong>🧠 Memoria Continua de Problemas Aprendidos:</strong>
                         <ul style="margin-top: 0.35rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.3rem;">
-                            <li><strong>Microsoft Power BI:</strong> Visor de dashboards e indicadores con logo SVG oficial.</li>
-                            <li><strong>Portal de Aplicaciones:</strong> Enlace centralizado a <code>intranetwebapp</code> con icono corporativo Claro.</li>
-                            <li><strong>Youbora:</strong> Portal de analítica de video/streaming NPAW Suite con isotipo facetado vectorizado.</li>
-                            <li><strong>Skyway:</strong> Gestión de dispositivos TMS con isotipo del colibrí vectorizado.</li>
+                            <li>El campo <em>Problema Detectado</em> memoriza dinámicamente cada nuevo problema escrito por el asesor, integrándolo en tiempo real a las sugerencias del desplegable con respaldo (.txt).</li>
                         </ul>
                     </li>
-                    <li><strong>🧠 Ampliación del Dataset Predictivo (Casos al 22 de Septiembre):</strong> Incorporación de más de 397 descartes técnicos y 61 soluciones reales, incluyendo diagnósticos de repetidores MESH/Plume, sondeos en horas pico, fallas exclusivas de navegador y flujos de LiveChat.</li>
+                    <li><strong>🚀 Expansión Masiva del Dataset Predictivo (Casos al 23 de Septiembre):</strong>
+                        <ul style="margin-top: 0.35rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.3rem;">
+                            <li>Más de <strong>675 descartes técnicos</strong> y <strong>82 soluciones</strong> reales indexadas: latencia en videojuegos (ping elevado en jefes/party), repetidores con luz roja, altas/bajas sin IP en Dashboard, unificación TR69 con autoselect de canal y flujos LiveChat.</li>
+                        </ul>
+                    </li>
                 </ul>
                 <p style="color: var(--text-muted); font-size: 0.82rem; border-top: 1px dashed var(--border-color); padding-top: 0.8rem; text-align: center;">
-                    ¡WorkStation BackOffice v2.6.4 &bull; Máxima productividad técnica, rapidez y herramientas centralizadas!
+                    ¡WorkStation BackOffice v2.6.5 &bull; Máxima productividad técnica, rapidez y herramientas centralizadas!
                 </p>
             </div>
         </div>

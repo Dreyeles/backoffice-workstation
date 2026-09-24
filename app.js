@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedHashtags2: new Set(),
         customTemplates: JSON.parse(localStorage.getItem('bo_custom_templates') || '[]'),
         history: JSON.parse(localStorage.getItem('bo_history') || '[]'),
-        learnedPhrases: JSON.parse(localStorage.getItem('bo_learned_phrases') || '{"descartes":[],"soluciones":[]}'),
+        learnedPhrases: JSON.parse(localStorage.getItem('bo_learned_phrases') || '{"descartes":[],"soluciones":[],"problemas":[]}'),
         activeTab: 'tab-generator',
         siacTemplateMode: localStorage.getItem('bo_siac_template_mode') || 'wsp',
         cicloOverride: null,
@@ -22,16 +22,21 @@ document.addEventListener('DOMContentLoaded', () => {
         chatIds: new Set()
     };
 
-    // Auto-clean any legacy typos (such as "Sse" -> "Se", "Er intento" -> "1er intento") from learnedPhrases in localStorage
+    // Auto-clean any legacy typos from learnedPhrases in localStorage
     if (state.learnedPhrases && typeof state.learnedPhrases === 'object') {
         let cleanedPhrases = false;
-        ['descartes', 'soluciones'].forEach(cat => {
+        if (!Array.isArray(state.learnedPhrases.problemas)) {
+            state.learnedPhrases.problemas = [];
+            cleanedPhrases = true;
+        }
+        ['descartes', 'soluciones', 'problemas'].forEach(cat => {
             if (Array.isArray(state.learnedPhrases[cat])) {
                 const prev = state.learnedPhrases[cat].slice();
                 state.learnedPhrases[cat] = state.learnedPhrases[cat]
                     .map(p => {
                         if (typeof p !== 'string') return '';
-                        let s = p.replace(/^Sse\b/i, 'Se').trim();
+                        let s = p.replace(/^(INT|TEL|IPTV|CABLE)\s*-\s*/i, '').trim();
+                        s = s.replace(/^Sse\b/i, 'Se').trim();
                         s = s.replace(/^Er\s+intento\b/i, '1er intento');
                         s = s.replace(/^Do\s+intento\b/i, '2do intento');
                         s = s.replace(/^33er\s+intento\b/i, '3er intento');
@@ -45,8 +50,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     const norm = p.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
                     if (seen.has(norm)) return false;
                     seen.add(norm);
-                    const inBase = ((BO_DATASET.predictiveCorpus && BO_DATASET.predictiveCorpus[cat]) || [])
-                        .some(b => b.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim() === norm);
+                    let inBase = false;
+                    if (cat === 'problemas') {
+                        const allBase = Object.values(BO_DATASET.problemsByService || {}).flat();
+                        inBase = allBase.some(b => b.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim() === norm);
+                    } else {
+                        inBase = ((BO_DATASET.predictiveCorpus && BO_DATASET.predictiveCorpus[cat]) || [])
+                            .some(b => b.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim() === norm);
+                    }
                     return !inBase;
                 });
 
@@ -1066,6 +1077,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderGeneratorPreviews();
             });
 
+            // Memorizar nuevo problema cuando el usuario escribe y cambia el campo
+            elements.genProblema.addEventListener('change', () => {
+                const val = (elements.genProblema.value || '').trim();
+                if (val && val.length >= 4 && val.toUpperCase() !== 'N/A') {
+                    learnSinglePhrase('problemas', val);
+                    const currentService = (elements.genServicio?.value || 'INTERNET').toUpperCase();
+                    populateProblems(currentService, true);
+                }
+            });
+
             // Abrir sugerencias al hacer foco o clic en el campo (y auto-seleccionar si tiene texto para sobreescribir al tipear)
             elements.genProblema.addEventListener('focus', () => {
                 const query = (elements.genProblema.value || '').toLowerCase().trim();
@@ -1276,6 +1297,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 let predictedCategory = '';
 
+                const problemaNorm = ((elements.genProblema && elements.genProblema.value) ? elements.genProblema.value : '').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                const contextNorm = `${descartesNorm} ${solucionNorm} ${problemaNorm}`;
+
                 // Detección de SOT creada/generada luego o después del caso (SOT post-caso)
                 const isSotPostCaso = /SOT\s+(?:CREADA|GENERADA|EMITIDA|REGISTRADA|EN\s+EJECUCION)?\s*(?:LUEGO|DESPUES|POSTERIOR)\s+(?:DEL?|AL)\s+CASO/i.test(descartesNorm) ||
                     /SE\s+VALIDA\s+SOT\s+(?:CREADA|GENERADA|EMITIDA|REGISTRADA)?\s*(?:LUEGO|DESPUES|POSTERIOR)/i.test(descartesNorm) ||
@@ -1301,8 +1325,39 @@ document.addEventListener('DOMContentLoaded', () => {
                     /CON\s+SOT\s+EN\s+EJECUCI?ON/i.test(solucionNorm)
                 );
 
+                // Detección de Falta de Contacto, Cierre de Ciclo, Número Errado, No Titular o Corta Llamada
+                const isNoContactoOrCicloOrTitular = (
+                    // Titularidad / Número ajeno / No reconoce
+                    /NO\s+(?:ES|ERA|SER)\s+(?:EL\s+)?TITULAR/i.test(contextNorm) ||
+                    /NO\s+(?:ES|ERA|SER)\s+(?:SU\s+)?(?:NUMERO|LINEA|TELEFONO|SERVICIO|CUENTA)/i.test(contextNorm) ||
+                    /NO\s+(?:CORRESPONDE|PERTENECE|RECONOCE)\s+(?:AL?\s+)?(?:TITULAR|NUMERO|LINEA|SERVICIO|CLIENTE)/i.test(contextNorm) ||
+                    /DESCONOCE\s+(?:LA\s+LINEA|EL\s+NUMERO|EL\s+SERVICIO|AL?\s+TITULAR)/i.test(contextNorm) ||
+                    // Número errado / no existe / mal creado
+                    /(?:NUMERO|TELEFONO|LINEA)\s+(?:ERRAD[OA]|NO\s+EXISTE|INCORRECT[OA]|EQUIVOCAD[OA]|INVALID[OA]|NO\s+CORRESPONDE)/i.test(contextNorm) ||
+                    // Falta de contacto / No contesta / Buzón / Casilla
+                    /CLIENTE\s+NO\s+CONTESTA/i.test(contextNorm) ||
+                    /NO\s+CONTESTA/i.test(contextNorm) ||
+                    /NUNCA\s+(?:RESPONDIO|CONTESTO)/i.test(contextNorm) ||
+                    /NO\s+RESPONDE/i.test(contextNorm) ||
+                    /SIN\s+(?:RESPUESTA|CONTACTO)/i.test(contextNorm) ||
+                    /NO\s+(?:HUBO|SE\s+LOGRA|SE\s+LOGRO|SE\s+PUDO)\s+CONTACT(?:O|AR)/i.test(contextNorm) ||
+                    /BUZON(?:\s+DE\s+VOZ)?/i.test(contextNorm) ||
+                    /CASILLA(?:\s+DE\s+VOZ)?/i.test(contextNorm) ||
+                    // Corte de llamada / Cuelga
+                    /(?:CORTE|CORTADA)\s+DE\s+LLAMADA/i.test(contextNorm) ||
+                    /LLAMADA\s+CORTADA/i.test(contextNorm) ||
+                    /(?:CLIENTE\s+)?(?:CORTA|COLGO|CORTO|CUELGA)\s*(?:LA\s+)?LLAMADA/i.test(contextNorm) ||
+                    /CLIENTE\s+(?:CORTA|COLGO|CORTO|CUELGA)/i.test(contextNorm) ||
+                    /(?:CORTA|CUELGA)\s+EN\s+CADA\s+LLAMADA/i.test(contextNorm) ||
+                    // Cierre de ciclo / 3 intentos
+                    /(?:CIERRE|FIN|CUMPLE|CUMPLIDO)\s+(?:DE\s+)?CICLO/i.test(contextNorm) ||
+                    /CICLO\s+CUMPLIDO/i.test(contextNorm) ||
+                    /(?:3|TRES|3ER|TERCER)\s+INTENTO(?:S)?/i.test(contextNorm) ||
+                    /INTENTOS?\s*(?:DE\s+LLAMADA)?\s*:\s*3/i.test(contextNorm)
+                );
+
                 // Prioridad Alta: Remedy / Bloqueo Web
-                if (descartesNorm.includes('REMEDY') || descartesNorm.includes('INCIDENCIA WEB') || descartesNorm.includes('INACCESIBILIDAD')) {
+                if (descartesNorm.includes('REMEDY') || descartesNorm.includes('INCIDENCIA WEB') || descartesNorm.includes('INACCESIBILIDAD') || solucionNorm.includes('REMEDY')) {
                     predictedCategory = 'BO.TEC SOLUCIONADO > REMEDY > NO ACCEDE A PAGINA WEB';
                 }
                 // Regla 1A: SOT creada luego/después del caso -> No contesta / Nunca respondió
@@ -1313,20 +1368,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 else if (isSotPreCasoOrMismoLapso) {
                     predictedCategory = 'BO.TEC ERROR OPERATIVO > ADMINISTRATIVO > CON SOT EN EJECUCION';
                 }
-                // Regla 2: Cliente No Contesta / Buzón / Fin de Ciclo / Nunca Respondió
-                else if (
-                    descartesNorm.includes('CLIENTE NO CONTESTA') ||
-                    descartesNorm.includes('NO CONTESTA') ||
-                    descartesNorm.includes('NUNCA RESPONDIO') ||
-                    descartesNorm.includes('NO RESPONDE') ||
-                    descartesNorm.includes('BUZON') ||
-                    descartesNorm.includes('CORTE DE LLAMADA') ||
-                    descartesNorm.includes('LLAMADA CORTADA') ||
-                    descartesNorm.includes('SIN RESPUESTA') ||
-                    descartesNorm.includes('CUMPLE CICLO') ||
-                    descartesNorm.includes('FIN DE CICLO') ||
-                    descartesNorm.includes('3 INTENTOS')
-                ) {
+                // Regla 2: Sin Contacto / Cierre de Ciclo / Número Errado / No es el Titular / Corta Llamada / Buzón / Nunca Respondió
+                else if (isNoContactoOrCicloOrTitular) {
                     predictedCategory = 'BO.TEC NO CONTESTA > NO CONTESTA > NUNCA RESPONDIO';
                 }
                 // Regla 3: SOT Generada durante la gestión técnica
@@ -1400,7 +1443,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setProblemValue(val) {
         if (elements.genProblema) {
-            elements.genProblema.value = val || '';
+            const cleanVal = (val || '').replace(/^(INT|TEL|IPTV|CABLE)\s*-\s*/i, '').trim();
+            elements.genProblema.value = cleanVal;
             elements.genProblema.classList.remove('input-invalid');
         }
         renderGeneratorPreviews();
@@ -1424,7 +1468,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function populateProblems(serviceKey, keepCurrentValue = false) {
-        currentProblemList = BO_DATASET.problemsByService[serviceKey] || (serviceKey === 'CLARO VIDEO' ? BO_DATASET.problemsByService['APPS'] : []) || [];
+        const base = BO_DATASET.problemsByService[serviceKey] || (serviceKey === 'CLARO VIDEO' ? BO_DATASET.problemsByService['APPS'] : []) || [];
+        const learned = (state.learnedPhrases && state.learnedPhrases.problemas) || [];
+
+        const seen = new Set();
+        const combined = [];
+
+        // Base problems
+        base.forEach(p => {
+            const clean = p.replace(/^(INT|TEL|IPTV|CABLE)\s*-\s*/i, '').trim();
+            const norm = clean.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+            if (!seen.has(norm)) {
+                seen.add(norm);
+                combined.push(clean);
+            }
+        });
+
+        // Learned custom problems
+        learned.forEach(p => {
+            const clean = p.replace(/^(INT|TEL|IPTV|CABLE)\s*-\s*/i, '').trim();
+            const norm = clean.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+            if (!seen.has(norm) && norm.length >= 4) {
+                seen.add(norm);
+                combined.push(clean);
+            }
+        });
+
+        currentProblemList = combined;
         renderProblemOptions(currentProblemList);
 
         if (!keepCurrentValue) {
@@ -1684,16 +1754,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function learnSinglePhrase(category, phrase) {
         if (!phrase) return;
         const clean = phrase.trim()
+            .replace(/^(INT|TEL|IPTV|CABLE)\s*-\s*/i, '')
             .replace(/^(\s*[-*•]\s*|\s*\d+[\.\)\]]\s+|\s*\d+\s*[-–]\s+)/, '')
             .replace(/^Sse\b/i, 'Se')
             .replace(/^Er\s+intento\b/i, '1er intento')
             .replace(/^Do\s+intento\b/i, '2do intento')
             .replace(/^33er\s+intento\b/i, '3er intento')
             .trim();
-        if (clean.length < 6 || clean.toUpperCase() === 'N/A' || clean.startsWith('#')) return;
+        const minLen = category === 'problemas' ? 4 : 6;
+        if (clean.length < minLen || clean.toUpperCase() === 'N/A' || clean.startsWith('#')) return;
 
         if (!state.learnedPhrases) {
-            state.learnedPhrases = { descartes: [], soluciones: [] };
+            state.learnedPhrases = { descartes: [], soluciones: [], problemas: [] };
         }
         if (!state.learnedPhrases[category]) {
             state.learnedPhrases[category] = [];
@@ -1701,7 +1773,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const normClean = clean.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         const exists = state.learnedPhrases[category].some(p => p.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') === normClean);
-        const inBase = ((BO_DATASET.predictiveCorpus && BO_DATASET.predictiveCorpus[category]) || []).some(p => p.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') === normClean);
+        
+        let inBase = false;
+        if (category === 'problemas') {
+            const allBase = Object.values(BO_DATASET.problemsByService || {}).flat();
+            inBase = allBase.some(b => b.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim() === normClean);
+        } else {
+            inBase = ((BO_DATASET.predictiveCorpus && BO_DATASET.predictiveCorpus[category]) || []).some(p => p.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') === normClean);
+        }
 
         if (!exists && !inBase) {
             state.learnedPhrases[category].unshift(clean);
@@ -1717,6 +1796,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function learnFromActiveForm() {
+        if (elements.genProblema && elements.genProblema.value) {
+            learnSinglePhrase('problemas', elements.genProblema.value);
+        }
         if (elements.genSolucion && elements.genSolucion.value) {
             const parts = elements.genSolucion.value.split(/[\n,;|]+/);
             parts.forEach(p => learnSinglePhrase('soluciones', p));
@@ -2337,7 +2419,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 2. Problema / Falla
         const probMatch = rawText.match(/(?:problema detectado|problema|falla)\s*:\s*([^\r\n]+)/i);
         if (probMatch && elements.genProblema) {
-            let cleanProb = probMatch[1].trim();
+            let cleanProb = probMatch[1].replace(/^(INT|TEL|IPTV|CABLE)\s*-\s*/i, '').trim();
             if (cleanProb && cleanProb.toUpperCase() !== 'N/A') {
                 elements.genProblema.value = cleanProb;
             }
@@ -4045,7 +4127,7 @@ ${contactLines}`;
     const btnChangelog = document.getElementById('btnChangelog');
     const changelogModal = document.getElementById('changelogModal');
     const changelogModalClose = document.getElementById('changelogModalClose');
-    const APP_VERSION = '2.6.4';
+    const APP_VERSION = '2.6.5';
 
     if (btnChangelog && changelogModal) {
         btnChangelog.addEventListener('click', () => {
@@ -5546,13 +5628,13 @@ ${contactLines}`;
     // Export / Import Backup JSON (incluye plantillas, historial y frases aprendidas)
     elements.btnExportJson.addEventListener('click', () => {
         const backupData = {
-            version: '2.6.4',
+            version: '2.6.5',
             exportDate: new Date().toISOString(),
             advisorName: state.advisorName,
             advisorCode: state.advisorCode,
             customTemplates: state.customTemplates,
             history: state.history,
-            learnedPhrases: state.learnedPhrases || { descartes: [], soluciones: [] }
+            learnedPhrases: state.learnedPhrases || { descartes: [], soluciones: [], problemas: [] }
         };
 
         const jsonString = JSON.stringify(backupData, null, 2);
@@ -5574,7 +5656,7 @@ ${contactLines}`;
     const btnCopyLearnedPhrases = document.getElementById('btnCopyLearnedPhrases');
     if (btnCopyLearnedPhrases) {
         btnCopyLearnedPhrases.addEventListener('click', () => {
-            const dataToCopy = JSON.stringify(state.learnedPhrases || { descartes: [], soluciones: [] }, null, 2);
+            const dataToCopy = JSON.stringify(state.learnedPhrases || { descartes: [], soluciones: [], problemas: [] }, null, 2);
             copyToClipboard(dataToCopy, '📋 Diccionario de frases predictivas copiado al portapapeles');
         });
     }
@@ -5584,7 +5666,7 @@ ${contactLines}`;
     if (btnClearLearnedPhrases) {
         btnClearLearnedPhrases.addEventListener('click', () => {
             if (confirm('¿Deseas restablecer el diccionario de frases aprendidas al estado inicial?')) {
-                state.learnedPhrases = { descartes: [], soluciones: [] };
+                state.learnedPhrases = { descartes: [], soluciones: [], problemas: [] };
                 localStorage.setItem('bo_learned_phrases', JSON.stringify(state.learnedPhrases));
                 showToast('Diccionario de frases restablecido');
             }
@@ -5614,7 +5696,8 @@ ${contactLines}`;
                 if (data.learnedPhrases) {
                     state.learnedPhrases = {
                         descartes: Array.from(new Set([...(state.learnedPhrases?.descartes || []), ...(data.learnedPhrases.descartes || [])])),
-                        soluciones: Array.from(new Set([...(state.learnedPhrases?.soluciones || []), ...(data.learnedPhrases.soluciones || [])]))
+                        soluciones: Array.from(new Set([...(state.learnedPhrases?.soluciones || []), ...(data.learnedPhrases.soluciones || [])])),
+                        problemas: Array.from(new Set([...(state.learnedPhrases?.problemas || []), ...(data.learnedPhrases.problemas || [])]))
                     };
                     localStorage.setItem('bo_learned_phrases', JSON.stringify(state.learnedPhrases));
                     countMsgs.push(`frases predictivas`);
