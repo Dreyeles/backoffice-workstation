@@ -430,6 +430,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Nombres de herramientas y plataformas
             { regex: /\b(incognito|incog)\b/gi, replacement: 'Incógnito' },
             { regex: /\b(schaman)\b/gi, replacement: 'Schaman' },
+            { regex: /\b(plume)\b/gi, replacement: 'Plume' },
             { regex: /\b(tr069|tr69)\b/gi, replacement: 'TR69' },
             { regex: /\b(hygeia)\b/gi, replacement: 'Hygeia' },
             { regex: /\b(tracer)\b/gi, replacement: 'Tracer' },
@@ -439,7 +440,21 @@ document.addEventListener('DOMContentLoaded', () => {
             { regex: /\b(skyway)\b/gi, replacement: 'Skyway' },
             { regex: /\b(youbora)\b/gi, replacement: 'Youbora' },
             { regex: /\b(cbio)\b/gi, replacement: 'CBIO' },
-            { regex: /\b(ims)\b/gi, replacement: 'IMS' }
+            { regex: /\b(ims)\b/gi, replacement: 'IMS' },
+            { regex: /\b(live\s*chat|livechat)\b/gi, replacement: 'LiveChat' },
+            { regex: /\b(autoselect)\b/gi, replacement: 'AutoSelect' },
+
+            // Errores tipográficos adicionales
+            { regex: /\b(targeta|targetas)\b/gi, replacement: 'tarjeta' },
+            { regex: /\b(inhalambrico|inhalambricos|inhalambrica|inhalambricas|inalambrico|inalambricos|inalambrica|inalambricas)\b/gi, replacement: 'inalámbrico' },
+            { regex: /\b(inhalambricamente|inalambricamente)\b/gi, replacement: 'inalámbricamente' },
+            { regex: /\b(presioanrlo|presionarllo)\b/gi, replacement: 'presionarlo' },
+            { regex: /\b(disponiblidad|diosponibilidad|diosponiblidad)\b/gi, replacement: 'disponibilidad' },
+            { regex: /\b(acttiva)\b/gi, replacement: 'activa' },
+            { regex: /\b(reealiza)\b/gi, replacement: 'realiza' },
+            { regex: /\b(opticos)\b/gi, replacement: 'ópticos' },
+            { regex: /\b(optico)\b/gi, replacement: 'óptico' },
+            { regex: /\b(optica|opticas)\b/gi, replacement: 'óptica' }
         ];
 
         corrections.forEach(c => {
