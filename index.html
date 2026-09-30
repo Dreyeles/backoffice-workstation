@@ -491,12 +491,11 @@
 
                 <div style="display:flex; gap:1.5rem; flex-wrap:wrap; align-items:flex-start;">
                     <div style="flex:1; min-width:260px;">
-                        <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:0.5rem;">
-                            Exporta tu historial, plantillas y <strong>frases predictivas aprendidas</strong> a un archivo (.txt).
+                        <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:0.75rem;">
+                            Exporta tu historial, plantillas y frases predictivas aprendidas a un archivo (.txt).
                         </p>
-                        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-                            <button id="btnExportJson" class="btn btn-primary">⬇️ Descargar Respaldo (.txt)</button>
-                            <button id="btnCopyLearnedPhrases" class="btn" style="background:rgba(59,130,246,0.15); color:var(--primary);" title="Copiar diccionario de frases aprendidas al portapapeles">📋 Copiar Frases Aprendidas</button>
+                        <div>
+                            <button id="btnExportJson" class="btn btn-primary" style="display:inline-flex; align-items:center; gap:0.4rem;">⬇️ Descargar Respaldo (.txt)</button>
                         </div>
                     </div>
 
@@ -505,9 +504,6 @@
                             Importar respaldo (selecciona tu archivo .txt o .json):
                         </p>
                         <input type="file" id="importJsonInput" accept=".json,.txt,*/*" class="form-input" style="max-width:300px;">
-                        <div style="margin-top:0.6rem;">
-                            <button id="btnClearLearnedPhrases" class="btn btn-sm" style="color:var(--danger);" title="Restablecer frases predictivas al estado inicial">🧹 Limpiar Frases Aprendidas</button>
-                        </div>
                     </div>
                 </div>
             </div>

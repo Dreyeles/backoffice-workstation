@@ -5950,27 +5950,6 @@ ${contactLines}`;
         showToast('Respaldo completo descargado como .txt');
     });
 
-    // Botón para Copiar Frases Aprendidas (JSON)
-    const btnCopyLearnedPhrases = document.getElementById('btnCopyLearnedPhrases');
-    if (btnCopyLearnedPhrases) {
-        btnCopyLearnedPhrases.addEventListener('click', () => {
-            const dataToCopy = JSON.stringify(state.learnedPhrases || { descartes: [], soluciones: [], problemas: [] }, null, 2);
-            copyToClipboard(dataToCopy, '📋 Diccionario de frases predictivas copiado al portapapeles');
-        });
-    }
-
-    // Botón para Limpiar Frases Aprendidas
-    const btnClearLearnedPhrases = document.getElementById('btnClearLearnedPhrases');
-    if (btnClearLearnedPhrases) {
-        btnClearLearnedPhrases.addEventListener('click', () => {
-            if (confirm('¿Deseas restablecer el diccionario de frases aprendidas al estado inicial?')) {
-                state.learnedPhrases = { descartes: [], soluciones: [], problemas: [] };
-                localStorage.setItem('bo_learned_phrases', JSON.stringify(state.learnedPhrases));
-                showToast('Diccionario de frases restablecido');
-            }
-        });
-    }
-
     elements.importJsonInput.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (!file) return;
