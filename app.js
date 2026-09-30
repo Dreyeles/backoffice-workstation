@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedHashtags: new Set(),
         selectedHashtags2: new Set(),
         customTemplates: JSON.parse(localStorage.getItem('bo_custom_templates') || '[]'),
+        customRemedyViews: JSON.parse(localStorage.getItem('bo_custom_remedy_views') || '[]'),
         history: JSON.parse(localStorage.getItem('bo_history') || '[]'),
         learnedPhrases: JSON.parse(localStorage.getItem('bo_learned_phrases') || '{"descartes":[],"soluciones":[],"problemas":[]}'),
         activeTab: 'tab-generator',
@@ -3094,11 +3095,11 @@ ${contactLines}`;
             // DS SNR >= 33.5 dB
             // DS Potencia: -15.0 a 20.9 dBmV
             // US SNR >= 28.0 dB
-            // US Potencia: 35.0 a 57.0 dBmV
+            // US Potencia: 36.1 a 52.9 dBmV
             const isDsSnrBad = (v) => v !== null && v !== undefined && v < 33.5;
             const isDsPotBad = (v) => v !== null && v !== undefined && (v < -15 || v > 20.9);
             const isUsSnrBad = (v) => v !== null && v !== undefined && v < 28;
-            const isUsPotBad = (v) => v !== null && v !== undefined && (v < 35 || v > 57);
+            const isUsPotBad = (v) => v !== null && v !== undefined && (v < 36.1 || v > 52.9);
 
             const dsSnrHasBad = dsSnr ? dsSnr.some(isDsSnrBad) : false;
             const dsPotHasBad = dsPot ? dsPot.some(isDsPotBad) : false;
@@ -3218,7 +3219,7 @@ ${contactLines}`;
             const dsSnrRes = validate(dsSnr, isDsSnrBad, 33.5, null, 'dB', true);
             const dsPotRes = validate(dsPot, isDsPotBad, -15, 20.9, 'dBmV', false);
             const usSnrRes = validate(usSnr, isUsSnrBad, 28, null, 'dB', false);
-            const usPotRes = validate(usPot, isUsPotBad, 35, 57, 'dBmV', false);
+            const usPotRes = validate(usPot, isUsPotBad, 36.1, 52.9, 'dBmV', false);
 
             setVisuals(elements.incResultUsSnr, usSnrRes, 'U/S SNR');
             setVisuals(elements.incResultDwsSnr, dsSnrRes, 'D/S SNR');
@@ -4127,7 +4128,7 @@ ${contactLines}`;
     const btnChangelog = document.getElementById('btnChangelog');
     const changelogModal = document.getElementById('changelogModal');
     const changelogModalClose = document.getElementById('changelogModalClose');
-    const APP_VERSION = '2.6.5';
+    const APP_VERSION = '2.7.0';
 
     if (btnChangelog && changelogModal) {
         btnChangelog.addEventListener('click', () => {
@@ -4160,15 +4161,35 @@ ${contactLines}`;
         }
     }
 
-    // Setup Remedy Modal & Logic (Soporte Multi-Servicio: INTERNET vs IPTV / Falla General)
+    // Setup Remedy Modal & Logic (Soporte Multi-Servicio & Vistas Personalizadas)
     const btnOpenRemedyModal = document.getElementById('btnOpenRemedyModal');
     const remedyModal = document.getElementById('remedyModal');
     const remedyModalClose = document.getElementById('remedyModalClose');
-    const btnRemedyTabRed = document.getElementById('btnRemedyTabRed');
-    const btnRemedyTabGeneral = document.getElementById('btnRemedyTabGeneral');
+    const remedyTabsContainer = document.getElementById('remedyTabsContainer');
+    const btnRemedyNewTemplate = document.getElementById('btnRemedyNewTemplate');
     const remedyFormRed = document.getElementById('remedyFormRed');
     const remedyFormIptv = document.getElementById('remedyFormIptv');
+    const remedyFormTelefonia = document.getElementById('remedyFormTelefonia');
     const remedyFormGeneral = document.getElementById('remedyFormGeneral');
+    const remedyFormCustom = document.getElementById('remedyFormCustom');
+    const remedyCustomDesc = document.getElementById('remedyCustomDesc');
+    const remedyCustomFieldsContainer = document.getElementById('remedyCustomFieldsContainer');
+    const btnEditCurrentRemedyView = document.getElementById('btnEditCurrentRemedyView');
+    const btnDeleteCurrentRemedyView = document.getElementById('btnDeleteCurrentRemedyView');
+
+    // Modal Diseñador de Vistas Custom
+    const customRemedyViewModal = document.getElementById('customRemedyViewModal');
+    const customRemedyModalClose = document.getElementById('customRemedyModalClose');
+    const customRemedyModalTitle = document.getElementById('customRemedyModalTitle');
+    const customRemedyEditId = document.getElementById('customRemedyEditId');
+    const customRemedyIcon = document.getElementById('customRemedyIcon');
+    const customRemedyName = document.getElementById('customRemedyName');
+    const customRemedyFallaTitle = document.getElementById('customRemedyFallaTitle');
+    const customRemedyDesc = document.getElementById('customRemedyDesc');
+    const btnAddCustomRemedyField = document.getElementById('btnAddCustomRemedyField');
+    const customRemedyFieldsContainer = document.getElementById('customRemedyFieldsContainer');
+    const btnCancelCustomRemedyView = document.getElementById('btnCancelCustomRemedyView');
+    const btnSaveCustomRemedyView = document.getElementById('btnSaveCustomRemedyView');
 
     // Campos RED - INTERNET
     const remedyRedContacto = document.getElementById('remedyRedContacto');
@@ -4242,72 +4263,242 @@ ${contactLines}`;
         });
     }
 
-    let remedyActiveMode = 'red'; // 'red' | 'general'
+    let remedyActiveMode = 'red'; // 'red' | 'general' | 'custom_<id>'
     let remedyImagesList = [];
+
+    const DEFAULT_REMEDY_PRESETS = {
+        ocsi: {
+            name: 'Desalineación OCSI',
+            icon: '🔄',
+            fallaTitle: 'BO ATC - DESALINEACION OCSI',
+            desc: 'Escalamiento por falta de sincronización de perfil u orden en OCSI/SGA.',
+            fields: [
+                { id: 'f_id', label: 'Customer ID', type: 'text', autoFill: 'contactId', placeholder: 'Ej: 57200343' },
+                { id: 'f_cliente', label: 'Cliente', type: 'text', autoFill: 'customer', placeholder: 'Nombre completo' },
+                { id: 'f_dni', label: 'DNI / RUC', type: 'text', autoFill: 'dni', placeholder: 'Ej: 80593853' },
+                { id: 'f_mac', label: 'MAC / SN Equipo', type: 'text', autoFill: 'none', placeholder: 'Ej: A0:B1:C2:D3:E4:F5' },
+                { id: 'f_orden', label: 'N° Orden / SOT SGA', type: 'text', autoFill: 'none', placeholder: 'Ej: 12345678' },
+                { id: 'f_descartes', label: 'Descartes Realizados', type: 'textarea', autoFill: 'descartes', placeholder: 'Detalla el error en OCSI...' }
+            ]
+        },
+        amco: {
+            name: 'AMCO / Suscripciones',
+            icon: '📦',
+            fallaTitle: 'SUSCRIPCIONES INCOMPLETAS / AMCO',
+            desc: 'Escalamiento por cuentas o paquetes no aprovisionados en AMCO.',
+            fields: [
+                { id: 'f_id', label: 'Customer ID', type: 'text', autoFill: 'contactId', placeholder: 'Ej: 57200343' },
+                { id: 'f_cliente', label: 'Cliente', type: 'text', autoFill: 'customer', placeholder: 'Nombre completo' },
+                { id: 'f_dni', label: 'DNI / RUC', type: 'text', autoFill: 'dni', placeholder: 'Ej: 80593853' },
+                { id: 'f_correo', label: 'Correo Claro Video / AMCO', type: 'text', autoFill: 'none', placeholder: 'Ej: cliente@correo.com' },
+                { id: 'f_paquete', label: 'Paquete / Bono Afectado', type: 'text', autoFill: 'none', placeholder: 'Ej: Paquete HBO / Universal+' },
+                { id: 'f_descartes', label: 'Descartes / Observaciones', type: 'textarea', autoFill: 'descartes', placeholder: 'Detalle de la validación en AMCO...' }
+            ]
+        },
+        smarthome: {
+            name: 'SmartHome / IoT',
+            icon: '📱',
+            fallaTitle: 'APP SMART HOME - ERROR AL CARGAR DISPOSITIVOS',
+            desc: 'Escalamiento por error en sincronización de la app Smart Home.',
+            fields: [
+                { id: 'f_id', label: 'Customer ID', type: 'text', autoFill: 'contactId', placeholder: 'Ej: 57200343' },
+                { id: 'f_cliente', label: 'Cliente', type: 'text', autoFill: 'customer', placeholder: 'Nombre completo' },
+                { id: 'f_telefono', label: 'Número de Contacto', type: 'text', autoFill: 'phone', placeholder: 'Ej: 987654321' },
+                { id: 'f_mac', label: 'MAC Módem', type: 'text', autoFill: 'none', placeholder: 'Ej: A0:B1:C2:D3:E4:F5' },
+                { id: 'f_correo', label: 'Correo Registrado App', type: 'text', autoFill: 'none', placeholder: 'Ej: usuario@gmail.com' },
+                { id: 'f_descartes', label: 'Descartes / Error Exacto', type: 'textarea', autoFill: 'descartes', placeholder: 'Mensaje de error que arroja la App...' }
+            ]
+        },
+        cbio: {
+            name: 'Migración CBIO',
+            icon: '⚡',
+            fallaTitle: 'BO ATC - MIGRACION A CBIO FALLO / ERROR SGA',
+            desc: 'Escalamiento por fallo en la migración comercial/técnica a CBIO.',
+            fields: [
+                { id: 'f_id', label: 'Customer ID', type: 'text', autoFill: 'contactId', placeholder: 'Ej: 57200343' },
+                { id: 'f_cliente', label: 'Cliente', type: 'text', autoFill: 'customer', placeholder: 'Nombre completo' },
+                { id: 'f_dni', label: 'DNI / RUC', type: 'text', autoFill: 'dni', placeholder: 'Ej: 80593853' },
+                { id: 'f_linea', label: 'Línea / Teléfono Fijo', type: 'text', autoFill: 'phone', placeholder: 'Ej: 01 7654321' },
+                { id: 'f_error', label: 'Mensaje de Error en SGA/CBIO', type: 'text', autoFill: 'none', placeholder: 'Ej: Error al migrar contrato' },
+                { id: 'f_descartes', label: 'Descartes Realizados', type: 'textarea', autoFill: 'descartes', placeholder: 'Detalle de la consulta en SGA y CBIO...' }
+            ]
+        }
+    };
+
+    const saveCustomRemedyViews = () => {
+        localStorage.setItem('bo_custom_remedy_views', JSON.stringify(state.customRemedyViews));
+    };
 
     const getActiveService = () => (elements.genServicio?.value || 'INTERNET').toUpperCase();
     const isIptvActive = () => getActiveService() === 'IPTV';
     const isTelefoniaActive = () => getActiveService() === 'TELEFONIA';
+
+    const getAutoFillValue = (type) => {
+        switch (type) {
+            case 'contactId': return elements.genContactId?.value.trim() || '';
+            case 'customer': return elements.genCustomer?.value.trim() || '';
+            case 'dni': return elements.genDni?.value.trim() || '';
+            case 'phone': return elements.genTelefono?.value.trim() || '';
+            case 'descartes': return elements.genDescartes?.value.trim() || '';
+            case 'problema': return elements.genProblema?.value.trim() || '';
+            default: return '';
+        }
+    };
+
+    const renderCustomRemedyFields = (view) => {
+        if (!remedyCustomFieldsContainer || !view) return;
+        remedyCustomFieldsContainer.innerHTML = '';
+        if (remedyCustomDesc) remedyCustomDesc.textContent = view.desc || `Escalamiento personalizado: ${view.name}`;
+
+        const gridContainer = document.createElement('div');
+        gridContainer.className = 'form-grid';
+        gridContainer.style.cssText = 'grid-template-columns: repeat(2, 1fr); gap: 0.6rem;';
+
+        const textareasContainer = document.createElement('div');
+        textareasContainer.style.cssText = 'display:flex; flex-direction:column; gap:0.6rem; margin-top:0.6rem;';
+
+        (view.fields || []).forEach(f => {
+            const formGroup = document.createElement('div');
+            formGroup.className = 'form-group';
+
+            const label = document.createElement('label');
+            label.className = 'form-label';
+            label.textContent = f.label + ':';
+            formGroup.appendChild(label);
+
+            const initialVal = getAutoFillValue(f.autoFill);
+
+            if (f.type === 'textarea') {
+                const textarea = document.createElement('textarea');
+                textarea.id = `remedy_custom_input_${f.id}`;
+                textarea.className = 'form-textarea';
+                textarea.style.minHeight = '55px';
+                textarea.placeholder = f.placeholder || `Ingrese ${f.label.toLowerCase()}...`;
+                textarea.value = initialVal;
+                textarea.addEventListener('input', updateRemedyPreview);
+                formGroup.appendChild(textarea);
+                textareasContainer.appendChild(formGroup);
+            } else {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.id = `remedy_custom_input_${f.id}`;
+                input.className = 'form-input';
+                input.placeholder = f.placeholder || `Ej: ${f.label}`;
+                input.value = initialVal;
+                input.addEventListener('input', updateRemedyPreview);
+                formGroup.appendChild(input);
+                gridContainer.appendChild(formGroup);
+            }
+        });
+
+        if (gridContainer.children.length > 0) {
+            remedyCustomFieldsContainer.appendChild(gridContainer);
+        }
+        if (textareasContainer.children.length > 0) {
+            remedyCustomFieldsContainer.appendChild(textareasContainer);
+        }
+    };
+
+    const renderRemedyTabs = () => {
+        if (!remedyTabsContainer) return;
+        remedyTabsContainer.innerHTML = '';
+
+        const isIptv = isIptvActive();
+        const isTelefonia = isTelefoniaActive();
+        let redLabel = '🌐 Páginas Web / Apps';
+        if (isTelefonia) redLabel = '📞 Telefonía a RED';
+        else if (isIptv) redLabel = '📺 Canales a RED';
+
+        // Tab 1: RED
+        const isRedActive = remedyActiveMode === 'red';
+        const btnRed = document.createElement('button');
+        btnRed.type = 'button';
+        btnRed.id = 'btnRemedyTabRed';
+        btnRed.className = isRedActive ? 'btn btn-sm btn-primary' : 'btn btn-sm';
+        btnRed.style.cssText = `font-size:0.82rem; font-weight:bold; display:flex; align-items:center; gap:0.4rem; cursor:pointer; ${isRedActive ? 'background:var(--primary); color:#fff; border-color:var(--primary);' : 'background:transparent; border:1px solid var(--border-color); color:var(--text-muted);'}`;
+        btnRed.innerHTML = redLabel;
+        btnRed.addEventListener('click', () => setRemedyTab('red'));
+        remedyTabsContainer.appendChild(btnRed);
+
+        // Tab 2: General / Provisión
+        const isGenActive = remedyActiveMode === 'general';
+        const btnGen = document.createElement('button');
+        btnGen.type = 'button';
+        btnGen.id = 'btnRemedyTabGeneral';
+        btnGen.className = isGenActive ? 'btn btn-sm btn-primary' : 'btn btn-sm';
+        btnGen.style.cssText = `font-size:0.82rem; font-weight:bold; display:flex; align-items:center; gap:0.4rem; cursor:pointer; ${isGenActive ? 'background:var(--primary); color:#fff; border-color:var(--primary);' : 'background:transparent; border:1px solid var(--border-color); color:var(--text-muted);'}`;
+        btnGen.innerHTML = '⚙️ Problemas de Provisión';
+        btnGen.addEventListener('click', () => setRemedyTab('general'));
+        remedyTabsContainer.appendChild(btnGen);
+
+        // Custom Views Tabs
+        (state.customRemedyViews || []).forEach(view => {
+            const isCustomActive = remedyActiveMode === ('custom_' + view.id);
+            const btnCustom = document.createElement('button');
+            btnCustom.type = 'button';
+            btnCustom.className = isCustomActive ? 'btn btn-sm btn-primary' : 'btn btn-sm';
+            btnCustom.style.cssText = `font-size:0.82rem; font-weight:bold; display:flex; align-items:center; gap:0.4rem; cursor:pointer; ${isCustomActive ? 'background:var(--primary); color:#fff; border-color:var(--primary);' : 'background:transparent; border:1px solid var(--border-color); color:var(--text-muted);'}`;
+            btnCustom.innerHTML = `${view.icon || '🛠️'} ${view.name}`;
+            btnCustom.title = view.desc || view.name;
+            btnCustom.addEventListener('click', () => setRemedyTab('custom_' + view.id));
+            remedyTabsContainer.appendChild(btnCustom);
+        });
+    };
 
     const setRemedyTab = (mode) => {
         remedyActiveMode = mode;
         const isIptv = isIptvActive();
         const isTelefonia = isTelefoniaActive();
 
-        if (btnRemedyTabRed) {
-            if (isTelefonia) {
-                btnRemedyTabRed.innerHTML = '📞 Telefonía a RED';
-            } else if (isIptv) {
-                btnRemedyTabRed.innerHTML = '📺 Canales a RED';
-            } else {
-                btnRemedyTabRed.innerHTML = '🌐 Páginas Web / Apps';
-            }
-        }
-
         if (mode === 'red') {
-            if (btnRemedyTabRed) {
-                btnRemedyTabRed.className = 'btn btn-sm btn-primary';
-                btnRemedyTabRed.style.background = 'var(--primary)';
-                btnRemedyTabRed.style.color = '#fff';
-                btnRemedyTabRed.style.borderColor = 'var(--primary)';
-            }
-            if (btnRemedyTabGeneral) {
-                btnRemedyTabGeneral.className = 'btn btn-sm';
-                btnRemedyTabGeneral.style.background = 'transparent';
-                btnRemedyTabGeneral.style.color = 'var(--text-muted)';
-                btnRemedyTabGeneral.style.borderColor = 'var(--border-color)';
-            }
             if (remedyFormRed) remedyFormRed.style.display = (!isIptv && !isTelefonia) ? 'block' : 'none';
             if (remedyFormIptv) remedyFormIptv.style.display = isIptv ? 'block' : 'none';
             if (remedyFormTelefonia) remedyFormTelefonia.style.display = isTelefonia ? 'block' : 'none';
             if (remedyFormGeneral) remedyFormGeneral.style.display = 'none';
-        } else {
-            if (btnRemedyTabGeneral) {
-                btnRemedyTabGeneral.className = 'btn btn-sm btn-primary';
-                btnRemedyTabGeneral.style.background = 'var(--primary)';
-                btnRemedyTabGeneral.style.color = '#fff';
-                btnRemedyTabGeneral.style.borderColor = 'var(--primary)';
-            }
-            if (btnRemedyTabRed) {
-                btnRemedyTabRed.className = 'btn btn-sm';
-                btnRemedyTabRed.style.background = 'transparent';
-                btnRemedyTabRed.style.color = 'var(--text-muted)';
-                btnRemedyTabRed.style.borderColor = 'var(--border-color)';
-            }
+            if (remedyFormCustom) remedyFormCustom.style.display = 'none';
+        } else if (mode === 'general') {
             if (remedyFormRed) remedyFormRed.style.display = 'none';
             if (remedyFormIptv) remedyFormIptv.style.display = 'none';
             if (remedyFormTelefonia) remedyFormTelefonia.style.display = 'none';
             if (remedyFormGeneral) remedyFormGeneral.style.display = 'block';
+            if (remedyFormCustom) remedyFormCustom.style.display = 'none';
+        } else if (mode.startsWith('custom_')) {
+            const viewId = mode.replace('custom_', '');
+            const customView = (state.customRemedyViews || []).find(v => v.id === viewId);
+            if (remedyFormRed) remedyFormRed.style.display = 'none';
+            if (remedyFormIptv) remedyFormIptv.style.display = 'none';
+            if (remedyFormTelefonia) remedyFormTelefonia.style.display = 'none';
+            if (remedyFormGeneral) remedyFormGeneral.style.display = 'none';
+            if (remedyFormCustom) remedyFormCustom.style.display = 'block';
+            if (customView) {
+                renderCustomRemedyFields(customView);
+            }
         }
+        renderRemedyTabs();
         updateRemedyPreview();
     };
-
-    if (btnRemedyTabRed) btnRemedyTabRed.addEventListener('click', () => setRemedyTab('red'));
-    if (btnRemedyTabGeneral) btnRemedyTabGeneral.addEventListener('click', () => setRemedyTab('general'));
 
     const getRemedyPlainText = () => {
         const isIptv = isIptvActive();
         const isTelefonia = isTelefoniaActive();
+
+        if (remedyActiveMode.startsWith('custom_')) {
+            const viewId = remedyActiveMode.replace('custom_', '');
+            const customView = (state.customRemedyViews || []).find(v => v.id === viewId);
+            if (customView) {
+                const falla = customView.fallaTitle || customView.name || 'INCIDENCIA TÉCNICA';
+                let text = `FALLA: ${falla}\n\n`;
+                (customView.fields || []).forEach(f => {
+                    const el = document.getElementById(`remedy_custom_input_${f.id}`);
+                    const val = el?.value.trim() || `[${f.label}]`;
+                    text += `   • ${f.label.toUpperCase()}: ${val}\n`;
+                });
+                if (remedyImagesList.length > 0) {
+                    text += `\n[${remedyImagesList.length} imagen(es) adjunta(s)]`;
+                }
+                return text;
+            }
+        }
 
         if (remedyActiveMode === 'red') {
             if (isTelefonia) {
@@ -4322,18 +4513,17 @@ ${contactLines}`;
                 const problema = remedyTelProblema?.value.trim() || (elements.genProblema?.value.trim() || '[Descripción detallada del problema]');
                 const descartes = remedyTelDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '[Descartes de primer nivel realizados]');
 
-                let text = `TELEFONÍA A RED:\n`;
-                text += `Persona de Contacto: ${contacto}\n`;
-                text += `Número de contacto: ${telefono}\n`;
-                text += `Customer ID: ${customerId}\n`;
-                text += `Dirección MAC: ${mac}\n`;
-                text += `Plano: ${plano}\n`;
-                text += `(CMTS/OLT): ${cmtsOlt}\n`;
-                text += `Número telefónico: ${numeroTel}\n`;
-                text += `Plan contratado: ${plan}\n`;
-                text += `Descripción detallada del problema: ${problema}\n`;
-                text += `Descartes de primer nivel realizados: ${descartes}\n`;
-                text += `Evidencias:`;
+                let text = `FALLA: TELEFONÍA A RED\n\n`;
+                text += `   • ID: ${customerId}\n`;
+                text += `   • PERSONA DE CONTACTO: ${contacto}\n`;
+                text += `   • NÚMERO DE CONTACTO: ${telefono}\n`;
+                text += `   • NÚMERO TELEFÓNICO: ${numeroTel}\n`;
+                text += `   • PLAN: ${plan}\n`;
+                text += `   • MAC: ${mac}\n`;
+                text += `   • PLANO: ${plano}\n`;
+                text += `   • CMTS / OLT: ${cmtsOlt}\n`;
+                text += `   • PROBLEMA: ${problema}\n`;
+                text += `   • DESCARTES: ${descartes}\n`;
                 if (remedyImagesList.length > 0) {
                     text += `\n[${remedyImagesList.length} imagen(es) adjunta(s)]`;
                 }
@@ -4349,17 +4539,16 @@ ${contactLines}`;
                 const grilla = remedyIptvGrilla?.value.trim() || '[Grilla Claro TV actualizada]';
                 const descartes = remedyIptvDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '[Descripción detallada de DESCARTES realizados]');
 
-                let text = `4. CANALES A RED:\n`;
-                text += `Persona de Contacto: ${contacto}\n`;
-                text += `Número de Contacto: ${telefono}\n`;
-                text += `Customer ID: ${customerId}\n`;
-                text += `Plano: ${plano}\n`;
-                text += `Cantidad de decodificador(es): ${cantDecos}\n`;
-                text += `N° Serie decos afectados: ${serieDecos}\n`;
-                text += `Canales afectados (N° - Nombre de Canal): ${canales}\n`;
-                text += `Grilla Claro TV actualizada: ${grilla}\n`;
-                text += `Descripción detallada de DESCARTES realizados: ${descartes}\n`;
-                text += `Evidencias:`;
+                let text = `FALLA: CANALES A RED / IPTV\n\n`;
+                text += `   • ID: ${customerId}\n`;
+                text += `   • PERSONA DE CONTACTO: ${contacto}\n`;
+                text += `   • NÚMERO DE CONTACTO: ${telefono}\n`;
+                text += `   • PLANO: ${plano}\n`;
+                text += `   • CANTIDAD DE DECOS: ${cantDecos}\n`;
+                text += `   • SERIE DECOS: ${serieDecos}\n`;
+                text += `   • CANALES AFECTADOS: ${canales}\n`;
+                text += `   • GRILLA ACTUALIZADA: ${grilla}\n`;
+                text += `   • DESCARTES: ${descartes}\n`;
                 if (remedyImagesList.length > 0) {
                     text += `\n[${remedyImagesList.length} imagen(es) adjunta(s)]`;
                 }
@@ -4376,22 +4565,17 @@ ${contactLines}`;
                 const plano = remedyRedPlano?.value.trim() || '[Plano]';
                 const descartes = remedyRedDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '[Descartes o descripción detallada]');
 
-                let text = `Persona de Contacto: ${contacto}\n`;
-                text += `Número de contacto: ${telefono}\n`;
-                text += `Customer ID: ${customerId}\n`;
-                text += `Dirección MAC Cable Módem: ${mac}\n`;
-                text += `IP Pública(Cuál es mi IP): ${ip}\n`;
-                text += `Páginas/Apps que no accede : ${paginas}\n`;
-                text += `Desde que red puede acceder: ${redExterna}\n`;
-                text += `CMTS/OLT: ${cmtsOlt}\n`;
-                text += `Plano: ${plano}\n`;
-                text += `Descartes o descripción detallada del problema: ${descartes}\n`;
-                text += `Evidencias:\n`;
-                text += `Imagen del error con red CLARO\n`;
-                text += `Imagen sin error con red diferente a CLARO\n`;
-                text += `Ping desde la red de Claro\n`;
-                text += `TracerTR desde la red de Claro\n`;
-                text += `TracerTR desde la red diferente a Claro`;
+                let text = `FALLA: BLOQUEO DE PÁGINAS WEB / APPS\n\n`;
+                text += `   • ID: ${customerId}\n`;
+                text += `   • PERSONA DE CONTACTO: ${contacto}\n`;
+                text += `   • NÚMERO DE CONTACTO: ${telefono}\n`;
+                text += `   • MAC: ${mac}\n`;
+                text += `   • IP PÚBLICA: ${ip}\n`;
+                text += `   • PÁGINAS / APPS: ${paginas}\n`;
+                text += `   • RED EXTERNA: ${redExterna}\n`;
+                text += `   • CMTS / OLT: ${cmtsOlt}\n`;
+                text += `   • PLANO: ${plano}\n`;
+                text += `   • DESCARTES: ${descartes}\n`;
                 if (remedyImagesList.length > 0) {
                     text += `\n[${remedyImagesList.length} imagen(es) adjunta(s)]`;
                 }
@@ -4423,6 +4607,46 @@ ${contactLines}`;
         const isIptv = isIptvActive();
         const isTelefonia = isTelefoniaActive();
 
+        const renderImagesHtml = () => {
+            if (remedyImagesList.length === 0) return '';
+            return `
+                <div class="remedy-word-images">
+                    <div class="remedy-word-section-title" style="margin-bottom:8px;">Capturas Adjuntas:</div>
+                    ${remedyImagesList.map((img, i) => `
+                        <div class="remedy-word-img-wrapper">
+                            <div class="remedy-word-img-label">Captura #${i + 1} (Clic para ampliar):</div>
+                            <img src="${img}" class="remedy-word-img" alt="Captura ${i + 1}" onclick="window.previewRemedyImageZoom && window.previewRemedyImageZoom('${img}')" />
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        };
+
+        if (remedyActiveMode.startsWith('custom_')) {
+            const viewId = remedyActiveMode.replace('custom_', '');
+            const customView = (state.customRemedyViews || []).find(v => v.id === viewId);
+            if (customView) {
+                const falla = customView.fallaTitle || customView.name || 'INCIDENCIA TÉCNICA';
+                let listItems = '';
+                (customView.fields || []).forEach(f => {
+                    const el = document.getElementById(`remedy_custom_input_${f.id}`);
+                    const val = el?.value.trim() || '—';
+                    listItems += `<li style="margin-bottom: 4px;"><strong>${f.label.toUpperCase()}:</strong> ${val}</li>`;
+                });
+                let html = `
+                    <div class="remedy-word-page">
+                        <p style="margin: 0 0 12px 0; font-size: 13px;"><strong>FALLA:</strong> ${falla}</p>
+                        <ul class="remedy-word-list" style="margin-left: 20px; font-size: 13px; color: #1f2937;">
+                            ${listItems}
+                        </ul>
+                        ${renderImagesHtml()}
+                    </div>
+                `;
+                remedyVisualSheet.innerHTML = html;
+                return;
+            }
+        }
+
         if (remedyActiveMode === 'red') {
             if (isTelefonia) {
                 const contacto = remedyTelContacto?.value.trim() || '—';
@@ -4437,73 +4661,23 @@ ${contactLines}`;
                 const descartes = remedyTelDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '—');
 
                 let html = `
-                        <div class="remedy-word-page">
-                            <div class="remedy-word-title">
-                                TELEFONÍA A RED:
-                            </div>
-
-                            <table class="remedy-word-table">
-                                <tr>
-                                    <td class="label-cell">Persona de Contacto:</td>
-                                    <td class="value-cell">${contacto}</td>
-                                </tr>
-                                <tr>
-                                    <td class="label-cell">Número de contacto:</td>
-                                    <td class="value-cell">${telefono}</td>
-                                </tr>
-                                <tr>
-                                    <td class="label-cell">Customer ID:</td>
-                                    <td class="value-cell" style="font-weight:bold;">${customerId}</td>
-                                </tr>
-                                <tr>
-                                    <td class="label-cell">Dirección MAC:</td>
-                                    <td class="value-cell" style="font-family:monospace;">${mac}</td>
-                                </tr>
-                                <tr>
-                                    <td class="label-cell">Plano:</td>
-                                    <td class="value-cell">${plano}</td>
-                                </tr>
-                                <tr>
-                                    <td class="label-cell">(CMTS/OLT):</td>
-                                    <td class="value-cell">${cmtsOlt}</td>
-                                </tr>
-                                <tr>
-                                    <td class="label-cell">Número telefónico:</td>
-                                    <td class="value-cell" style="font-weight:bold; color:#0284c7;">${numeroTel}</td>
-                                </tr>
-                                <tr>
-                                    <td class="label-cell">Plan contratado:</td>
-                                    <td class="value-cell">${plan}</td>
-                                </tr>
-                                <tr>
-                                    <td class="label-cell">Descripción del problema:</td>
-                                    <td class="value-cell" style="white-space:pre-wrap;">${problema}</td>
-                                </tr>
-                                <tr>
-                                    <td class="label-cell">Descartes de 1er nivel:</td>
-                                    <td class="value-cell" style="white-space:pre-wrap;">${descartes}</td>
-                                </tr>
-                            </table>
-
-                            <div class="remedy-word-section-title">Evidencias:</div>
-
-                            ${remedyImagesList.length > 0 ? `
-                                <div class="remedy-word-images">
-                                    <div class="remedy-word-section-title" style="margin-bottom:8px;">Capturas Adjuntas:</div>
-                                    ${remedyImagesList.map((img, i) => `
-                                        <div class="remedy-word-img-wrapper">
-                                            <div class="remedy-word-img-label">Evidencia #${i + 1} (Clic para ampliar):</div>
-                                            <img src="${img}" class="remedy-word-img" alt="Evidencia ${i + 1}" onclick="window.previewRemedyImageZoom && window.previewRemedyImageZoom('${img}')" />
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            ` : `
-                                <div style="margin-top:0.4rem; font-size:11.5px; color:#64748b; font-style:italic;">
-                                    (Sin capturas adjuntas aún. Puedes pegar fotos de error o registros con Ctrl+V).
-                                </div>
-                            `}
-                        </div>
-                    `;
+                    <div class="remedy-word-page">
+                        <p style="margin: 0 0 12px 0; font-size: 13px;"><strong>FALLA:</strong> TELEFONÍA A RED</p>
+                        <ul class="remedy-word-list" style="margin-left: 20px; font-size: 13px; color: #1f2937;">
+                            <li style="margin-bottom: 4px;"><strong>ID:</strong> ${customerId}</li>
+                            <li style="margin-bottom: 4px;"><strong>PERSONA DE CONTACTO:</strong> ${contacto}</li>
+                            <li style="margin-bottom: 4px;"><strong>NÚMERO DE CONTACTO:</strong> ${telefono}</li>
+                            <li style="margin-bottom: 4px;"><strong>NÚMERO TELEFÓNICO:</strong> ${numeroTel}</li>
+                            <li style="margin-bottom: 4px;"><strong>PLAN:</strong> ${plan}</li>
+                            <li style="margin-bottom: 4px;"><strong>MAC:</strong> ${mac}</li>
+                            <li style="margin-bottom: 4px;"><strong>PLANO:</strong> ${plano}</li>
+                            <li style="margin-bottom: 4px;"><strong>CMTS / OLT:</strong> ${cmtsOlt}</li>
+                            <li style="margin-bottom: 4px;"><strong>PROBLEMA:</strong> ${problema}</li>
+                            <li style="margin-bottom: 4px;"><strong>DESCARTES:</strong> ${descartes}</li>
+                        </ul>
+                        ${renderImagesHtml()}
+                    </div>
+                `;
                 remedyVisualSheet.innerHTML = html;
                 return;
             }
@@ -4520,69 +4694,22 @@ ${contactLines}`;
                 const descartes = remedyIptvDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '—');
 
                 let html = `
-                        <div class="remedy-word-page">
-                            <div class="remedy-word-title">
-                                4. CANALES A RED:
-                            </div>
-
-                            <table class="remedy-word-table">
-                                <tr>
-                                    <td class="label-cell">Persona de Contacto:</td>
-                                    <td class="value-cell">${contacto}</td>
-                                </tr>
-                                <tr>
-                                    <td class="label-cell">Número de Contacto:</td>
-                                    <td class="value-cell">${telefono}</td>
-                                </tr>
-                                <tr>
-                                    <td class="label-cell">Customer ID:</td>
-                                    <td class="value-cell" style="font-weight:bold;">${customerId}</td>
-                                </tr>
-                                <tr>
-                                    <td class="label-cell">Plano:</td>
-                                    <td class="value-cell">${plano}</td>
-                                </tr>
-                                <tr>
-                                    <td class="label-cell">Cantidad de decodificador(es):</td>
-                                    <td class="value-cell">${cantDecos}</td>
-                                </tr>
-                                <tr>
-                                    <td class="label-cell">N° Serie decos afectados:</td>
-                                    <td class="value-cell" style="font-family:monospace;">${serieDecos}</td>
-                                </tr>
-                                <tr>
-                                    <td class="label-cell">Canales afectados (N° - Nombre):</td>
-                                    <td class="value-cell" style="color:#b91c1c; font-weight:bold;">${canales}</td>
-                                </tr>
-                                <tr>
-                                    <td class="label-cell">Grilla Claro TV actualizada:</td>
-                                    <td class="value-cell">${grilla}</td>
-                                </tr>
-                                <tr>
-                                    <td class="label-cell">Descripción de DESCARTES:</td>
-                                    <td class="value-cell" style="white-space:pre-wrap;">${descartes}</td>
-                                </tr>
-                            </table>
-
-                            <div class="remedy-word-section-title">Evidencias:</div>
-
-                            ${remedyImagesList.length > 0 ? `
-                                <div class="remedy-word-images">
-                                    <div class="remedy-word-section-title" style="margin-bottom:8px;">Capturas Adjuntas:</div>
-                                    ${remedyImagesList.map((img, i) => `
-                                        <div class="remedy-word-img-wrapper">
-                                            <div class="remedy-word-img-label">Evidencia #${i + 1} (Clic para ampliar):</div>
-                                            <img src="${img}" class="remedy-word-img" alt="Evidencia ${i + 1}" onclick="window.previewRemedyImageZoom && window.previewRemedyImageZoom('${img}')" />
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            ` : `
-                                <div style="margin-top:0.4rem; font-size:11.5px; color:#64748b; font-style:italic;">
-                                    (Sin capturas adjuntas aún. Puedes pegar fotos de error de pantalla con Ctrl+V).
-                                </div>
-                            `}
-                        </div>
-                    `;
+                    <div class="remedy-word-page">
+                        <p style="margin: 0 0 12px 0; font-size: 13px;"><strong>FALLA:</strong> CANALES A RED / IPTV</p>
+                        <ul class="remedy-word-list" style="margin-left: 20px; font-size: 13px; color: #1f2937;">
+                            <li style="margin-bottom: 4px;"><strong>ID:</strong> ${customerId}</li>
+                            <li style="margin-bottom: 4px;"><strong>PERSONA DE CONTACTO:</strong> ${contacto}</li>
+                            <li style="margin-bottom: 4px;"><strong>NÚMERO DE CONTACTO:</strong> ${telefono}</li>
+                            <li style="margin-bottom: 4px;"><strong>PLANO:</strong> ${plano}</li>
+                            <li style="margin-bottom: 4px;"><strong>CANTIDAD DE DECOS:</strong> ${cantDecos}</li>
+                            <li style="margin-bottom: 4px;"><strong>SERIE DECOS:</strong> ${serieDecos}</li>
+                            <li style="margin-bottom: 4px;"><strong>CANALES AFECTADOS:</strong> ${canales}</li>
+                            <li style="margin-bottom: 4px;"><strong>GRILLA ACTUALIZADA:</strong> ${grilla}</li>
+                            <li style="margin-bottom: 4px;"><strong>DESCARTES:</strong> ${descartes}</li>
+                        </ul>
+                        ${renderImagesHtml()}
+                    </div>
+                `;
                 remedyVisualSheet.innerHTML = html;
                 return;
             }
@@ -4599,76 +4726,23 @@ ${contactLines}`;
             const descartes = remedyRedDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '—');
 
             let html = `
-                    <div class="remedy-word-page">
-                        <div class="remedy-word-title">
-                            PAGINAS WEB a RED
-                        </div>
-
-                        <table class="remedy-word-table">
-                            <tr>
-                                <td class="label-cell">Persona de Contacto:</td>
-                                <td class="value-cell">${contacto}</td>
-                            </tr>
-                            <tr>
-                                <td class="label-cell">Número de contacto:</td>
-                                <td class="value-cell">${telefono}</td>
-                            </tr>
-                            <tr>
-                                <td class="label-cell">Customer ID:</td>
-                                <td class="value-cell" style="font-weight:bold;">${customerId}</td>
-                            </tr>
-                            <tr>
-                                <td class="label-cell">Dirección MAC Cable Módem:</td>
-                                <td class="value-cell" style="font-family:monospace;">${mac}</td>
-                            </tr>
-                            <tr>
-                                <td class="label-cell">IP Pública(Cuál es mi IP):</td>
-                                <td class="value-cell" style="font-family:monospace;">${ip}</td>
-                            </tr>
-                            <tr>
-                                <td class="label-cell">Páginas/Apps que no accede:</td>
-                                <td class="value-cell" style="color:#b91c1c; font-weight:bold;">${paginas}</td>
-                            </tr>
-                            <tr>
-                                <td class="label-cell">Desde que red puede acceder:</td>
-                                <td class="value-cell">${redExterna}</td>
-                            </tr>
-                            <tr>
-                                <td class="label-cell">CMTS/OLT:</td>
-                                <td class="value-cell">${cmtsOlt}</td>
-                            </tr>
-                            <tr>
-                                <td class="label-cell">Plano:</td>
-                                <td class="value-cell">${plano}</td>
-                            </tr>
-                            <tr>
-                                <td class="label-cell">Descartes o descripción detallada:</td>
-                                <td class="value-cell" style="white-space:pre-wrap;">${descartes}</td>
-                            </tr>
-                        </table>
-
-                        <div class="remedy-word-section-title">Evidencias:</div>
-                        <ul class="remedy-word-list">
-                            <li>Imagen del error con red CLARO</li>
-                            <li>Imagen sin error con red diferente a CLARO</li>
-                            <li>Ping desde la red de Claro</li>
-                            <li>TracerTR desde la red de Claro</li>
-                            <li>TracerTR desde la red diferente a Claro</li>
-                        </ul>
-
-                        ${remedyImagesList.length > 0 ? `
-                            <div class="remedy-word-images">
-                                <div class="remedy-word-section-title" style="margin-bottom:8px;">Capturas Adjuntas:</div>
-                                ${remedyImagesList.map((img, i) => `
-                                    <div class="remedy-word-img-wrapper">
-                                        <div class="remedy-word-img-label">Evidencia #${i + 1} (Clic para ampliar):</div>
-                                        <img src="${img}" class="remedy-word-img" alt="Evidencia ${i + 1}" onclick="window.previewRemedyImageZoom && window.previewRemedyImageZoom('${img}')" />
-                                    </div>
-                                `).join('')}
-                            </div>
-                        ` : ''}
-                    </div>
-                `;
+                <div class="remedy-word-page">
+                    <p style="margin: 0 0 12px 0; font-size: 13px;"><strong>FALLA:</strong> BLOQUEO DE PÁGINAS WEB / APPS</p>
+                    <ul class="remedy-word-list" style="margin-left: 20px; font-size: 13px; color: #1f2937;">
+                        <li style="margin-bottom: 4px;"><strong>ID:</strong> ${customerId}</li>
+                        <li style="margin-bottom: 4px;"><strong>PERSONA DE CONTACTO:</strong> ${contacto}</li>
+                        <li style="margin-bottom: 4px;"><strong>NÚMERO DE CONTACTO:</strong> ${telefono}</li>
+                        <li style="margin-bottom: 4px;"><strong>MAC:</strong> ${mac}</li>
+                        <li style="margin-bottom: 4px;"><strong>IP PÚBLICA:</strong> ${ip}</li>
+                        <li style="margin-bottom: 4px;"><strong>PÁGINAS / APPS:</strong> ${paginas}</li>
+                        <li style="margin-bottom: 4px;"><strong>RED EXTERNA:</strong> ${redExterna}</li>
+                        <li style="margin-bottom: 4px;"><strong>CMTS / OLT:</strong> ${cmtsOlt}</li>
+                        <li style="margin-bottom: 4px;"><strong>PLANO:</strong> ${plano}</li>
+                        <li style="margin-bottom: 4px;"><strong>DESCARTES:</strong> ${descartes}</li>
+                    </ul>
+                    ${renderImagesHtml()}
+                </div>
+            `;
             remedyVisualSheet.innerHTML = html;
         } else {
             const falla = remedyInputFalla?.value.trim() || '—';
@@ -4678,29 +4752,17 @@ ${contactLines}`;
             const detalle = remedyInputDetalle?.value.trim() || '';
 
             let html = `
-                    <div class="remedy-word-page">
-                        <p style="margin: 0 0 12px 0; font-size: 13px;"><strong>FALLA:</strong> ${falla}</p>
-                        
-                        <ul class="remedy-word-list" style="margin-left: 20px; font-size: 13px; color: #1f2937;">
-                            <li style="margin-bottom: 4px;"><strong>ID:</strong> ${id}</li>
-                            <li style="margin-bottom: 4px;"><strong>DNI:</strong> ${dni}</li>
-                            <li style="margin-bottom: 4px;"><strong>CLIENTE:</strong> ${cliente}</li>
-                            ${detalle ? `<li style="margin-bottom: 4px;">${detalle}</li>` : ''}
-                        </ul>
-
-                        ${remedyImagesList.length > 0 ? `
-                            <div class="remedy-word-images">
-                                <div class="remedy-word-section-title" style="margin-bottom:8px;">Capturas Adjuntas:</div>
-                                ${remedyImagesList.map((img, i) => `
-                                    <div class="remedy-word-img-wrapper">
-                                        <div class="remedy-word-img-label">Captura #${i + 1} (Clic para ampliar):</div>
-                                        <img src="${img}" class="remedy-word-img" alt="Captura ${i + 1}" onclick="window.previewRemedyImageZoom && window.previewRemedyImageZoom('${img}')" />
-                                    </div>
-                                `).join('')}
-                            </div>
-                        ` : ''}
-                    </div>
-                `;
+                <div class="remedy-word-page">
+                    <p style="margin: 0 0 12px 0; font-size: 13px;"><strong>FALLA:</strong> ${falla}</p>
+                    <ul class="remedy-word-list" style="margin-left: 20px; font-size: 13px; color: #1f2937;">
+                        <li style="margin-bottom: 4px;"><strong>ID:</strong> ${id}</li>
+                        <li style="margin-bottom: 4px;"><strong>DNI:</strong> ${dni}</li>
+                        <li style="margin-bottom: 4px;"><strong>CLIENTE:</strong> ${cliente}</li>
+                        ${detalle ? `<li style="margin-bottom: 4px;"><strong>DETALLE:</strong> ${detalle}</li>` : ''}
+                    </ul>
+                    ${renderImagesHtml()}
+                </div>
+            `;
             remedyVisualSheet.innerHTML = html;
         }
     };
@@ -4788,6 +4850,7 @@ ${contactLines}`;
             }
 
             remedyModal.classList.add('active');
+            renderRemedyTabs();
             setRemedyTab(remedyActiveMode);
         }
     };
@@ -4830,6 +4893,12 @@ ${contactLines}`;
         if (remedyInputDni) remedyInputDni.value = '';
         if (remedyInputCliente) remedyInputCliente.value = '';
         if (remedyInputDetalle) remedyInputDetalle.value = '';
+
+        // Reset custom fields if present
+        if (remedyCustomFieldsContainer) {
+            const customInputs = remedyCustomFieldsContainer.querySelectorAll('input, textarea');
+            customInputs.forEach(ci => ci.value = '');
+        }
 
         remedyImagesList = [];
         renderRemedyImages();
@@ -4919,7 +4988,18 @@ ${contactLines}`;
     if (btnCopyRemedyText) {
         btnCopyRemedyText.addEventListener('click', () => {
             const text = getRemedyPlainText();
-            const logLabel = isTelefoniaActive() ? 'Escalamiento Telefonía a RED' : (isIptvActive() ? 'Escalamiento IPTV Canales a RED' : (remedyActiveMode === 'red' ? 'Escalamiento a RED (Páginas/Apps)' : 'Incidencia / Escalamiento'));
+            let logLabel = 'Incidencia / Escalamiento';
+            if (remedyActiveMode.startsWith('custom_')) {
+                const viewId = remedyActiveMode.replace('custom_', '');
+                const customView = (state.customRemedyViews || []).find(v => v.id === viewId);
+                logLabel = customView ? `Escalamiento ${customView.name}` : 'Escalamiento Personalizado';
+            } else if (isTelefoniaActive()) {
+                logLabel = 'Escalamiento Telefonía a RED';
+            } else if (isIptvActive()) {
+                logLabel = 'Escalamiento IPTV Canales a RED';
+            } else if (remedyActiveMode === 'red') {
+                logLabel = 'Escalamiento a RED (Páginas/Apps)';
+            }
             copyToClipboard(text, 'Texto Remedy copiado');
             addHistoryRecord('Remedy', logLabel, text);
         });
@@ -4933,7 +5013,34 @@ ${contactLines}`;
             const isIptv = isIptvActive();
             const isTelefonia = isTelefoniaActive();
 
-            if (remedyActiveMode === 'red') {
+            const renderImagesWordHtml = () => {
+                if (remedyImagesList.length === 0) return '';
+                let imgsHtml = '<div style="margin-top: 10pt;">';
+                remedyImagesList.forEach((imgData, i) => {
+                    imgsHtml += `<p style="margin: 0 0 12pt 0;"><strong style="font-size:10pt;">Captura #${i + 1}:</strong><br><img src="${imgData}" style="max-width: 100%; height: auto; border: 1px solid #d1d5db; border-radius: 4px; margin-top:4px;" /></p>`;
+                });
+                imgsHtml += '</div>';
+                return imgsHtml;
+            };
+
+            if (remedyActiveMode.startsWith('custom_')) {
+                const viewId = remedyActiveMode.replace('custom_', '');
+                const customView = (state.customRemedyViews || []).find(v => v.id === viewId);
+                if (customView) {
+                    const falla = customView.fallaTitle || customView.name || 'INCIDENCIA TÉCNICA';
+                    htmlContent = `<div style="font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1f2937; line-height: 1.5;">`;
+                    htmlContent += `<p style="margin: 0 0 8pt 0;"><strong>FALLA:</strong> ${falla}</p>`;
+                    htmlContent += `<ul style="margin: 0 0 12pt 18pt; padding: 0;">`;
+                    (customView.fields || []).forEach(f => {
+                        const el = document.getElementById(`remedy_custom_input_${f.id}`);
+                        const val = el?.value.trim() || `[${f.label}]`;
+                        htmlContent += `<li><strong>${f.label.toUpperCase()}:</strong> ${val}</li>`;
+                    });
+                    htmlContent += `</ul>`;
+                    htmlContent += renderImagesWordHtml();
+                    htmlContent += `</div>`;
+                }
+            } else if (remedyActiveMode === 'red') {
                 if (isTelefonia) {
                     const contacto = remedyTelContacto?.value.trim() || '[Persona de Contacto]';
                     const telefono = remedyTelTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '[Número de contacto]');
@@ -4947,29 +5054,20 @@ ${contactLines}`;
                     const descartes = remedyTelDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '[Descartes de primer nivel realizados]');
 
                     htmlContent = `<div style="font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1f2937; line-height: 1.5;">`;
-                    htmlContent += `<h3 style="color: #b91c1c; margin: 0 0 10pt 0;">TELEFONÍA A RED:</h3>`;
-                    htmlContent += `<table style="width: 100%; border-collapse: collapse; margin-bottom: 12pt; font-size: 10.5pt;">`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold; width: 35%;">Persona de Contacto:</td><td style="padding: 4px 8px;">${contacto}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Número de contacto:</td><td style="padding: 4px 8px;">${telefono}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Customer ID:</td><td style="padding: 4px 8px;">${customerId}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Dirección MAC:</td><td style="padding: 4px 8px; font-family:monospace;">${mac}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Plano:</td><td style="padding: 4px 8px;">${plano}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">(CMTS/OLT):</td><td style="padding: 4px 8px;">${cmtsOlt}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Número telefónico:</td><td style="padding: 4px 8px; font-weight:bold; color:#0284c7;">${numeroTel}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Plan contratado:</td><td style="padding: 4px 8px;">${plan}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Descripción detallada del problema:</td><td style="padding: 4px 8px;">${problema}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Descartes de primer nivel realizados:</td><td style="padding: 4px 8px;">${descartes}</td></tr>`;
-                    htmlContent += `</table>`;
-
-                    htmlContent += `<p style="font-weight: bold; margin: 10pt 0 4pt 0;">Evidencias:</p>`;
-
-                    if (remedyImagesList.length > 0) {
-                        htmlContent += `<div style="margin-top: 10pt;">`;
-                        remedyImagesList.forEach((imgData, i) => {
-                            htmlContent += `<p style="margin: 0 0 12pt 0;"><strong style="font-size:10pt;">Captura / Evidencia #${i + 1}:</strong><br><img src="${imgData}" style="max-width: 100%; height: auto; border: 1px solid #d1d5db; border-radius: 4px; margin-top:4px;" /></p>`;
-                        });
-                        htmlContent += `</div>`;
-                    }
+                    htmlContent += `<p style="margin: 0 0 8pt 0;"><strong>FALLA:</strong> TELEFONÍA A RED</p>`;
+                    htmlContent += `<ul style="margin: 0 0 12pt 18pt; padding: 0;">`;
+                    htmlContent += `<li><strong>ID:</strong> ${customerId}</li>`;
+                    htmlContent += `<li><strong>PERSONA DE CONTACTO:</strong> ${contacto}</li>`;
+                    htmlContent += `<li><strong>NÚMERO DE CONTACTO:</strong> ${telefono}</li>`;
+                    htmlContent += `<li><strong>NÚMERO TELEFÓNICO:</strong> ${numeroTel}</li>`;
+                    htmlContent += `<li><strong>PLAN:</strong> ${plan}</li>`;
+                    htmlContent += `<li><strong>MAC:</strong> ${mac}</li>`;
+                    htmlContent += `<li><strong>PLANO:</strong> ${plano}</li>`;
+                    htmlContent += `<li><strong>CMTS / OLT:</strong> ${cmtsOlt}</li>`;
+                    htmlContent += `<li><strong>PROBLEMA:</strong> ${problema}</li>`;
+                    htmlContent += `<li><strong>DESCARTES:</strong> ${descartes}</li>`;
+                    htmlContent += `</ul>`;
+                    htmlContent += renderImagesWordHtml();
                     htmlContent += `</div>`;
                 } else if (isIptv) {
                     const contacto = remedyIptvContacto?.value.trim() || '[Persona de Contacto]';
@@ -4983,33 +5081,24 @@ ${contactLines}`;
                     const descartes = remedyIptvDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '[Descripción detallada de DESCARTES realizados]');
 
                     htmlContent = `<div style="font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1f2937; line-height: 1.5;">`;
-                    htmlContent += `<h3 style="color: #b91c1c; margin: 0 0 10pt 0;">4. CANALES A RED:</h3>`;
-                    htmlContent += `<table style="width: 100%; border-collapse: collapse; margin-bottom: 12pt; font-size: 10.5pt;">`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold; width: 40%;">Persona de Contacto:</td><td style="padding: 4px 8px;">${contacto}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Número de Contacto:</td><td style="padding: 4px 8px;">${telefono}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Customer ID:</td><td style="padding: 4px 8px;">${customerId}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Plano:</td><td style="padding: 4px 8px;">${plano}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Cantidad de decodificador(es):</td><td style="padding: 4px 8px;">${cantDecos}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">N° Serie decos afectados:</td><td style="padding: 4px 8px; font-family:monospace;">${serieDecos}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Canales afectados (N° - Nombre de Canal):</td><td style="padding: 4px 8px; color:#b91c1c; font-weight:bold;">${canales}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Grilla Claro TV actualizada:</td><td style="padding: 4px 8px;">${grilla}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Descripción detallada de DESCARTES realizados:</td><td style="padding: 4px 8px;">${descartes}</td></tr>`;
-                    htmlContent += `</table>`;
-
-                    htmlContent += `<p style="font-weight: bold; margin: 10pt 0 4pt 0;">Evidencias:</p>`;
-
-                    if (remedyImagesList.length > 0) {
-                        htmlContent += `<div style="margin-top: 10pt;">`;
-                        remedyImagesList.forEach((imgData, i) => {
-                            htmlContent += `<p style="margin: 0 0 12pt 0;"><strong style="font-size:10pt;">Captura / Evidencia #${i + 1}:</strong><br><img src="${imgData}" style="max-width: 100%; height: auto; border: 1px solid #d1d5db; border-radius: 4px; margin-top:4px;" /></p>`;
-                        });
-                        htmlContent += `</div>`;
-                    }
+                    htmlContent += `<p style="margin: 0 0 8pt 0;"><strong>FALLA:</strong> CANALES A RED / IPTV</p>`;
+                    htmlContent += `<ul style="margin: 0 0 12pt 18pt; padding: 0;">`;
+                    htmlContent += `<li><strong>ID:</strong> ${customerId}</li>`;
+                    htmlContent += `<li><strong>PERSONA DE CONTACTO:</strong> ${contacto}</li>`;
+                    htmlContent += `<li><strong>NÚMERO DE CONTACTO:</strong> ${telefono}</li>`;
+                    htmlContent += `<li><strong>PLANO:</strong> ${plano}</li>`;
+                    htmlContent += `<li><strong>CANTIDAD DE DECOS:</strong> ${cantDecos}</li>`;
+                    htmlContent += `<li><strong>SERIE DECOS:</strong> ${serieDecos}</li>`;
+                    htmlContent += `<li><strong>CANALES AFECTADOS:</strong> ${canales}</li>`;
+                    htmlContent += `<li><strong>GRILLA ACTUALIZADA:</strong> ${grilla}</li>`;
+                    htmlContent += `<li><strong>DESCARTES:</strong> ${descartes}</li>`;
+                    htmlContent += `</ul>`;
+                    htmlContent += renderImagesWordHtml();
                     htmlContent += `</div>`;
                 } else {
                     const contacto = remedyRedContacto?.value.trim() || '[Persona de Contacto]';
                     const telefono = remedyRedTelefono?.value.trim() || (elements.genTelefono?.value.trim() || '[Número de contacto]');
-                    const customerId = remedyRedCustomerId?.value.trim() || '[Customer ID]';
+                    const customerId = remedyRedCustomerId?.value.trim() || (elements.genContactId?.value.trim() || '[Customer ID]');
                     const mac = remedyRedMac?.value.trim() || '[Dirección MAC Cable Módem]';
                     const ip = remedyRedIp?.value.trim() || '[IP Pública(Cuál es mi IP)]';
                     const paginas = remedyRedPaginas?.value.trim() || '[Páginas/Apps que no accede]';
@@ -5019,36 +5108,20 @@ ${contactLines}`;
                     const descartes = remedyRedDescartes?.value.trim() || (elements.genDescartes?.value.trim() || '[Descartes técnicos]');
 
                     htmlContent = `<div style="font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1f2937; line-height: 1.5;">`;
-                    htmlContent += `<h3 style="color: #b91c1c; margin: 0 0 10pt 0;">ESCALAMIENTO A RED - PÁGINAS WEB / APPS BLOQUEADAS</h3>`;
-                    htmlContent += `<table style="width: 100%; border-collapse: collapse; margin-bottom: 12pt; font-size: 10.5pt;">`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold; width: 35%;">Persona de Contacto:</td><td style="padding: 4px 8px;">${contacto}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Número de contacto:</td><td style="padding: 4px 8px;">${telefono}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Customer ID:</td><td style="padding: 4px 8px;">${customerId}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Dirección MAC Cable Módem:</td><td style="padding: 4px 8px;">${mac}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">IP Pública(Cuál es mi IP):</td><td style="padding: 4px 8px;">${ip}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Páginas/Apps que no accede:</td><td style="padding: 4px 8px; color:#b91c1c; font-weight:bold;">${paginas}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Desde que red puede acceder:</td><td style="padding: 4px 8px;">${redExterna}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">CMTS/OLT:</td><td style="padding: 4px 8px;">${cmtsOlt}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Plano:</td><td style="padding: 4px 8px;">${plano}</td></tr>`;
-                    htmlContent += `<tr><td style="padding: 4px 8px; font-weight: bold;">Descartes del problema:</td><td style="padding: 4px 8px;">${descartes}</td></tr>`;
-                    htmlContent += `</table>`;
-
-                    htmlContent += `<p style="font-weight: bold; margin: 10pt 0 4pt 0;">Evidencias requeridas:</p>`;
-                    htmlContent += `<ul style="margin: 0 0 10pt 18pt; padding: 0;">`;
-                    htmlContent += `<li>Imagen del error con red CLARO</li>`;
-                    htmlContent += `<li>Imagen sin error con red diferente a CLARO</li>`;
-                    htmlContent += `<li>Ping desde la red de Claro</li>`;
-                    htmlContent += `<li>TracerTR desde la red de Claro</li>`;
-                    htmlContent += `<li>TracerTR desde la red diferente a Claro</li>`;
+                    htmlContent += `<p style="margin: 0 0 8pt 0;"><strong>FALLA:</strong> BLOQUEO DE PÁGINAS WEB / APPS</p>`;
+                    htmlContent += `<ul style="margin: 0 0 12pt 18pt; padding: 0;">`;
+                    htmlContent += `<li><strong>ID:</strong> ${customerId}</li>`;
+                    htmlContent += `<li><strong>PERSONA DE CONTACTO:</strong> ${contacto}</li>`;
+                    htmlContent += `<li><strong>NÚMERO DE CONTACTO:</strong> ${telefono}</li>`;
+                    htmlContent += `<li><strong>MAC:</strong> ${mac}</li>`;
+                    htmlContent += `<li><strong>IP PÚBLICA:</strong> ${ip}</li>`;
+                    htmlContent += `<li><strong>PÁGINAS / APPS:</strong> ${paginas}</li>`;
+                    htmlContent += `<li><strong>RED EXTERNA:</strong> ${redExterna}</li>`;
+                    htmlContent += `<li><strong>CMTS / OLT:</strong> ${cmtsOlt}</li>`;
+                    htmlContent += `<li><strong>PLANO:</strong> ${plano}</li>`;
+                    htmlContent += `<li><strong>DESCARTES:</strong> ${descartes}</li>`;
                     htmlContent += `</ul>`;
-
-                    if (remedyImagesList.length > 0) {
-                        htmlContent += `<div style="margin-top: 10pt;">`;
-                        remedyImagesList.forEach((imgData, i) => {
-                            htmlContent += `<p style="margin: 0 0 12pt 0;"><strong style="font-size:10pt;">Captura / Evidencia #${i + 1}:</strong><br><img src="${imgData}" style="max-width: 100%; height: auto; border: 1px solid #d1d5db; border-radius: 4px; margin-top:4px;" /></p>`;
-                        });
-                        htmlContent += `</div>`;
-                    }
+                    htmlContent += renderImagesWordHtml();
                     htmlContent += `</div>`;
                 }
             } else {
@@ -5065,17 +5138,10 @@ ${contactLines}`;
                 htmlContent += `<li><strong>DNI:</strong> ${dni}</li>`;
                 htmlContent += `<li><strong>CLIENTE:</strong> ${cliente}</li>`;
                 if (detalle) {
-                    htmlContent += `<li>${detalle}</li>`;
+                    htmlContent += `<li><strong>DETALLE:</strong> ${detalle}</li>`;
                 }
                 htmlContent += `</ul>`;
-
-                if (remedyImagesList.length > 0) {
-                    htmlContent += `<div style="margin-top: 10pt;">`;
-                    remedyImagesList.forEach((imgData, i) => {
-                        htmlContent += `<p style="margin: 0 0 12pt 0;"><strong style="font-size:10pt;">Captura #${i + 1}:</strong><br><img src="${imgData}" style="max-width: 100%; height: auto; border: 1px solid #d1d5db; border-radius: 4px; margin-top:4px;" /></p>`;
-                    });
-                    htmlContent += `</div>`;
-                }
+                htmlContent += renderImagesWordHtml();
                 htmlContent += `</div>`;
             }
 
@@ -5088,7 +5154,7 @@ ${contactLines}`;
                         'text/plain': blobPlain
                     });
                     await navigator.clipboard.write([item]);
-                    showToast('✓ Formato Word copiado con tablas e imágenes');
+                    showToast('✓ Formato Word copiado con imágenes');
                     addHistoryRecord('Remedy (Word)', 'Plantilla con Formato Word enriquecido', plainText);
                 } else {
                     copyToClipboard(plainText, 'Texto copiado (El navegador no soporta HTML enriquecido)');
@@ -5108,7 +5174,36 @@ ${contactLines}`;
             const isIptv = isIptvActive();
             const isTelefonia = isTelefoniaActive();
 
-            if (remedyActiveMode === 'red') {
+            const renderImagesPdfHtml = () => {
+                if (remedyImagesList.length === 0) return '';
+                return `
+                    <div class="evidence-section">
+                        ${remedyImagesList.map(img => `<p style="margin: 0 0 16px 0; text-align:center;"><img class="evidence-img" src="${img}" alt="Evidencia Remedy" /></p>`).join('')}
+                    </div>
+                `;
+            };
+
+            if (remedyActiveMode.startsWith('custom_')) {
+                const viewId = remedyActiveMode.replace('custom_', '');
+                const customView = (state.customRemedyViews || []).find(v => v.id === viewId);
+                if (customView) {
+                    const falla = customView.fallaTitle || customView.name || 'INCIDENCIA TÉCNICA';
+                    docTitle = `Remedy_${(customView.name || 'Custom').replace(/\s+/g, '_')}`;
+                    let listItems = '';
+                    (customView.fields || []).forEach(f => {
+                        const el = document.getElementById(`remedy_custom_input_${f.id}`);
+                        const val = el?.value.trim() || 'N/A';
+                        listItems += `<li><strong>${f.label.toUpperCase()}:</strong> ${val}</li>`;
+                    });
+                    bodyContent = `
+                        <div class="falla-title"><strong>FALLA:</strong> ${falla}</div>
+                        <ul class="meta-list">
+                            ${listItems}
+                        </ul>
+                        ${renderImagesPdfHtml()}
+                    `;
+                }
+            } else if (remedyActiveMode === 'red') {
                 if (isTelefonia) {
                     const contacto = remedyTelContacto?.value.trim() || 'N/A';
                     const telefono = remedyTelTelefono?.value.trim() || (elements.genTelefono?.value.trim() || 'N/A');
@@ -5124,35 +5219,21 @@ ${contactLines}`;
                     docTitle = `Remedy_TELEFONIA_RED_${customerId}_${contacto.replace(/\s+/g, '_')}`;
 
                     bodyContent = `
-                            <div style="border-bottom: 2px solid #b91c1c; padding-bottom: 8px; margin-bottom: 16px;">
-                                <h2 style="color: #b91c1c; margin: 0; font-size: 14pt;">TELEFONÍA A RED</h2>
-                                <p style="margin: 4px 0 0 0; font-size: 9pt; color: #6b7280;">Informe Técnico de Escalamiento de Telefonía Fija &bull; Back Office 2N</p>
-                            </div>
-
-                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 10pt;">
-                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; width: 35%; border: 1px solid #e5e7eb;">Persona de Contacto:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${contacto}</td></tr>
-                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Número de contacto:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${telefono}</td></tr>
-                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Customer ID:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${customerId}</td></tr>
-                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Dirección MAC:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb; font-family: monospace;">${mac}</td></tr>
-                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Plano:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${plano}</td></tr>
-                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">(CMTS/OLT):</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${cmtsOlt}</td></tr>
-                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb; color:#0284c7;">Número telefónico:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb; font-weight:bold; color:#0284c7;">${numeroTel}</td></tr>
-                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Plan contratado:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${plan}</td></tr>
-                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Descripción detallada del problema:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${problema}</td></tr>
-                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Descartes de primer nivel realizados:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${descartes}</td></tr>
-                            </table>
-
-                            <div style="margin-top: 10px; margin-bottom: 6px; font-weight: bold; font-size: 10pt;">Evidencias:</div>
-
-                            <div class="evidence-section">
-                                ${remedyImagesList.map((img, idx) => `
-                                    <div style="margin-bottom: 20px; page-break-inside: avoid; text-align: center;">
-                                        <p style="font-weight: bold; font-size: 10pt; margin: 0 0 6px 0; text-align: left;">Captura / Evidencia #${idx + 1}:</p>
-                                        <img class="evidence-img" src="${img}" alt="Evidencia Remedy Telefonía" />
-                                    </div>
-                                `).join('')}
-                            </div>
-                        `;
+                        <div class="falla-title"><strong>FALLA:</strong> TELEFONÍA A RED</div>
+                        <ul class="meta-list">
+                            <li><strong>ID:</strong> ${customerId}</li>
+                            <li><strong>PERSONA DE CONTACTO:</strong> ${contacto}</li>
+                            <li><strong>NÚMERO DE CONTACTO:</strong> ${telefono}</li>
+                            <li><strong>NÚMERO TELEFÓNICO:</strong> ${numeroTel}</li>
+                            <li><strong>PLAN:</strong> ${plan}</li>
+                            <li><strong>MAC:</strong> ${mac}</li>
+                            <li><strong>PLANO:</strong> ${plano}</li>
+                            <li><strong>CMTS / OLT:</strong> ${cmtsOlt}</li>
+                            <li><strong>PROBLEMA:</strong> ${problema}</li>
+                            <li><strong>DESCARTES:</strong> ${descartes}</li>
+                        </ul>
+                        ${renderImagesPdfHtml()}
+                    `;
                 } else if (isIptv) {
                     const contacto = remedyIptvContacto?.value.trim() || 'N/A';
                     const telefono = remedyIptvTelefono?.value.trim() || (elements.genTelefono?.value.trim() || 'N/A');
@@ -5167,34 +5248,20 @@ ${contactLines}`;
                     docTitle = `Remedy_IPTV_Canales_${customerId}_${contacto.replace(/\s+/g, '_')}`;
 
                     bodyContent = `
-                            <div style="border-bottom: 2px solid #b91c1c; padding-bottom: 8px; margin-bottom: 16px;">
-                                <h2 style="color: #b91c1c; margin: 0; font-size: 14pt;">4. CANALES A RED</h2>
-                                <p style="margin: 4px 0 0 0; font-size: 9pt; color: #6b7280;">Informe Técnico de Escalamiento IPTV / Plataforma TV &bull; Back Office 2N</p>
-                            </div>
-
-                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 10pt;">
-                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; width: 40%; border: 1px solid #e5e7eb;">Persona de Contacto:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${contacto}</td></tr>
-                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Número de Contacto:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${telefono}</td></tr>
-                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Customer ID:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${customerId}</td></tr>
-                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Plano:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${plano}</td></tr>
-                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Cantidad de decodificador(es):</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${cantDecos}</td></tr>
-                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">N° Serie decos afectados:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb; font-family: monospace;">${serieDecos}</td></tr>
-                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb; color:#b91c1c;">Canales afectados (N° - Nombre de Canal):</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb; font-weight:bold; color:#b91c1c;">${canales}</td></tr>
-                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Grilla Claro TV actualizada:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${grilla}</td></tr>
-                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Descripción detallada de DESCARTES realizados:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${descartes}</td></tr>
-                            </table>
-
-                            <div style="margin-top: 10px; margin-bottom: 6px; font-weight: bold; font-size: 10pt;">Evidencias:</div>
-
-                            <div class="evidence-section">
-                                ${remedyImagesList.map((img, idx) => `
-                                    <div style="margin-bottom: 20px; page-break-inside: avoid; text-align: center;">
-                                        <p style="font-weight: bold; font-size: 10pt; margin: 0 0 6px 0; text-align: left;">Captura / Evidencia #${idx + 1}:</p>
-                                        <img class="evidence-img" src="${img}" alt="Evidencia Remedy IPTV" />
-                                    </div>
-                                `).join('')}
-                            </div>
-                        `;
+                        <div class="falla-title"><strong>FALLA:</strong> CANALES A RED / IPTV</div>
+                        <ul class="meta-list">
+                            <li><strong>ID:</strong> ${customerId}</li>
+                            <li><strong>PERSONA DE CONTACTO:</strong> ${contacto}</li>
+                            <li><strong>NÚMERO DE CONTACTO:</strong> ${telefono}</li>
+                            <li><strong>PLANO:</strong> ${plano}</li>
+                            <li><strong>CANTIDAD DE DECOS:</strong> ${cantDecos}</li>
+                            <li><strong>SERIE DECOS:</strong> ${serieDecos}</li>
+                            <li><strong>CANALES AFECTADOS:</strong> ${canales}</li>
+                            <li><strong>GRILLA ACTUALIZADA:</strong> ${grilla}</li>
+                            <li><strong>DESCARTES:</strong> ${descartes}</li>
+                        </ul>
+                        ${renderImagesPdfHtml()}
+                    `;
                 } else {
                     const contacto = remedyRedContacto?.value.trim() || 'N/A';
                     const telefono = remedyRedTelefono?.value.trim() || (elements.genTelefono?.value.trim() || 'N/A');
@@ -5210,44 +5277,21 @@ ${contactLines}`;
                     docTitle = `Remedy_RED_${customerId}_${contacto.replace(/\s+/g, '_')}`;
 
                     bodyContent = `
-                            <div style="border-bottom: 2px solid #b91c1c; padding-bottom: 8px; margin-bottom: 16px;">
-                                <h2 style="color: #b91c1c; margin: 0; font-size: 14pt;">ESCALAMIENTO A RED - PÁGINAS WEB / APPS BLOQUEADAS</h2>
-                                <p style="margin: 4px 0 0 0; font-size: 9pt; color: #6b7280;">Informe de Auditoría y Pruebas Técnicas &bull; Back Office 2N</p>
-                            </div>
-
-                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 10pt;">
-                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; width: 35%; border: 1px solid #e5e7eb;">Persona de Contacto:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${contacto}</td></tr>
-                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Número de contacto:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${telefono}</td></tr>
-                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Customer ID:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${customerId}</td></tr>
-                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Dirección MAC Cable Módem / ONT:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb; font-family: monospace;">${mac}</td></tr>
-                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb; font-family: monospace;">${ip}</td></tr>
-                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb; color:#b91c1c;">Páginas/Apps que no accede:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb; font-weight:bold; color:#b91c1c;">${paginas}</td></tr>
-                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Desde qué red puede acceder:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${redExterna}</td></tr>
-                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">CMTS / OLT:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${cmtsOlt}</td></tr>
-                                <tr style="background:#f3f4f6;"><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Plano:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${plano}</td></tr>
-                                <tr><td style="padding: 6px 8px; font-weight: bold; border: 1px solid #e5e7eb;">Descartes técnicos detallados:</td><td style="padding: 6px 8px; border: 1px solid #e5e7eb;">${descartes}</td></tr>
-                            </table>
-
-                            <div style="background:#fef2f2; border: 1px solid #fecaca; padding: 8px 12px; border-radius: 4px; margin-bottom: 16px; font-size: 9pt;">
-                                <strong>Evidencias requeridas incluidas:</strong>
-                                <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 2px; margin-top: 4px; color:#4b5563;">
-                                    <div>• Imagen del error con red CLARO</div>
-                                    <div>• Imagen sin error con red externa</div>
-                                    <div>• Ping desde la red de Claro</div>
-                                    <div>• TracerTR desde la red de Claro</div>
-                                    <div>• TracerTR desde la red externa</div>
-                                </div>
-                            </div>
-
-                            <div class="evidence-section">
-                                ${remedyImagesList.map((img, idx) => `
-                                    <div style="margin-bottom: 20px; page-break-inside: avoid; text-align: center;">
-                                        <p style="font-weight: bold; font-size: 10pt; margin: 0 0 6px 0; text-align: left;">Captura / Evidencia #${idx + 1}:</p>
-                                        <img class="evidence-img" src="${img}" alt="Evidencia Remedy" />
-                                    </div>
-                                `).join('')}
-                            </div>
-                        `;
+                        <div class="falla-title"><strong>FALLA:</strong> BLOQUEO DE PÁGINAS WEB / APPS</div>
+                        <ul class="meta-list">
+                            <li><strong>ID:</strong> ${customerId}</li>
+                            <li><strong>PERSONA DE CONTACTO:</strong> ${contacto}</li>
+                            <li><strong>NÚMERO DE CONTACTO:</strong> ${telefono}</li>
+                            <li><strong>MAC:</strong> ${mac}</li>
+                            <li><strong>IP PÚBLICA:</strong> ${ip}</li>
+                            <li><strong>PÁGINAS / APPS:</strong> ${paginas}</li>
+                            <li><strong>RED EXTERNA:</strong> ${redExterna}</li>
+                            <li><strong>CMTS / OLT:</strong> ${cmtsOlt}</li>
+                            <li><strong>PLANO:</strong> ${plano}</li>
+                            <li><strong>DESCARTES:</strong> ${descartes}</li>
+                        </ul>
+                        ${renderImagesPdfHtml()}
+                    `;
                 }
             } else {
                 const falla = remedyInputFalla?.value.trim() || 'Sin especificar';
@@ -5259,19 +5303,15 @@ ${contactLines}`;
                 docTitle = `Remedy_${id}_${cliente.replace(/\s+/g, '_')}`;
 
                 bodyContent = `
-                        <div class="falla-title"><strong>FALLA:</strong> ${falla}</div>
-                        
-                        <ul class="meta-list">
-                            <li><strong>ID:</strong> ${id}</li>
-                            <li><strong>DNI:</strong> ${dni}</li>
-                            <li><strong>CLIENTE:</strong> ${cliente}</li>
-                            ${detalle ? `<li>${detalle}</li>` : ''}
-                        </ul>
-
-                        <div class="evidence-section">
-                            ${remedyImagesList.map(img => `<p style="margin: 0 0 16px 0; text-align:center;"><img class="evidence-img" src="${img}" alt="Evidencia Remedy" /></p>`).join('')}
-                        </div>
-                    `;
+                    <div class="falla-title"><strong>FALLA:</strong> ${falla}</div>
+                    <ul class="meta-list">
+                        <li><strong>ID:</strong> ${id}</li>
+                        <li><strong>DNI:</strong> ${dni}</li>
+                        <li><strong>CLIENTE:</strong> ${cliente}</li>
+                        ${detalle ? `<li><strong>DETALLE:</strong> ${detalle}</li>` : ''}
+                    </ul>
+                    ${renderImagesPdfHtml()}
+                `;
             }
 
             const html = `<!DOCTYPE html>
@@ -5358,6 +5398,249 @@ ${contactLines}`;
 
             showToast('Generando vista de impresión PDF...');
             addHistoryRecord('Remedy', remedyActiveMode === 'red' ? 'PDF Escalamiento RED' : 'PDF Escalamiento General', `Doc: ${docTitle}`);
+        });
+    }
+
+    // =========================================================================
+    // DISEÑADOR DE VISTAS / PLANTILLAS REMEDY PERSONALIZADAS
+    // =========================================================================
+
+    const createDesignerFieldRow = (field = {}) => {
+        const row = document.createElement('div');
+        row.className = 'custom-field-row';
+        row.style.cssText = 'display:grid; grid-template-columns: 1.8fr 1.2fr 1.3fr 32px; gap:0.45rem; align-items:center; background:var(--bg-card); padding:0.45rem; border-radius:6px; border:1px solid var(--border-color);';
+
+        const labelInput = document.createElement('input');
+        labelInput.type = 'text';
+        labelInput.className = 'form-input field-row-label';
+        labelInput.placeholder = 'Nombre del Campo (ej: Customer ID)';
+        labelInput.value = field.label || '';
+        labelInput.style.cssText = 'font-size:0.8rem; padding:0.3rem 0.5rem;';
+
+        const typeSelect = document.createElement('select');
+        typeSelect.className = 'form-select field-row-type';
+        typeSelect.style.cssText = 'font-size:0.8rem; padding:0.3rem 0.4rem;';
+        typeSelect.innerHTML = `
+            <option value="text" ${field.type === 'text' || !field.type ? 'selected' : ''}>Texto (Línea)</option>
+            <option value="textarea" ${field.type === 'textarea' ? 'selected' : ''}>Área (Párrafo)</option>
+        `;
+
+        const autoFillSelect = document.createElement('select');
+        autoFillSelect.className = 'form-select field-row-autofill';
+        autoFillSelect.style.cssText = 'font-size:0.8rem; padding:0.3rem 0.4rem;';
+        autoFillSelect.innerHTML = `
+            <option value="none" ${field.autoFill === 'none' || !field.autoFill ? 'selected' : ''}>Sin Auto-llenado</option>
+            <option value="contactId" ${field.autoFill === 'contactId' ? 'selected' : ''}>🔗 Customer ID</option>
+            <option value="customer" ${field.autoFill === 'customer' ? 'selected' : ''}>🔗 Nombre Cliente</option>
+            <option value="dni" ${field.autoFill === 'dni' ? 'selected' : ''}>🔗 DNI / RUC</option>
+            <option value="phone" ${field.autoFill === 'phone' ? 'selected' : ''}>🔗 Teléfono</option>
+            <option value="descartes" ${field.autoFill === 'descartes' ? 'selected' : ''}>🔗 Descartes Form</option>
+            <option value="problema" ${field.autoFill === 'problema' ? 'selected' : ''}>🔗 Problema Form</option>
+        `;
+
+        const delBtn = document.createElement('button');
+        delBtn.type = 'button';
+        delBtn.className = 'btn btn-sm';
+        delBtn.innerHTML = '🗑️';
+        delBtn.title = 'Eliminar este campo';
+        delBtn.style.cssText = 'padding:0.25rem 0.4rem; font-size:0.85rem; color:var(--danger); background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.25); cursor:pointer;';
+        delBtn.addEventListener('click', () => {
+            row.remove();
+        });
+
+        row.appendChild(labelInput);
+        row.appendChild(typeSelect);
+        row.appendChild(autoFillSelect);
+        row.appendChild(delBtn);
+
+        return row;
+    };
+
+    const openCustomRemedyModal = (viewToEdit = null) => {
+        if (!customRemedyViewModal) return;
+
+        if (customRemedyFieldsContainer) {
+            customRemedyFieldsContainer.innerHTML = '';
+        }
+
+        if (viewToEdit) {
+            if (customRemedyModalTitle) customRemedyModalTitle.textContent = `✏️ Editar Vista: ${viewToEdit.name}`;
+            if (customRemedyEditId) customRemedyEditId.value = viewToEdit.id;
+            if (customRemedyIcon) customRemedyIcon.value = viewToEdit.icon || '🛠️';
+            if (customRemedyName) customRemedyName.value = viewToEdit.name || '';
+            if (customRemedyFallaTitle) customRemedyFallaTitle.value = viewToEdit.fallaTitle || '';
+            if (customRemedyDesc) customRemedyDesc.value = viewToEdit.desc || '';
+
+            (viewToEdit.fields || []).forEach(f => {
+                const row = createDesignerFieldRow(f);
+                customRemedyFieldsContainer.appendChild(row);
+            });
+        } else {
+            if (customRemedyModalTitle) customRemedyModalTitle.textContent = '⚙️ Diseñador de Vista Remedy Personalizada';
+            if (customRemedyEditId) customRemedyEditId.value = '';
+            if (customRemedyIcon) customRemedyIcon.value = '🛠️';
+            if (customRemedyName) customRemedyName.value = '';
+            if (customRemedyFallaTitle) customRemedyFallaTitle.value = '';
+            if (customRemedyDesc) customRemedyDesc.value = '';
+
+            // Campos por defecto recomendados
+            const defaultFields = [
+                { label: 'Customer ID', type: 'text', autoFill: 'contactId' },
+                { label: 'DNI / RUC', type: 'text', autoFill: 'dni' },
+                { label: 'Cliente', type: 'text', autoFill: 'customer' },
+                { label: 'Detalle Técnico / Observación', type: 'text', autoFill: 'none' },
+                { label: 'Descartes Realizados', type: 'textarea', autoFill: 'descartes' }
+            ];
+            defaultFields.forEach(f => {
+                const row = createDesignerFieldRow(f);
+                customRemedyFieldsContainer.appendChild(row);
+            });
+        }
+
+        customRemedyViewModal.classList.add('active');
+    };
+
+    const closeCustomRemedyModal = () => {
+        if (customRemedyViewModal) customRemedyViewModal.classList.remove('active');
+    };
+
+    if (customRemedyModalClose) customRemedyModalClose.addEventListener('click', closeCustomRemedyModal);
+    if (btnCancelCustomRemedyView) btnCancelCustomRemedyView.addEventListener('click', closeCustomRemedyModal);
+    if (customRemedyViewModal) {
+        customRemedyViewModal.addEventListener('click', (e) => {
+            if (e.target === customRemedyViewModal) closeCustomRemedyModal();
+        });
+    }
+
+    if (btnRemedyNewTemplate) {
+        btnRemedyNewTemplate.addEventListener('click', () => {
+            openCustomRemedyModal(null);
+        });
+    }
+
+    if (btnAddCustomRemedyField) {
+        btnAddCustomRemedyField.addEventListener('click', () => {
+            if (customRemedyFieldsContainer) {
+                const row = createDesignerFieldRow({ label: '', type: 'text', autoFill: 'none' });
+                customRemedyFieldsContainer.appendChild(row);
+                const input = row.querySelector('.field-row-label');
+                if (input) input.focus();
+            }
+        });
+    }
+
+    // Botones de presets en el diseñador
+    document.querySelectorAll('.btn-preset-remedy').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const presetKey = btn.getAttribute('data-preset');
+            const preset = DEFAULT_REMEDY_PRESETS[presetKey];
+            if (preset) {
+                if (customRemedyIcon) customRemedyIcon.value = preset.icon || '🛠️';
+                if (customRemedyName) customRemedyName.value = preset.name || '';
+                if (customRemedyFallaTitle) customRemedyFallaTitle.value = preset.fallaTitle || '';
+                if (customRemedyDesc) customRemedyDesc.value = preset.desc || '';
+
+                if (customRemedyFieldsContainer) {
+                    customRemedyFieldsContainer.innerHTML = '';
+                    (preset.fields || []).forEach(f => {
+                        const row = createDesignerFieldRow(f);
+                        customRemedyFieldsContainer.appendChild(row);
+                    });
+                }
+                showToast(`Plantilla "${preset.name}" cargada`);
+            }
+        });
+    });
+
+    // Guardar Vista Personalizada
+    if (btnSaveCustomRemedyView) {
+        btnSaveCustomRemedyView.addEventListener('click', () => {
+            const name = (customRemedyName?.value || '').trim();
+            const fallaTitle = (customRemedyFallaTitle?.value || '').trim();
+            const icon = (customRemedyIcon?.value || '🛠️').trim() || '🛠️';
+            const desc = (customRemedyDesc?.value || '').trim();
+            const editId = customRemedyEditId?.value || '';
+
+            if (!name) {
+                showToast('⚠️ Ingresa un nombre para la pestaña', 'warning');
+                if (customRemedyName) customRemedyName.focus();
+                return;
+            }
+            if (!fallaTitle) {
+                showToast('⚠️ Ingresa el título de la falla (cabecera)', 'warning');
+                if (customRemedyFallaTitle) customRemedyFallaTitle.focus();
+                return;
+            }
+
+            const fieldRows = customRemedyFieldsContainer ? customRemedyFieldsContainer.querySelectorAll('.custom-field-row') : [];
+            const fields = [];
+            fieldRows.forEach((row, idx) => {
+                const label = (row.querySelector('.field-row-label')?.value || '').trim();
+                const type = row.querySelector('.field-row-type')?.value || 'text';
+                const autoFill = row.querySelector('.field-row-autofill')?.value || 'none';
+                if (label) {
+                    fields.push({
+                        id: 'fld_' + idx + '_' + Date.now().toString(36),
+                        label,
+                        type,
+                        autoFill,
+                        placeholder: `Ej: ${label}`
+                    });
+                }
+            });
+
+            if (fields.length === 0) {
+                showToast('⚠️ Añade al menos 1 campo con nombre para el formulario', 'warning');
+                return;
+            }
+
+            let viewId = editId;
+            if (editId) {
+                const idx = (state.customRemedyViews || []).findIndex(v => v.id === editId);
+                if (idx >= 0) {
+                    state.customRemedyViews[idx] = { id: editId, name, icon, fallaTitle, desc, fields };
+                } else {
+                    state.customRemedyViews.push({ id: editId, name, icon, fallaTitle, desc, fields });
+                }
+            } else {
+                viewId = 'view_' + Date.now();
+                state.customRemedyViews.push({ id: viewId, name, icon, fallaTitle, desc, fields });
+            }
+
+            saveCustomRemedyViews();
+            closeCustomRemedyModal();
+            setRemedyTab('custom_' + viewId);
+            showToast(`Vista "${name}" guardada correctamente`);
+        });
+    }
+
+    // Botón Editar Vista Actual
+    if (btnEditCurrentRemedyView) {
+        btnEditCurrentRemedyView.addEventListener('click', () => {
+            if (remedyActiveMode.startsWith('custom_')) {
+                const viewId = remedyActiveMode.replace('custom_', '');
+                const view = (state.customRemedyViews || []).find(v => v.id === viewId);
+                if (view) {
+                    openCustomRemedyModal(view);
+                }
+            }
+        });
+    }
+
+    // Botón Eliminar Vista Actual
+    if (btnDeleteCurrentRemedyView) {
+        btnDeleteCurrentRemedyView.addEventListener('click', () => {
+            if (remedyActiveMode.startsWith('custom_')) {
+                const viewId = remedyActiveMode.replace('custom_', '');
+                const view = (state.customRemedyViews || []).find(v => v.id === viewId);
+                const viewName = view ? view.name : 'esta vista';
+                if (confirm(`¿Estás seguro de eliminar la vista "${viewName}"?`)) {
+                    state.customRemedyViews = (state.customRemedyViews || []).filter(v => v.id !== viewId);
+                    saveCustomRemedyViews();
+                    setRemedyTab('red');
+                    showToast(`Vista "${viewName}" eliminada`);
+                }
+            }
         });
     }
 
