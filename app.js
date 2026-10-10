@@ -4224,7 +4224,7 @@ ${contactLines}`;
     const btnChangelog = document.getElementById('btnChangelog');
     const changelogModal = document.getElementById('changelogModal');
     const changelogModalClose = document.getElementById('changelogModalClose');
-    const APP_VERSION = '2.7.1';
+    const APP_VERSION = '2.7.2';
 
     if (btnChangelog && changelogModal) {
         btnChangelog.addEventListener('click', () => {

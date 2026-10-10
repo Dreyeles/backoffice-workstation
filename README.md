@@ -1,8 +1,8 @@
-# 🚀 BackOffice WorkStation Suite — Versión 8.1 (v2.7.1)
+# 🚀 BackOffice WorkStation Suite — Versión 8.1.1 (v2.7.2)
 
 <div align="center">
 
-![Versión](https://img.shields.io/badge/Versi%C3%B3n-8.1_LTS_(v2.7.1)-0ea5e9?style=for-the-badge&logo=rocket&logoColor=white)
+![Versión](https://img.shields.io/badge/Versi%C3%B3n-8.1.1_LTS_(v2.7.2)-0ea5e9?style=for-the-badge&logo=rocket&logoColor=white)
 ![Estado](https://img.shields.io/badge/Estado-Producci%C3%B3n-22c55e?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
@@ -11,15 +11,15 @@
 
 **Plataforma Integral de Productividad, Diagnóstico Técnico en Tiempo Real y Generación Automatizada de Plantillas para BackOffice Telecom.**
 
-[🌐 Probar en Vivo (GitHub Pages)](https://dreyeles.github.io/backoffice-workstation/) · [✨ Novedades v8.1](#-novedades-clave-de-la-versi%C3%B3n-81) · [📌 Módulos](#-m%C3%B3dulos-y-capacidades-principales) · [⌨️ Atajos de Teclado](#%EF%B8%8F-atajos-y-productividad)
+[🌐 Probar en Vivo (GitHub Pages)](https://dreyeles.github.io/backoffice-workstation/) · [✨ Novedades v8.1.1](#-novedades-clave-de-la-versi%C3%B3n-811-v272) · [📌 Módulos](#-m%C3%B3dulos-y-capacidades-principales) · [⌨️ Atajos de Teclado](#%EF%B8%8F-atajos-y-productividad)
 
 </div>
 
 ---
 
-## 🌟 Novedades Clave de la Versión 8.1 (v2.7.1)
+## 🌟 Novedades Clave de la Versión 8.1.1 (v2.7.2)
 
-La versión **8.1 (v2.7.1)** incorpora la homologación operativa oficial del **Flyer N° 41-BO FIJA (30/09/2026)** y optimizaciones ergonómicas de flujo rápido:
+La versión **8.1.1 (v2.7.2)** incorpora la homologación operativa oficial del **Flyer N° 41-BO FIJA (30/09/2026)** y optimizaciones ergonómicas de flujo rápido:
 
 ### 1. 📡 Homologación Oficial HFC — Flyer N° 41-BO FIJA (30/09/2026)
 - **🚨 Decisión Directa en Potencia Upstream:** Si la *Potencia Upstream* está fuera de rango ($< 36.1$ o $> 52.9\text{ dBmV}$), el analizador genera de inmediato **`🚨 GENERAR VISITA TÉCNICA`** *(sin descartes)*.
