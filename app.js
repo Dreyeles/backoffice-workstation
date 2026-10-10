@@ -3092,7 +3092,7 @@ ${contactLines}`;
         });
 
 
-        // Incognito Validator Logic
+        // Incognito Validator Logic (Alineado estrictamente al Flyer N° 41-BO FIJA del 30/09/2026)
         const runIncognitoValidation = () => {
             const parseNumbers = (text) => {
                 if (!text || !text.trim()) return null;
@@ -3106,7 +3106,7 @@ ${contactLines}`;
             const dsSnr = parseNumbers(elements.incInputDwsSnr.value);
             const usSnr = parseNumbers(elements.incInputUsSnr.value);
 
-            // Umbrales HFC
+            // Umbrales técnicos HFC:
             // DS SNR >= 33.5 dB
             // DS Potencia: -15.0 a 20.9 dBmV
             // US SNR >= 28.0 dB
@@ -3161,53 +3161,123 @@ ${contactLines}`;
                 }
             }
 
-            const totalBadParams = (dsSnrHasBad ? 1 : 0) + (dsPotHasBad ? 1 : 0) + (usSnrHasBad ? 1 : 0) + (usPotHasBad ? 1 : 0);
+            // =========================================================================
+            // PAUTAS OFICIALES - FLYER N° 41-BO FIJA (30/09/2026)
+            // =========================================================================
+            // 1. GENERAR VISITA TÉCNICA (ROJO):
+            //    - Potencia Upstream fuera de rango (Sin descartes).
+            //    - AMBOS niveles Downstream (D/S SNR y Potencia Downstream) fuera de rango.
+            //    - O fila con 2+ parámetros fuera de rango.
+            // 2. CONTINUAR DESCARTES REGULARES (ÁMBAR):
+            //    - Si solo UNO de los niveles Downstream está fuera de rango.
+            //    - Si los niveles del SNR de Upstream (U/S SNR) están fuera de rango.
+            //    - O si hay variación en bloque Downstream (Δ > 4.0 dB).
+            // =========================================================================
+
             const bothDsBad = dsSnrHasBad && dsPotHasBad;
+            const isUsPotCritical = usPotHasBad;
+            const isDsCritical = bothDsBad || hasRowWithMultipleBad;
+            const triggerVisitaTecnica = isUsPotCritical || isDsCritical;
 
-            // Regla solicitada:
-            // "el rojo solo se debe activar cuando en ds snr y pontencia downstream están mal también se debe activar en rojo si en la misma fila hay 2 o mas fuera de rango"
-            const triggerRed = bothDsBad || hasRowWithMultipleBad || totalBadParams >= 2;
+            // Variación de niveles en el bloque Downstream (Máx - Mín <= 4)
+            let dsDeltaInfo = '';
+            let dsDeltaExceeded = false;
+            if (dsSnr && dsSnr.length > 1) {
+                const minVal = Math.min(...dsSnr);
+                const maxVal = Math.max(...dsSnr);
+                const delta = +(maxVal - minVal).toFixed(2);
+                dsDeltaExceeded = delta > 4.0;
+                dsDeltaInfo = ` [Δ: ${delta} dB]`;
+            }
 
-            const validate = (values, checkBadFn, min, max, unit = 'dB', checkVariation = false) => {
-                if (!values || values.length === 0) return { status: 'UNKNOWN', text: 'Esperando datos...' };
-                const outOfRange = values.some(checkBadFn);
-                const displayVals = values.length > 5 ? values.slice(0, 5).join(', ') + '...' : values.join(', ');
+            const formatVals = (values, unit) => {
+                if (!values || values.length === 0) return '';
+                const display = values.length > 5 ? values.slice(0, 5).join(', ') + '...' : values.join(', ');
+                return `${display} ${unit}`;
+            };
 
-                // Variación de niveles en el bloque (Máx - Mín <= 4)
-                let deltaInfo = '';
-                let deltaExceeded = false;
-                if (checkVariation && values.length > 1) {
-                    const minVal = Math.min(...values);
-                    const maxVal = Math.max(...values);
-                    const delta = +(maxVal - minVal).toFixed(2);
-                    deltaExceeded = delta > 4.0;
-                    deltaInfo = ` [Δ: ${delta} ${unit}]`;
-                }
-
-                if (outOfRange) {
-                    if (triggerRed) {
-                        return {
-                            status: 'ERROR',
-                            text: `Fuera de Rango (${displayVals} ${unit})${deltaInfo}`
-                        };
-                    } else {
-                        // Solo 1 parámetro / canal aislado fuera de rango sin cumplir condición roja -> Advertencia (Ámbar)
-                        return {
-                            status: 'WARNING',
-                            text: `⚠️ Fuera de Rango (${displayVals} ${unit})${deltaInfo} [Alerta preventiva]`
-                        };
-                    }
-                }
-
-                if (deltaExceeded) {
-                    return {
+            // 1. U/S SNR (Flyer: Si U/S SNR está fuera de rango -> NO se genera visita directa; continuar descartes regulares)
+            let usSnrRes = { status: 'UNKNOWN', text: 'Esperando datos...' };
+            if (usSnr && usSnr.length > 0) {
+                if (usSnrHasBad) {
+                    usSnrRes = {
                         status: 'WARNING',
-                        text: `⚠️ Observación - Variación en Bloque: Δ ${deltaInfo}`
+                        text: `⚠️ Fuera de Rango (${formatVals(usSnr, 'dB')}) — 🔄 Continuar descartes regulares`
+                    };
+                } else {
+                    usSnrRes = {
+                        status: 'OK',
+                        text: `Dentro del Rango (${formatVals(usSnr, 'dB')})`
                     };
                 }
+            }
 
-                return { status: 'OK', text: `Dentro del Rango (${displayVals} ${unit})${deltaInfo}` };
-            };
+            // 2. Potencia Upstream (Flyer: Si Potencia Upstream está fuera de rango -> Generar Visita Técnica sin descartes)
+            let usPotRes = { status: 'UNKNOWN', text: 'Esperando datos...' };
+            if (usPot && usPot.length > 0) {
+                if (usPotHasBad) {
+                    usPotRes = {
+                        status: 'ERROR',
+                        text: `❌ Fuera de Rango (${formatVals(usPot, 'dBmV')}) — 🚨 Generar Visita Técnica (Sin descartes)`
+                    };
+                } else {
+                    usPotRes = {
+                        status: 'OK',
+                        text: `Dentro del Rango (${formatVals(usPot, 'dBmV')})`
+                    };
+                }
+            }
+
+            // 3. D/S SNR (Flyer: Visita solo si AMBOS DS están mal; si es solo 1 -> continuar descartes regulares)
+            let dsSnrRes = { status: 'UNKNOWN', text: 'Esperando datos...' };
+            if (dsSnr && dsSnr.length > 0) {
+                if (dsSnrHasBad) {
+                    if (isDsCritical) {
+                        dsSnrRes = {
+                            status: 'ERROR',
+                            text: `❌ Fuera de Rango (${formatVals(dsSnr, 'dB')}${dsDeltaInfo}) — 🚨 Generar Visita Técnica (Ambos DS fuera de rango)`
+                        };
+                    } else {
+                        dsSnrRes = {
+                            status: 'WARNING',
+                            text: `⚠️ Fuera de Rango (${formatVals(dsSnr, 'dB')}${dsDeltaInfo}) — 🔄 Continuar descartes regulares`
+                        };
+                    }
+                } else if (dsDeltaExceeded) {
+                    dsSnrRes = {
+                        status: 'WARNING',
+                        text: `⚠️ Observación - Variación en Bloque: Δ${dsDeltaInfo}`
+                    };
+                } else {
+                    dsSnrRes = {
+                        status: 'OK',
+                        text: `Dentro del Rango (${formatVals(dsSnr, 'dB')}${dsDeltaInfo})`
+                    };
+                }
+            }
+
+            // 4. Potencia Downstream (Flyer: Visita solo si AMBOS DS están mal; si es solo 1 -> continuar descartes regulares)
+            let dsPotRes = { status: 'UNKNOWN', text: 'Esperando datos...' };
+            if (dsPot && dsPot.length > 0) {
+                if (dsPotHasBad) {
+                    if (isDsCritical) {
+                        dsPotRes = {
+                            status: 'ERROR',
+                            text: `❌ Fuera de Rango (${formatVals(dsPot, 'dBmV')}) — 🚨 Generar Visita Técnica (Ambos DS fuera de rango)`
+                        };
+                    } else {
+                        dsPotRes = {
+                            status: 'WARNING',
+                            text: `⚠️ Fuera de Rango (${formatVals(dsPot, 'dBmV')}) — 🔄 Continuar descartes regulares`
+                        };
+                    }
+                } else {
+                    dsPotRes = {
+                        status: 'OK',
+                        text: `Dentro del Rango (${formatVals(dsPot, 'dBmV')})`
+                    };
+                }
+            }
 
             const setVisuals = (element, result, label) => {
                 if (!element) return;
@@ -3231,31 +3301,28 @@ ${contactLines}`;
                 }
             };
 
-            const dsSnrRes = validate(dsSnr, isDsSnrBad, 33.5, null, 'dB', true);
-            const dsPotRes = validate(dsPot, isDsPotBad, -15, 20.9, 'dBmV', false);
-            const usSnrRes = validate(usSnr, isUsSnrBad, 28, null, 'dB', false);
-            const usPotRes = validate(usPot, isUsPotBad, 36.1, 52.9, 'dBmV', false);
-
             setVisuals(elements.incResultUsSnr, usSnrRes, 'U/S SNR');
             setVisuals(elements.incResultDwsSnr, dsSnrRes, 'D/S SNR');
             setVisuals(elements.incResultDwsPot, dsPotRes, 'Potencia Downstream');
             setVisuals(elements.incResultUsPot, usPotRes, 'Potencia Upstream');
 
-            // Actualizar Badge de Estado Global HFC
+            // Actualizar Badge de Estado Global HFC según Flyer 41-BO FIJA
             if (elements.incGlobalBadge) {
                 const hasAnyData = dsSnr || dsPot || usSnr || usPot;
+                const anyBadParam = dsSnrHasBad || dsPotHasBad || usSnrHasBad || usPotHasBad || dsDeltaExceeded;
+
                 if (!hasAnyData) {
                     elements.incGlobalBadge.textContent = 'Esperando datos...';
                     elements.incGlobalBadge.style.backgroundColor = 'transparent';
                     elements.incGlobalBadge.style.color = 'var(--text-muted)';
                     elements.incGlobalBadge.style.border = '1px dashed var(--border-color)';
-                } else if (triggerRed && (dsSnrHasBad || dsPotHasBad || usSnrHasBad || usPotHasBad)) {
-                    elements.incGlobalBadge.textContent = '🔴 FALLA CRÍTICA (ROJO)';
+                } else if (triggerVisitaTecnica) {
+                    elements.incGlobalBadge.textContent = '🚨 GENERAR VISITA TÉCNICA';
                     elements.incGlobalBadge.style.backgroundColor = 'rgba(220, 53, 69, 0.2)';
                     elements.incGlobalBadge.style.color = '#dc3545';
                     elements.incGlobalBadge.style.border = '1px solid #dc3545';
-                } else if (totalBadParams === 1 || dsSnrRes.status === 'WARNING' || dsPotRes.status === 'WARNING') {
-                    elements.incGlobalBadge.textContent = '⚠️ OBSERVACIÓN (ÁMBAR)';
+                } else if (anyBadParam) {
+                    elements.incGlobalBadge.textContent = '🔄 CONTINUAR DESCARTES REGULARES';
                     elements.incGlobalBadge.style.backgroundColor = 'rgba(245, 158, 11, 0.2)';
                     elements.incGlobalBadge.style.color = '#f59e0b';
                     elements.incGlobalBadge.style.border = '1px solid #f59e0b';
@@ -3454,15 +3521,22 @@ ${contactLines}`;
             elements.btnSmartPasteClip.addEventListener('click', async () => {
                 try {
                     const text = await navigator.clipboard.readText();
-                    if (text && applySmartHfcBlock(text)) {
-                        if (elements.incSmartPaste) elements.incSmartPaste.value = text;
+                    if (text && text.trim()) {
+                        if (elements.incSmartPaste) {
+                            elements.incSmartPaste.value = text;
+                        }
+                        const recognized = applySmartHfcBlock(text);
+                        if (!recognized) {
+                            showToast('Texto pegado en el recuadro', 'info');
+                        }
                     } else {
-                        showToast('No se reconocieron parámetros HFC en el portapapeles', 'warning');
-                        if (elements.incSmartPaste) elements.incSmartPaste.focus();
+                        showToast('El portapapeles está vacío', 'info');
                     }
                 } catch (err) {
-                    showToast('Pega el texto directamente en el cuadro de Pegado Inteligente', 'info');
-                    if (elements.incSmartPaste) elements.incSmartPaste.focus();
+                    if (elements.incSmartPaste) {
+                        elements.incSmartPaste.focus();
+                    }
+                    showToast('Permite el acceso al portapapeles o presiona Ctrl+V', 'warning');
                 }
             });
         }
@@ -3631,15 +3705,22 @@ ${contactLines}`;
             elements.btnFtthSmartPasteClip.addEventListener('click', async () => {
                 try {
                     const text = await navigator.clipboard.readText();
-                    if (text && applySmartFtthBlock(text)) {
-                        if (elements.ftthSmartPaste) elements.ftthSmartPaste.value = text;
+                    if (text && text.trim()) {
+                        if (elements.ftthSmartPaste) {
+                            elements.ftthSmartPaste.value = text;
+                        }
+                        const recognized = applySmartFtthBlock(text);
+                        if (!recognized) {
+                            showToast('Texto pegado en el recuadro', 'info');
+                        }
                     } else {
-                        showToast('No se reconocieron niveles FTTH en el portapapeles', 'warning');
-                        if (elements.ftthSmartPaste) elements.ftthSmartPaste.focus();
+                        showToast('El portapapeles está vacío', 'info');
                     }
                 } catch (err) {
-                    showToast('Pega el reporte directamente en el cuadro de Pegado Inteligente FTTH', 'info');
-                    if (elements.ftthSmartPaste) elements.ftthSmartPaste.focus();
+                    if (elements.ftthSmartPaste) {
+                        elements.ftthSmartPaste.focus();
+                    }
+                    showToast('Permite el acceso al portapapeles o presiona Ctrl+V', 'warning');
                 }
             });
         }
@@ -4143,7 +4224,7 @@ ${contactLines}`;
     const btnChangelog = document.getElementById('btnChangelog');
     const changelogModal = document.getElementById('changelogModal');
     const changelogModalClose = document.getElementById('changelogModalClose');
-    const APP_VERSION = '2.7.0';
+    const APP_VERSION = '2.7.1';
 
     if (btnChangelog && changelogModal) {
         btnChangelog.addEventListener('click', () => {

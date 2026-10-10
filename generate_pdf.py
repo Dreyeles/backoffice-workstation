@@ -539,7 +539,7 @@ html += f"""
     </table>
 
     <div style="margin-top:8px; padding:8px 12px; background:rgba(239, 68, 68, 0.08); border-left:3px solid #ef4444; border-radius:4px; font-size:0.82rem; color:#b91c1c; line-height:1.4;">
-        📌 <strong>Regla de Criticidad HFC (Alerta Roja):</strong> El estado <strong>ROJO (Crítico)</strong> solo se activa si <em>D/S SNR</em> y <em>Potencia Downstream</em> están simultáneamente fuera de rango, o si en una misma fila/canal hay 2 o más parámetros fuera de rango. Si únicamente 1 parámetro se encuentra fuera de rango de forma aislada, el sistema emite una advertencia preventiva en <strong>ÁMBAR</strong>.
+        📌 <strong>Regla de Decisión HFC — Flyer N° 41-BO FIJA (30/09/2026):</strong> Se genera <strong>🚨 Visita Técnica (ROJO)</strong> si la <em>Potencia Upstream</em> está fuera de rango (sin descartes), o si <em>D/S SNR</em> y <em>Potencia Downstream</em> están simultáneamente fuera de rango. Si solo el <em>U/S SNR</em> o únicamente <em>uno</em> de los niveles Downstream está fuera de rango, se debe <strong>🔄 Continuar con descartes regulares (ÁMBAR)</strong>.
     </div>
 
     <div style="margin-top:12px; margin-bottom:4px;"><strong>Catálogo de Equipos y Credenciales Registradas:</strong></div>

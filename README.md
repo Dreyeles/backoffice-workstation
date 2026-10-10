@@ -1,8 +1,8 @@
-# 🚀 BackOffice WorkStation Suite — Versión 8.0
+# 🚀 BackOffice WorkStation Suite — Versión 8.1 (v2.7.1)
 
 <div align="center">
 
-![Versión](https://img.shields.io/badge/Versi%C3%B3n-8.0_LTS-0ea5e9?style=for-the-badge&logo=rocket&logoColor=white)
+![Versión](https://img.shields.io/badge/Versi%C3%B3n-8.1_LTS_(v2.7.1)-0ea5e9?style=for-the-badge&logo=rocket&logoColor=white)
 ![Estado](https://img.shields.io/badge/Estado-Producci%C3%B3n-22c55e?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
@@ -11,13 +11,25 @@
 
 **Plataforma Integral de Productividad, Diagnóstico Técnico en Tiempo Real y Generación Automatizada de Plantillas para BackOffice Telecom.**
 
-[🌐 Probar en Vivo (GitHub Pages)](https://dreyeles.github.io/backoffice-workstation/) · [✨ Novedades v8.0](#-novedades-clave-de-la-versi%C3%B3n-80) · [📌 Módulos](#-m%C3%B3dulos-y-capacidades-principales) · [⌨️ Atajos de Teclado](#%EF%B8%8F-atajos-y-productividad)
+[🌐 Probar en Vivo (GitHub Pages)](https://dreyeles.github.io/backoffice-workstation/) · [✨ Novedades v8.1](#-novedades-clave-de-la-versi%C3%B3n-81) · [📌 Módulos](#-m%C3%B3dulos-y-capacidades-principales) · [⌨️ Atajos de Teclado](#%EF%B8%8F-atajos-y-productividad)
 
 </div>
 
 ---
 
-## 🌟 Novedades Clave de la Versión 8.0
+## 🌟 Novedades Clave de la Versión 8.1 (v2.7.1)
+
+La versión **8.1 (v2.7.1)** incorpora la homologación operativa oficial del **Flyer N° 41-BO FIJA (30/09/2026)** y optimizaciones ergonómicas de flujo rápido:
+
+### 1. 📡 Homologación Oficial HFC — Flyer N° 41-BO FIJA (30/09/2026)
+- **🚨 Decisión Directa en Potencia Upstream:** Si la *Potencia Upstream* está fuera de rango ($< 36.1$ o $> 52.9\text{ dBmV}$), el analizador genera de inmediato **`🚨 GENERAR VISITA TÉCNICA`** *(sin descartes)*.
+- **📊 Regla Estricta Downstream:** Solo se genera Visita Técnica si **ambos niveles** (*D/S SNR* y *Potencia Downstream*) están fuera de rango simultáneamente (o si coinciden 2+ en la misma fila/canal). Si únicamente 1 parámetro se encuentra alterado de forma aislada, el sistema emite **`🔄 CONTINUAR DESCARTES REGULARES`** *(Ámbar)*.
+- **🔄 Diagnóstico de U/S SNR:** Si el SNR de Upstream está fuera de rango ($< 28.0\text{ dB}$), el sistema orienta a **`🔄 CONTINUAR DESCARTES REGULARES`** sin generar visita técnica directa.
+- **📋 Botón `📋 Pegar` Ultra-Rápido:** Inserción con 1 clic de lo último copiado en el portapapeles con auto-distribución y evaluación en tiempo real tanto para HFC como para FTTH.
+
+---
+
+## 🌟 Novedades Previas (Versión 8.0)
 
 La versión **8.0** revoluciona la experiencia operativa con un ecosistema inteligente de asistencia en tiempo real, previsualizaciones flotantes, navegación lateral expandible y autocorrección contextual:
 
@@ -70,7 +82,7 @@ graph TD
 * **Copiado al Portapapeles en 1-Clic:** Formato limpio y compatible con los gestores de tickets.
 
 ### 2. ⚡ Diagnóstico Técnico de Niveles (HFC & FTTH)
-* **HFC (Coaxial):** Validación de *Upstream SNR*, *Downstream SNR*, *Potencia Rx*, *Potencia Tx*, **análisis de variación en bloque D/S SNR ($\Delta \le 4.0\text{ dB}$)** y algoritmo de criticidad (activación en **ROJO** solo si *D/S SNR* y *Potencia DS* fallan juntos o si hay 2 o más parámetros fuera de rango en la misma fila/canal; fallas aisladas se muestran en advertencia preventiva **ÁMBAR**).
+* **HFC (Coaxial):** Validación de *Upstream SNR*, *Downstream SNR*, *Potencia Rx*, *Potencia Tx*, **análisis de variación en bloque D/S SNR ($\Delta \le 4.0\text{ dB}$)** y matriz de decisión oficial (**Flyer N° 41-BO FIJA**): activación de **🚨 GENERAR VISITA TÉCNICA (ROJO)** si la *Potencia Upstream* está fuera de rango (sin descartes) o si *D/S SNR* y *Potencia Downstream* fallan simultáneamente; si solo falla *U/S SNR* o un único parámetro Downstream, se indica **🔄 CONTINUAR DESCARTES REGULARES (ÁMBAR)**.
 * **FTTH (Fibra Óptica):** Validación instantánea de niveles ópticos *Tx* y *Rx* con semáforo visual de tolerancias homologadas.
 
 ### 3. 🛠️ Estructurador de Escalamientos Remedy
