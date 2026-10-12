@@ -4078,15 +4078,39 @@ ${contactLines}`;
                         }
 
                         // Handle image
+                        delete elements.eqImage.dataset.fallbackTried;
                         elements.eqImage.src = result.imagen;
                         elements.eqImage.style.display = 'block';
                         elements.eqImagePlaceholder.style.display = 'none';
 
                         // Fallback if image fails to load
                         elements.eqImage.onerror = () => {
+                            if (!elements.eqImage.dataset.fallbackTried) {
+                                elements.eqImage.dataset.fallbackTried = '1';
+                                if (result.imagen && result.imagen.includes('ZXHN-F6600P')) {
+                                    elements.eqImage.src = 'img/ONT_ZTE_F6600P.jpg';
+                                    return;
+                                }
+                                if (result.imagen && result.imagen.includes('ZTE_680')) {
+                                    elements.eqImage.src = 'img/ONT_ZTE ZXHNF680.jpg';
+                                    return;
+                                }
+                                if (result.imagen && result.imagen.includes('HG8145V5')) {
+                                    elements.eqImage.src = 'img/ONT_HUAWEI HG815V5.jpg';
+                                    return;
+                                }
+                                if (result.imagen && result.imagen.includes('HG8245Q2')) {
+                                    elements.eqImage.src = 'img/ONT_HUAWEI HG8245Q2.jpg';
+                                    return;
+                                }
+                                if (result.imagen && result.imagen.includes('HG8145X6')) {
+                                    elements.eqImage.src = 'img/HUAWEI HG8145X6-10.webp';
+                                    return;
+                                }
+                            }
                             elements.eqImage.style.display = 'none';
                             elements.eqImagePlaceholder.style.display = 'block';
-                            elements.eqImagePlaceholder.textContent = 'Falta imagen (' + result.imagen + ')';
+                            elements.eqImagePlaceholder.textContent = '📷 Imagen no disponible';
                         };
                     } else {
                         elements.eqResultContainer.style.display = 'block';

@@ -885,6 +885,7 @@ const modelosData = {
         nombre: "HUMAX INFINITY601",
         vendor: "Humax",
         modelo: "Infinity601",
+        aliases: ["INFINITY 601", "INFINITY601", "INFINITY_601", "HUMAX INFINITY 601", "HN601"],
         docsis: "DOCSIS 3.1",
         wifi: "Wifi 5",
         red: "HFC",
@@ -894,7 +895,7 @@ const modelosData = {
         velocidad: 1000,
         tipo: "Router HFC (DOCSIS 3.1)",
         homologado: true,
-        img: "img/HUMAX INFINITY 601.jpg",
+        img: "img/INFINITY_601.webp",
         descripcion: "Router HFC DOCSIS 3.1 Wi-Fi 5. Sin soporte para repetidor Claro."
     },
 
@@ -903,6 +904,7 @@ const modelosData = {
         nombre: "HUAWEI HG8145V5",
         vendor: "Huawei",
         modelo: "HG8145V5",
+        aliases: ["8145V5", "HG8145V5", "HG 8145 V5", "HG8145"],
         docsis: "GPON",
         wifi: "Wifi 5",
         red: "FTTH",
@@ -912,7 +914,7 @@ const modelosData = {
         velocidad: 300,
         tipo: "ONT FTTH (Wi-Fi 5)",
         homologado: true,
-        img: "img/HUAWEI HG8145V5.jpg",
+        img: "img/HG8145V5.jpg",
         descripcion: "ONT FTTH GPON Dual Band Wi-Fi 5 (300 Mbps). Compatible con repetidor Claro."
     },
     "HG8245W56T": {
@@ -929,13 +931,14 @@ const modelosData = {
         velocidad: 500,
         tipo: "ONT FTTH (Wi-Fi 5)",
         homologado: true,
-        img: "img/HUAWEI HG8245W5.jpg",
+        img: "img/HUAWEI HG8245Q2.webp",
         descripcion: "ONT FTTH GPON Wi-Fi 5 High Power (Hasta 500 Mbps). Compatible con repetidor Claro."
     },
     "HG8247U": {
         nombre: "HUAWEI HG8247U",
         vendor: "Huawei",
         modelo: "HG8247U",
+        aliases: ["8247U", "HG8247U", "HG 8247 U", "8247"],
         docsis: "GPON",
         wifi: "Wifi 5",
         red: "FTTH",
@@ -945,13 +948,14 @@ const modelosData = {
         velocidad: 300,
         tipo: "ONT FTTH (Wi-Fi 5)",
         homologado: true,
-        img: "img/HUAWEI HG8247U.jpg",
+        img: "img/HG8145V5.jpg",
         descripcion: "ONT FTTH GPON con puertos CATV / RF (300 Mbps). Compatible con repetidor Claro."
     },
     "HG8245Q2": {
         nombre: "HUAWEI HG8245Q2",
         vendor: "Huawei",
         modelo: "HG8245Q2",
+        aliases: ["8245Q2", "HG8245Q2", "HG 8245 Q2", "8245", "HG8245"],
         docsis: "GPON",
         wifi: "Wifi 5",
         red: "FTTH",
@@ -961,14 +965,14 @@ const modelosData = {
         velocidad: 500,
         tipo: "ONT FTTH (Wi-Fi 5)",
         homologado: true,
-        img: "img/HUAWEI HG8245Q2.jpg",
+        img: "img/HUAWEI HG8245Q2.webp",
         descripcion: "ONT FTTH GPON Dual Band Wi-Fi 5 (500 Mbps). Compatible con repetidor Claro."
     },
     "F680V6008": {
         nombre: "ZTE F680 V6.0.08",
         vendor: "ZTE",
         modelo: "F680V6.0.08",
-        aliases: ["F680", "F680V6", "F680 V6.0.08"],
+        aliases: ["F680", "F680V6", "F680 V6.0.08", "ZTE 680", "ZTE_680"],
         docsis: "GPON",
         wifi: "Wifi 5",
         red: "FTTH",
@@ -978,14 +982,14 @@ const modelosData = {
         velocidad: 300,
         tipo: "ONT FTTH (Wi-Fi 5)",
         homologado: true,
-        img: "img/ZTE ZXHN F680 V6.0.08.jpg",
+        img: "img/ZTE_680.jpg",
         descripcion: "ONT FTTH GPON ZTE Wi-Fi 5 (300 Mbps). Compatible con repetidor Claro."
     },
     "F680V6024": {
         nombre: "ZTE F680 V6.0.24",
         vendor: "ZTE",
         modelo: "F680V6.0.24",
-        aliases: ["F680", "F680 V6.0.24"],
+        aliases: ["F680", "F680 V6.0.24", "ZTE 680", "ZTE_680"],
         docsis: "GPON",
         wifi: "Wifi 5",
         red: "FTTH",
@@ -995,7 +999,7 @@ const modelosData = {
         velocidad: 500,
         tipo: "ONT FTTH (Wi-Fi 5)",
         homologado: true,
-        img: "img/ZTE ZXHN F680 V6.0.24.jpg",
+        img: "img/ZTE_680.jpg",
         descripcion: "ONT FTTH GPON ZTE Wi-Fi 5 versión 6.0.24 (500 Mbps). Compatible con repetidor Claro."
     },
 
@@ -1014,7 +1018,7 @@ const modelosData = {
         velocidad: 1000,
         tipo: "ONT FTTH (Wi-Fi 6 AX)",
         homologado: true,
-        img: "img/HUAWEI HG8145X6-10.jpg",
+        img: "img/HUAWEI HG8145X6-10.png",
         descripcion: "ONT FTTH Wi-Fi 6 AX3000 de alta velocidad (1 Gbps). Soporte MESH Claro."
     },
     "FAST5670V2": {
@@ -1038,7 +1042,7 @@ const modelosData = {
         nombre: "ZTE F6600P V9.0.12",
         vendor: "ZTE",
         modelo: "F6600PV9.0.12",
-        aliases: ["F6600P", "F6600", "F6600PV9", "6600P"],
+        aliases: ["F6600P", "F6600", "F6600PV9", "6600P", "ZXHN-F6600P"],
         docsis: "GPON",
         wifi: "Wifi 6",
         red: "FTTH",
@@ -1048,7 +1052,7 @@ const modelosData = {
         velocidad: 1000,
         tipo: "ONT FTTH (Wi-Fi 6 AX)",
         homologado: true,
-        img: "img/ZTE ZXHN F6600P.jpg",
+        img: "img/ZXHN-F6600P-FTTH-1.jpg",
         descripcion: "ONT FTTH Wi-Fi 6 AX3000 con tecnología EasyMesh. Máximo rendimiento 1 Gbps."
     },
 
