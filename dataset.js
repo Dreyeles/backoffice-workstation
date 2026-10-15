@@ -853,6 +853,7 @@ const modelosData = {
         nombre: "TECHNICOLOR CGA4233CLP2",
         vendor: "Technicolor",
         modelo: "CGA4233CLP2",
+        aliases: ["CGA4233", "CGA4233CLP2", "CGA 4233", "4233"],
         docsis: "DOCSIS 3.1",
         wifi: "Wifi 5",
         red: "HFC",
@@ -861,42 +862,48 @@ const modelosData = {
         repetidor: "SI",
         velocidad: 1000,
         tipo: "Router HFC (DOCSIS 3.1)",
-        homologado: true,
+        homologado: false, // Sin TR-069
         img: "img/TECNICOLOR CGA4233 CLP2.jpg",
-        descripcion: "Router HFC DOCSIS 3.1 Gigabit Wi-Fi 5. Compatible con Repetidor Claro."
+        descripcion: "Router HFC DOCSIS 3.1 Gigabit Wi-Fi 5. Plataforma de revisión sin TR-069 (No Homologado)."
     },
     "TG3442": {
         nombre: "ARRIS TG3442",
         vendor: "Arris",
         modelo: "TG3442",
+        aliases: ["TG3442", "TG 3442", "ARRIS TG3442", "3442"],
         docsis: "DOCSIS 3.1",
-        wifi: "Wifi 5",
+        wifi: "Wifi 6",
         red: "HFC",
-        firmware: "AR01.02.053.01_042419_711.NCS.10",
-        plataformas: "INCOGNITO / REMOTO",
+        firmware: "01.04.128.08.03.NCS",
+        plataformas: "INCOGNITO / TR069 / REMOTO",
         repetidor: "SI",
         velocidad: 1000,
-        tipo: "Router HFC (DOCSIS 3.1)",
-        homologado: true,
+        tipo: "Router HFC (DOCSIS 3.1 Wi-Fi 6)",
+        homologado: true, // Con TR-069
         img: "img/ARRIS TG3442.jpg",
-        descripcion: "Router HFC DOCSIS 3.1 Gigabit Wi-Fi 5 (1 Gbps). Compatible con Repetidor Claro."
+        imagenes: [
+            { label: "Frontal", src: "img/ARRIS TG3442.jpg", desc: "Vista frontal con panel de indicadores LED" },
+            { label: "Lateral (Right)", src: "img/ARRIS TG3442 RIGHT.webp", desc: "Vista lateral derecha de ventilación y disipación" },
+            { label: "Posterior (Back / Puertos)", src: "img/ARRIS TG3442 BACK.png", desc: "Panel posterior: Puertos Ethernet Gigabit, coaxial RF, alimentación y reset" }
+        ],
+        descripcion: "Router HFC DOCSIS 3.1 Gigabit Wi-Fi 6 (1 Gbps). Compatible con Repetidor Claro."
     },
     "INFINITY601": {
-        nombre: "HUMAX INFINITY601",
-        vendor: "Humax",
+        nombre: "CASTLENET INFINITY601",
+        vendor: "Castlenet",
         modelo: "Infinity601",
-        aliases: ["INFINITY 601", "INFINITY601", "INFINITY_601", "HUMAX INFINITY 601", "HN601"],
+        aliases: ["INFINITY 601", "INFINITY601", "INFINITY_601", "CASTLENET INFINITY 601", "HUMAX INFINITY 601", "HN601", "601"],
         docsis: "DOCSIS 3.1",
-        wifi: "Wifi 5",
+        wifi: "Wifi 6",
         red: "HFC",
-        firmware: "HN601-CLARO-1.0.1",
+        firmware: "v0.20.2232M.011",
         plataformas: "INCOGNITO / REMOTO",
         repetidor: "NO",
         velocidad: 1000,
-        tipo: "Router HFC (DOCSIS 3.1)",
-        homologado: true,
+        tipo: "Router HFC (DOCSIS 3.1 Wi-Fi 6)",
+        homologado: false, // Sin TR-069
         img: "img/INFINITY_601.webp",
-        descripcion: "Router HFC DOCSIS 3.1 Wi-Fi 5. Sin soporte para repetidor Claro."
+        descripcion: "Router HFC DOCSIS 3.1 Wi-Fi 6 (Castlenet). Plataforma de revisión sin TR-069 (No Homologado)."
     },
 
     // --- FTTH: GPON (Wi-Fi 5) ---
@@ -904,16 +911,16 @@ const modelosData = {
         nombre: "HUAWEI HG8145V5",
         vendor: "Huawei",
         modelo: "HG8145V5",
-        aliases: ["8145V5", "HG8145V5", "HG 8145 V5", "HG8145"],
+        aliases: ["8145V5", "HG8145V5", "HG 8145 V5", "HG8145", "8145"],
         docsis: "GPON",
         wifi: "Wifi 5",
         red: "FTTH",
-        firmware: "V5R019C00S105",
-        plataformas: "INCOGNITO / U2000 / TR069",
+        firmware: "V5R019C10S385",
+        plataformas: "INCOGNITO / TR069 / REMOTO",
         repetidor: "SI",
         velocidad: 300,
         tipo: "ONT FTTH (Wi-Fi 5)",
-        homologado: true,
+        homologado: true, // Con TR-069
         img: "img/HG8145V5.jpg",
         descripcion: "ONT FTTH GPON Dual Band Wi-Fi 5 (300 Mbps). Compatible con repetidor Claro."
     },
@@ -921,18 +928,18 @@ const modelosData = {
         nombre: "HUAWEI HG8245W5-6T",
         vendor: "Huawei",
         modelo: "HG8245W5-6T",
-        aliases: ["HG8245W5", "HG8245W5-6T", "8245W5"],
+        aliases: ["HG8245W5", "HG8245W5-6T", "8245W5", "8245W5-6T", "HG 8245 W5"],
         docsis: "GPON",
         wifi: "Wifi 5",
         red: "FTTH",
-        firmware: "V5R019C20S115",
-        plataformas: "INCOGNITO / U2000 / TR069",
+        firmware: "V5R020C00S310",
+        plataformas: "INCOGNITO / REMOTO",
         repetidor: "SI",
         velocidad: 500,
         tipo: "ONT FTTH (Wi-Fi 5)",
-        homologado: true,
+        homologado: false, // Sin TR-069
         img: "img/HUAWEI HG8245Q2.webp",
-        descripcion: "ONT FTTH GPON Wi-Fi 5 High Power (Hasta 500 Mbps). Compatible con repetidor Claro."
+        descripcion: "ONT FTTH GPON Wi-Fi 5 High Power. Plataforma de revisión sin TR-069 (No Homologado)."
     },
     "HG8247U": {
         nombre: "HUAWEI HG8247U",
@@ -942,12 +949,12 @@ const modelosData = {
         docsis: "GPON",
         wifi: "Wifi 5",
         red: "FTTH",
-        firmware: "V3R017C10S125",
-        plataformas: "INCOGNITO / U2000 / TR069",
+        firmware: "V3R018C10S110",
+        plataformas: "INCOGNITO / TR069 / REMOTO",
         repetidor: "SI",
         velocidad: 300,
         tipo: "ONT FTTH (Wi-Fi 5)",
-        homologado: true,
+        homologado: true, // Con TR-069
         img: "img/HG8145V5.jpg",
         descripcion: "ONT FTTH GPON con puertos CATV / RF (300 Mbps). Compatible con repetidor Claro."
     },
@@ -959,12 +966,12 @@ const modelosData = {
         docsis: "GPON",
         wifi: "Wifi 5",
         red: "FTTH",
-        firmware: "V3R017C10S100",
-        plataformas: "INCOGNITO / U2000 / TR069",
+        firmware: "V3R017C10S105",
+        plataformas: "INCOGNITO / TR069 / REMOTO",
         repetidor: "SI",
         velocidad: 500,
         tipo: "ONT FTTH (Wi-Fi 5)",
-        homologado: true,
+        homologado: true, // Con TR-069
         img: "img/HUAWEI HG8245Q2.webp",
         descripcion: "ONT FTTH GPON Dual Band Wi-Fi 5 (500 Mbps). Compatible con repetidor Claro."
     },
@@ -972,16 +979,16 @@ const modelosData = {
         nombre: "ZTE F680 V6.0.08",
         vendor: "ZTE",
         modelo: "F680V6.0.08",
-        aliases: ["F680", "F680V6", "F680 V6.0.08", "ZTE 680", "ZTE_680"],
+        aliases: ["F680", "F680V6", "F680 V6.0.08", "F680V6.0.08", "F680-08", "680-08", "ZTE 680", "ZTE_680", "680"],
         docsis: "GPON",
         wifi: "Wifi 5",
         red: "FTTH",
-        firmware: "V6.0.08P1T1",
-        plataformas: "INCOGNITO / NetNumen / TR069",
+        firmware: "V6.0.20P1N92B",
+        plataformas: "INCOGNITO / TR069 / REMOTO",
         repetidor: "SI",
         velocidad: 300,
         tipo: "ONT FTTH (Wi-Fi 5)",
-        homologado: true,
+        homologado: true, // Con TR-069
         img: "img/ZTE_680.jpg",
         descripcion: "ONT FTTH GPON ZTE Wi-Fi 5 (300 Mbps). Compatible con repetidor Claro."
     },
@@ -989,16 +996,16 @@ const modelosData = {
         nombre: "ZTE F680 V6.0.24",
         vendor: "ZTE",
         modelo: "F680V6.0.24",
-        aliases: ["F680", "F680 V6.0.24", "ZTE 680", "ZTE_680"],
+        aliases: ["F680 V6.0.24", "F680V6.0.24", "F680-24", "680-24", "ZTE 680-24"],
         docsis: "GPON",
         wifi: "Wifi 5",
         red: "FTTH",
-        firmware: "V6.0.24P1T2",
-        plataformas: "INCOGNITO / NetNumen / TR069",
+        firmware: "V6.0.20P1N92B",
+        plataformas: "INCOGNITO / TR069 / REMOTO",
         repetidor: "SI",
         velocidad: 500,
         tipo: "ONT FTTH (Wi-Fi 5)",
-        homologado: true,
+        homologado: true, // Con TR-069
         img: "img/ZTE_680.jpg",
         descripcion: "ONT FTTH GPON ZTE Wi-Fi 5 versión 6.0.24 (500 Mbps). Compatible con repetidor Claro."
     },
@@ -1008,16 +1015,16 @@ const modelosData = {
         nombre: "HUAWEI HG8145X6-10",
         vendor: "Huawei",
         modelo: "HG8145X6-10",
-        aliases: ["HG8145X6", "8145X6", "HG8145X6-10"],
+        aliases: ["HG8145X6", "8145X6", "HG8145X6-10", "8145X6-10"],
         docsis: "GPON",
         wifi: "Wifi 6",
         red: "FTTH",
-        firmware: "V5R020C10S150",
-        plataformas: "INCOGNITO / U2000 / TR069 / NCE",
+        firmware: "V5R022C00S201",
+        plataformas: "INCOGNITO / TR069 / REMOTO",
         repetidor: "SI",
         velocidad: 1000,
         tipo: "ONT FTTH (Wi-Fi 6 AX)",
-        homologado: true,
+        homologado: true, // Con TR-069
         img: "img/HUAWEI HG8145X6-10.png",
         descripcion: "ONT FTTH Wi-Fi 6 AX3000 de alta velocidad (1 Gbps). Soporte MESH Claro."
     },
@@ -1029,31 +1036,31 @@ const modelosData = {
         docsis: "GPON",
         wifi: "Wifi 6",
         red: "FTTH",
-        firmware: "SG6C10000034",
-        plataformas: "INCOGNITO / LINKZTE / TR069",
+        firmware: "SGfj1P000053",
+        plataformas: "INCOGNITO / LINKZTE / REMOTO",
         repetidor: "SI",
         velocidad: 1000,
         tipo: "ONT FTTH (Wi-Fi 6 AX)",
-        homologado: true,
+        homologado: false, // Sin TR-069 (LinkZTE / Remoto)
         img: "img/ONT_SAGEMCOM FAST5670 v2.jpg",
-        descripcion: "Terminal ONT FTTH Sagemcom con Wi-Fi 6 (1 GB A+ Mbps). Revisión vía LinkZTE / Incógnito."
+        descripcion: "Terminal ONT FTTH Sagemcom con Wi-Fi 6. Plataforma de revisión sin TR-069 (No Homologado)."
     },
     "F6600PV9012": {
         nombre: "ZTE F6600P V9.0.12",
         vendor: "ZTE",
         modelo: "F6600PV9.0.12",
-        aliases: ["F6600P", "F6600", "F6600PV9", "6600P", "ZXHN-F6600P"],
+        aliases: ["F6600P", "F6600", "F6600PV9", "F6600PV9.0.12", "6600P", "ZXHN-F6600P"],
         docsis: "GPON",
         wifi: "Wifi 6",
         red: "FTTH",
-        firmware: "V9.0.12P1T1",
-        plataformas: "INCOGNITO / LINKZTE / TR069",
+        firmware: "V9.0.10P8N13E",
+        plataformas: "INCOGNITO / LINKZTE / REMOTO",
         repetidor: "SI",
         velocidad: 1000,
         tipo: "ONT FTTH (Wi-Fi 6 AX)",
-        homologado: true,
+        homologado: false, // Sin TR-069 (LinkZTE / Remoto)
         img: "img/ZXHN-F6600P-FTTH-1.jpg",
-        descripcion: "ONT FTTH Wi-Fi 6 AX3000 con tecnología EasyMesh. Máximo rendimiento 1 Gbps."
+        descripcion: "ONT FTTH Wi-Fi 6 AX3000 con tecnología EasyMesh. Plataforma de revisión sin TR-069 (No Homologado)."
     },
 
     // --- HFC: DOCSIS 2.0 / 3.0 Legados y No Homologados ---
@@ -1069,7 +1076,7 @@ const modelosData = {
         repetidor: "NO",
         velocidad: 60,
         tipo: "Router HFC (DOCSIS 3.0)",
-        homologado: true,
+        homologado: false, // Sin TR-069
         img: "img/CISCO DPC3926.jpg",
         descripcion: "Router HFC DOCSIS 3.0 antiguo (hasta 60 Mbps). Sin soporte repetidor."
     },
@@ -1085,7 +1092,7 @@ const modelosData = {
         repetidor: "NO",
         velocidad: 30,
         tipo: "Router HFC (DOCSIS 3.0)",
-        homologado: false,
+        homologado: false, // Sin TR-069
         img: "img/CISCO DPQ3925.jpg",
         descripcion: "Router HFC DOCSIS 3.0 con soporte eMTA de voz. Obsoleto para altas velocidades."
     },
@@ -1101,31 +1108,37 @@ const modelosData = {
         repetidor: "NO",
         velocidad: 30,
         tipo: "Router HFC (DOCSIS 3.0)",
-        homologado: false,
+        homologado: false, // Sin TR-069
         img: "img/ARRIS TG862.jpg",
         descripcion: "Router HFC DOCSIS 3.0 antiguo (hasta 30 Mbps). Sin soporte repetidor."
     }
 };
 
-const equiposClaro = Object.keys(modelosData).map(key => ({
-    codigo: key,
-    modelo: modelosData[key].modelo || key,
-    vendor: modelosData[key].vendor || '',
-    nombre: modelosData[key].nombre,
-    aliases: modelosData[key].aliases || [],
-    docsis: modelosData[key].docsis || '',
-    wifi: modelosData[key].wifi || '',
-    red: modelosData[key].red || (modelosData[key].nombre.includes('ONT') || key.startsWith('HG') || key.startsWith('ZX') || key.startsWith('F6') || key.includes('5670') ? 'FTTH' : 'HFC'),
-    firmware: modelosData[key].firmware || '',
-    plataformas: modelosData[key].plataformas || 'INCOGNITO / REMOTO',
-    tipo: modelosData[key].tipo || 'Router / ONT',
-    homologado: modelosData[key].homologado !== false,
-    imagen: modelosData[key].img,
-    descripcion: modelosData[key].descripcion,
-    repetidor: modelosData[key].repetidor,
-    velocidad: modelosData[key].velocidad,
-    credenciales: modelosData[key].credenciales || ''
-}));
+const equiposClaro = Object.keys(modelosData).map(key => {
+    const p = (modelosData[key].plataformas || '').toUpperCase();
+    const hasTR069 = p.includes('TR069') || p.includes('TR-069') || p.includes('TR 069');
+    return {
+        codigo: key,
+        modelo: modelosData[key].modelo || key,
+        vendor: modelosData[key].vendor || '',
+        nombre: modelosData[key].nombre,
+        aliases: modelosData[key].aliases || [],
+        docsis: modelosData[key].docsis || '',
+        wifi: modelosData[key].wifi || '',
+        red: modelosData[key].red || (modelosData[key].nombre.includes('ONT') || key.startsWith('HG') || key.startsWith('ZX') || key.startsWith('F6') || key.includes('5670') ? 'FTTH' : 'HFC'),
+        firmware: modelosData[key].firmware || '',
+        plataformas: modelosData[key].plataformas || 'INCOGNITO / REMOTO',
+        tipo: modelosData[key].tipo || 'Router / ONT',
+        // REGLA CLAVE: Solo son homologados los equipos que en plataforma de revisión cuenten con TR-069
+        homologado: hasTR069,
+        imagen: modelosData[key].img,
+        imagenes: modelosData[key].imagenes || (modelosData[key].img ? [{ label: "Principal", src: modelosData[key].img, desc: "Vista principal del equipo" }] : []),
+        descripcion: modelosData[key].descripcion,
+        repetidor: modelosData[key].repetidor,
+        velocidad: modelosData[key].velocidad,
+        credenciales: modelosData[key].credenciales || ''
+    };
+});
 
 if (typeof BO_DATASET !== 'undefined') {
     if (BO_DATASET.problemsByService) {
@@ -2239,11 +2252,13 @@ const manualesData = [
 ];
 
 if (typeof window !== 'undefined') {
+    window.BO_DATASET = BO_DATASET;
     window.modelosData = modelosData;
     window.equiposClaro = equiposClaro;
     window.manualesData = manualesData;
 }
 if (typeof global !== 'undefined') {
+    global.BO_DATASET = BO_DATASET;
     global.modelosData = modelosData;
     global.equiposClaro = equiposClaro;
     global.manualesData = manualesData;

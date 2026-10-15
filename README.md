@@ -1,8 +1,8 @@
-# 🚀 BackOffice WorkStation Suite — Versión 8.1.1 (v2.7.2)
+# 🚀 BackOffice WorkStation Suite — Versión 2.8
 
 <div align="center">
 
-![Versión](https://img.shields.io/badge/Versi%C3%B3n-8.1.1_LTS_(v2.7.2)-0ea5e9?style=for-the-badge&logo=rocket&logoColor=white)
+![Versión](https://img.shields.io/badge/Versi%C3%B3n-2.8_LTS-0ea5e9?style=for-the-badge&logo=rocket&logoColor=white)
 ![Estado](https://img.shields.io/badge/Estado-Producci%C3%B3n-22c55e?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
@@ -11,15 +11,32 @@
 
 **Plataforma Integral de Productividad, Diagnóstico Técnico en Tiempo Real y Generación Automatizada de Plantillas para BackOffice Telecom.**
 
-[🌐 Probar en Vivo (GitHub Pages)](https://dreyeles.github.io/backoffice-workstation/) · [✨ Novedades v8.1.1](#-novedades-clave-de-la-versi%C3%B3n-811-v272) · [📌 Módulos](#-m%C3%B3dulos-y-capacidades-principales) · [⌨️ Atajos de Teclado](#%EF%B8%8F-atajos-y-productividad)
+[🌐 Probar en Vivo (GitHub Pages)](https://dreyeles.github.io/backoffice-workstation/) · [✨ Novedades v2.8](#-novedades-clave-de-la-versi%C3%B3n-28) · [📌 Módulos](#-m%C3%B3dulos-y-capacidades-principales) · [⌨️ Atajos de Teclado](#%EF%B8%8F-atajos-y-productividad)
 
 </div>
 
 ---
 
-## 🌟 Novedades Clave de la Versión 8.1.1 (v2.7.2)
+## 🌟 Novedades Clave de la Versión 2.8
 
-La versión **8.1.1 (v2.7.2)** incorpora la homologación operativa oficial del **Flyer N° 41-BO FIJA (30/09/2026)** y optimizaciones ergonómicas de flujo rápido:
+La versión **2.8** incorpora el nuevo sistema de identificación y visualización técnica de equipos Claro, validación estricta de homologación con TR-069 y una arquitectura modular de alto rendimiento:
+
+### 1. 🛡️ Homologación Estricta TR-069
+- **Regla Estricta Oficial:** Solo se consideran homologados aquellos equipos cuya plataforma de revisión soporte y tenga activo **TR-069**. En caso contrario, se identifican como no homologados para soporte remoto.
+
+### 2. 🔍 Previsualizador Grande (Lightbox Modal) & Galería Multi-Ángulo
+- **Inspección en Pantalla Completa:** Haz clic en la foto de cualquier equipo para desplegar la ficha técnica ampliada (Firmware oficial, tecnología FTTH/HFC, Wi-Fi 5/6, DOCSIS, velocidad y soporte MESH).
+- **Múltiples Vistas Fotográficas:** Integración de vistas Frontal, Lateral y Posterior con panel de puertos, coaxial y reset (ej. ARRIS TG3442).
+- **Interfaz Limpia:** Contador flotante dinámico (`📷 1 / 3`) y flechas directas sobre la tarjeta, sin botones de texto rígidos ni elementos redundantes. Navegación fluida por clic o atajos de teclado (`Esc`, `←`, `→`).
+
+### 3. ⚡ Arquitectura Modular Ultrarrápida
+- **Desacoplamiento en 8 submódulos (`js/`):** Aceleración de carga y ejecución con aislamiento funcional para mantenimiento ágil y funcionamiento 100% offline.
+
+---
+
+## 🌟 Novedades Previas (Versión 2.7.2)
+
+La versión **2.7.2** incorpora la homologación operativa oficial del **Flyer N° 41-BO FIJA (30/09/2026)** y optimizaciones ergonómicas de flujo rápido:
 
 ### 1. 📡 Homologación Oficial HFC — Flyer N° 41-BO FIJA (30/09/2026)
 - **🚨 Decisión Directa en Potencia Upstream:** Si la *Potencia Upstream* está fuera de rango ($< 36.1$ o $> 52.9\text{ dBmV}$), el analizador genera de inmediato **`🚨 GENERAR VISITA TÉCNICA`** *(sin descartes)*.
