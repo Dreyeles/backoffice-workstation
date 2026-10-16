@@ -13,7 +13,7 @@
     <header class="app-header">
         <div class="brand">
             <div>
-                <div class="brand-title">WORKSTATION BACKOFFICE <span id="btnChangelog" style="display: inline-flex; align-items: center; border-radius: 4px; overflow: hidden; vertical-align: middle; margin-left: 0.5rem; font-size: 0.55em; letter-spacing: normal; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.8</span></span></div>
+                <div class="brand-title">WORKSTATION BACKOFFICE <span id="btnChangelog" style="display: inline-flex; align-items: center; border-radius: 4px; overflow: hidden; vertical-align: middle; margin-left: 0.5rem; font-size: 0.55em; letter-spacing: normal; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.8.1</span></span></div>
                 <div class="brand-subtitle">PLATAFORMA LOCAL DE PLANTILLAS Y SEGUIMIENTO PARA BO-FIJA</div>
             </div>
         </div>
@@ -652,11 +652,18 @@
     <div id="changelogModal" class="modal-overlay">
         <div class="modal-content" style="max-width: 720px; max-height: 90vh; display: flex; flex-direction: column;">
             <div class="card-title" style="display:flex; justify-content:space-between; align-items:center;">
-                <div class="card-title-text">🚀 Novedades de la Versión 2.8</div>
+                <div class="card-title-text">🚀 Novedades de la Versión 2.8.1</div>
                 <button id="changelogModalClose" class="btn btn-sm">✕</button>
             </div>
             <div style="font-size: 0.92rem; line-height: 1.55; color: var(--text-main); margin-top: 1rem; overflow-y: auto; padding-right: 0.4rem;">
                 <ul style="padding-left: 1.3rem; margin-bottom: 1.3rem; display: flex; flex-direction: column; gap: 0.65rem;">
+                    <li style="border-left: 3px solid #3b82f6; padding-left: 0.5rem; background: rgba(59,130,246,0.08); border-radius: 0 4px 4px 0; padding-top: 0.35rem; padding-bottom: 0.35rem;"><strong>✨ Novedades v2.8.1 — Zoom Interactivo por Clic y Depuración de Equipos:</strong>
+                        <ul style="margin-top: 0.35rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.3rem;">
+                            <li><strong>🔍 Zoom Tipo Amazon por Clic:</strong> Al abrir el modal previsualizador de equipo, haz un clic sobre la foto para activar un zoom de alta precisión enfocado en el puntero (ideal para inspeccionar puertos, botones y etiquetas). Haz clic nuevamente para salir. Regulable con la rueda del ratón entre <code>1.5x</code> y <code>4.5x</code>.</li>
+                            <li><strong>📁 Galería Fotográfica Estructurada:</strong> Los 22 modelos de routers/ONTs cuentan con imágenes organizadas en subcarpetas dedicadas por modelo con vistas frontal, lateral, posterior de puertos y etiqueta inferior.</li>
+                            <li><strong>🧼 Depuración Integral y Ficha Técnica Limpia:</strong> Eliminación de textos redundantes en cabecera y cuerpo del modal. Se corrigió la duplicación del indicador TR-069 en la plataforma de revisión y se simplificó el rotulado a simplemente <code>💾 Firmware</code>.</li>
+                        </ul>
+                    </li>
                     <li style="border-left: 3px solid #10b981; padding-left: 0.5rem; background: rgba(16,185,129,0.08); border-radius: 0 4px 4px 0; padding-top: 0.35rem; padding-bottom: 0.35rem;"><strong>🌟 Novedades v2.8 — Identificador de Equipos, Homologación TR-069 y Modularización:</strong>
                         <ul style="margin-top: 0.35rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.3rem;">
                             <li><strong>🛡️ Homologación Estricta con TR-069:</strong> En cumplimiento con los estándares operativos de Claro, solo se consideran homologados aquellos equipos cuya plataforma de revisión soporte y tenga activo <code>TR-069</code>. Si no lo tiene, se clasifica automáticamente como <code>❌ No Homologado (Sin TR-069)</code>.</li>
@@ -1104,17 +1111,20 @@
 
     <!-- MODAL PREVISUALIZADOR GRANDE DE EQUIPOS -->
     <div id="eqModalViewer" class="modal-overlay" style="z-index: 2600; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);">
-        <div class="modal-content eq-modal-content" style="max-width: 940px; width: 95%; max-height: 92vh; display: flex; flex-direction: column; padding: 1.25rem; gap: 1rem; border-radius: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); border: 1px solid var(--border-color);">
+        <div class="modal-content eq-modal-content" style="max-width: 960px; width: 95%; max-height: 92vh; display: flex; flex-direction: column; padding: 1.25rem; gap: 1rem; border-radius: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); border: 1px solid var(--border-color);">
             <!-- Modal Header -->
             <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
                 <div>
                     <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                        <span style="font-size: 1.25rem; font-weight: 800; color: var(--text-color);" id="eqModalTitle">ARRIS TG3442</span>
-                        <span id="eqModalHomologadoBadge" style="padding: 0.2rem 0.65rem; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">--</span>
+                        <span style="font-size: 1.3rem; font-weight: 800; color: var(--text-color); letter-spacing: -0.3px;" id="eqModalTitle">ARRIS TG3442</span>
                         <span id="eqModalRedBadge" style="padding: 0.2rem 0.65rem; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">--</span>
                         <span id="eqModalWifiBadge" style="padding: 0.2rem 0.65rem; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">--</span>
+                        <span id="eqModalHomologadoBadge" style="padding: 0.2rem 0.65rem; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">--</span>
+                        <span id="eqModalRepetidorBadge" style="padding: 0.2rem 0.65rem; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">--</span>
                     </div>
-                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;" id="eqModalSubtitle">Router HFC · DOCSIS 3.1 Gigabit Wi-Fi 6</div>
+                    <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.3rem; display: flex; align-items: center; gap: 8px;" id="eqModalSubtitle">
+                        <!-- Generado dinámicamente: Vendor · Categoría -->
+                    </div>
                 </div>
                 <button type="button" id="eqModalClose" class="btn btn-sm" style="background: var(--bg-card); border-radius: 50%; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid var(--border-color); font-weight: bold; font-size: 14px;" title="Cerrar previsualizador (Esc)">✕</button>
             </div>
@@ -1123,12 +1133,17 @@
             <div class="eq-modal-body" style="display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 1.25rem; overflow-y: auto; align-items: start;">
                 <!-- Left: Big Viewport and Angle Thumbnails -->
                 <div style="display: flex; flex-direction: column; gap: 0.65rem;">
-                    <div style="position: relative; width: 100%; height: 390px; background: radial-gradient(circle at center, rgba(30, 41, 59, 0.45) 0%, rgba(15, 23, 42, 0.9) 100%); border: 1px solid var(--border-color); border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);">
-                        <img id="eqModalImage" src="" alt="Vista ampliada" style="max-height: 92%; max-width: 92%; object-fit: contain; filter: drop-shadow(0 12px 24px rgba(0,0,0,0.65)); transition: transform 0.25s ease;">
+                    <div id="eqModalViewport">
+                        <img id="eqModalImage" src="" alt="Vista ampliada">
                         
                         <!-- Angle Label -->
-                        <div id="eqModalAngleBadge" style="position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); color: #fff; font-size: 0.75rem; font-weight: 600; padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.18); display: flex; align-items: center; gap: 5px;">
+                        <div id="eqModalAngleBadge" style="position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); color: #fff; font-size: 0.75rem; font-weight: 600; padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.18); display: flex; align-items: center; gap: 5px; pointer-events: none; z-index: 5;">
                             <span>📷</span> <span id="eqModalAngleText">Vista Frontal</span>
+                        </div>
+
+                        <!-- Zoom Indicator Badge (Amazon style) -->
+                        <div id="eqModalZoomBadge">
+                            <span>🔍</span> <span id="eqModalZoomText">Clic para Zoom</span>
                         </div>
 
                         <!-- Prev / Next Navigation Arrows -->
@@ -1143,40 +1158,27 @@
                     <div id="eqModalThumbnails" style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;"></div>
                 </div>
 
-                <!-- Right: Specifications & Review Parameters -->
+                <!-- Right: Streamlined Operations Specification -->
                 <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                    <!-- Homologation Card -->
-                    <div style="background: var(--bg-card); padding: 0.85rem; border-radius: 8px; border: 1px solid var(--border-color);">
-                        <div style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 5px;">
-                            <span>🛡️</span> Estado de Homologación Claro
+                    <!-- Ficha Técnica de Operaciones (Sin redundancias) -->
+                    <div style="background: var(--bg-card); padding: 1.1rem; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 4px 14px rgba(0,0,0,0.25);">
+                        <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.85rem; display: flex; align-items: center; gap: 6px; letter-spacing: 0.5px;">
+                            <span>⚙️</span> Ficha Técnica de Operaciones
                         </div>
-                        <div style="display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.82rem;">
-                            <div><strong>💾 Versión de Firmware Oficial:</strong> <span id="eqModalFw" style="font-family: monospace; color: #60a5fa; font-weight: 700; margin-left: 4px;">--</span></div>
-                            <div><strong>🛠️ Plataforma de Revisión:</strong> <span id="eqModalPlat" style="color: #34d399; font-weight: 600; margin-left: 4px;">--</span></div>
-                            <div id="eqModalTrStatusBox" style="margin-top: 4px; padding: 7px 10px; border-radius: 6px; font-size: 0.78rem; font-weight: 600;">--</div>
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.85rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--border-color); padding-bottom: 0.5rem;">
+                                <span style="color: var(--text-muted);">⚡ Velocidad Máxima:</span>
+                                <span id="eqModalSpeed" style="font-weight: 700; color: var(--text-color);">--</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--border-color); padding-bottom: 0.5rem;">
+                                <span style="color: var(--text-muted);">🛠️ Plataformas de Revisión:</span>
+                                <span id="eqModalPlat" style="font-weight: 600; color: #34d399;">--</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="color: var(--text-muted);">💾 Firmware:</span>
+                                <span id="eqModalFw" style="font-family: monospace; color: #60a5fa; font-weight: 700; background: rgba(59, 130, 246, 0.12); padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(59, 130, 246, 0.25);">--</span>
+                            </div>
                         </div>
-                    </div>
-
-                    <!-- Network & Wi-Fi Specs -->
-                    <div style="background: var(--bg-card); padding: 0.85rem; border-radius: 8px; border: 1px solid var(--border-color);">
-                        <div style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 5px;">
-                            <span>📡</span> Características de Conectividad
-                        </div>
-                        <div style="display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.82rem;">
-                            <div><strong>🌐 Red & Tecnología:</strong> <span id="eqModalTech" style="margin-left: 4px;">--</span></div>
-                            <div><strong>📶 Versión Wi-Fi:</strong> <span id="eqModalWifi" style="margin-left: 4px;">--</span></div>
-                            <div><strong>⚡ Velocidad Máxima:</strong> <span id="eqModalSpeed" style="margin-left: 4px;">--</span></div>
-                            <div><strong>🔄 Soporte Repetidor MESH:</strong> <span id="eqModalRepetidor" style="margin-left: 4px;">--</span></div>
-                        </div>
-                    </div>
-
-                    <!-- Technical description & Credentials -->
-                    <div style="background: var(--bg-card); padding: 0.85rem; border-radius: 8px; border: 1px solid var(--border-color);">
-                        <div style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 5px;">
-                            <span>ℹ️</span> Detalles Operativos BackOffice
-                        </div>
-                        <div id="eqModalDesc" style="font-size: 0.8rem; line-height: 1.45; color: var(--text-color);">--</div>
-                        <div id="eqModalCreds" style="margin-top: 0.5rem; display: none; font-family: monospace; background: rgba(0,0,0,0.25); padding: 6px 10px; border-radius: 6px; font-size: 0.78rem; border: 1px solid var(--border-color); color: var(--text-color);"></div>
                     </div>
                 </div>
             </div>

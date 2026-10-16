@@ -315,20 +315,17 @@ window.BO_MODULES = window.BO_MODULES || {};
                         // Firmware oficial
                         if (elements.eqFirmware) {
                             if (result.firmware) {
-                                elements.eqFirmware.innerHTML = `<strong>💾 Versión de FW Oficial:</strong> <span style="color:#60a5fa; font-weight:bold; font-family:monospace; margin-left:4px;">${escapeHtml(result.firmware)}</span>`;
+                                elements.eqFirmware.innerHTML = `<strong>💾 Firmware:</strong> <span style="color:#60a5fa; font-weight:bold; font-family:monospace; margin-left:4px;">${escapeHtml(result.firmware)}</span>`;
                                 elements.eqFirmware.style.display = 'block';
                             } else {
                                 elements.eqFirmware.style.display = 'none';
                             }
                         }
 
-                        // Plataformas de revisión con indicador TR-069
+                        // Plataformas de revisión
                         if (elements.eqPlataformas) {
                             if (result.plataformas) {
-                                const trBadge = hasTR069
-                                    ? `<span style="display:inline-block; margin-left:6px; padding:2px 7px; font-size:0.72rem; font-weight:700; border-radius:4px; background:rgba(34,197,94,0.18); color:#22c55e; border:1px solid rgba(34,197,94,0.35);">✔ TR-069 ACTIVO</span>`
-                                    : `<span style="display:inline-block; margin-left:6px; padding:2px 7px; font-size:0.72rem; font-weight:700; border-radius:4px; background:rgba(239,68,68,0.18); color:#ef4444; border:1px solid rgba(239,68,68,0.35);">✖ SIN TR-069 (NO HOMOLOGADO)</span>`;
-                                elements.eqPlataformas.innerHTML = `<strong>🛠️ Plataforma de Revisión:</strong> <span style="color:#34d399; font-weight:600; margin-left:4px;">${escapeHtml(result.plataformas)}</span> ${trBadge}`;
+                                elements.eqPlataformas.innerHTML = `<strong>🛠️ Plataforma de Revisión:</strong> <span style="color:#34d399; font-weight:600; margin-left:4px;">${escapeHtml(result.plataformas)}</span>`;
                                 elements.eqPlataformas.style.display = 'block';
                             } else {
                                 elements.eqPlataformas.style.display = 'none';
@@ -355,30 +352,18 @@ window.BO_MODULES = window.BO_MODULES || {};
                         modalActiveIndex = 0;
                         syncCardImage();
 
-                        // Fallback if image fails to load
+                        // Fallback si la imagen no carga
                         elements.eqImage.onerror = () => {
                             if (!elements.eqImage.dataset.fallbackTried) {
                                 elements.eqImage.dataset.fallbackTried = '1';
-                                const src = elements.eqImage.src || '';
-                                if (src.includes('ZXHN-F6600P')) {
-                                    elements.eqImage.src = 'img/ONT_ZTE_F6600P.jpg';
-                                    return;
-                                }
-                                if (src.includes('ZTE_680')) {
-                                    elements.eqImage.src = 'img/ONT_ZTE ZXHNF680.jpg';
-                                    return;
-                                }
-                                if (src.includes('HG8145V5')) {
-                                    elements.eqImage.src = 'img/ONT_HUAWEI HG815V5.jpg';
-                                    return;
-                                }
-                                if (src.includes('HG8245Q2')) {
-                                    elements.eqImage.src = 'img/ONT_HUAWEI HG8245Q2.jpg';
-                                    return;
-                                }
-                                if (src.includes('HG8145X6')) {
-                                    elements.eqImage.src = 'img/HUAWEI HG8145X6-10.webp';
-                                    return;
+                                const images = getEqImages(currentSelectedEq);
+                                if (images.length > 1) {
+                                    const nextIdx = (currentEqAngleIndex + 1) % images.length;
+                                    if (nextIdx !== currentEqAngleIndex && images[nextIdx]?.src) {
+                                        currentEqAngleIndex = nextIdx;
+                                        elements.eqImage.src = images[nextIdx].src;
+                                        return;
+                                    }
                                 }
                             }
                             elements.eqImage.style.display = 'none';
@@ -434,9 +419,95 @@ window.BO_MODULES = window.BO_MODULES || {};
                 });
             }
 
-            // Modal Previsualizador Grande - Funciones y Eventos
+            // Modal Previsualizador Grande - Funciones y Eventos (Con Zoom Tipo Amazon)
+            let currentModalZoom = 2.4;
+            let isModalZooming = false;
+
+            function resetModalZoom() {
+                isModalZooming = false;
+                if (elements.eqModalViewport) {
+                    elements.eqModalViewport.classList.remove('is-zooming');
+                }
+                if (elements.eqModalImage) {
+                    elements.eqModalImage.style.transformOrigin = 'center center';
+                    elements.eqModalImage.style.transform = 'scale(1)';
+                }
+                if (elements.eqModalZoomText) {
+                    elements.eqModalZoomText.textContent = 'Clic para Zoom';
+                }
+            }
+
+            if (elements.eqModalViewport && elements.eqModalImage) {
+                // Alternar zoom haciendo clic sobre el visor/imagen
+                elements.eqModalViewport.addEventListener('click', (e) => {
+                    // Si se hizo clic en las flechas de navegación, no intervenir
+                    if (e.target.closest('#btnEqModalPrev') || e.target.closest('#btnEqModalNext')) {
+                        return;
+                    }
+                    if (!elements.eqModalImage.src || elements.eqModalImage.style.display === 'none') {
+                        return;
+                    }
+
+                    if (isModalZooming) {
+                        resetModalZoom();
+                    } else {
+                        // Iniciar zoom centrado en las coordenadas donde el usuario hizo clic
+                        const rect = elements.eqModalViewport.getBoundingClientRect();
+                        if (rect.width > 0 && rect.height > 0) {
+                            const xPercent = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+                            const yPercent = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
+                            elements.eqModalImage.style.transformOrigin = `${xPercent.toFixed(2)}% ${yPercent.toFixed(2)}%`;
+                        }
+                        isModalZooming = true;
+                        elements.eqModalViewport.classList.add('is-zooming');
+                        elements.eqModalImage.style.transform = `scale(${currentModalZoom})`;
+                        if (elements.eqModalZoomText) {
+                            elements.eqModalZoomText.textContent = `Zoom ${currentModalZoom.toFixed(1)}x (Clic para alejar · Rueda ±)`;
+                        }
+                    }
+                });
+
+                // Mover el mouse con zoom activo desplaza la imagen suavemente
+                elements.eqModalViewport.addEventListener('mousemove', (e) => {
+                    if (!isModalZooming || !elements.eqModalImage.src) return;
+                    const rect = elements.eqModalViewport.getBoundingClientRect();
+                    if (rect.width <= 0 || rect.height <= 0) return;
+
+                    const xPercent = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+                    const yPercent = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
+
+                    elements.eqModalImage.style.transformOrigin = `${xPercent.toFixed(2)}% ${yPercent.toFixed(2)}%`;
+                    elements.eqModalImage.style.transform = `scale(${currentModalZoom})`;
+                });
+
+                // Permite regular el aumento con la rueda del ratón (1.5x a 4.5x)
+                elements.eqModalViewport.addEventListener('wheel', (e) => {
+                    if (!isModalZooming || !elements.eqModalImage.src) return;
+                    e.preventDefault();
+                    if (e.deltaY < 0) {
+                        currentModalZoom = Math.min(4.5, currentModalZoom + 0.3);
+                    } else {
+                        currentModalZoom = Math.max(1.5, currentModalZoom - 0.3);
+                    }
+                    elements.eqModalImage.style.transform = `scale(${currentModalZoom})`;
+                    if (elements.eqModalZoomText) {
+                        elements.eqModalZoomText.textContent = `Zoom ${currentModalZoom.toFixed(1)}x (Clic para alejar · Rueda ±)`;
+                    }
+                }, { passive: false });
+
+                // Clic fuera del visor desactiva el zoom
+                document.addEventListener('click', (e) => {
+                    if (isModalZooming && elements.eqModalViewport && !elements.eqModalViewport.contains(e.target)) {
+                        resetModalZoom();
+                    }
+                });
+            }
+
             function openEqModalViewer(eq, initialIdx = 0) {
                 if (!elements.eqModalViewer || !eq) return;
+
+                resetModalZoom();
+                currentModalZoom = 2.4;
 
                 const platUpper = (eq.plataformas || '').toUpperCase();
                 const hasTR069 = platUpper.includes('TR069') || platUpper.includes('TR-069') || platUpper.includes('TR 069');
@@ -445,31 +516,23 @@ window.BO_MODULES = window.BO_MODULES || {};
 
                 modalActiveIndex = (initialIdx >= 0 && initialIdx < images.length) ? initialIdx : 0;
 
-                // Títulos y Subtítulo
+                // Título y Subtítulo limpio (Fabricante y tipo de equipo)
                 if (elements.eqModalTitle) {
                     elements.eqModalTitle.textContent = eq.nombre || eq.modelo;
                 }
                 if (elements.eqModalSubtitle) {
-                    elements.eqModalSubtitle.textContent = `${eq.tipo || 'Equipo'} · ${eq.red || 'HFC/FTTH'} · ${eq.docsis || ''} ${eq.wifi ? '· ' + eq.wifi : ''}`;
+                    const vendorText = eq.vendor ? `Fabricante: ${eq.vendor}` : 'Equipo Residencial Claro';
+                    const tipoText = eq.red === 'FTTH' ? 'Terminal Óptica ONT (FTTH)' : 'Cablemódem eMTA Router (HFC)';
+                    elements.eqModalSubtitle.innerHTML = `<span>🏢 ${escapeHtml(vendorText)}</span> <span>·</span> <span>🏷️ ${escapeHtml(tipoText)}</span>`;
                 }
 
-                // Badges de cabecera
-                if (elements.eqModalHomologadoBadge) {
-                    if (isHomologado) {
-                        elements.eqModalHomologadoBadge.textContent = '✅ Homologado (TR-069)';
-                        elements.eqModalHomologadoBadge.style.backgroundColor = 'rgba(40, 167, 69, 0.18)';
-                        elements.eqModalHomologadoBadge.style.color = '#28a745';
-                        elements.eqModalHomologadoBadge.style.border = '1px solid rgba(40, 167, 69, 0.4)';
-                    } else {
-                        elements.eqModalHomologadoBadge.textContent = '❌ No Homologado (Sin TR-069)';
-                        elements.eqModalHomologadoBadge.style.backgroundColor = 'rgba(220, 53, 69, 0.18)';
-                        elements.eqModalHomologadoBadge.style.color = '#dc3545';
-                        elements.eqModalHomologadoBadge.style.border = '1px solid rgba(220, 53, 69, 0.4)';
-                    }
-                }
-
+                // Badges de cabecera (Directos, sin duplicar en el cuerpo)
+                // 1. Red & Tecnología (Combina Red + DOCSIS/GPON en 1 solo badge limpio)
                 if (elements.eqModalRedBadge) {
-                    elements.eqModalRedBadge.textContent = eq.red || 'RED';
+                    const redLabel = eq.red === 'FTTH' 
+                        ? (eq.docsis ? `FTTH · ${eq.docsis}` : 'FTTH · GPON')
+                        : (eq.docsis ? `HFC · ${eq.docsis}` : 'HFC');
+                    elements.eqModalRedBadge.textContent = redLabel;
                     if (eq.red === 'FTTH') {
                         elements.eqModalRedBadge.style.backgroundColor = 'rgba(139, 92, 246, 0.18)';
                         elements.eqModalRedBadge.style.color = '#a78bfa';
@@ -481,60 +544,57 @@ window.BO_MODULES = window.BO_MODULES || {};
                     }
                 }
 
+                // 2. Wi-Fi
                 if (elements.eqModalWifiBadge) {
-                    elements.eqModalWifiBadge.textContent = eq.wifi || 'Wi-Fi';
+                    elements.eqModalWifiBadge.textContent = eq.wifi || 'Wi-Fi Estándar';
                     elements.eqModalWifiBadge.style.backgroundColor = 'rgba(59, 130, 246, 0.18)';
                     elements.eqModalWifiBadge.style.color = '#60a5fa';
                     elements.eqModalWifiBadge.style.border = '1px solid rgba(59, 130, 246, 0.35)';
                 }
 
-                // Ficha Técnica y Plataformas
-                if (elements.eqModalFw) {
-                    elements.eqModalFw.textContent = eq.firmware || 'No especificado';
+                // 3. Homologación TR-069
+                if (elements.eqModalHomologadoBadge) {
+                    if (isHomologado) {
+                        elements.eqModalHomologadoBadge.textContent = '✅ Homologado (TR-069)';
+                        elements.eqModalHomologadoBadge.style.backgroundColor = 'rgba(40, 167, 69, 0.18)';
+                        elements.eqModalHomologadoBadge.style.color = '#28a745';
+                        elements.eqModalHomologadoBadge.style.border = '1px solid rgba(40, 167, 69, 0.4)';
+                    } else {
+                        elements.eqModalHomologadoBadge.textContent = '❌ Sin TR-069 (No Homol.)';
+                        elements.eqModalHomologadoBadge.style.backgroundColor = 'rgba(220, 53, 69, 0.18)';
+                        elements.eqModalHomologadoBadge.style.color = '#dc3545';
+                        elements.eqModalHomologadoBadge.style.border = '1px solid rgba(220, 53, 69, 0.4)';
+                    }
+                }
+
+                // 4. Soporte Repetidor MESH
+                if (elements.eqModalRepetidorBadge) {
+                    const hasMesh = (eq.repetidor === 'SI');
+                    elements.eqModalRepetidorBadge.textContent = hasMesh ? '🟢 Soporte MESH' : '🔴 Sin MESH';
+                    if (hasMesh) {
+                        elements.eqModalRepetidorBadge.style.backgroundColor = 'rgba(34, 197, 94, 0.18)';
+                        elements.eqModalRepetidorBadge.style.color = '#22c55e';
+                        elements.eqModalRepetidorBadge.style.border = '1px solid rgba(34, 197, 94, 0.4)';
+                    } else {
+                        elements.eqModalRepetidorBadge.style.backgroundColor = 'rgba(107, 114, 128, 0.18)';
+                        elements.eqModalRepetidorBadge.style.color = 'var(--text-muted)';
+                        elements.eqModalRepetidorBadge.style.border = '1px solid rgba(107, 114, 128, 0.35)';
+                    }
+                }
+
+                // Ficha Técnica de Operaciones (Key-Value limpio y funcional)
+                if (elements.eqModalSpeed) {
+                    elements.eqModalSpeed.textContent = eq.velocidad 
+                        ? (eq.velocidad >= 1000 ? 'Hasta 1 Gbps (1000M)' : `Hasta ${eq.velocidad} Mbps`) 
+                        : 'Perfil estándar de red';
                 }
                 if (elements.eqModalPlat) {
                     elements.eqModalPlat.textContent = eq.plataformas || 'INCOGNITO / REMOTO';
                 }
-                if (elements.eqModalTrStatusBox) {
-                    if (hasTR069) {
-                        elements.eqModalTrStatusBox.style.backgroundColor = 'rgba(34, 197, 94, 0.15)';
-                        elements.eqModalTrStatusBox.style.color = '#22c55e';
-                        elements.eqModalTrStatusBox.style.border = '1px solid rgba(34, 197, 94, 0.35)';
-                        elements.eqModalTrStatusBox.innerHTML = '✔ Plataforma de revisión con <strong>TR-069 Activo</strong>. Equipo homologado para soporte remoto.';
-                    } else {
-                        elements.eqModalTrStatusBox.style.backgroundColor = 'rgba(239, 68, 68, 0.15)';
-                        elements.eqModalTrStatusBox.style.color = '#ef4444';
-                        elements.eqModalTrStatusBox.style.border = '1px solid rgba(239, 68, 68, 0.35)';
-                        elements.eqModalTrStatusBox.innerHTML = '✖ Plataforma de revisión <strong>Sin TR-069</strong>. Equipo no homologado.';
-                    }
+                if (elements.eqModalFw) {
+                    elements.eqModalFw.textContent = eq.firmware || 'No especificado';
                 }
-                if (elements.eqModalTech) {
-                    elements.eqModalTech.textContent = `${eq.red || ''} ${eq.docsis ? '(' + eq.docsis + ')' : ''}`;
-                }
-                if (elements.eqModalWifi) {
-                    elements.eqModalWifi.textContent = eq.wifi || 'Estándar';
-                }
-                if (elements.eqModalSpeed) {
-                    elements.eqModalSpeed.textContent = eq.velocidad 
-                        ? (eq.velocidad >= 1000 ? 'Hasta 1 Gbps (1000M)' : `Hasta ${eq.velocidad} Mbps`) 
-                        : 'No especificada';
-                }
-                if (elements.eqModalRepetidor) {
-                    elements.eqModalRepetidor.innerHTML = eq.repetidor === 'SI' 
-                        ? '<span style="color:#22c55e; font-weight:700;">🟢 Compatible con Repetidor Claro (MESH)</span>' 
-                        : '<span style="color:#ef4444; font-weight:700;">🔴 Sin Soporte de Repetidor</span>';
-                }
-                if (elements.eqModalDesc) {
-                    elements.eqModalDesc.textContent = eq.descripcion || 'Sin descripción adicional disponible.';
-                }
-                if (elements.eqModalCreds) {
-                    if (eq.credenciales) {
-                        elements.eqModalCreds.innerHTML = `<strong>🔑 Credenciales de Acceso:</strong><br>${eq.credenciales.replace(/\|/g, '<br>')}`;
-                        elements.eqModalCreds.style.display = 'block';
-                    } else {
-                        elements.eqModalCreds.style.display = 'none';
-                    }
-                }
+
 
                     if (elements.eqModalThumbnails) {
                         elements.eqModalThumbnails.innerHTML = '';
@@ -565,6 +625,7 @@ window.BO_MODULES = window.BO_MODULES || {};
 
                 // Render Galería Modal (en ámbito accesible para las flechas de navegación y teclado)
                 function updateModalGallery() {
+                    resetModalZoom();
                     if (!currentSelectedEq) return;
                     const images = getEqImages(currentSelectedEq);
                     if (images.length === 0) {
@@ -608,6 +669,8 @@ window.BO_MODULES = window.BO_MODULES || {};
                 }
 
             function closeEqModalViewer() {
+                resetModalZoom();
+                currentModalZoom = 2.4;
                 if (!elements.eqModalViewer) return;
                 elements.eqModalViewer.classList.remove('active');
                 document.body.style.overflow = '';
@@ -650,7 +713,11 @@ window.BO_MODULES = window.BO_MODULES || {};
             document.addEventListener('keydown', (e) => {
                 if (elements.eqModalViewer && elements.eqModalViewer.classList.contains('active')) {
                     if (e.key === 'Escape') {
-                        closeEqModalViewer();
+                        if (isModalZooming) {
+                            resetModalZoom();
+                        } else {
+                            closeEqModalViewer();
+                        }
                     } else if (e.key === 'ArrowLeft' && elements.btnEqModalPrev) {
                         elements.btnEqModalPrev.click();
                     } else if (e.key === 'ArrowRight' && elements.btnEqModalNext) {

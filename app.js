@@ -251,7 +251,11 @@ document.addEventListener('DOMContentLoaded', () => {
         eqModalHomologadoBadge: document.getElementById('eqModalHomologadoBadge'),
         eqModalRedBadge: document.getElementById('eqModalRedBadge'),
         eqModalWifiBadge: document.getElementById('eqModalWifiBadge'),
+        eqModalRepetidorBadge: document.getElementById('eqModalRepetidorBadge'),
+        eqModalViewport: document.getElementById('eqModalViewport'),
         eqModalImage: document.getElementById('eqModalImage'),
+        eqModalZoomBadge: document.getElementById('eqModalZoomBadge'),
+        eqModalZoomText: document.getElementById('eqModalZoomText'),
         eqModalAngleBadge: document.getElementById('eqModalAngleBadge'),
         eqModalAngleText: document.getElementById('eqModalAngleText'),
         btnEqModalPrev: document.getElementById('btnEqModalPrev'),
@@ -260,13 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
         eqModalThumbnails: document.getElementById('eqModalThumbnails'),
         eqModalFw: document.getElementById('eqModalFw'),
         eqModalPlat: document.getElementById('eqModalPlat'),
-        eqModalTrStatusBox: document.getElementById('eqModalTrStatusBox'),
-        eqModalTech: document.getElementById('eqModalTech'),
-        eqModalWifi: document.getElementById('eqModalWifi'),
         eqModalSpeed: document.getElementById('eqModalSpeed'),
-        eqModalRepetidor: document.getElementById('eqModalRepetidor'),
-        eqModalDesc: document.getElementById('eqModalDesc'),
-        eqModalCreds: document.getElementById('eqModalCreds'),
 
         // Toast Container
         toastContainer: document.getElementById('toastContainer')
@@ -2448,7 +2446,7 @@ ${contactLines}`;
     const btnChangelog = document.getElementById('btnChangelog');
     const changelogModal = document.getElementById('changelogModal');
     const changelogModalClose = document.getElementById('changelogModalClose');
-    const APP_VERSION = '2.8';
+    const APP_VERSION = '2.8.1';
 
     if (btnChangelog && changelogModal) {
         btnChangelog.addEventListener('click', () => {

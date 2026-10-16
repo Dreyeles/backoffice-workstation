@@ -726,7 +726,11 @@ const modelosData = {
         velocidad: 100,
         tipo: "Router HFC (DOCSIS 3.0)",
         homologado: true,
-        img: "img/ARRIS TG862.jpg",
+        img: "img/equipos/ARRIS_TG1662G/frontal.webp",
+        imagenes: [
+            { label: "Frontal", src: "img/equipos/ARRIS_TG1662G/frontal.webp", desc: "Vista frontal con panel de indicadores LED" },
+            { label: "Posterior (Puertos)", src: "img/equipos/ARRIS_TG1662G/posterior.webp", desc: "Panel posterior: Puertos Ethernet Gigabit, telefonía y conector coaxial RF" }
+        ],
         descripcion: "Router HFC DOCSIS 3.0 con Wi-Fi 4 (2.4 GHz). Sin soporte para repetidor."
     },
     "FAST3284": {
@@ -743,7 +747,12 @@ const modelosData = {
         velocidad: 100,
         tipo: "Router HFC (DOCSIS 3.0)",
         homologado: true,
-        img: "img/SAGEMCOM FAST3686V2_2.jpg",
+        img: "img/equipos/SAGEMCOM_FAST3284/frontal.jpg",
+        imagenes: [
+            { label: "Frontal / Superior", src: "img/equipos/SAGEMCOM_FAST3284/frontal.jpg", desc: "Vista superior/frontal con panel LED, botones WPS/WiFi y puerto USB" },
+            { label: "Posterior (Puertos)", src: "img/equipos/SAGEMCOM_FAST3284/posterior.jpg", desc: "Panel posterior: Puertos Ethernet LAN, líneas telefónicas y coaxial" },
+            { label: "Inferior (Etiqueta)", src: "img/equipos/SAGEMCOM_FAST3284/inferior_etiqueta.jpg", desc: "Vista inferior con etiqueta de modelo, credenciales y MAC" }
+        ],
         descripcion: "Router HFC DOCSIS 3.0 con Wi-Fi 4. Sin soporte para repetidor."
     },
     "TG2482": {
@@ -759,7 +768,12 @@ const modelosData = {
         velocidad: 300,
         tipo: "Router HFC (DOCSIS 3.0)",
         homologado: true,
-        img: "img/ARRIS TG2482.jpg",
+        img: "img/equipos/ARRIS_TG2482/frontal.jpg",
+        imagenes: [
+            { label: "Frontal", src: "img/equipos/ARRIS_TG2482/frontal.jpg", desc: "Vista frontal con indicadores luminosos de estado" },
+            { label: "Frontal Panorámica", src: "img/equipos/ARRIS_TG2482/frontal_completa.jpg", desc: "Vista frontal completa y chasis vertical" },
+            { label: "Posterior (Puertos)", src: "img/equipos/ARRIS_TG2482/posterior.jpg", desc: "Panel posterior: 4 puertos Ethernet Gigabit, 2 puertos telefónicos y entrada RF" }
+        ],
         descripcion: "Router HFC DOCSIS 3.0 Dual Band Wi-Fi 5 (2.4 & 5 GHz). Compatible con repetidor Claro."
     },
     "WTM652G": {
@@ -775,7 +789,13 @@ const modelosData = {
         velocidad: 300,
         tipo: "Router HFC (DOCSIS 3.0)",
         homologado: true,
-        img: "img/ARRIS TG2482.jpg",
+        img: "img/equipos/ARRIS_WTM652G/frontal.webp",
+        imagenes: [
+            { label: "Frontal", src: "img/equipos/ARRIS_WTM652G/frontal.webp", desc: "Vista frontal con panel de LEDs" },
+            { label: "Lateral", src: "img/equipos/ARRIS_WTM652G/lateral.webp", desc: "Vista de perfil lateral" },
+            { label: "Posterior (Puertos)", src: "img/equipos/ARRIS_WTM652G/posterior.webp", desc: "Panel posterior: Puertos LAN, conectores Tel y Coaxial" },
+            { label: "Inferior (Etiqueta)", src: "img/equipos/ARRIS_WTM652G/inferior_etiqueta.webp", desc: "Vista inferior con datos de placa y homologación" }
+        ],
         descripcion: "Router HFC DOCSIS 3.0 con Wi-Fi 5. Sin soporte para repetidor."
     },
     "FAST3686V22": {
@@ -811,7 +831,12 @@ const modelosData = {
         velocidad: 300,
         tipo: "Router HFC (DOCSIS 3.0)",
         homologado: true,
-        img: "img/SAGEMCOM FAST3686V2_2.jpg",
+        img: "img/equipos/SAGEMCOM_FAST3686V2/frontal.webp",
+        imagenes: [
+            { label: "Frontal", src: "img/equipos/SAGEMCOM_FAST3686V2/frontal.webp", desc: "Vista frontal con LEDs indicadores de enlace" },
+            { label: "Lateral", src: "img/equipos/SAGEMCOM_FAST3686V2/lateral.webp", desc: "Vista lateral de ventilación" },
+            { label: "Posterior (Puertos)", src: "img/equipos/SAGEMCOM_FAST3686V2/posterior.webp", desc: "Panel posterior: Puertos Ethernet Gigabit, telefonía y entrada coaxial" }
+        ],
         descripcion: "Router HFC DOCSIS 3.0 Dual Band Wi-Fi 5 (300 Mbps). Sin soporte repetidor."
     },
     "CGA2121": {
@@ -827,7 +852,12 @@ const modelosData = {
         velocidad: 300,
         tipo: "Router HFC (DOCSIS 3.0)",
         homologado: true,
-        img: "img/TECNICOLOR CGA2121.jpg",
+        img: "img/equipos/TECHNICOLOR_CGA2121/frontal.webp",
+        imagenes: [
+            { label: "Frontal", src: "img/equipos/TECHNICOLOR_CGA2121/frontal.webp", desc: "Vista frontal con indicadores LED de señal y Wi-Fi" },
+            { label: "Perspectiva", src: "img/equipos/TECHNICOLOR_CGA2121/perspectiva.webp", desc: "Vista angular y ventilación" },
+            { label: "Posterior (Puertos)", src: "img/equipos/TECHNICOLOR_CGA2121/posterior.webp", desc: "Panel posterior: Puertos LAN Gigabit, Tel y conexión RF" }
+        ],
         descripcion: "Router HFC DOCSIS 3.0 Dual Band Wi-Fi 5 (300 Mbps). Sin soporte repetidor."
     },
 
@@ -846,7 +876,12 @@ const modelosData = {
         velocidad: 1000,
         tipo: "Router HFC (DOCSIS 3.1)",
         homologado: true,
-        img: "img/SAGEMCOM F3890 V3.jpg",
+        img: "img/equipos/SAGEMCOM_FAST3890V3/frontal.webp",
+        imagenes: [
+            { label: "Frontal", src: "img/equipos/SAGEMCOM_FAST3890V3/frontal.webp", desc: "Vista frontal con indicadores luminosos DOCSIS 3.1" },
+            { label: "Lateral", src: "img/equipos/SAGEMCOM_FAST3890V3/lateral.webp", desc: "Vista lateral estilizada" },
+            { label: "Posterior (Puertos)", src: "img/equipos/SAGEMCOM_FAST3890V3/posterior.webp", desc: "Panel posterior: Puertos Gigabit Ethernet, telefonía y coaxial" }
+        ],
         descripcion: "Router HFC DOCSIS 3.1 Gigaspeed Wi-Fi 5 (Hasta 1000 Mbps). Sin soporte repetidor."
     },
     "CGA4233CLP2": {
@@ -863,7 +898,12 @@ const modelosData = {
         velocidad: 1000,
         tipo: "Router HFC (DOCSIS 3.1)",
         homologado: false, // Sin TR-069
-        img: "img/TECNICOLOR CGA4233 CLP2.jpg",
+        img: "img/equipos/TECHNICOLOR_CGA4233CLP2/frontal.jpg",
+        imagenes: [
+            { label: "Frontal", src: "img/equipos/TECHNICOLOR_CGA4233CLP2/frontal.jpg", desc: "Vista frontal con panel de LEDs verticales" },
+            { label: "Lateral", src: "img/equipos/TECHNICOLOR_CGA4233CLP2/lateral.jpg", desc: "Vista lateral" },
+            { label: "Posterior (Puertos)", src: "img/equipos/TECHNICOLOR_CGA4233CLP2/posterior.jpg", desc: "Panel posterior: Puertos Ethernet Gigabit, Tel 1/2 y conector RF" }
+        ],
         descripcion: "Router HFC DOCSIS 3.1 Gigabit Wi-Fi 5. Plataforma de revisión sin TR-069 (No Homologado)."
     },
     "TG3442": {
@@ -880,11 +920,11 @@ const modelosData = {
         velocidad: 1000,
         tipo: "Router HFC (DOCSIS 3.1 Wi-Fi 6)",
         homologado: true, // Con TR-069
-        img: "img/ARRIS TG3442.jpg",
+        img: "img/equipos/ARRIS_TG3442/frontal.jpg",
         imagenes: [
-            { label: "Frontal", src: "img/ARRIS TG3442.jpg", desc: "Vista frontal con panel de indicadores LED" },
-            { label: "Lateral (Right)", src: "img/ARRIS TG3442 RIGHT.webp", desc: "Vista lateral derecha de ventilación y disipación" },
-            { label: "Posterior (Back / Puertos)", src: "img/ARRIS TG3442 BACK.png", desc: "Panel posterior: Puertos Ethernet Gigabit, coaxial RF, alimentación y reset" }
+            { label: "Frontal", src: "img/equipos/ARRIS_TG3442/frontal.jpg", desc: "Vista frontal con panel de indicadores LED" },
+            { label: "Lateral (Right)", src: "img/equipos/ARRIS_TG3442/lateral_derecha.webp", desc: "Vista lateral derecha de ventilación y disipación" },
+            { label: "Posterior (Back / Puertos)", src: "img/equipos/ARRIS_TG3442/posterior.png", desc: "Panel posterior: Puertos Ethernet Gigabit, coaxial RF, alimentación y reset" }
         ],
         descripcion: "Router HFC DOCSIS 3.1 Gigabit Wi-Fi 6 (1 Gbps). Compatible con Repetidor Claro."
     },
@@ -902,7 +942,11 @@ const modelosData = {
         velocidad: 1000,
         tipo: "Router HFC (DOCSIS 3.1 Wi-Fi 6)",
         homologado: false, // Sin TR-069
-        img: "img/INFINITY_601.webp",
+        img: "img/equipos/CASTLENET_INFINITY601/frontal.jpg",
+        imagenes: [
+            { label: "Frontal", src: "img/equipos/CASTLENET_INFINITY601/frontal.jpg", desc: "Vista frontal con LEDs DOCSIS 3.1 y Wi-Fi 6" },
+            { label: "Posterior (Puertos)", src: "img/equipos/CASTLENET_INFINITY601/posterior.jpg", desc: "Panel posterior: Puertos LAN 2.5G/Gigabit, telefonía y coaxial" }
+        ],
         descripcion: "Router HFC DOCSIS 3.1 Wi-Fi 6 (Castlenet). Plataforma de revisión sin TR-069 (No Homologado)."
     },
 
@@ -921,7 +965,13 @@ const modelosData = {
         velocidad: 300,
         tipo: "ONT FTTH (Wi-Fi 5)",
         homologado: true, // Con TR-069
-        img: "img/HG8145V5.jpg",
+        img: "img/equipos/HUAWEI_HG8145V5/frontal.webp",
+        imagenes: [
+            { label: "Frontal", src: "img/equipos/HUAWEI_HG8145V5/frontal.webp", desc: "Vista frontal con indicadores LED de enlace óptico y Wi-Fi" },
+            { label: "Superior", src: "img/equipos/HUAWEI_HG8145V5/superior.webp", desc: "Vista superior con antenas orientables" },
+            { label: "Posterior (Puertos)", src: "img/equipos/HUAWEI_HG8145V5/posterior.webp", desc: "Panel posterior: Puertos GE, POTS y entrada de fibra óptica" },
+            { label: "Inferior (Etiqueta)", src: "img/equipos/HUAWEI_HG8145V5/inferior_etiqueta.webp", desc: "Vista inferior con etiqueta de datos y GPON SN" }
+        ],
         descripcion: "ONT FTTH GPON Dual Band Wi-Fi 5 (300 Mbps). Compatible con repetidor Claro."
     },
     "HG8245W56T": {
@@ -938,7 +988,12 @@ const modelosData = {
         velocidad: 500,
         tipo: "ONT FTTH (Wi-Fi 5)",
         homologado: false, // Sin TR-069
-        img: "img/HUAWEI HG8245Q2.webp",
+        img: "img/equipos/HUAWEI_HG8245W5-6T/frontal.png",
+        imagenes: [
+            { label: "Frontal", src: "img/equipos/HUAWEI_HG8245W5-6T/frontal.png", desc: "Vista frontal con antenas externas High Power" },
+            { label: "Perspectiva", src: "img/equipos/HUAWEI_HG8245W5-6T/perspectiva.webp", desc: "Vista angular del equipo" },
+            { label: "Posterior (Puertos)", src: "img/equipos/HUAWEI_HG8245W5-6T/posterior.avif", desc: "Panel posterior: 4x GE, puerto de voz y puerto óptico SC/APC" }
+        ],
         descripcion: "ONT FTTH GPON Wi-Fi 5 High Power. Plataforma de revisión sin TR-069 (No Homologado)."
     },
     "HG8247U": {
@@ -955,7 +1010,12 @@ const modelosData = {
         velocidad: 300,
         tipo: "ONT FTTH (Wi-Fi 5)",
         homologado: true, // Con TR-069
-        img: "img/HG8145V5.jpg",
+        img: "img/equipos/HUAWEI_HG8247U/frontal.png",
+        imagenes: [
+            { label: "Frontal", src: "img/equipos/HUAWEI_HG8247U/frontal.png", desc: "Vista frontal con LEDs de estado óptico y CATV" },
+            { label: "Lateral", src: "img/equipos/HUAWEI_HG8247U/lateral.png", desc: "Vista de perfil lateral" },
+            { label: "Inferior (Puertos)", src: "img/equipos/HUAWEI_HG8247U/inferior_puertos.png", desc: "Panel de puertos: LAN, puerto RF/CATV, telefonía y fibra óptica" }
+        ],
         descripcion: "ONT FTTH GPON con puertos CATV / RF (300 Mbps). Compatible con repetidor Claro."
     },
     "HG8245Q2": {
@@ -972,7 +1032,13 @@ const modelosData = {
         velocidad: 500,
         tipo: "ONT FTTH (Wi-Fi 5)",
         homologado: true, // Con TR-069
-        img: "img/HUAWEI HG8245Q2.webp",
+        img: "img/equipos/HUAWEI_HG8245Q2/frontal.webp",
+        imagenes: [
+            { label: "Frontal", src: "img/equipos/HUAWEI_HG8245Q2/frontal.webp", desc: "Vista frontal con indicadores LED" },
+            { label: "Lateral", src: "img/equipos/HUAWEI_HG8245Q2/lateral.webp", desc: "Vista lateral" },
+            { label: "Lateral Opuesta", src: "img/equipos/HUAWEI_HG8245Q2/lateral_opuesta.webp", desc: "Vista lateral contraria" },
+            { label: "Posterior (Puertos)", src: "img/equipos/HUAWEI_HG8245Q2/posterior.webp", desc: "Panel posterior: Puertos Gigabit Ethernet, telefonía y fibra SC/APC" }
+        ],
         descripcion: "ONT FTTH GPON Dual Band Wi-Fi 5 (500 Mbps). Compatible con repetidor Claro."
     },
     "F680V6008": {
@@ -989,7 +1055,12 @@ const modelosData = {
         velocidad: 300,
         tipo: "ONT FTTH (Wi-Fi 5)",
         homologado: true, // Con TR-069
-        img: "img/ZTE_680.jpg",
+        img: "img/equipos/ZTE_F680_V6.0.08/frontal.jpg",
+        imagenes: [
+            { label: "Frontal", src: "img/equipos/ZTE_F680_V6.0.08/frontal.jpg", desc: "Vista frontal con LEDs ZTE GPON ONT" },
+            { label: "Superior", src: "img/equipos/ZTE_F680_V6.0.08/superior_antenas.avif", desc: "Vista superior con antenas MIMO" },
+            { label: "Posterior (Puertos)", src: "img/equipos/ZTE_F680_V6.0.08/posterior.avif", desc: "Panel posterior: 4x Gigabit LAN, 2x Phone y puerto óptico" }
+        ],
         descripcion: "ONT FTTH GPON ZTE Wi-Fi 5 (300 Mbps). Compatible con repetidor Claro."
     },
     "F680V6024": {
@@ -1006,7 +1077,12 @@ const modelosData = {
         velocidad: 500,
         tipo: "ONT FTTH (Wi-Fi 5)",
         homologado: true, // Con TR-069
-        img: "img/ZTE_680.jpg",
+        img: "img/equipos/ZTE_F680_V6.0.24/frontal.jpg",
+        imagenes: [
+            { label: "Frontal", src: "img/equipos/ZTE_F680_V6.0.08/frontal.jpg", desc: "Vista frontal con LEDs ZTE GPON ONT" },
+            { label: "Superior", src: "img/equipos/ZTE_F680_V6.0.24/superior_antenas.jpg", desc: "Vista superior con antenas v6.0.24" },
+            { label: "Posterior (Puertos)", src: "img/equipos/ZTE_F680_V6.0.24/posterior.jpg", desc: "Panel posterior: 4x Gigabit LAN, 2x Phone y puerto óptico" }
+        ],
         descripcion: "ONT FTTH GPON ZTE Wi-Fi 5 versión 6.0.24 (500 Mbps). Compatible con repetidor Claro."
     },
 
@@ -1025,7 +1101,14 @@ const modelosData = {
         velocidad: 1000,
         tipo: "ONT FTTH (Wi-Fi 6 AX)",
         homologado: true, // Con TR-069
-        img: "img/HUAWEI HG8145X6-10.png",
+        img: "img/equipos/HUAWEI_HG8145X6-10/frontal.webp",
+        imagenes: [
+            { label: "Frontal", src: "img/equipos/HUAWEI_HG8145X6-10/frontal.webp", desc: "Vista frontal con indicadores Wi-Fi 6 AX3000" },
+            { label: "Lateral 1", src: "img/equipos/HUAWEI_HG8145X6-10/lateral_1.webp", desc: "Vista de perfil lateral izquierdo" },
+            { label: "Lateral 2", src: "img/equipos/HUAWEI_HG8145X6-10/lateral_2.webp", desc: "Vista de perfil lateral derecho" },
+            { label: "Posterior (Puertos)", src: "img/equipos/HUAWEI_HG8145X6-10/posterior.webp", desc: "Panel posterior: Puertos Gigabit, botón WPS/WLAN y alimentación" },
+            { label: "Posterior Antenas", src: "img/equipos/HUAWEI_HG8145X6-10/posterior_antenas.webp", desc: "Vista posterior con antenas desplegadas" }
+        ],
         descripcion: "ONT FTTH Wi-Fi 6 AX3000 de alta velocidad (1 Gbps). Soporte MESH Claro."
     },
     "FAST5670V2": {
@@ -1042,7 +1125,13 @@ const modelosData = {
         velocidad: 1000,
         tipo: "ONT FTTH (Wi-Fi 6 AX)",
         homologado: false, // Sin TR-069 (LinkZTE / Remoto)
-        img: "img/ONT_SAGEMCOM FAST5670 v2.jpg",
+        img: "img/equipos/SAGEMCOM_FAST5670V2/frontal.webp",
+        imagenes: [
+            { label: "Frontal", src: "img/equipos/SAGEMCOM_FAST5670V2/frontal.webp", desc: "Vista frontal con diseño vertical Wi-Fi 6" },
+            { label: "Perspectiva / LEDs", src: "img/equipos/SAGEMCOM_FAST5670V2/perspectiva_leds.webp", desc: "Vista en perspectiva con indicadores de estado" },
+            { label: "Posterior (Puertos)", src: "img/equipos/SAGEMCOM_FAST5670V2/posterior.webp", desc: "Panel posterior: Puerto 2.5GE, 4x GE, puerto de voz y fibra óptica" },
+            { label: "Inferior (Etiqueta)", src: "img/equipos/SAGEMCOM_FAST5670V2/inferior_etiqueta.webp", desc: "Vista inferior con etiqueta de datos y GPON SN" }
+        ],
         descripcion: "Terminal ONT FTTH Sagemcom con Wi-Fi 6. Plataforma de revisión sin TR-069 (No Homologado)."
     },
     "F6600PV9012": {
@@ -1059,7 +1148,13 @@ const modelosData = {
         velocidad: 1000,
         tipo: "ONT FTTH (Wi-Fi 6 AX)",
         homologado: false, // Sin TR-069 (LinkZTE / Remoto)
-        img: "img/ZXHN-F6600P-FTTH-1.jpg",
+        img: "img/equipos/ZTE_F6600P/frontal.webp",
+        imagenes: [
+            { label: "Frontal", src: "img/equipos/ZTE_F6600P/frontal.webp", desc: "Vista frontal con LEDs y diseño vertical EasyMesh" },
+            { label: "Lateral", src: "img/equipos/ZTE_F6600P/lateral.webp", desc: "Vista lateral de ventilación" },
+            { label: "Posterior (Puertos)", src: "img/equipos/ZTE_F6600P/posterior.webp", desc: "Panel posterior: 4x Gigabit LAN, puerto VoIP y entrada óptica GPON" },
+            { label: "Inferior (Etiqueta)", src: "img/equipos/ZTE_F6600P/inferior_etiqueta.webp", desc: "Vista inferior con credenciales y número de serie" }
+        ],
         descripcion: "ONT FTTH Wi-Fi 6 AX3000 con tecnología EasyMesh. Plataforma de revisión sin TR-069 (No Homologado)."
     },
 
@@ -1077,7 +1172,10 @@ const modelosData = {
         velocidad: 60,
         tipo: "Router HFC (DOCSIS 3.0)",
         homologado: false, // Sin TR-069
-        img: "img/CISCO DPC3926.jpg",
+        img: "img/equipos/CISCO_DPC3926/frontal.jpg",
+        imagenes: [
+            { label: "Frontal", src: "img/equipos/CISCO_DPC3926/frontal.jpg", desc: "Vista frontal con indicadores LED" }
+        ],
         descripcion: "Router HFC DOCSIS 3.0 antiguo (hasta 60 Mbps). Sin soporte repetidor."
     },
     "DPQ3925": {
@@ -1093,7 +1191,10 @@ const modelosData = {
         velocidad: 30,
         tipo: "Router HFC (DOCSIS 3.0)",
         homologado: false, // Sin TR-069
-        img: "img/CISCO DPQ3925.jpg",
+        img: "img/equipos/CISCO_DPQ3925/frontal.jpg",
+        imagenes: [
+            { label: "Frontal", src: "img/equipos/CISCO_DPQ3925/frontal.jpg", desc: "Vista frontal con LEDs y voz eMTA" }
+        ],
         descripcion: "Router HFC DOCSIS 3.0 con soporte eMTA de voz. Obsoleto para altas velocidades."
     },
     "TG862": {
@@ -1109,7 +1210,10 @@ const modelosData = {
         velocidad: 30,
         tipo: "Router HFC (DOCSIS 3.0)",
         homologado: false, // Sin TR-069
-        img: "img/ARRIS TG862.jpg",
+        img: "img/equipos/ARRIS_TG862/frontal.jpg",
+        imagenes: [
+            { label: "Frontal", src: "img/equipos/ARRIS_TG862/frontal.jpg", desc: "Vista frontal con indicadores luminosos" }
+        ],
         descripcion: "Router HFC DOCSIS 3.0 antiguo (hasta 30 Mbps). Sin soporte repetidor."
     }
 };

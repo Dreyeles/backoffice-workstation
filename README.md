@@ -11,26 +11,37 @@
 
 **Plataforma Integral de Productividad, Diagnóstico Técnico en Tiempo Real y Generación Automatizada de Plantillas para BackOffice Telecom.**
 
-[🌐 Probar en Vivo (GitHub Pages)](https://dreyeles.github.io/backoffice-workstation/) · [✨ Novedades v2.8](#-novedades-clave-de-la-versi%C3%B3n-28) · [📌 Módulos](#-m%C3%B3dulos-y-capacidades-principales) · [⌨️ Atajos de Teclado](#%EF%B8%8F-atajos-y-productividad)
+[🌐 Probar en Vivo (GitHub Pages)](https://dreyeles.github.io/backoffice-workstation/) · [✨ Novedades v2.8.1](#-novedades-clave-de-la-versi%C3%B3n-281) · [📌 Módulos](#-m%C3%B3dulos-y-capacidades-principales) · [⌨️ Atajos de Teclado](#%EF%B8%8F-atajos-y-productividad)
 
 </div>
 
 ---
 
-## 🌟 Novedades Clave de la Versión 2.8
+## 🌟 Novedades Clave de la Versión 2.8.1
 
-La versión **2.8** incorpora el nuevo sistema de identificación y visualización técnica de equipos Claro, validación estricta de homologación con TR-069 y una arquitectura modular de alto rendimiento:
+La versión **2.8.1** añade una experiencia visual de inspección avanzada con zoom tipo Amazon por clic y una depuración integral del catálogo de equipos:
 
-### 1. 🛡️ Homologación Estricta TR-069
-- **Regla Estricta Oficial:** Solo se consideran homologados aquellos equipos cuya plataforma de revisión soporte y tenga activo **TR-069**. En caso contrario, se identifican como no homologados para soporte remoto.
+### 1. 🔍 Zoom Interactivo Tipo Amazon por Clic
+- **Activación por Clic:** Haz clic sobre la foto en el modal previsualizador para activar un zoom de aumento continuo centrado exactamente en el cursor.
+- **Paneo y Rueda Dinámica:** Desplaza el mouse para inspeccionar puertos, botones y etiquetas. Modula el nivel de aumento con la rueda del ratón entre `1.5x` y `4.5x`.
+- **Salida Cómoda:** Haz clic de nuevo, clic fuera o presiona <kbd>Escape</kbd> para salir suavemente del zoom.
 
-### 2. 🔍 Previsualizador Grande (Lightbox Modal) & Galería Multi-Ángulo
-- **Inspección en Pantalla Completa:** Haz clic en la foto de cualquier equipo para desplegar la ficha técnica ampliada (Firmware oficial, tecnología FTTH/HFC, Wi-Fi 5/6, DOCSIS, velocidad y soporte MESH).
-- **Múltiples Vistas Fotográficas:** Integración de vistas Frontal, Lateral y Posterior con panel de puertos, coaxial y reset (ej. ARRIS TG3442).
-- **Interfaz Limpia:** Contador flotante dinámico (`📷 1 / 3`) y flechas directas sobre la tarjeta, sin botones de texto rígidos ni elementos redundantes. Navegación fluida por clic o atajos de teclado (`Esc`, `←`, `→`).
+### 2. 📁 Galería Fotográfica Estructurada por Modelo
+- Organización limpia de las imágenes de los 22 modelos de routers y ONTs en carpetas individuales (`img/equipos/<MODELO>/`) con vistas frontal, lateral, posterior de puertos y etiqueta inferior.
 
-### 3. ⚡ Arquitectura Modular Ultrarrápida
-- **Desacoplamiento en 8 submódulos (`js/`):** Aceleración de carga y ejecución con aislamiento funcional para mantenimiento ágil y funcionamiento 100% offline.
+### 3. 🧼 Depuración Integral y Ficha Técnica Sin Redundancias
+- Eliminación de datos duplicados en el modal y corrección de la doble mención de TR-069 en la plataforma de revisión.
+- Simplificación del rotulado técnico a simplemente `💾 Firmware`.
+
+---
+
+## 🌟 Novedades Previas (Versión 2.8)
+
+La versión **2.8** incorporó el sistema de identificación y visualización técnica de equipos Claro, validación estricta de homologación con TR-069 y una arquitectura modular de alto rendimiento:
+
+- **🛡️ Homologación Estricta TR-069:** Validación estricta donde solo se consideran homologados los equipos con soporte TR-069 activo.
+- **🔍 Previsualizador Grande (Lightbox Modal):** Ficha técnica ampliada y galería multi-ángulo por modelo.
+- **⚡ Arquitectura Modular en 8 submódulos (`js/`):** Mayor rendimiento y mantenimiento 100% offline.
 
 ---
 

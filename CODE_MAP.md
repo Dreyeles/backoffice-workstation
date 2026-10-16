@@ -9,7 +9,7 @@ Este documento describe la estructura modular del sistema para facilitar el mant
 ```text
 d:\repositorio local\backoffice\
 │── index.html                  # Estructura visual HTML y carga de scripts
-│── dataset.js                  # Catálogo de motivos, equipos Claro (19 modelos) y manuales
+│── dataset.js                  # Catálogo de motivos, equipos Claro (22 modelos con galería en img/equipos) y manuales
 │── styles.css                  # Estilos visuales, temas oscuro/claro y modales
 │── app.js                      # Orquestador principal, estado central y Tab 1 (Generador)
 │
@@ -50,7 +50,7 @@ d:\repositorio local\backoffice\
 ### 4. [`js/equipos.js`](file:///d:/repositorio%20local/backoffice/js/equipos.js)
 - Identificador y buscador con sistema de puntuación exacta (ranking).
 - Galería adaptable con contador dinámico flotante (`📷 1 / 3`) y flechas de navegación directa sobre la tarjeta.
-- Previsualizador grande Lightbox (`#eqModalViewer`) accesible al hacer clic sobre la imagen, con miniaturas visuales y atajos de teclado (`Esc`, `←`, `→`).
+- Previsualizador grande Lightbox (`#eqModalViewer`) con zoom tipo Amazon por clic, navegación con rueda/pan, ficha técnica operativa unificada y copiado rápido de Firmware oficial.
 
 ### 5. [`js/plantillas-custom.js`](file:///d:/repositorio%20local/backoffice/js/plantillas-custom.js)
 - Gestión CRUD de plantillas de usuario guardadas en `localStorage`.
