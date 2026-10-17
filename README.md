@@ -41,7 +41,7 @@ La versión **2.8** incorporó el sistema de identificación y visualización t�
 
 - **🛡️ Homologación Estricta TR-069:** Validación estricta donde solo se consideran homologados los equipos con soporte TR-069 activo.
 - **🔍 Previsualizador Grande (Lightbox Modal):** Ficha técnica ampliada y galería multi-ángulo por modelo.
-- **⚡ Arquitectura Modular en 8 submódulos (`js/`):** Mayor rendimiento y mantenimiento 100% offline.
+- **⚡ Arquitectura Modular en 13 submódulos (`js/core/`, `js/engines/`, `js/tabs/`):** Separación limpia por capas, mayor rendimiento y mantenimiento 100% offline.
 
 ---
 

@@ -1302,16 +1302,28 @@
     <!-- Popover de Previsualización de Descartes al pasar el cursor -->
     <div id="chipPreviewTooltip" class="chip-preview-tooltip"></div>
 
-    <!-- SCRIPTS MODULARES -->
+    <!-- SCRIPTS MODULARES ORGANIZADOS POR CAPAS -->
+    <!-- 1. Catálogo y Utilidades Base -->
     <script src="dataset.js"></script>
-    <script src="js/autocorrect.js"></script>
-    <script src="js/predictive.js"></script>
-    <script src="js/niveles.js"></script>
-    <script src="js/equipos.js"></script>
-    <script src="js/plantillas-custom.js"></script>
-    <script src="js/remedy.js"></script>
-    <script src="js/historial.js"></script>
-    <script src="js/sidebars.js"></script>
+    <script src="js/core/utils.js"></script>
+
+    <!-- 2. Motores Inteligentes (Engines) -->
+    <script src="js/engines/autocorrect.js"></script>
+    <script src="js/engines/predictive.js"></script>
+    <script src="js/engines/case-parser.js"></script>
+    <script src="js/engines/category-predictor.js"></script>
+    <script src="js/engines/sidebars.js"></script>
+
+    <!-- 3. Pestañas Funcionales (Tabs) -->
+    <script src="js/tabs/generator.js"></script>
+    <script src="js/tabs/tracker.js"></script>
+    <script src="js/tabs/niveles.js"></script>
+    <script src="js/tabs/equipos.js"></script>
+    <script src="js/tabs/plantillas-custom.js"></script>
+    <script src="js/tabs/remedy.js"></script>
+    <script src="js/tabs/historial.js"></script>
+
+    <!-- 4. Orquestador y Estado Global -->
     <script src="app.js"></script>
 </body>
 </html>
