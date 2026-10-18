@@ -49,13 +49,21 @@ d:\repositorio local\backoffice\
 * **[`js/engines/sidebars.js`](file:///d:/repositorio%20local/backoffice/js/engines/sidebars.js):** Control de paneles laterales (Enlaces rápidos `Alt + L` y visor de PDFs técnicos).
 
 ### 3. Capa Tabs (`js/tabs/`)
-* **[`js/tabs/generator.js`](file:///d:/repositorio%20local/backoffice/js/tabs/generator.js):** Tab 1. Generador de plantillas SIAC (Estándar vs. WhatsApp vs. Ciclo de llamada), plantilla de Mantenimiento (`#MANTENIMIENTO...`), chips interactivos de descartes con ciclo de variantes y validación estricta antes de copiar.
-* **[`js/tabs/tracker.js`](file:///d:/repositorio%20local/backoffice/js/tabs/tracker.js):** Tab 2. Registro y línea de tiempo por hora de casos gestionados en el turno, almacenamiento en `localStorage`.
-* **[`js/tabs/niveles.js`](file:///d:/repositorio%20local/backoffice/js/tabs/niveles.js):** Tab 3. Diagnóstico de potencia Upstream/Downstream, SNR, variación de bloque (Δ > 4.0 dB) y niveles ópticos FTTH según el Flyer N° 41.
-* **[`js/tabs/equipos.js`](file:///d:/repositorio%20local/backoffice/js/tabs/equipos.js):** Tab 4. Buscador con ranking, galería fotográfica adaptable y lightbox con zoom profundo.
-* **[`js/tabs/plantillas-custom.js`](file:///d:/repositorio%20local/backoffice/js/tabs/plantillas-custom.js):** Tab 5. CRUD de plantillas de usuario con sustitución dinámica `{sot}`, `{telefono}`, `{servicio}`, etc.
-* **[`js/tabs/remedy.js`](file:///d:/repositorio%20local/backoffice/js/tabs/remedy.js):** Tab 6. Formularios de escalamiento técnico con drag & drop de evidencias y exportación a PDF/Word.
-* **[`js/tabs/historial.js`](file:///d:/repositorio%20local/backoffice/js/tabs/historial.js):** Tab 7. Historial de plantillas copiadas, búsqueda, filtros y exportación/importación JSON.
+* **[`js/tabs/generator.js`](file:///d:/repositorio%20local/backoffice/js/tabs/generator.js):** Tab 1 (Plantillas). Generador de plantillas SIAC (Estándar vs. WhatsApp vs. Ciclo de llamada), plantilla de Mantenimiento (`#MANTENIMIENTO...`), chips interactivos de descartes con ciclo de variantes y validación estricta antes de copiar.
+* **[`js/tabs/tracker.js`](file:///d:/repositorio%20local/backoffice/js/tabs/tracker.js):** Tab 2 (Ayuda y Seguimiento - Columna Izquierda). Registro y línea de tiempo por hora de casos gestionados en el turno, almacenamiento en `localStorage`.
+* **[`js/tabs/niveles.js`](file:///d:/repositorio%20local/backoffice/js/tabs/niveles.js):** Validador de Niveles HFC/FTTH (Alojado en Tab 2: *Ayuda y Seguimiento*, columna derecha). Diagnóstico de potencia Upstream/Downstream, SNR, variación de bloque (Δ > 4.0 dB) y niveles ópticos FTTH según el Flyer N° 41.
+* **[`js/tabs/equipos.js`](file:///d:/repositorio%20local/backoffice/js/tabs/equipos.js):** Identificador de Equipos (Alojado en Tab 2: *Ayuda y Seguimiento*, columna derecha). Buscador con ranking, galería fotográfica adaptable y lightbox con zoom profundo.
+* **[`js/tabs/plantillas-custom.js`](file:///d:/repositorio%20local/backoffice/js/tabs/plantillas-custom.js):** Tab 3 (Mis Plantillas Personalizadas). CRUD de plantillas de usuario con sustitución dinámica `{sot}`, `{telefono}`, `{servicio}`, etc.
+* **[`js/tabs/remedy.js`](file:///d:/repositorio%20local/backoffice/js/tabs/remedy.js):** Modal Escalamiento Remedy. Formularios de escalamiento técnico con drag & drop de evidencias y exportación a PDF/Word.
+* **[`js/tabs/historial.js`](file:///d:/repositorio%20local/backoffice/js/tabs/historial.js):** Tab 4 (Historial y Respaldos). Historial de plantillas copiadas, búsqueda, filtros y exportación/importación JSON.
 
 ### 4. Orquestador (`app.js`)
-* **[`app.js`](file:///d:/repositorio%20local/backoffice/app.js):** Inicializa el estado reactivo `state`, mapea el DOM `elements`, maneja el tema visual y la navegación de pestañas, y arranca de manera segura cada submódulo vía `window.BO_MODULES.*.init(state, elements)`.
+* **[`app.js`](file:///d:/repositorio%20local/backoffice/app.js):** Inicializa el estado reactivo `state`, mapea el DOM `elements`, maneja el tema visual, navegación por pestañas y enrutamiento por hash (`#niveles`, `#tracker`, etc.), y arranca de manera segura cada submódulo vía `window.BO_MODULES.*.init(state, elements)`.
+
+### 5. Sistema de Versión de Seguridad y Respaldo Automático
+* **📁 `version_anterior/`:** Réplica independiente y estable de la versión previa de la aplicación (HTML, CSS, JS). Si la versión principal presenta algún fallo o error inesperado tras un commit, el usuario puede cambiar a esta versión con un clic en el header (`🛡️ Versión de Seguridad`).
+* **[`scripts/sync_version_anterior.js`](file:///d:/repositorio%20local/backoffice/scripts/sync_version_anterior.js):** Motor de sincronización que extrae los archivos de `HEAD` (o locales), inyecta el banner de retorno y reajusta rutas relativas de imágenes.
+* **`.git/hooks/pre-commit`:** Hook de Git que ejecuta automáticamente la sincronización antes de cada `git commit` y añade `version_anterior/` para que viaje en cada `git push`.
+* **[`actualizar_version_seguridad.bat`](file:///d:/repositorio%20local/backoffice/actualizar_version_seguridad.bat):** Acceso directo para sincronizar manualmente la versión de seguridad en cualquier momento.
+* **[`rollback_urgente.bat`](file:///d:/repositorio%20local/backoffice/rollback_urgente.bat):** Script de emergencia con Git para revertir los archivos del repositorio al commit anterior (`HEAD~1`) en 1 clic.
+

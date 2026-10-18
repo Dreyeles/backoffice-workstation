@@ -50,16 +50,27 @@ window.BO_MODULES = window.BO_MODULES || {};
 
         filtered.forEach(tmpl => {
             const card = document.createElement('div');
-            card.className = 'template-card';
+            const catUpper = (tmpl.category || '').toUpperCase().trim();
+            const isLiveChat = catUpper.includes('LIVE CHAT') || catUpper.includes('LIVECHAT') || catUpper === 'CHAT' || catUpper === 'LIVE';
+            card.className = isLiveChat ? 'template-card card-livechat' : 'template-card';
+
             const resolvedContent = resolveTemplateVariables(tmpl.content);
             const hasDynamicVars = tmpl.content.includes('{');
+
+            const categoryBadge = isLiveChat
+                ? `<span class="badge-category badge-livechat">💬 ${tmpl.category}</span>`
+                : `<span class="badge badge-info" style="font-size:0.72rem; padding:0.18rem 0.55rem; border-radius:4px; font-weight:600; background:rgba(59, 130, 246, 0.15); color:#60a5fa; border:1px solid rgba(59, 130, 246, 0.3);">${tmpl.category}</span>`;
+
+            const copyBtnClass = isLiveChat
+                ? 'btn btn-sm btn-copy-livechat copy-tmpl-btn'
+                : 'btn btn-sm btn-primary copy-tmpl-btn';
 
             card.innerHTML = `
                 <div class="template-card-header">
                     <div>
                         <div class="template-card-title">${tmpl.title}</div>
                         <div style="display:flex; gap:0.35rem; align-items:center; margin-top:0.3rem; flex-wrap:wrap;">
-                            <span class="badge badge-info">${tmpl.category}</span>
+                            ${categoryBadge}
                             ${hasDynamicVars ? '<span class="badge" style="background:rgba(16, 185, 129, 0.15); color:#10b981; font-size:0.7rem; border:1px solid rgba(16, 185, 129, 0.3);">⚡ Auto-Variables</span>' : ''}
                         </div>
                     </div>
@@ -69,7 +80,7 @@ window.BO_MODULES = window.BO_MODULES || {};
                     </div>
                 </div>
                 <div class="template-card-preview" style="white-space:pre-wrap; line-height:1.45;">${resolvedContent}</div>
-                <button class="btn btn-sm btn-primary copy-tmpl-btn" data-id="${tmpl.id}" style="margin-top:0.5rem; width:100%;">📋 Copiar Plantilla</button>
+                <button class="${copyBtnClass}" data-id="${tmpl.id}" style="margin-top:0.5rem; width:100%;">📋 Copiar Plantilla</button>
             `;
 
             // Edit Event

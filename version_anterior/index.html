@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorkStation | Plantillas</title>
+    <meta name="description" content="Sistema de gestión y generación rápida de plantillas corporativas para Back Office Técnica HITSS / América Móvil.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- BANNER INFORMATIVO: VERSIÓN DE SEGURIDAD (RESPALDO ANTERIOR) -->
+    <div id="safetyBanner" style="background: linear-gradient(90deg, #1e3a8a, #2563eb); color: #ffffff; padding: 0.28rem 1rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; font-weight: 600; box-shadow: 0 1px 6px rgba(0,0,0,0.25); position: sticky; top: 0; z-index: 99999; border-bottom: 1px solid rgba(59, 130, 246, 0.4); flex-wrap: wrap; gap: 0.5rem;">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span><strong>MODO RESPALDO:</strong> Estás utilizando la <em>Versión de Seguridad Anterior</em>. Todos los módulos y configuraciones funcionan de forma estable e independiente.</span>
+        </div>
+        <a href="../index.html" style="background: #ffffff; color: #1e40af; padding: 0.2rem 0.75rem; border-radius: 5px; text-decoration: none; font-weight: 700; font-size: 0.75rem; box-shadow: 0 1px 4px rgba(0,0,0,0.2); white-space: nowrap; transition: transform 0.15s ease;" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
+            Volver a Versión Principal
+        </a>
+    </div>
+
+
+    <!-- APP HEADER -->
+    <header class="app-header">
+        <div class="brand">
+            <div>
+                <div class="brand-title">WORKSTATION BACKOFFICE <span id="btnChangelog" style="display: inline-flex; align-items: center; border-radius: 4px; overflow: hidden; vertical-align: middle; margin-left: 0.5rem; font-size: 0.55em; letter-spacing: normal; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;" title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.8.1</span></span></div>
+                <div class="brand-subtitle">PLATAFORMA LOCAL DE PLANTILLAS Y SEGUIMIENTO PARA BO-FIJA</div>
+            </div>
+        </div>
+
+        <div class="header-actions" style="display:flex; gap:0.5rem; align-items:center;">
+            <button id="btnOpenManualsSidebar" class="header-circle-btn" title="Manuales & Guías Técnicas (Alt+M)">📖</button>
+            <button id="btnOpenLinksSidebar" class="header-circle-btn" title="Plataformas & Enlaces de Trabajo (Alt+L)">🌐</button>
+            <button id="themeToggleBtn" class="theme-toggle-btn" title="Cambiar Tema (Oscuro/Claro)">🌙</button>
+        </div>
+    </header>
+
+    <!-- NAVIGATION TABS -->
+    <div class="nav-tabs-container">
+        <ul class="nav-tabs">
+            <li>
+                <button class="nav-tab-btn active" data-tab="tab-generator">
+                    ⚡ Plantillas
+                </button>
+            </li>
+            <li>
+                <button class="nav-tab-btn" data-tab="tab-tracker">
+                    📚 Ayuda y Seguimiento 
+                    <span id="navTrackerCount" style="background:var(--primary); color:white; padding:0.1rem 0.5rem; border-radius:12px; font-size:0.75rem; font-weight:bold; margin-left:0.3rem;">0</span>
+                </button>
+            </li>
+            <li>
+                <button class="nav-tab-btn" data-tab="tab-custom">
+                    🎨 Mis Plantillas Personalizadas
+                </button>
+            </li>
+            <li>
+                <button class="nav-tab-btn" data-tab="tab-history">
+                    📜 Historial y Respaldos
+                </button>
+            </li>
+        </ul>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-container">
+
+        <!-- ===================================================================
+             TAB 1: GENERADOR RÁPIDO (PLANTILLEITOR)
+             =================================================================== -->
+        <section id="tab-generator" class="tab-pane active">
+            <div class="grid-2col">
+                
+                <!-- Left Column: Form Inputs -->
+                <div>
+                    <!-- Case Data Card -->
+                    <div class="card">
+                        <div class="card-title">
+                            <div class="card-title-text">🛠️ Datos del Caso & Servicio</div>
+                            <button id="btnClearForm" class="btn btn-sm" style="color:var(--danger); border-color:var(--danger);" title="Limpiar campos">🗑️ Limpiar</button>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group" style="position: relative;">
+                                <label class="form-label" for="genTelefono">Número de Contacto <span style="color:var(--danger); font-weight:bold;">*</span></label>
+                                <input type="text" id="genTelefono" class="form-input" placeholder="Ej: 987654321 / 014567890 / 4567890" maxlength="40" autocomplete="tel">
+                                <div id="genTelefonoWarning" class="input-inline-warning" style="display:none;">⚠️ Solo se permiten números y separadores</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="genContactId">ID Llamada / Chat ID</label>
+                                <input type="text" id="genContactId" class="form-input" placeholder="Ej: 1787747820-730926">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="genSot">SOT / REMEDY</label>
+                                <input type="text" id="genSot" class="form-input" placeholder="Ej: 19874523">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="genServicio">Servicio</label>
+                                <select id="genServicio" class="form-select">
+                                    <option value="INTERNET" selected>INTERNET</option>
+                                    <option value="IPTV">IPTV</option>
+                                    <option value="APPS">CLARO VIDEO</option>
+                                    <option value="TELEFONIA">TELEFONÍA</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label class="form-label" for="genProblema">Problema Detectado / Descripción del Cliente <span style="color:var(--danger); font-weight:bold;">*</span></label>
+                                <div class="custom-select-wrapper" id="problemaWrapper">
+                                    <div style="position: relative; display: flex; align-items: center;">
+                                        <input type="text" id="genProblema" class="form-input" style="padding-right: 2.2rem;" placeholder="Escribe o selecciona un problema..." autocomplete="off" spellcheck="true">
+                                        <button type="button" id="btnToggleProblemaDropdown" style="position: absolute; right: 8px; background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 4px 8px; font-size: 0.75rem; border-radius: 4px;" title="Ver lista de problemas sugeridos">▼</button>
+                                    </div>
+                                    <div class="custom-select-dropdown" id="problemaDropdown">
+                                        <div class="custom-select-options" id="genProblemaOptions"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Solution Section -->
+                        <div class="form-group">
+                            <label class="form-label" for="genSolucion">
+                                Solución del Caso <span class="predictive-tab-hint" title="Presiona Tab o flecha derecha para autocompletar">⚡ Predictivo (Tab ↹)</span>
+                            </label>
+                            <div class="predictive-wrapper" id="wrapperGenSolucion">
+                                <div class="predictive-wrapper-bg"></div>
+                                <div class="predictive-ghost-overlay" id="ghostGenSolucion"></div>
+                                <input type="text" id="genSolucion" class="form-input" placeholder="Describe la solución aplicada..." spellcheck="true" autocomplete="off">
+                                <div class="predictive-dropdown" id="dropdownGenSolucion"></div>
+                            </div>
+                        </div>
+
+                        <!-- Descartes Section -->
+                        <div class="form-group">
+                            <label class="form-label" for="genDescartes">
+                                Descartes Realizados <span style="color:var(--danger); font-weight:bold;">*</span> 
+                                <span style="font-size:0.75rem; text-transform:none; font-weight:normal; color:var(--text-muted);">(Mínimo 1 descarte)</span>
+                            </label>
+                            <div class="predictive-wrapper" id="wrapperGenDescartes">
+                                <div class="predictive-wrapper-bg"></div>
+                                <div class="predictive-ghost-overlay" id="ghostGenDescartes"></div>
+                                <textarea id="genDescartes" class="form-textarea" placeholder="Descartes técnicos realizados... (💡 Escribe y presiona Tab para autocompletar frases o pega una plantilla completa)" spellcheck="true" autocomplete="off"></textarea>
+                                <div class="predictive-dropdown" id="dropdownGenDescartes"></div>
+                            </div>
+                            
+                            <span class="form-label" style="margin-top:0.4rem; font-size:0.75rem;">Descartes Rápida Selección:</span>
+                            <div id="quickDescartesContainer" class="chips-container"></div>
+                        </div>
+
+                        <!-- Hashtags Section -->
+                        <div class="form-group" style="margin-top:1rem;">
+                            <label class="form-label">Etiquetas / Hashtags</label>
+                            <div id="hashtagsContainer" class="chips-container"></div>
+                        </div>
+
+                        <!-- Categorías Section -->
+                        <div class="form-group" style="margin-top:1.5rem; padding-top:1rem; border-top:1px solid var(--border-color);">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem;">
+                                <label class="form-label" style="font-weight: bold; margin:0; display:flex; align-items:center; gap:0.4rem;">
+                                    Categorías de Cierre
+                                    <div class="beta-popover-wrapper">
+                                        <span id="btnBetaInfo" class="beta-badge">BETA</span>
+                                        <div id="betaInfoPopover" class="beta-popover">
+                                            <div class="beta-popover-header">
+                                                <span>🧪 Función en Fase Experimental</span>
+                                                <button type="button" class="beta-popover-close" id="btnCloseBetaInfoPopover" title="Cerrar">✕</button>
+                                            </div>
+                                            <div class="beta-popover-body">
+                                                El autocompletado es predictivo y se encuentra en <strong>fase experimental</strong> de prueba.
+                                                <div class="beta-popover-warning">
+                                                    ⚠️ <strong>Aviso Importante:</strong> Valida siempre que las categorías correspondan a la atención real antes de guardar en SIAC / Helix.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <button id="btnPredictCategory" class="btn btn-sm btn-primary" title="Autocompletar categoría basado en los datos del caso" style="font-size:0.75rem; padding: 0.2rem 0.5rem;">🪄 Autocompletar</button>
+                            </div>
+                            <div class="form-group" style="margin-bottom:0;">
+                                <label class="form-label" for="genCatResolucion">Categoría de Resolución</label>
+                                <input type="text" id="genCatResolucion" class="form-input" placeholder="Ej: Configuración de equipo">
+                            </div>
+                        </div>
+
+                        <!-- Botón Escalamiento Remedy -->
+                        <div style="margin-top:1.2rem; padding-top:0.9rem; border-top:1px dashed var(--border-color); display:flex; justify-content:flex-end;">
+                            <button type="button" id="btnOpenRemedyModal" class="btn" style="background: linear-gradient(135deg, #ef4444, #b91c1c); border: 1px solid #ef4444; color: #ffffff; font-weight: 700; font-size: 0.85rem; padding: 0.5rem 1rem; border-radius: 6px; box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4); display: flex; align-items: center; gap: 0.5rem; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer;" onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 6px 18px rgba(239, 68, 68, 0.55)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 14px rgba(239, 68, 68, 0.4)';" title="Abrir estructurador para escalamiento vía Remedy">
+                                🛠️ Generar Plantilla Remedy
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Right Column: Live Previews (2 Plantillas) -->
+                <div class="preview-sticky-col">
+                    <!-- Preview SIAC / Helix / Ciclo -->
+                    <div class="card">
+                        <div class="card-title" style="flex-wrap: wrap; gap: 0.5rem;">
+                            <div class="card-title-text" id="titleSiacCard">Plantilla Oficial Cliente Claro</div>
+                            <div style="display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap;">
+                                <button type="button" id="btnToggleSiacMode" class="btn-toggle-ciclo active" title="Cambiar formato de plantilla (Estándar vs Oficial Cliente Claro)">
+                                    <span class="template-indicator-dot"></span>
+                                    <span id="labelSiacMode">Oficial Cliente Claro</span>
+                                </button>
+                                <button type="button" id="btnToggleCiclo" class="btn-toggle-ciclo" title="Alternar formato normal o ciclo de llamada">
+                                    <span class="ciclo-indicator-dot"></span>
+                                    <span id="labelCicloToggle">Ciclo: Auto</span>
+                                </button>
+                                <button id="btnCopySiac" class="btn btn-sm btn-primary">Copiar</button>
+                            </div>
+                        </div>
+                        <div id="previewSiac" class="preview-box">Cargando vista previa...</div>
+                    </div>
+
+                    <!-- Preview Mantenimiento -->
+                    <div class="card">
+                        <div class="card-title">
+                            <div class="card-title-text">Plantilla Mantenimiento</div>
+                            <button id="btnCopyManto" class="btn btn-sm btn-primary">Copiar</button>
+                        </div>
+                        <div id="previewManto" class="preview-box">Cargando vista previa...</div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===================================================================
+             TAB 2: AYUDA Y SEGUIMIENTO (TRACKER)
+             =================================================================== -->
+        <section id="tab-tracker" class="tab-pane">
+            <div class="grid-2col">
+                
+                <!-- Left Column: Daily Tracker -->
+                <div>
+                    <div class="card">
+                        <div class="card-title">
+                            <div class="card-title-text" style="display:flex; align-items:center; gap:0.5rem;">
+                                📝 Registro Diario de Casos
+                                <span id="trackerCount" style="background:var(--primary); color:white; padding:0.1rem 0.6rem; border-radius:12px; font-size:0.75rem; font-weight:bold;">0</span>
+                            </div>
+                            <button id="btnClearTracker" class="btn btn-sm" style="color:var(--danger); border-color:var(--danger);" title="Limpiar Día">🗑️ Limpiar Día</button>
+                        </div>
+                        
+                        <div style="display:flex; gap:0.5rem; margin-bottom:1.5rem;">
+                            <input type="text" id="trackerCaseInput" class="form-input" placeholder="Código de Caso..." style="flex:1;">
+                            <button id="btnTrackerAdd" class="btn btn-primary">➕ Registrar</button>
+                        </div>
+
+                        <div id="trackerTimeline" class="timeline-container">
+                            <!-- Timeline injected via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Speeches & Resources -->
+                <div class="preview-sticky-col">
+
+                    <!-- Validador de Niveles (HFC / FTTH) -->
+                    <div class="card">
+                        <div class="card-title">
+                            <div class="card-title-text" style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
+                                <span>Validador de Niveles</span>
+                                <div class="tech-toggle-group">
+                                    <button type="button" class="btn-tech active" id="btnTechHfc">HFC</button>
+                                    <button type="button" class="btn-tech" id="btnTechFtth">FTTH</button>
+                                </div>
+                            </div>
+                            <button id="btnClearHygeia" class="btn btn-sm" style="color:var(--danger); border-color:var(--danger);" title="Limpiar campos">🗑️ Limpiar</button>
+                        </div>
+                        <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;" id="hygeiaHelpText">
+                            Pega los valores de cada parámetro para validar si están en rango.
+                        </div>
+
+                        <!-- Panel HFC (Coaxial) -->
+                        <div id="hygeiaHfcPanel">
+                            <!-- Smart Auto-Paste Box -->
+                            <div class="form-group" style="background:rgba(59, 130, 246, 0.07); border:1.5px dashed #3b82f6; border-radius:8px; padding:0.65rem; margin-bottom:0.9rem;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem; flex-wrap:wrap; gap:0.4rem;">
+                                    <label class="form-label" style="font-size:0.75rem; color:#2563eb; font-weight:700; margin-bottom:0; display:flex; align-items:center; gap:0.3rem;">
+                                         Pegado Inteligente
+                                    </label>
+                                    <button type="button" id="btnSmartPasteClip" class="btn btn-sm" style="font-size:0.7rem; padding:0.2rem 0.6rem; background:#2563eb; color:#fff; border:none; border-radius:4px; cursor:pointer;" title="Pegar lo último copiado del portapapeles">
+                                        📋 Pegar
+                                    </button>
+                                </div>
+                                <textarea id="incSmartPaste" class="form-textarea" style="min-height:46px; font-size:0.78rem; background:var(--bg-main);" placeholder="💡 Pega aquí todo el bloque del módem o Hygeia (detecta U/S SNR, D/S SNR, Potencias y Modelo automáticamente)..."></textarea>
+                                <div id="smartPasteStatus" style="font-size:0.72rem; color:#16a34a; margin-top:0.3rem; display:none; font-weight:600;"></div>
+                            </div>
+
+                            <!-- Botón para desplegar / recoger campos manuales -->
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+                                <span style="font-size:0.75rem; color:var(--text-muted);">¿Quieres ingresar datos manualmente?</span>
+                                <button type="button" id="btnToggleHfcManual" class="btn btn-xs" style="font-size:0.72rem; padding:0.2rem 0.5rem; background:transparent; border:1px solid var(--border-color); color:var(--text-color); cursor:pointer; border-radius:4px;">
+                                    ⚙️ Campos individuales <span id="toggleManualArrow">▼</span>
+                                </button>
+                            </div>
+
+                            <!-- Contenedor recogido por defecto de los 4 campos -->
+                            <div id="hfcManualFields" style="display:none;">
+                                <div class="form-group">
+                                    <label class="form-label" style="font-size:0.75rem;">U/S SNR (Mín: 28 dB)</label>
+                                    <textarea id="incInputUsSnr" class="form-textarea" style="min-height:40px; font-size:0.8rem;" placeholder="Ej: 40.6"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" style="font-size:0.75rem;">D/S SNR (Mín: 33.5 dB)</label>
+                                    <textarea id="incInputDwsSnr" class="form-textarea" style="min-height:40px; font-size:0.8rem;" placeholder="Ej: 35.6, 34.3..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" style="font-size:0.75rem;">Potencia Downstream Rx (-15 a 20.9 dBmV)</label>
+                                    <textarea id="incInputDwsPot" class="form-textarea" style="min-height:40px; font-size:0.8rem;" placeholder="Ej: 0.7, 0.4, 0.1..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" style="font-size:0.75rem;">Potencia Upstream Tx (36.1 a 52.9 dBmV)</label>
+                                    <textarea id="incInputUsPot" class="form-textarea" style="min-height:40px; font-size:0.8rem;" placeholder="Ej: 41.5"></textarea>
+                                </div>
+                            </div>
+                            
+                            <div id="incognitoResults" style="background:var(--bg-main); padding:1rem; border-radius:8px; border:1px solid var(--border-color); margin-bottom:1rem;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem; flex-wrap:wrap; gap:0.5rem;">
+                                    <span style="font-weight:bold; font-size:0.9rem;">Resultados HFC</span>
+                                    <span id="incGlobalBadge" style="font-size:0.75rem; font-weight:600; padding:0.2rem 0.6rem; border-radius:12px; border:1px dashed var(--border-color); color:var(--text-muted);">Esperando datos...</span>
+                                </div>
+                                <div id="incResultUsSnr" style="margin-bottom:0.4rem; padding:0.4rem; border-radius:4px; font-size:0.85rem;">U/S SNR: Esperando datos...</div>
+                                <div id="incResultDwsSnr" style="margin-bottom:0.4rem; padding:0.4rem; border-radius:4px; font-size:0.85rem;">D/S SNR: Esperando datos...</div>
+                                <div id="incResultDwsPot" style="margin-bottom:0.4rem; padding:0.4rem; border-radius:4px; font-size:0.85rem;">Potencia Downstream: Esperando datos...</div>
+                                <div id="incResultUsPot" style="margin-bottom:0.4rem; padding:0.4rem; border-radius:4px; font-size:0.85rem;">Potencia Upstream: Esperando datos...</div>
+                                <div style="font-size:0.73rem; color:var(--text-muted); margin-top:0.55rem; line-height:1.4; border-top:1px dashed var(--border-color); padding-top:0.45rem;">
+                                    📋 <strong>Pautas Operativas Flyer N° 41-BO FIJA (30/09/2026):</strong><br>
+                                    • <span style="color:#ef4444; font-weight:600;">🚨 Generar Visita Técnica:</span> Si la <em>Potencia Upstream</em> está fuera de rango (sin descartes), o si <em>D/S SNR</em> y <em>Potencia Downstream</em> están simultáneamente fuera de rango.<br>
+                                    • <span style="color:#f59e0b; font-weight:600;">🔄 Continuar Descartes Regulares:</span> Si solo <em>U/S SNR</em> está fuera de rango, o si solo <em>uno</em> de los niveles Downstream está fuera de rango.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Panel FTTH (Fibra Óptica) -->
+                        <div id="hygeiaFtthPanel" style="display:none;">
+                            <!-- Smart Auto-Paste Box FTTH -->
+                            <div class="form-group" style="background:rgba(59, 130, 246, 0.07); border:1.5px dashed #3b82f6; border-radius:8px; padding:0.65rem; margin-bottom:0.9rem;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem; flex-wrap:wrap; gap:0.4rem;">
+                                    <label class="form-label" style="font-size:0.75rem; color:#2563eb; font-weight:700; margin-bottom:0; display:flex; align-items:center; gap:0.3rem;">
+                                        Pegado Inteligente
+                                    </label>
+                                    <button type="button" id="btnFtthSmartPasteClip" class="btn btn-sm" style="font-size:0.7rem; padding:0.2rem 0.6rem; background:#2563eb; color:#fff; border:none; border-radius:4px; cursor:pointer;" title="Pegar lo último copiado del portapapeles">
+                                        📋 Pegar
+                                    </button>
+                                </div>
+                                <textarea id="ftthSmartPaste" class="form-textarea" style="min-height:46px; font-size:0.78rem; background:var(--bg-main);" placeholder="💡 Pega aquí el reporte de Hygeia ONT (detecta Transmission y Receiving Power automáticamente)..."></textarea>
+                                <div id="ftthSmartPasteStatus" style="font-size:0.72rem; color:#16a34a; margin-top:0.3rem; display:none; font-weight:600;"></div>
+                            </div>
+
+                            <!-- Botón para desplegar / recoger campos manuales FTTH -->
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+                                <span style="font-size:0.75rem; color:var(--text-muted);">¿Quieres ingresar datos manualmente?</span>
+                                <button type="button" id="btnToggleFtthManual" class="btn btn-xs" style="font-size:0.72rem; padding:0.2rem 0.5rem; background:transparent; border:1px solid var(--border-color); color:var(--text-color); cursor:pointer; border-radius:4px;">
+                                    ⚙️ Campos individuales <span id="toggleFtthManualArrow">▼</span>
+                                </button>
+                            </div>
+
+                            <!-- Contenedor recogido por defecto de campos FTTH -->
+                            <div id="ftthManualFields" style="display:none;">
+                                <div class="form-group">
+                                    <label class="form-label" style="font-size:0.75rem;">Transmission Power Tx (0.5 a 5.0 dBm)</label>
+                                    <textarea id="ftthInputTx" class="form-textarea" style="min-height:40px; font-size:0.8rem;" placeholder="Ej: 2.5"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" style="font-size:0.75rem;">Receiving Power Rx (-24.9 a -6.1 dBm)</label>
+                                    <textarea id="ftthInputRx" class="form-textarea" style="min-height:40px; font-size:0.8rem;" placeholder="Ej: -18.2"></textarea>
+                                </div>
+                            </div>
+                            
+                            <div id="ftthResults" style="background:var(--bg-main); padding:1rem; border-radius:8px; border:1px solid var(--border-color); margin-bottom:1rem;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem; flex-wrap:wrap; gap:0.5rem;">
+                                    <span style="font-weight:bold; font-size:0.9rem;">Resultados FTTH</span>
+                                    <span id="ftthGlobalBadge" style="font-size:0.75rem; font-weight:600; padding:0.2rem 0.6rem; border-radius:12px; border:1px dashed var(--border-color); color:var(--text-muted);">Esperando datos...</span>
+                                </div>
+                                <div id="ftthResultTx" style="margin-bottom:0.4rem; padding:0.4rem; border-radius:4px; font-size:0.85rem;">Transmission Power (Tx): Esperando datos...</div>
+                                <div id="ftthResultRx" style="margin-bottom:0.4rem; padding:0.4rem; border-radius:4px; font-size:0.85rem;">Receiving Power (Rx): Esperando datos...</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Identificador de Equipos -->
+                    <div class="card">
+                        <div class="card-title">
+                            <div class="card-title-text" style="display:flex; align-items:center; gap:0.5rem;">
+                                📡 Identificador de Equipos
+                            </div>
+                        </div>
+                        <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">
+                            Ingresa el modelo o código del equipo para verificar su estado y apariencia.
+                        </div>
+                        <div class="form-group" style="margin-bottom:0.5rem;">
+                            <input type="text" id="eqSearchInput" class="form-input" placeholder="Buscar equipo (Ej. CGA2121, TG3442, F6600P)...">
+                        </div>
+                        
+                        <div id="eqQuickChips" style="display:flex; flex-wrap:wrap; gap:0.35rem; margin-bottom:0.85rem;">
+                            <!-- HFC DOCSIS 3.0 -->
+                            <span class="btn-xs eq-chip" data-model="TG1662G" title="TG1662G (Homologado · TR-069)" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">TG1662G</span>
+                            <span class="btn-xs eq-chip" data-model="FAST3284" title="FAST3284 (Homologado · TR-069)" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">FAST3284</span>
+                            <span class="btn-xs eq-chip" data-model="TG2482" title="TG2482 (Homologado · TR-069)" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">TG2482</span>
+                            <span class="btn-xs eq-chip" data-model="WTM652G" title="WTM652G (Homologado · TR-069)" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">WTM652G</span>
+                            <span class="btn-xs eq-chip" data-model="FAST3686V22" title="FAST3686v2 (Homologado · TR-069)" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">FAST3686</span>
+                            <span class="btn-xs eq-chip" data-model="CGA2121" title="CGA2121 (Homologado · TR-069)" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">CGA2121</span>
+
+                            <!-- HFC DOCSIS 3.1 -->
+                            <span class="btn-xs eq-chip" data-model="FAST3890V3" title="FAST3890V3 (Homologado · TR-069)" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">FAST3890</span>
+                            <span class="btn-xs eq-chip" data-model="CGA4233CLP2" title="CGA4233CLP2 (No Homologado · Sin TR-069)" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px dashed #ef4444; color:#ef4444; border-radius:12px; cursor:pointer;">CGA4233</span>
+                            <span class="btn-xs eq-chip" data-model="TG3442" title="TG3442 Wi-Fi 6 (Homologado · TR-069)" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">TG3442</span>
+                            <span class="btn-xs eq-chip" data-model="INFINITY601" title="Infinity601 Wi-Fi 6 (No Homologado · Sin TR-069)" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px dashed #ef4444; color:#ef4444; border-radius:12px; cursor:pointer;">Infinity601</span>
+
+                            <!-- FTTH GPON Wi-Fi 5 -->
+                            <span class="btn-xs eq-chip" data-model="HG8145V5" title="HG8145V5 (Homologado · TR-069)" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">HG8145V5</span>
+                            <span class="btn-xs eq-chip" data-model="HG8245W56T" title="HG8245W5-6T (No Homologado · Sin TR-069)" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px dashed #ef4444; color:#ef4444; border-radius:12px; cursor:pointer;">HG8245W5</span>
+                            <span class="btn-xs eq-chip" data-model="HG8247U" title="HG8247U (Homologado · TR-069)" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">HG8247U</span>
+                            <span class="btn-xs eq-chip" data-model="HG8245Q2" title="HG8245Q2 (Homologado · TR-069)" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">HG8245Q2</span>
+                            <span class="btn-xs eq-chip" data-model="F680V6008" title="F680 V6.0.08 (Homologado · TR-069)" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">F680 (0.08)</span>
+                            <span class="btn-xs eq-chip" data-model="F680V6024" title="F680 V6.0.24 (Homologado · TR-069)" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">F680 (0.24)</span>
+
+                            <!-- FTTH GPON Wi-Fi 6 -->
+                            <span class="btn-xs eq-chip" data-model="HG8145X610" title="HG8145X6-10 Wi-Fi 6 (Homologado · TR-069)" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px solid var(--border-color); border-radius:12px; cursor:pointer;">HG8145X6</span>
+                            <span class="btn-xs eq-chip" data-model="FAST5670V2" title="Fast5670v2 Wi-Fi 6 (No Homologado · Sin TR-069)" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px dashed #ef4444; color:#ef4444; border-radius:12px; cursor:pointer;">FAST5670</span>
+                            <span class="btn-xs eq-chip" data-model="F6600PV9012" title="F6600PV9.0.12 Wi-Fi 6 (No Homologado · Sin TR-069)" style="font-size:0.7rem; padding:0.15rem 0.45rem; background:var(--bg-main); border:1px dashed #ef4444; color:#ef4444; border-radius:12px; cursor:pointer;">F6600P</span>
+                        </div>
+                        
+                        <div id="eqResultContainer" style="display:none; background:var(--bg-main); padding:1rem; border-radius:8px; border:1px solid var(--border-color); text-align:center; transition:all 0.3s ease;">
+                            <div style="font-size:0.75rem; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:0.6rem; text-align:left;">Vista de Equipo</div>
+
+                            <!-- Contenedor Interactivo con Click para Abrir Previsualizador -->
+                            <div id="eqImageBox" style="width:100%; height:135px; background-color:var(--bg-card); border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:0.5rem; overflow:hidden; border:1px dashed var(--border-color); position:relative; cursor:pointer;" title="Haz click para abrir el previsualizador en grande">
+                                <img id="eqImage" src="" alt="Imagen del equipo" style="max-height:100%; max-width:100%; object-fit:contain; display:none; transition:transform 0.3s ease;">
+                                <span id="eqImagePlaceholder" style="color:var(--text-muted); font-size:0.8rem;">Sin imagen</span>
+                                
+                                <!-- Contador de fotos discreto (solo si > 1 imagen) -->
+                                <div id="eqCardImgCounter" style="display:none; position:absolute; top:6px; left:6px; background:rgba(0,0,0,0.72); backdrop-filter:blur(4px); color:#fff; font-size:0.68rem; font-weight:700; padding:2px 8px; border-radius:12px; align-items:center; gap:4px; pointer-events:none; border:1px solid rgba(255,255,255,0.25);">
+                                    📷 <span id="eqCardImgCounterText">1 / 1</span>
+                                </div>
+
+                                <!-- Flechas discretas sobre la tarjeta (solo si > 1 imagen) -->
+                                <button type="button" id="btnCardPrevImg" style="display:none; position:absolute; left:6px; top:50%; transform:translateY(-50%); width:26px; height:26px; border-radius:50%; background:rgba(0,0,0,0.65); backdrop-filter:blur(3px); border:1px solid rgba(255,255,255,0.25); color:#fff; align-items:center; justify-content:center; cursor:pointer; font-size:12px; z-index:3; transition:all 0.2s;" title="Foto anterior">❮</button>
+                                <button type="button" id="btnCardNextImg" style="display:none; position:absolute; right:6px; top:50%; transform:translateY(-50%); width:26px; height:26px; border-radius:50%; background:rgba(0,0,0,0.65); backdrop-filter:blur(3px); border:1px solid rgba(255,255,255,0.25); color:#fff; align-items:center; justify-content:center; cursor:pointer; font-size:12px; z-index:3; transition:all 0.2s;" title="Siguiente foto">❯</button>
+
+                                <div id="eqZoomHint" style="position:absolute; bottom:6px; right:6px; background:rgba(0,0,0,0.72); backdrop-filter:blur(4px); color:#fff; font-size:0.68rem; padding:2px 8px; border-radius:12px; display:flex; align-items:center; gap:4px; pointer-events:none; border:1px solid rgba(255,255,255,0.25);">
+                                    🔍 Click para ampliar
+                                </div>
+                            </div>
+
+                            <div id="eqName" style="font-weight:bold; font-size:1.05rem; margin-bottom:0.2rem;">--</div>
+                            <div id="eqType" style="color:var(--text-muted); font-size:0.8rem; margin-bottom:0.6rem;">--</div>
+                            
+                            <div style="display:flex; justify-content:center; gap:0.35rem; flex-wrap:wrap; margin-bottom:0.6rem;">
+                                <span id="eqRed" style="padding:0.25rem 0.6rem; border-radius:12px; font-size:0.75rem; font-weight:600;">--</span>
+                                <span id="eqVersion" style="padding:0.25rem 0.6rem; border-radius:12px; font-size:0.75rem; font-weight:600;">--</span>
+                                <span id="eqRepetidor" style="padding:0.25rem 0.6rem; border-radius:12px; font-size:0.75rem; font-weight:600;">--</span>
+                                <span id="eqSpeed" style="padding:0.25rem 0.6rem; border-radius:12px; font-size:0.75rem; font-weight:600; background:rgba(59, 130, 246, 0.15); color:#2563eb; border:1px solid rgba(59, 130, 246, 0.3);">--</span>
+                                <span id="eqStatus" style="display:inline-block; padding:0.25rem 0.6rem; border-radius:12px; font-size:0.75rem; font-weight:600;">--</span>
+                            </div>
+
+                            <div id="eqFirmware" style="font-size:0.8rem; color:var(--text-color); background:var(--bg-card); padding:0.45rem 0.65rem; border-radius:6px; border:1px solid var(--border-color); margin-top:0.4rem; text-align:left;">--</div>
+                            <div id="eqPlataformas" style="font-size:0.8rem; color:var(--text-color); background:var(--bg-card); padding:0.45rem 0.65rem; border-radius:6px; border:1px solid var(--border-color); margin-top:0.4rem; text-align:left;">--</div>
+                            <div id="eqDesc" style="font-size:0.8rem; color:var(--text-color); background:var(--bg-card); padding:0.45rem 0.65rem; border-radius:6px; border:1px solid var(--border-color); margin-top:0.4rem; text-align:left;">--</div>
+                            <div id="eqCredentials" style="display:none; font-family:monospace; background:rgba(0,0,0,0.2); padding:0.5rem; border-radius:6px; font-size:0.8rem; margin-top:0.5rem; color:var(--text-color); border:1px solid rgba(255,255,255,0.1);"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================================
+             TAB 3: MIS PLANTILLAS PERSONALIZADAS
+             =================================================================== -->
+        <section id="tab-custom" class="tab-pane">
+            <div style="overflow-y:auto; padding:1.5rem; flex:1;">
+                <div class="card">
+                    <div class="card-title">
+                        <div class="card-title-text">Plantillas Personalizadas</div>
+                        <button id="btnNewTemplate" class="btn btn-sm btn-primary">➕ Nueva Plantilla</button>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" id="customSearch" class="form-input" placeholder="🔍 Buscar por nombre, categoría o contenido...">
+                    </div>
+
+                    <div id="customTemplatesList" class="template-grid" style="margin-top:1rem;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================================
+             TAB 4: HISTORIAL Y RESPALDOS
+             =================================================================== -->
+        <section id="tab-history" class="tab-pane">
+            <div style="overflow-y:auto; padding:1.5rem; flex:1;">
+
+            <div class="card">
+                <div class="card-title">
+                    <div class="card-title-text">📜 Registro General de Historial</div>
+                    <button id="btnClearHistory" class="btn btn-sm" style="color:var(--danger);">🗑️ Limpiar Historial</button>
+                </div>
+
+                <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">
+                    Haz clic en cualquier fila para ver el detalle completo de la plantilla, copiarla o restaurarla en el generador.
+                </p>
+
+                <div style="overflow-x:auto;">
+                    <table style="width:100%; border-collapse:collapse; text-align:left;">
+                        <thead>
+                            <tr style="border-bottom:1px solid var(--border-color); color:var(--text-muted); font-size:0.8rem; text-transform:uppercase;">
+                                <th style="padding:0.6rem;">Hora</th>
+                                <th style="padding:0.6rem;">Tipo</th>
+                                <th style="padding:0.6rem;">Servicio</th>
+                                <th style="padding:0.6rem;">Resumen</th>
+                                <th style="padding:0.6rem; text-align:right;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <div class="card-title-text">💾 Respaldar & Importar Configuración</div>
+                </div>
+
+                <div style="display:flex; gap:1.5rem; flex-wrap:wrap; align-items:flex-start;">
+                    <div style="flex:1; min-width:260px;">
+                        <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:0.75rem;">
+                            Exporta tu historial, plantillas y frases predictivas aprendidas a un archivo (.txt).
+                        </p>
+                        <div>
+                            <button id="btnExportJson" class="btn btn-primary" style="display:inline-flex; align-items:center; gap:0.4rem;">⬇️ Descargar Respaldo (.txt)</button>
+                        </div>
+                    </div>
+
+                    <div style="border-left:1px solid var(--border-color); padding-left:1.5rem; flex:1; min-width:260px;">
+                        <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:0.5rem;">
+                            Importar respaldo (selecciona tu archivo .txt o .json):
+                        </p>
+                        <input type="file" id="importJsonInput" accept=".json,.txt,*/*" class="form-input" style="max-width:300px;">
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL FOR CASE DETAIL PREVIEW -->
+    <div id="caseDetailModal" class="modal-overlay">
+        <div class="modal-content" style="max-width:680px; width:95%;">
+            <div class="card-title">
+                <div class="card-title-text" id="caseDetailModalTitle">📋 Detalle de Plantilla Guardada</div>
+                <button id="caseDetailModalClose" class="btn btn-sm">✕</button>
+            </div>
+            
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; flex-wrap:wrap; gap:0.5rem;">
+                <div id="caseDetailBadges" style="display:flex; align-items:center; gap:0.5rem;"></div>
+                <span id="caseDetailTimestamp" style="font-size:0.8rem; color:var(--text-muted);"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Plantilla Completa</label>
+                <div id="caseDetailContent" style="background:var(--bg-input); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:1rem; font-family:'Consolas','Courier New',monospace; font-size:0.85rem; color:var(--text-main); white-space:pre-wrap; word-break:break-word; max-height:350px; overflow-y:auto; line-height:1.5;"></div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:1.25rem; flex-wrap:wrap; gap:0.5rem; padding-top:0.75rem; border-top:1px solid var(--border-color);">
+                <button type="button" id="btnCaseDetailLoad" class="btn" style="background:rgba(59,130,246,0.15); color:var(--primary);">🔄 Cargar en el Generador</button>
+                <div style="display:flex; gap:0.5rem;">
+                    <button type="button" id="btnCaseDetailClose" class="btn">Cerrar</button>
+                    <button type="button" id="btnCaseDetailCopy" class="btn btn-primary">📋 Copiar Plantilla</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL FOR CUSTOM TEMPLATE CREATION / EDIT -->
+    <div id="templateModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="card-title">
+                <div id="modalTitle" class="card-title-text">Nueva Plantilla Personalizada</div>
+                <button id="modalClose" class="btn btn-sm">✕</button>
+            </div>
+
+            <input type="hidden" id="templateIdInput">
+
+            <div class="form-group">
+                <label class="form-label" for="tmplTitleInput">Título de la Plantilla</label>
+                <input type="text" id="tmplTitleInput" class="form-input" placeholder="Ej: Confirmación de Visita Técnica">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="tmplCategoryInput">Categoría</label>
+                <input type="text" id="tmplCategoryInput" class="form-input" placeholder="Ej: Coordinación, Averías, Minutas">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="tmplContentInput">Contenido (Usa {variable} para campos dinámicos)</label>
+                <textarea id="tmplContentInput" class="form-textarea" style="min-height:180px;" placeholder="Ej: Estimado cliente, su visita técnica fue generada con SOT {sot} para su servicio de {servicio}."></textarea>
+                <span style="font-size:0.75rem; color:var(--text-muted); margin-top:0.3rem;">
+                    💡 Tip: Las variables entre llaves como <code>{sot}</code>, <code>{telefono}</code>, <code>{servicio}</code> se completan automáticamente con los datos del caso activo (si SOT está vacío, mostrará <code>xxxxx</code>).
+                </span>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; gap:0.75rem; margin-top:1.5rem;">
+                <button id="modalCancel" class="btn">Cancelar</button>
+                <button id="modalSave" class="btn btn-primary">💾 Guardar Plantilla</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE INFORMACIÓN RDP -->
+    <div id="rdpInfoModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 440px;">
+            <div class="card-title">
+                <div class="card-title-text">🖥️ Escritorio Remoto (RDP)</div>
+                <button id="rdpInfoModalClose" class="btn btn-sm">✕</button>
+            </div>
+            
+            <div style="margin-top: 1rem;">
+                <!-- Fila IP -->
+                <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-card); padding:0.65rem 0.85rem; border-radius:8px; margin-bottom:0.75rem; border:1px solid var(--border-color);">
+                    <div>
+                        <div style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:600;">IP Servidor:</div>
+                        <div style="font-family:monospace; font-size:1.15rem; font-weight:700; color:var(--primary);" id="rdpModalDisplayIp">172.29.0.101</div>
+                    </div>
+                    <button type="button" id="btnModalCopyRdpIp" class="btn btn-sm btn-primary" style="font-size:0.8rem;">
+                        📋 Copiar IP
+                    </button>
+                </div>
+
+                <!-- Fila Prefijo Dominio -->
+                <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-card); padding:0.65rem 0.85rem; border-radius:8px; margin-bottom:1rem; border:1px solid var(--border-color);">
+                    <div>
+                        <div style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:600;">Prefijo Dominio:</div>
+                        <div style="font-family:monospace; font-size:1.15rem; font-weight:700; color:#f59e0b;">TIM\</div>
+                    </div>
+                    <button type="button" id="btnModalCopyRdpDomain" class="btn btn-sm" style="font-size:0.8rem;">
+                        📋 Copiar Prefijo
+                    </button>
+                </div>
+
+                <div style="background:var(--bg-hover, rgba(255,255,255,0.03)); border-radius:6px; padding:0.65rem 0.85rem; font-size:0.8rem; color:var(--text-muted); line-height:1.45; border:1px dashed var(--border-color);">
+                    💡 Presiona <kbd style="background:var(--bg-card); padding:2px 6px; border-radius:4px; border:1px solid var(--border-color);">Win + R</kbd> ➔ escribe <code style="color:var(--primary);">mstsc</code> ➔ <kbd style="background:var(--bg-card); padding:2px 6px; border-radius:4px; border:1px solid var(--border-color);">Enter</kbd> ➔ Pega la IP.
+                </div>
+
+                <div style="margin-top:1.2rem; display:flex; justify-content:flex-end;">
+                    <button type="button" id="rdpInfoModalCancel" class="btn">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL FOR CHANGELOG -->
+    <div id="changelogModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 720px; max-height: 90vh; display: flex; flex-direction: column;">
+            <div class="card-title" style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="card-title-text">🚀 Novedades de la Versión 2.8.1</div>
+                <button id="changelogModalClose" class="btn btn-sm">✕</button>
+            </div>
+            <div style="font-size: 0.92rem; line-height: 1.55; color: var(--text-main); margin-top: 1rem; overflow-y: auto; padding-right: 0.4rem;">
+                <ul style="padding-left: 1.3rem; margin-bottom: 1.3rem; display: flex; flex-direction: column; gap: 0.65rem;">
+                    <li style="border-left: 3px solid #3b82f6; padding-left: 0.5rem; background: rgba(59,130,246,0.08); border-radius: 0 4px 4px 0; padding-top: 0.35rem; padding-bottom: 0.35rem;"><strong>✨ Novedades v2.8.1 — Zoom Interactivo por Clic y Depuración de Equipos:</strong>
+                        <ul style="margin-top: 0.35rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.3rem;">
+                            <li><strong>🔍 Zoom Tipo Amazon por Clic:</strong> Al abrir el modal previsualizador de equipo, haz un clic sobre la foto para activar un zoom de alta precisión enfocado en el puntero (ideal para inspeccionar puertos, botones y etiquetas). Haz clic nuevamente para salir. Regulable con la rueda del ratón entre <code>1.5x</code> y <code>4.5x</code>.</li>
+                            <li><strong>📁 Galería Fotográfica Estructurada:</strong> Los 22 modelos de routers/ONTs cuentan con imágenes organizadas en subcarpetas dedicadas por modelo con vistas frontal, lateral, posterior de puertos y etiqueta inferior.</li>
+                            <li><strong>🧼 Depuración Integral y Ficha Técnica Limpia:</strong> Eliminación de textos redundantes en cabecera y cuerpo del modal. Se corrigió la duplicación del indicador TR-069 en la plataforma de revisión y se simplificó el rotulado a simplemente <code>💾 Firmware</code>.</li>
+                        </ul>
+                    </li>
+                    <li style="border-left: 3px solid #10b981; padding-left: 0.5rem; background: rgba(16,185,129,0.08); border-radius: 0 4px 4px 0; padding-top: 0.35rem; padding-bottom: 0.35rem;"><strong>🌟 Novedades v2.8 — Identificador de Equipos, Homologación TR-069 y Modularización:</strong>
+                        <ul style="margin-top: 0.35rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.3rem;">
+                            <li><strong>🛡️ Homologación Estricta con TR-069:</strong> En cumplimiento con los estándares operativos de Claro, solo se consideran homologados aquellos equipos cuya plataforma de revisión soporte y tenga activo <code>TR-069</code>. Si no lo tiene, se clasifica automáticamente como <code>❌ No Homologado (Sin TR-069)</code>.</li>
+                            <li><strong>🔍 Previsualizador Grande (Lightbox Modal):</strong> Haz clic directamente en la foto de cualquier equipo para abrir la vista ampliada de alta resolución con ficha técnica de homologación (Firmware oficial, tecnología FTTH/HFC, Wi-Fi 5/6, DOCSIS, velocidad y compatibilidad MESH). Compatible con teclado (<code>Esc</code>, <code>←</code>, <code>→</code>).</li>
+                            <li><strong>📷 Galería Fotográfica Multi-Ángulo:</strong> Integración de vistas múltiples por modelo (Frontal, Lateral y Posterior con panel de puertos, coaxial y reset), destacando equipos como el ARRIS TG3442.</li>
+                            <li><strong>🎯 Interfaz Dinámica y Despejada:</strong> Contador de fotos discreto (<code>📷 1 / 3</code>) y flechas directas sobre la tarjeta que se muestran solo cuando el equipo tiene más de 1 imagen. En el modal, selector de miniaturas visuales puras sin botones rígidos.</li>
+                            <li><strong>⚡ Arquitectura Modular Ultrarrápida:</strong> Refactorización y división del sistema en 8 módulos especializados dentro de <code>js/</code>, logrando un rendimiento superior, menor consumo de memoria y ejecución 100% offline.</li>
+                        </ul>
+                    </li>
+                    <li style="border-left: 3px solid var(--primary); padding-left: 0.5rem; background: rgba(37,99,235,0.06); border-radius: 0 4px 4px 0; padding-top: 0.35rem; padding-bottom: 0.35rem;"><strong>🔥 Novedades v2.7.2 — Homologación Oficial Flyer N° 41-BO FIJA (30/09/2026):</strong>
+                        <ul style="margin-top: 0.35rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.3rem;">
+                            <li><strong>🚨 Decisión Directa en Potencia Upstream:</strong> Si la Potencia Upstream se encuentra fuera de rango (&lt; 36.1 o &gt; 52.9 dBmV), el analizador genera de inmediato <code>🚨 GENERAR VISITA TÉCNICA</code> sin descartes.</li>
+                            <li><strong>📊 Regla Estricta Downstream:</strong> Solo se genera Visita Técnica si <em>D/S SNR</em> y <em>Potencia Downstream</em> están simultáneamente fuera de rango. Si solo falla uno, se orienta a <code>🔄 CONTINUAR DESCARTES REGULARES</code>.</li>
+                            <li><strong>🔄 Diagnóstico de U/S SNR:</strong> Si el SNR de Upstream está fuera de rango (&lt; 28 dB), orienta a <code>🔄 CONTINUAR DESCARTES REGULARES</code> conforme a la matriz oficial de HITSS.</li>
+                            <li><strong>📋 Botón de Pegado Ultra Rápido:</strong> Rediseño a botón ergonómico <code>📋 Pegar</code> para HFC y FTTH, insertando al instante el contenido del portapapeles y auto-procesando las mediciones técnicas.</li>
+                        </ul>
+                    </li>
+                    <li><strong>🛠️ Diseñador de Vistas y Plantillas Personalizadas para Remedy:</strong>
+                        <ul style="margin-top: 0.35rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.3rem;">
+                            <li>Ahora puedes <strong>crear, editar y eliminar tus propias vistas Remedy</strong> desde el botón <code>➕ Nueva Vista</code>.</li>
+                            <li>Personaliza título de falla, icono/emoji, descripción y agrega campos dinámicos ilimitados (tipo texto o párrafo).</li>
+                            <li><strong>Auto-llenado Inteligente (🔗):</strong> Vincula campos automáticamente con Customer ID, DNI/RUC, Cliente, Teléfono, Descartes o Problema del formulario principal.</li>
+                            <li><strong>Presets Rápidos Integrados:</strong> Carga plantillas predefinidas en 1 clic para <em>Desalineación OCSI</em>, <em>AMCO / Suscripciones</em>, <em>SmartHome / IoT</em> y <em>Migración CBIO</em>.</li>
+                        </ul>
+                    </li>
+                    <li><strong>📐 Estandarización Total del Formato Remedy:</strong>
+                        <ul style="margin-top: 0.35rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.3rem;">
+                            <li>Unificación de todas las plantillas (Páginas Web, IPTV, Telefonía y Vistas Custom) bajo la estructura limpia y uniforme de <strong>Problemas de Provisión</strong> (<code>FALLA:</code> + <code>• CAMPO: Valor</code>).</li>
+                            <li>Compatibilidad 100% en todos los formatos de exportación: <strong>Previsualizador en Vivo</strong>, <strong>Texto Plano</strong>, <strong>Copia Enriquecida para Word con Imágenes</strong> y <strong>Exportación a PDF A4</strong>.</li>
+                        </ul>
+                    </li>
+                    <li><strong>⚡ Calibración de Niveles de Potencia HFC Upstream:</strong>
+                        <ul style="margin-top: 0.35rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.3rem;">
+                            <li>Actualización del rango óptimo de Potencia Upstream a <strong>36.1 dBmV – 52.9 dBmV</strong> en el analizador de niveles Incógnito/SGA con detección de alertas preventivas.</li>
+                        </ul>
+                    </li>
+                    <li><strong>⚖️ Motor Predictivo y Dataset Expandido (+960 Descartes al 29 de Septiembre):</strong>
+                        <ul style="margin-top: 0.35rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.3rem;">
+                            <li>Indexación masiva de <strong>961 descartes técnicos</strong> y <strong>91 soluciones reales</strong>: descartes de repetidores Plume conectados inalámbricamente, cable coaxial doblado, saturación de puertos, alarmas in-house Tracer, tarjetas de red Gigabit Cat 5e/Cat 6, alta temperatura en Dashboard y flujos LiveChat.</li>
+                            <li>Cierre predictivo de ciclo (No Titular / Número Errado / Cuelga), supresión universal de prefijos de servicio (<code>INT -</code>, <code>TEL -</code>, <code>IPTV -</code>) y memoria dinámica de problemas aprendidos.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p style="color: var(--text-muted); font-size: 0.82rem; border-top: 1px dashed var(--border-color); padding-top: 0.8rem; text-align: center; margin-bottom: 0;">
+                    ¡WorkStation BackOffice v2.8 &bull; Máxima productividad técnica, rapidez y herramientas centralizadas!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL FOR REMEDY ESCALATION -->
+    <div id="remedyModal" class="modal-overlay">
+        <div class="modal-content remedy-modal-content">
+            <!-- Modal Header -->
+            <div class="card-title" style="margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                <div class="card-title-text" style="display:flex; align-items:center; gap:0.5rem; font-size: 1.05rem;">
+                    Estructurador de Escalamiento a Remedy
+                </div>
+                <button id="remedyModalClose" class="btn btn-sm" title="Cerrar modal">✕</button>
+            </div>
+
+            <!-- Selector de Tipo de Plantilla Remedy -->
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; border-bottom:1px solid var(--border-color); padding-bottom:0.65rem; flex-wrap:wrap; gap:0.5rem;">
+                <div id="remedyTabsContainer" style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+                    <button type="button" id="btnRemedyTabRed" class="btn btn-sm btn-primary" style="font-size:0.82rem; font-weight:bold; display:flex; align-items:center; gap:0.4rem;">
+                        🌐 Páginas Web / Apps
+                    </button>
+                    <button type="button" id="btnRemedyTabGeneral" class="btn btn-sm" style="font-size:0.82rem; background:transparent; border:1px solid var(--border-color); color:var(--text-muted); display:flex; align-items:center; gap:0.4rem;">
+                        ⚙️ Problemas de Provisión
+                    </button>
+                </div>
+                <div>
+                    <button type="button" id="btnRemedyNewTemplate" class="btn btn-sm" style="background:rgba(37,99,235,0.15); color:var(--primary); border:1px dashed var(--primary); font-size:0.8rem; font-weight:600; display:flex; align-items:center; gap:0.35rem; cursor:pointer;" title="Crear una nueva vista o plantilla Remedy personalizada">
+                        ➕ Nueva Vista
+                    </button>
+                </div>
+            </div>
+
+            <!-- Layout de 2 Columnas: Formulario a la Izquierda, Previsualizador Gráfico a la Derecha -->
+            <div class="remedy-split-container">
+                <!-- Columna Izquierda: Formulario y Carga -->
+                <div class="remedy-form-column">
+                    <!-- FORMULARIO DINÁMICO: VISTA PERSONALIZADA -->
+                    <div id="remedyFormCustom" style="display:none;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; flex-wrap:wrap; gap:0.5rem; background:rgba(37,99,235,0.06); padding:0.45rem 0.65rem; border-radius:6px; border:1px solid var(--border-color);">
+                            <p id="remedyCustomDesc" style="font-size:0.8rem; color:var(--text-muted); margin:0;">
+                                Escalamiento personalizado.
+                            </p>
+                            <div style="display:flex; gap:0.35rem;">
+                                <button type="button" id="btnEditCurrentRemedyView" class="btn btn-sm" style="font-size:0.72rem; padding:0.15rem 0.5rem; background:rgba(37,99,235,0.12); color:var(--primary); border:1px solid rgba(37,99,235,0.3); cursor:pointer;" title="Editar configuración de esta vista">
+                                    ✏️ Editar
+                                </button>
+                                <button type="button" id="btnDeleteCurrentRemedyView" class="btn btn-sm" style="font-size:0.72rem; padding:0.15rem 0.5rem; background:rgba(239,68,68,0.12); color:var(--danger); border:1px solid rgba(239,68,68,0.3); cursor:pointer;" title="Eliminar esta vista personalizada">
+                                    🗑️ Eliminar
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="remedyCustomFieldsContainer">
+                            <!-- Injected fields -->
+                        </div>
+                    </div>
+
+                    <!-- FORMULARIO 1: PÁGINAS WEB / APPS A RED -->
+                    <div id="remedyFormRed">
+                        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.75rem;">
+                            Escalamiento a RED por bloqueo o inaccesibilidad de páginas web / apps bajo red Claro.
+                        </p>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">Persona de Contacto:</label>
+                                <input type="text" id="remedyRedContacto" class="form-input" placeholder="Nombre completo">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Número de Contacto:</label>
+                                <input type="text" id="remedyRedTelefono" class="form-input" placeholder="Ej: 987654321">
+                            </div>
+                        </div>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">Customer ID:</label>
+                                <input type="text" id="remedyRedCustomerId" class="form-input" placeholder="Ej: 57200343">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">SN / MAC:</label>
+                                <input type="text" id="remedyRedMac" class="form-input" placeholder="Ej: A0:B1:C2:D3:E4:F5">
+                            </div>
+                        </div>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">IP Pública:</label>
+                                <input type="text" id="remedyRedIp" class="form-input" placeholder="Ej: 190.235.14.88">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">CMTS / OLT:</label>
+                                <input type="text" id="remedyRedCmtsOlt" class="form-input" placeholder="Ej: OLT_SURCO_01">
+                            </div>
+                        </div>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">Páginas / Apps bloqueadas:</label>
+                                <input type="text" id="remedyRedPaginas" class="form-input" placeholder="Ej: www.ejemplo.com / App">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Desde qué red accede:</label>
+                                <input type="text" id="remedyRedRedExterna" class="form-input" placeholder="Ej: Datos Entel / Movistar">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Plano:</label>
+                            <input type="text" id="remedyRedPlano" class="form-input" placeholder="Ej: PL-LIM-045">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Descartes / Descripción detallada:</label>
+                            <textarea id="remedyRedDescartes" class="form-textarea" style="min-height:55px;" placeholder="Detalla los descartes técnicos realizados..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- FORMULARIO 3: CANALES A RED (IPTV / CLARO TV) -->
+                    <div id="remedyFormIptv" style="display:none;">
+                        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.75rem;">
+                            Escalamiento a RED por bloqueo, pantalla negra o desalineación de canales IPTV / Claro TV.
+                        </p>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">Persona de Contacto:</label>
+                                <input type="text" id="remedyIptvContacto" class="form-input" placeholder="Nombre completo">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Número de Contacto:</label>
+                                <input type="text" id="remedyIptvTelefono" class="form-input" placeholder="Ej: 987654321">
+                            </div>
+                        </div>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">Customer ID:</label>
+                                <input type="text" id="remedyIptvCustomerId" class="form-input" placeholder="Ej: 57200343">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Plano:</label>
+                                <input type="text" id="remedyIptvPlano" class="form-input" placeholder="Ej: PL-LIM-045">
+                            </div>
+                        </div>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">Cantidad de decodificador(es):</label>
+                                <input type="text" id="remedyIptvCantDecos" class="form-input" placeholder="Ej: 1 deco / 2 decos">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">N° Serie decos afectados:</label>
+                                <input type="text" id="remedyIptvSerieDecos" class="form-input" placeholder="Ej: STB-84920492 / Todos">
+                            </div>
+                        </div>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">Canales afectados (N° - Nombre):</label>
+                                <input type="text" id="remedyIptvCanales" class="form-input" placeholder="Ej: 502 - ESPN HD, 104 - América">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Grilla Claro TV actualizada:</label>
+                                <input type="text" id="remedyIptvGrilla" class="form-input" placeholder="Ej: SÍ / Validada en sistema">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Descripción detallada de DESCARTES realizados:</label>
+                            <textarea id="remedyIptvDescartes" class="form-textarea" style="min-height:55px;" placeholder="Detalla los descartes técnicos realizados en decos/plataforma..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- FORMULARIO 4: TELEFONÍA A RED -->
+                    <div id="remedyFormTelefonia" style="display:none;">
+                        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.75rem;">
+                            Escalamiento a RED por fallas en servicio de telefonía fija (sin tono, no entran/salen llamadas, IMS/CBIO).
+                        </p>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">Persona de Contacto:</label>
+                                <input type="text" id="remedyTelContacto" class="form-input" placeholder="Nombre completo">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Número de contacto:</label>
+                                <input type="text" id="remedyTelTelefono" class="form-input" placeholder="Ej: 987654321">
+                            </div>
+                        </div>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">Customer ID:</label>
+                                <input type="text" id="remedyTelCustomerId" class="form-input" placeholder="Ej: 57200343">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Dirección MAC:</label>
+                                <input type="text" id="remedyTelMac" class="form-input" placeholder="Ej: A0:B1:C2:D3:E4:F5">
+                            </div>
+                        </div>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">Plano:</label>
+                                <input type="text" id="remedyTelPlano" class="form-input" placeholder="Ej: PL-LIM-045">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">(CMTS/OLT):</label>
+                                <input type="text" id="remedyTelCmtsOlt" class="form-input" placeholder="Ej: OLT_SURCO_01 / CMTS_02">
+                            </div>
+                        </div>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">Número telefónico:</label>
+                                <input type="text" id="remedyTelNumeroTel" class="form-input" placeholder="Ej: 01 7654321">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Plan contratado:</label>
+                                <input type="text" id="remedyTelPlan" class="form-input" placeholder="Ej: Plan Ilimitado Fijo / 100 Min">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Descripción detallada del problema:</label>
+                            <textarea id="remedyTelProblema" class="form-textarea" style="min-height:50px;" placeholder="Detalla el problema que presenta la línea telefónica..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Descartes de primer nivel realizados:</label>
+                            <textarea id="remedyTelDescartes" class="form-textarea" style="min-height:55px;" placeholder="Detalla los descartes de 1er nivel realizados en IMS, CBIO, reinicios, etc..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- FORMULARIO 2: FALLA GENERAL / PROVISIÓN -->
+                    <div id="remedyFormGeneral" style="display:none;">
+                        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.75rem;">
+                            Escalamiento general de incidencias técnicas, provisión, bonos y plataformas.
+                        </p>
+
+                        <div class="form-group">
+                            <label class="form-label" style="font-weight:bold;">FALLA / Incidencia Detectada:</label>
+                            <textarea id="remedyInputFalla" class="form-textarea" style="min-height:55px;" placeholder="Ej: Cliente tiene un bono de 1000Mbps que se ve reflejado en el SIAC, pero en el incognito no está provisionado..."></textarea>
+                        </div>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">Customer ID:</label>
+                                <input type="text" id="remedyInputId" class="form-input" placeholder="Ej: 57200343">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">DNI / RUC:</label>
+                                <input type="text" id="remedyInputDni" class="form-input" placeholder="Ej: 80593853">
+                            </div>
+                        </div>
+
+                        <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem;">
+                            <div class="form-group">
+                                <label class="form-label">CLIENTE (Nombre Completo):</label>
+                                <input type="text" id="remedyInputCliente" class="form-input" placeholder="Ej: EDWARD HUMBERTO SANTA CRUZ ALARCON">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Detalle Técnico / Plan / Bono:</label>
+                                <input type="text" id="remedyInputDetalle" class="form-input" placeholder="Ej: Velocidad Total 1000Mbps-Bono">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Zona de Capturas de Pantalla / Evidencias -->
+                    <div class="form-group" style="margin-top:0.7rem;">
+                        <label class="form-label" style="display:flex; justify-content:space-between; align-items:center;">
+                            <span>📸 Capturas / Evidencias (Ctrl+V):</span>
+                            <button type="button" id="btnClearRemedyImages" class="btn btn-sm" style="color:var(--danger); font-size:0.75rem; padding:0.1rem 0.4rem;" title="Quitar todas las imágenes">🗑️ Limpiar Fotos</button>
+                        </label>
+                        <div id="remedyDropZone" tabindex="0" style="border: 2px dashed var(--border-color); border-radius: 8px; padding: 0.8rem; text-align: center; background: rgba(0,0,0,0.15); cursor: pointer; outline:none; transition: all 0.2s ease;">
+                            <div style="font-size:0.8rem; color:var(--text-muted);">
+                                📋 Haz clic aquí y presiona <strong>Ctrl+V</strong> para pegar capturas, o arrastra archivos.
+                            </div>
+                            <div id="remedyImagesContainer" style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:0.6rem; justify-content:center;"></div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 0.8rem;">
+                        <button type="button" id="btnClearRemedyAll" class="btn btn-sm" style="background:rgba(239, 68, 68, 0.12); border:1px solid rgba(239, 68, 68, 0.35); color:var(--danger); font-size:0.8rem; width:100%;" title="Borrar todos los campos de texto y capturas">
+                            🗑️ Limpiar Formulario Remedy
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Previsualizador de Documento en Vivo & Exportaciones -->
+                <div class="remedy-preview-column">
+                    <!-- Header del Previsualizador -->
+                    <div class="remedy-preview-header">
+                        <div style="font-weight: 700; font-size: 0.88rem; display:flex; align-items:center; gap:0.4rem; color:var(--text-main);">
+                             Previsualización de Documento en Tiempo Real
+                        </div>
+                    </div>
+
+                    <!-- Visor de Documento Estilo Word -->
+                    <div id="remedyVisualSheet" class="remedy-visual-sheet">
+                        <!-- Renderizado dinámico vía JavaScript -->
+                    </div>
+
+                    <!-- Botones de Acción / Exportación -->
+                    <div class="remedy-preview-actions">
+                        <button id="btnExportRemedyPdf" class="btn btn-primary" style="background:#dc2626; border-color:#dc2626; font-weight:bold; display:flex; align-items:center; gap:0.35rem; font-size:0.82rem;" title="Generar documento PDF listo para imprimir o subir a Remedy">
+                            📄 Exportar PDF
+                        </button>
+                        <button id="btnCopyRemedyWord" class="btn" style="background:var(--primary); color:#fff; font-weight:600; display:flex; align-items:center; gap:0.35rem; font-size:0.82rem;" title="Copia el texto estructurado con imágenes incrustadas listo para Word">
+                            📋 Copiar para Word
+                        </button>
+                        <button id="btnCopyRemedyText" class="btn" style="background:var(--bg-card); border:1px solid var(--border-color); font-size:0.82rem;" title="Copiar texto plano">
+                            📝 Solo Texto
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PARA CREAR / EDITAR VISTAS REMEDY PERSONALIZADAS -->
+    <div id="customRemedyViewModal" class="modal-overlay" style="z-index: 10005;">
+        <div class="modal-content" style="max-width: 620px; max-height: 90vh; display:flex; flex-direction:column;">
+            <div class="card-title" style="margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                <div class="card-title-text" style="display:flex; align-items:center; gap:0.5rem; font-size: 1.05rem;" id="customRemedyModalTitle">
+                    ⚙️ Diseñador de Vista Remedy Personalizada
+                </div>
+                <button type="button" id="customRemedyModalClose" class="btn btn-sm" title="Cerrar">✕</button>
+            </div>
+
+            <div style="overflow-y: auto; padding-right: 0.4rem; flex:1;">
+                <input type="hidden" id="customRemedyEditId" value="">
+
+                <div class="form-grid" style="grid-template-columns: 1fr 2.5fr; gap:0.6rem; margin-bottom:0.75rem;">
+                    <div class="form-group">
+                        <label class="form-label" style="font-weight:600;">Icono / Emoji:</label>
+                        <input type="text" id="customRemedyIcon" class="form-input" placeholder="Ej: 📦, ⚡" value="🛠️" style="text-align:center; font-size:1.1rem;">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" style="font-weight:600;">Nombre de la Pestaña:</label>
+                        <input type="text" id="customRemedyName" class="form-input" placeholder="Ej: Falla AMCO / Suscripciones">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom:0.75rem;">
+                    <label class="form-label" style="font-weight:600;">Título de la FALLA (Cabecera):</label>
+                    <input type="text" id="customRemedyFallaTitle" class="form-input" placeholder="Ej: DESALINEACIÓN OCSI / ERROR AMCO">
+                    <small style="color:var(--text-muted); font-size:0.75rem;">Aparecerá como "FALLA: [Este Título]" en el ticket y documento.</small>
+                </div>
+
+                <div class="form-group" style="margin-bottom:0.75rem;">
+                    <label class="form-label">Descripción o Instrucción breve:</label>
+                    <input type="text" id="customRemedyDesc" class="form-input" placeholder="Ej: Escalamiento por falta de provisión en plataforma SGA/AMCO">
+                </div>
+
+                <!-- Campos de la Vista -->
+                <div style="margin-top:1rem; border-top:1px solid var(--border-color); padding-top:0.75rem;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem;">
+                        <label class="form-label" style="font-weight:700; margin-bottom:0; font-size:0.85rem;">
+                            📋 Campos del Formulario
+                        </label>
+                        <button type="button" id="btnAddCustomRemedyField" class="btn btn-sm btn-primary" style="font-size:0.75rem; padding:0.25rem 0.6rem; display:flex; align-items:center; gap:0.3rem;">
+                            ➕ Añadir Campo
+                        </button>
+                    </div>
+
+                    <div id="customRemedyFieldsContainer" style="display:flex; flex-direction:column; gap:0.5rem; margin-bottom:0.8rem;">
+                        <!-- Filas de campos dinámicos -->
+                    </div>
+
+                    <!-- Presets rápidos -->
+                    <div style="background:rgba(37,99,235,0.06); border:1px dashed var(--border-color); border-radius:6px; padding:0.6rem; margin-top:0.6rem;">
+                        <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.4rem; font-weight:600;">⚡ Cargar plantilla predefinida:</div>
+                        <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+                            <button type="button" class="btn btn-sm btn-preset-remedy" data-preset="ocsi" style="font-size:0.72rem; padding:0.15rem 0.5rem; background:var(--bg-card); border:1px solid var(--border-color); cursor:pointer;">Desalineación OCSI</button>
+                            <button type="button" class="btn btn-sm btn-preset-remedy" data-preset="amco" style="font-size:0.72rem; padding:0.15rem 0.5rem; background:var(--bg-card); border:1px solid var(--border-color); cursor:pointer;">AMCO / Suscripciones</button>
+                            <button type="button" class="btn btn-sm btn-preset-remedy" data-preset="smarthome" style="font-size:0.72rem; padding:0.15rem 0.5rem; background:var(--bg-card); border:1px solid var(--border-color); cursor:pointer;">SmartHome / IoT</button>
+                            <button type="button" class="btn btn-sm btn-preset-remedy" data-preset="cbio" style="font-size:0.72rem; padding:0.15rem 0.5rem; background:var(--bg-card); border:1px solid var(--border-color); cursor:pointer;">Migración CBIO</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:1rem; border-top:1px solid var(--border-color); padding-top:0.75rem;">
+                <button type="button" id="btnCancelCustomRemedyView" class="btn btn-sm" style="background:transparent; border:1px solid var(--border-color); cursor:pointer;">Cancelar</button>
+                <button type="button" id="btnSaveCustomRemedyView" class="btn btn-sm btn-primary" style="font-weight:700; cursor:pointer;">💾 Guardar Vista</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIGHTBOX MODAL PARA ZOOM DE EVIDENCIAS -->
+    <div id="imageZoomModal" class="modal-overlay" style="z-index: 2500; background: rgba(0, 0, 0, 0.88);">
+        <div style="position:relative; max-width: 90vw; max-height: 90vh; display: flex; align-items: center; justify-content: center;">
+            <img id="imageZoomImg" src="" alt="Evidencia Ampliada" style="max-width: 90vw; max-height: 85vh; border-radius: 8px; box-shadow: 0 12px 36px rgba(0,0,0,0.85); border: 1px solid var(--border-color); object-fit: contain;" />
+            <button type="button" id="btnCloseImageZoom" class="btn btn-sm" style="position: absolute; top: -14px; right: -14px; background: #dc2626; color: #fff; border: 2px solid #fff; border-radius: 50%; width: 34px; height: 34px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.5);" title="Cerrar (Esc)">✕</button>
+        </div>
+    </div>
+
+    <!-- MODAL PREVISUALIZADOR GRANDE DE EQUIPOS -->
+    <div id="eqModalViewer" class="modal-overlay" style="z-index: 2600; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);">
+        <div class="modal-content eq-modal-content" style="max-width: 960px; width: 95%; max-height: 92vh; display: flex; flex-direction: column; padding: 1.25rem; gap: 1rem; border-radius: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); border: 1px solid var(--border-color);">
+            <!-- Modal Header -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+                <div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                        <span style="font-size: 1.3rem; font-weight: 800; color: var(--text-color); letter-spacing: -0.3px;" id="eqModalTitle">ARRIS TG3442</span>
+                        <span id="eqModalRedBadge" style="padding: 0.2rem 0.65rem; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">--</span>
+                        <span id="eqModalWifiBadge" style="padding: 0.2rem 0.65rem; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">--</span>
+                        <span id="eqModalHomologadoBadge" style="padding: 0.2rem 0.65rem; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">--</span>
+                        <span id="eqModalRepetidorBadge" style="padding: 0.2rem 0.65rem; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">--</span>
+                    </div>
+                    <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.3rem; display: flex; align-items: center; gap: 8px;" id="eqModalSubtitle">
+                        <!-- Generado dinámicamente: Vendor · Categoría -->
+                    </div>
+                </div>
+                <button type="button" id="eqModalClose" class="btn btn-sm" style="background: var(--bg-card); border-radius: 50%; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid var(--border-color); font-weight: bold; font-size: 14px;" title="Cerrar previsualizador (Esc)">✕</button>
+            </div>
+
+            <!-- Modal Body Split Layout -->
+            <div class="eq-modal-body" style="display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 1.25rem; overflow-y: auto; align-items: start;">
+                <!-- Left: Big Viewport and Angle Thumbnails -->
+                <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+                    <div id="eqModalViewport">
+                        <img id="eqModalImage" src="" alt="Vista ampliada">
+                        
+                        <!-- Angle Label -->
+                        <div id="eqModalAngleBadge" style="position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); color: #fff; font-size: 0.75rem; font-weight: 600; padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.18); display: flex; align-items: center; gap: 5px; pointer-events: none; z-index: 5;">
+                            <span>📷</span> <span id="eqModalAngleText">Vista Frontal</span>
+                        </div>
+
+                        <!-- Zoom Indicator Badge (Amazon style) -->
+                        <div id="eqModalZoomBadge">
+                            <span>🔍</span> <span id="eqModalZoomText">Clic para Zoom</span>
+                        </div>
+
+                        <!-- Prev / Next Navigation Arrows -->
+                        <button type="button" id="btnEqModalPrev" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 38px; height: 38px; border-radius: 50%; background: rgba(0,0,0,0.7); border: 1px solid rgba(255,255,255,0.25); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; transition: all 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 10;" title="Vista Anterior (←)">❮</button>
+                        <button type="button" id="btnEqModalNext" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); width: 38px; height: 38px; border-radius: 50%; background: rgba(0,0,0,0.7); border: 1px solid rgba(255,255,255,0.25); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; transition: all 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 10;" title="Siguiente Vista (→)">❯</button>
+                    </div>
+
+                    <!-- Angle Description Note -->
+                    <div id="eqModalAngleDesc" style="font-size: 0.75rem; color: var(--text-muted); text-align: center; min-height: 1.1rem;"></div>
+
+                    <!-- Gallery Thumbnails Strip -->
+                    <div id="eqModalThumbnails" style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;"></div>
+                </div>
+
+                <!-- Right: Streamlined Operations Specification -->
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <!-- Ficha Técnica de Operaciones (Sin redundancias) -->
+                    <div style="background: var(--bg-card); padding: 1.1rem; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 4px 14px rgba(0,0,0,0.25);">
+                        <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.85rem; display: flex; align-items: center; gap: 6px; letter-spacing: 0.5px;">
+                            <span>⚙️</span> Ficha Técnica de Operaciones
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.85rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--border-color); padding-bottom: 0.5rem;">
+                                <span style="color: var(--text-muted);">⚡ Velocidad Máxima:</span>
+                                <span id="eqModalSpeed" style="font-weight: 700; color: var(--text-color);">--</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--border-color); padding-bottom: 0.5rem;">
+                                <span style="color: var(--text-muted);">🛠️ Plataformas de Revisión:</span>
+                                <span id="eqModalPlat" style="font-weight: 600; color: #34d399;">--</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="color: var(--text-muted);">💾 Firmware:</span>
+                                <span id="eqModalFw" style="font-family: monospace; color: #60a5fa; font-weight: 700; background: rgba(59, 130, 246, 0.12); padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(59, 130, 246, 0.25);">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL VISOR DE MANUALES PDF EN VIVO -->
+    <div id="manualViewerModal" class="modal-overlay" style="z-index: 2200;">
+        <div id="manualViewerContainer" class="manual-viewer-content">
+            <!-- Modal Header -->
+            <div class="manual-viewer-header">
+                <div class="manual-viewer-title-box">
+                    <div>
+                        <div id="manualViewerTitle" class="manual-viewer-title">Visualizador de Manual</div>
+                        <div id="manualViewerCategory" class="manual-viewer-subtitle">Guías Técnicas BackOffice</div>
+                    </div>
+                </div>
+                <div class="manual-viewer-header-actions">
+                    <a id="btnManualViewerDownload" href="#" download class="btn btn-sm" style="background:var(--bg-input); border:1px solid var(--border-color); display:flex; align-items:center; gap:0.35rem;" title="Descargar PDF en tu equipo">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Descargar
+                    </a>
+                    <a id="btnManualViewerExternal" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-sm" style="background:var(--bg-input); border:1px solid var(--border-color); display:flex; align-items:center; gap:0.35rem;" title="Abrir en pestaña nueva">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        Pestaña
+                    </a>
+                    <button type="button" id="btnManualViewerFullscreen" class="btn btn-sm" style="background:var(--bg-input); border:1px solid var(--border-color); display:flex; align-items:center; justify-content:center; padding:0.3rem 0.5rem;" title="Pantalla Completa">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                    </button>
+                    <button type="button" id="btnCloseManualViewer" class="btn btn-sm" style="background:rgba(239, 68, 68, 0.15); color:var(--danger); border:1px solid var(--danger); font-weight:bold; font-size:1rem; padding:0.2rem 0.6rem; cursor:pointer;" title="Cerrar visor (Esc)">
+                        ✕
+                    </button>
+                </div>
+            </div>
+
+            <!-- Embedded PDF Frame -->
+            <div class="manual-viewer-body">
+                <iframe id="manualViewerFrame" src="" class="manual-pdf-frame" title="Visor de PDF"></iframe>
+            </div>
+        </div>
+    </div>
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+        Creado por Drey E. Aymituma &copy; 2026 &bull; Aplicación Local Offline de Plantillas Back Office &bull; Inmune a Proxies
+    </footer>
+
+    <!-- SIDEBAR DE MANUALES & GUÍAS TÉCNICAS -->
+    <div id="manualsSidebarOverlay" class="sidebar-overlay"></div>
+    <aside id="manualsSidebar" class="links-sidebar manuals-sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-title">
+                📖 Manuales & Guías Técnicas
+                <span class="manuals-count-badge" id="manualsCountBadge">6</span>
+            </div>
+            <button type="button" id="btnCloseManualsSidebar" class="sidebar-close-btn" title="Cerrar (Esc)">✕</button>
+        </div>
+
+        <div class="sidebar-search-box">
+            <input type="text" id="sidebarManualSearch" class="form-input" placeholder="🔍 Buscar manual o tema (ej. Lentitud, TR69, Tracer, Niveles)...">
+        </div>
+
+        <div class="manuals-filter-bar" id="manualsCategoryFilter">
+            <!-- Renderizado dinámico de chips de categorías -->
+        </div>
+
+        <div class="sidebar-body" style="padding-top: 0.8rem;">
+            <div id="manualsListContainer"></div>
+        </div>
+    </aside>
+
+    <!-- SIDEBAR DE ENLACES & PLATAFORMAS DE TRABAJO -->
+    <div id="linksSidebarOverlay" class="sidebar-overlay"></div>
+    <aside id="linksSidebar" class="links-sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-title">🌐 Plataformas & Links de Trabajo</div>
+            <button type="button" id="btnCloseLinksSidebar" class="sidebar-close-btn" title="Cerrar (Esc)">✕</button>
+        </div>
+
+        <div class="sidebar-search-box">
+            <input type="text" id="sidebarLinkSearch" class="form-input" placeholder="🔍 Buscar plataforma (ej. CES, Incógnito, TR69, Helix)...">
+        </div>
+
+        <div class="sidebar-body">
+            <!-- Sección 1: Accesos Rápidos más Utilizados -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">⚡ Accesos Rápidos (Más Utilizados)</div>
+                <div id="sidebarQuickLinks" class="sidebar-quick-grid"></div>
+            </div>
+
+            <!-- Sección 2: Catálogo Completo por Categorías -->
+            <div class="sidebar-section" style="margin-top: 1.2rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem;">
+                    <div class="sidebar-section-title" style="margin:0;">📚 Catálogo Completo de Links</div>
+                    <button type="button" id="btnAddCustomLinkBtn" class="btn btn-sm btn-primary" style="font-size:0.75rem; padding:0.2rem 0.5rem;">+ Agregar Link</button>
+                </div>
+
+                <!-- Formulario desplegable para agregar link personalizado -->
+                <div id="addCustomLinkForm" class="add-link-card" style="display:none;">
+                    <div style="font-weight:bold; font-size:0.82rem; margin-bottom:0.5rem; color:var(--text-main);">Añadir Enlace Personalizado</div>
+                    <input type="text" id="newLinkName" class="form-input" placeholder="Nombre (ej. Mi Portal)" style="margin-bottom:0.4rem; font-size:0.8rem;">
+                    <input type="text" id="newLinkUrl" class="form-input" placeholder="URL (ej. https://...)" style="margin-bottom:0.4rem; font-size:0.8rem;">
+                    <select id="newLinkCategory" class="form-select" style="margin-bottom:0.5rem; font-size:0.8rem;">
+                        <option value="Diagnóstico & Niveles">Diagnóstico & Niveles</option>
+                        <option value="Sistemas & Gestión">Sistemas & Gestión</option>
+                        <option value="Canales & Comunicación">Canales & Comunicación</option>
+                        <option value="Otros Enlaces">Otros Enlaces</option>
+                    </select>
+                    <div style="display:flex; gap:0.4rem; justify-content:flex-end;">
+                        <button type="button" id="btnCancelAddLink" class="btn btn-sm">Cancelar</button>
+                        <button type="button" id="btnSaveCustomLink" class="btn btn-sm btn-primary">Guardar</button>
+                    </div>
+                </div>
+
+                <div id="sidebarFullLinksContainer"></div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Popover de Previsualización de Descartes al pasar el cursor -->
+    <div id="chipPreviewTooltip" class="chip-preview-tooltip"></div>
+
+    <!-- SCRIPTS MODULARES ORGANIZADOS POR CAPAS -->
+    <!-- 1. Catálogo y Utilidades Base -->
+    <script src="dataset.js"></script>
+    <script src="js/core/utils.js"></script>
+
+    <!-- 2. Motores Inteligentes (Engines) -->
+    <script src="js/engines/autocorrect.js"></script>
+    <script src="js/engines/predictive.js"></script>
+    <script src="js/engines/case-parser.js"></script>
+    <script src="js/engines/category-predictor.js"></script>
+    <script src="js/engines/sidebars.js"></script>
+
+    <!-- 3. Pestañas Funcionales (Tabs) -->
+    <script src="js/tabs/generator.js"></script>
+    <script src="js/tabs/tracker.js"></script>
+    <script src="js/tabs/niveles.js"></script>
+    <script src="js/tabs/equipos.js"></script>
+    <script src="js/tabs/plantillas-custom.js"></script>
+    <script src="js/tabs/remedy.js"></script>
+    <script src="js/tabs/historial.js"></script>
+
+    <!-- 4. Orquestador y Estado Global -->
+    <script src="app.js"></script>
+</body>
+</html>
