@@ -21,7 +21,7 @@
                         title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'"
                         onmouseout="this.style.transform='scale(1)'"><span
                             style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span
-                            style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.8.1</span></span>
+                            style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.8.2</span></span>
                 </div>
                 <div class="brand-subtitle">PLATAFORMA LOCAL DE PLANTILLAS Y SEGUIMIENTO PARA BO-FIJA</div>
             </div>
@@ -69,7 +69,7 @@
     <main class="main-container">
 
         <!-- ===================================================================
-             TAB 1: GENERADOR RÁPIDO (PLANTILLEITOR)
+             TAB 1: GENERADOR RÁPIDO 
              =================================================================== -->
         <section id="tab-generator" class="tab-pane active">
             <div class="grid-2col">
@@ -866,7 +866,7 @@
     <div id="changelogModal" class="modal-overlay">
         <div class="modal-content" style="max-width: 720px; max-height: 90vh; display: flex; flex-direction: column;">
             <div class="card-title" style="display:flex; justify-content:space-between; align-items:center;">
-                <div class="card-title-text">🚀 Novedades de la Versión 2.8.1</div>
+                <div class="card-title-text">🚀 Novedades de la Versión 2.8.2</div>
                 <button id="changelogModalClose" class="btn btn-sm">✕</button>
             </div>
 
@@ -874,6 +874,17 @@
                 style="font-size: 0.92rem; line-height: 1.55; color: var(--text-main); margin-top: 1rem; overflow-y: auto; padding-right: 0.4rem;">
                 <ul
                     style="padding-left: 1.3rem; margin-bottom: 1.3rem; display: flex; flex-direction: column; gap: 0.65rem;">
+                    <li
+                        style="border-left: 3px solid #8b5cf6; padding-left: 0.5rem; background: rgba(139,92,246,0.08); border-radius: 0 4px 4px 0; padding-top: 0.35rem; padding-bottom: 0.35rem;">
+                        <strong>🛡️ Novedades v2.8.2 — Versión de Seguridad, LiveChat Púrpura y Sincronización Reactiva:</strong>
+                        <ul
+                            style="margin-top: 0.35rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.3rem;">
+                            <li><strong>🛡️ Versión de Seguridad Anterior Automática:</strong> Integración de arquitectura de respaldo bidireccional offline (<code>version_anterior/</code>) con botón integrado al final de las notas y sincronización automática vía Git Hook con cada commit/push.</li>
+                            <li><strong>💬 Identidad Visual Púrpura para LiveChat:</strong> Distintivo visual <code>💬 LIVE CHAT</code> con estilo neón púrpura, tarjeta con resplandor interactivo y botón de copia con gradiente exclusivo.</li>
+                            <li><strong>⚡ Sincronización en Caliente de Plantillas:</strong> Detección y actualización reactiva inmediata en <code>localStorage</code> al modificar títulos, categorías o textos predeterminados en el código fuente.</li>
+                            <li><strong>🔗 Enrutamiento Directo por Hash (#niveles):</strong> Restauración de referencias DOM y navegación instantánea al Validador de Niveles HFC/FTTH y Equipos.</li>
+                        </ul>
+                    </li>
                     <li
                         style="border-left: 3px solid #3b82f6; padding-left: 0.5rem; background: rgba(59,130,246,0.08); border-radius: 0 4px 4px 0; padding-top: 0.35rem; padding-bottom: 0.35rem;">
                         <strong>✨ Novedades v2.8.1 — Zoom Interactivo por Clic y Depuración de Equipos:</strong>

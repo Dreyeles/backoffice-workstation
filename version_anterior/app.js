@@ -85,19 +85,19 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             id: 'tmpl_wsp_1',
             title: 'CLIENTE CONTESTA WHATSAPP',
-            category: 'WhatsApp',
+            category: 'LIVE CHAT',
             content: `¡Perfecto! 👍 Lo estaremos llamando en estos momentos 📞, por favor conteste la llamada. 😉✨`
         },
         {
             id: 'tmpl_wsp_2',
             title: 'CLIENTE NO CONTESTA LLAMADA',
-            category: 'WhatsApp',
+            category: 'LIVE CHAT',
             content: `Estimado cliente 👋, estuvimos llamando a su número celular 📱, pero no tuvimos respuesta. Procedemos a finalizar esta conversación. Lo estaremos llamando en el transcurso del día o mañana. 🕒📞 ¡Que tenga un excelente día! 😊`
         },
         {
             id: 'tmpl_visita_sot',
             title: 'CONFIRMACIÓN VISITA TÉCNICA (SOT)',
-            category: 'WhatsApp',
+            category: 'LIVE CHAT',
             content: `Estimado(a) cliente 👋, le confirmamos que se ha generado la visita técnica con el Codigo: {sot} La atención se realizará en un plazo máximo de 48 horas 👨🔧🏠. El técnico se comunicará previamente con usted para coordinar el ingreso. ¡Muchas gracias por su tiempo y preferencia! 😊👍`
         }
     ];
@@ -114,6 +114,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!existing) {
             state.customTemplates.push(defTmpl);
             templatesUpdated = true;
+        } else {
+            // Si cambiaste la categoría, título o contenido en el código, actualizarlo automáticamente en el navegador
+            if (existing.category !== defTmpl.category || existing.title !== defTmpl.title || existing.content !== defTmpl.content) {
+                existing.category = defTmpl.category;
+                existing.title = defTmpl.title;
+                existing.content = defTmpl.content;
+                templatesUpdated = true;
+            }
         }
     });
 
@@ -152,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnCopySiac: document.getElementById('btnCopySiac'),
         btnCopyManto: document.getElementById('btnCopyManto'),
 
-        // Tab 2: Tracker
+        // Tab 2: Tracker (Ayuda y Seguimiento)
         trackerCaseInput: document.getElementById('trackerCaseInput'),
         btnTrackerAdd: document.getElementById('btnTrackerAdd'),
         trackerTimeline: document.getElementById('trackerTimeline'),
@@ -160,11 +168,73 @@ document.addEventListener('DOMContentLoaded', () => {
         trackerCount: document.getElementById('trackerCount'),
         navTrackerCount: document.getElementById('navTrackerCount'),
 
-        // Tab 4: Equipos Modal Viewer
-        eqSearch: document.getElementById('eqSearch'),
-        eqCard: document.getElementById('eqCard'),
-        eqEmpty: document.getElementById('eqEmpty'),
-        eqCardImg: document.getElementById('eqCardImg'),
+        // Tab 3: Plantillas Personalizadas
+        customTemplatesList: document.getElementById('customTemplatesList'),
+        customSearch: document.getElementById('customSearch'),
+        btnNewTemplate: document.getElementById('btnNewTemplate'),
+        templateModal: document.getElementById('templateModal'),
+        modalClose: document.getElementById('modalClose'),
+        modalCancel: document.getElementById('modalCancel'),
+        modalSave: document.getElementById('modalSave'),
+        modalTitle: document.getElementById('modalTitle'),
+        templateIdInput: document.getElementById('templateIdInput'),
+        tmplTitleInput: document.getElementById('tmplTitleInput'),
+        tmplCategoryInput: document.getElementById('tmplCategoryInput'),
+        tmplContentInput: document.getElementById('tmplContentInput'),
+        customFillContainer: document.getElementById('customFillContainer'),
+        previewCustom: document.getElementById('previewCustom'),
+        btnCopyCustom: document.getElementById('btnCopyCustom'),
+
+        // Tab 4: Historial y Respaldos
+        historyTableBody: document.getElementById('historyTableBody'),
+        btnClearHistory: document.getElementById('btnClearHistory'),
+        btnExportJson: document.getElementById('btnExportJson'),
+        importJsonInput: document.getElementById('importJsonInput'),
+
+        // Validador de Niveles (HFC / FTTH)
+        btnTechHfc: document.getElementById('btnTechHfc'),
+        btnTechFtth: document.getElementById('btnTechFtth'),
+        hygeiaHfcPanel: document.getElementById('hygeiaHfcPanel'),
+        hygeiaFtthPanel: document.getElementById('hygeiaFtthPanel'),
+        btnClearHygeia: document.getElementById('btnClearHygeia'),
+        incSmartPaste: document.getElementById('incSmartPaste'),
+        btnSmartPasteClip: document.getElementById('btnSmartPasteClip'),
+        smartPasteStatus: document.getElementById('smartPasteStatus'),
+        hfcManualFields: document.getElementById('hfcManualFields'),
+        btnToggleHfcManual: document.getElementById('btnToggleHfcManual'),
+        toggleManualArrow: document.getElementById('toggleManualArrow'),
+        incInputDwsPot: document.getElementById('incInputDwsPot'),
+        incInputUsPot: document.getElementById('incInputUsPot'),
+        incInputDwsSnr: document.getElementById('incInputDwsSnr'),
+        incInputUsSnr: document.getElementById('incInputUsSnr'),
+        incognitoResults: document.getElementById('incognitoResults'),
+        incGlobalBadge: document.getElementById('incGlobalBadge'),
+        incResultDwsSnr: document.getElementById('incResultDwsSnr'),
+        incResultDwsPot: document.getElementById('incResultDwsPot'),
+        incResultUsSnr: document.getElementById('incResultUsSnr'),
+        incResultUsPot: document.getElementById('incResultUsPot'),
+        ftthSmartPaste: document.getElementById('ftthSmartPaste'),
+        btnFtthSmartPasteClip: document.getElementById('btnFtthSmartPasteClip'),
+        ftthSmartPasteStatus: document.getElementById('ftthSmartPasteStatus'),
+        ftthManualFields: document.getElementById('ftthManualFields'),
+        btnToggleFtthManual: document.getElementById('btnToggleFtthManual'),
+        toggleFtthManualArrow: document.getElementById('toggleFtthManualArrow'),
+        ftthGlobalBadge: document.getElementById('ftthGlobalBadge'),
+        ftthInputTx: document.getElementById('ftthInputTx'),
+        ftthInputRx: document.getElementById('ftthInputRx'),
+        ftthResultTx: document.getElementById('ftthResultTx'),
+        ftthResultRx: document.getElementById('ftthResultRx'),
+
+        // Identificador de Equipos
+        eqSearchInput: document.getElementById('eqSearchInput'),
+        eqQuickChips: document.getElementById('eqQuickChips'),
+        eqResultContainer: document.getElementById('eqResultContainer'),
+        eqImageBox: document.getElementById('eqImageBox'),
+        eqImage: document.getElementById('eqImage'),
+        eqImagePlaceholder: document.getElementById('eqImagePlaceholder'),
+        eqZoomHint: document.getElementById('eqZoomHint'),
+        btnCardPrevImg: document.getElementById('btnCardPrevImg'),
+        btnCardNextImg: document.getElementById('btnCardNextImg'),
         eqCardImgCounter: document.getElementById('eqCardImgCounter'),
         eqCardImgCounterText: document.getElementById('eqCardImgCounterText'),
         eqName: document.getElementById('eqName'),
@@ -178,6 +248,8 @@ document.addEventListener('DOMContentLoaded', () => {
         eqPlataformas: document.getElementById('eqPlataformas'),
         eqDesc: document.getElementById('eqDesc'),
         eqCredentials: document.getElementById('eqCredentials'),
+
+        // Modal Equipos
         eqModalViewer: document.getElementById('eqModalViewer'),
         eqModalClose: document.getElementById('eqModalClose'),
         eqModalTitle: document.getElementById('eqModalTitle'),
@@ -239,6 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.renderLatestFullCases) window.renderLatestFullCases();
         }
     }
+    window.switchTab = switchTab;
 
     document.querySelectorAll('.nav-tab-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -246,6 +319,33 @@ document.addEventListener('DOMContentLoaded', () => {
             switchTab(targetId);
         });
     });
+
+    // Enrutamiento directo vía Hash (#tab-tracker, #niveles, etc.)
+    function handleHashRoute() {
+        const hash = (window.location.hash || '').toLowerCase();
+        if (hash === '#tab-tracker' || hash === '#tracker' || hash === '#niveles' || hash === '#hfc' || hash === '#ftth') {
+            switchTab('tab-tracker');
+            if (hash === '#niveles' || hash === '#hfc' || hash === '#ftth') {
+                const el = document.getElementById('cardValidadorNiveles') || document.getElementById('btnTechHfc');
+                if (el) {
+                    setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+                }
+                if (hash === '#ftth' && elements.btnTechFtth) {
+                    elements.btnTechFtth.click();
+                } else if (hash === '#hfc' && elements.btnTechHfc) {
+                    elements.btnTechHfc.click();
+                }
+            }
+        } else if (hash === '#tab-custom' || hash === '#custom') {
+            switchTab('tab-custom');
+        } else if (hash === '#tab-history' || hash === '#history') {
+            switchTab('tab-history');
+        } else if (hash === '#tab-generator' || hash === '#generator') {
+            switchTab('tab-generator');
+        }
+    }
+    window.addEventListener('hashchange', handleHashRoute);
+    handleHashRoute();
 
     // 6. Modal de Novedades / Changelog
     const btnChangelog = document.getElementById('btnChangelog');

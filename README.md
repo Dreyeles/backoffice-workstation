@@ -11,15 +11,32 @@
 
 **Plataforma Integral de Productividad, Diagnóstico Técnico en Tiempo Real y Generación Automatizada de Plantillas para BackOffice Telecom.**
 
-[🌐 Probar en Vivo (GitHub Pages)](https://dreyeles.github.io/backoffice-workstation/) · [✨ Novedades v2.8.1](#-novedades-clave-de-la-versi%C3%B3n-281) · [📌 Módulos](#-m%C3%B3dulos-y-capacidades-principales) · [⌨️ Atajos de Teclado](#%EF%B8%8F-atajos-y-productividad)
+[🌐 Probar en Vivo (GitHub Pages)](https://dreyeles.github.io/backoffice-workstation/) · [✨ Novedades v2.8.2](#-novedades-clave-de-la-versi%C3%B3n-282) · [📌 Módulos](#-m%C3%B3dulos-y-capacidades-principales) · [⌨️ Atajos de Teclado](#%EF%B8%8F-atajos-y-productividad)
 
 </div>
 
 ---
 
-## 🌟 Novedades Clave de la Versión 2.8.1
+## 🌟 Novedades Clave de la Versión 2.8.2
 
-La versión **2.8.1** añade una experiencia visual de inspección avanzada con zoom tipo Amazon por clic y una depuración integral del catálogo de equipos:
+La versión **2.8.2** implementa un sistema autónomo de seguridad y respaldo previo, identidad visual púrpura para plantillas LiveChat y sincronización reactiva:
+
+### 1. 🛡️ Versión de Seguridad Anterior Automática
+- **Respaldo Bidireccional Offline:** Cada vez que realizas un commit/push, el Git Hook genera una copia completa y funcional de la versión estable anterior en `version_anterior/`.
+- **Botón Integrado en Notas de Versión:** Acceso directo e intuitivo al final del modal de notas, sin ocupar espacio superior, adaptando automáticamente sus colores a la versión activa.
+- **Rollback de Emergencia:** Inclusión de scripts directos (`actualizar_version_seguridad.bat` y `rollback_urgente.bat`) para recuperación instantánea ante contingencias.
+
+### 2. 💬 Identidad Visual Púrpura para LiveChat
+- **Categorización Neón:** Distintivo `💬 LIVE CHAT` con badge púrpura translúcido (`rgba(139, 92, 246, 0.18)`), tarjeta interactiva con resplandor neón en hover y botón de copia con degradado púrpura exclusivo.
+
+### 3. ⚡ Sincronización en Caliente de Plantillas
+- **Actualización Reactiva de LocalStorage:** Al modificar títulos, categorías o textos predeterminados en el código fuente, la aplicación detecta las diferencias y las sincroniza en caliente en el navegador al recargar.
+
+---
+
+## 🌟 Novedades Previas (Versión 2.8.1)
+
+La versión **2.8.1** añadió la experiencia de inspección avanzada con zoom interactivo tipo Amazon y depuración del catálogo:
 
 ### 1. 🔍 Zoom Interactivo Tipo Amazon por Clic
 - **Activación por Clic:** Haz clic sobre la foto en el modal previsualizador para activar un zoom de aumento continuo centrado exactamente en el cursor.
