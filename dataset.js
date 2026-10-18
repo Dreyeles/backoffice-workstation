@@ -907,10 +907,10 @@ const modelosData = {
         descripcion: "Router HFC DOCSIS 3.1 Gigabit Wi-Fi 5. Plataforma de revisión sin TR-069 (No Homologado)."
     },
     "TG3442": {
-        nombre: "ARRIS TG3442",
+        nombre: "ARRIS TG3442A",
         vendor: "Arris",
-        modelo: "TG3442",
-        aliases: ["TG3442", "TG 3442", "ARRIS TG3442", "3442"],
+        modelo: "TG3442A",
+        aliases: ["TG3442", "TG3442A", "TG 3442", "TG 3442A", "ARRIS TG3442", "ARRIS TG3442A", "3442", "3442A"],
         docsis: "DOCSIS 3.1",
         wifi: "Wifi 6",
         red: "HFC",
@@ -920,13 +920,80 @@ const modelosData = {
         velocidad: 1000,
         tipo: "Router HFC (DOCSIS 3.1 Wi-Fi 6)",
         homologado: true, // Con TR-069
+        get credenciales() {
+            const now = new Date();
+            const d = now.getDate();
+            const m = now.getMonth() + 1;
+            const y = now.getFullYear();
+            const keys = this.clavesTechnician?.keys || {};
+            const candidates = [
+                `${d}/${m}/${y}`,
+                `${d}/${m}/2026`,
+                `${String(d).padStart(2, '0')}/${String(m).padStart(2, '0')}/${y}`,
+                `${String(d).padStart(2, '0')}/${String(m).padStart(2, '0')}/2026`,
+                `${d}/10/2026`
+            ];
+            let found = "ORU6WB8CP0";
+            for (const c of candidates) {
+                if (keys[c]) {
+                    found = keys[c];
+                    break;
+                }
+            }
+            const dateStr = `${String(d).padStart(2, '0')}/${String(m).padStart(2, '0')}/${y}`;
+            return `<div style="text-align:left; display:flex; flex-direction:column; gap:6px; font-family:sans-serif;">` +
+                `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.25); padding:4px 8px; border-radius:4px;">` +
+                    `<span>👤 Usuario: <strong style="color:#ffffff; font-family:monospace; font-size:0.9rem;">technician</strong></span>` +
+                    `<button type="button" class="btn btn-xs" onclick="window.copyToClipboard ? window.copyToClipboard('technician','Usuario technician copiado') : null" style="padding:1px 7px; font-size:0.72rem; cursor:pointer;">📋 Copiar</button>` +
+                `</div>` +
+                `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.35); padding:4px 8px; border-radius:4px;">` +
+                    `<span>🔑 <strong style="color:#34d399;">Clave Hoy (${dateStr}):</strong> <code style="color:#22c55e; font-size:0.95rem; font-weight:800; font-family:monospace; letter-spacing:0.5px;">${found}</code></span>` +
+                    `<button type="button" class="btn btn-xs" onclick="window.copyToClipboard ? window.copyToClipboard('${found}','Clave de hoy copiada') : null" style="padding:2px 8px; font-size:0.72rem; background:#10b981; color:#fff; border:none; font-weight:700; border-radius:4px; cursor:pointer;">📋 Copiar</button>` +
+                `</div>` +
+                `<button type="button" onclick="if(window.openArrisKeysModal){window.openArrisKeysModal()}else{const m=document.getElementById('arrisKeysModal');if(m){m.classList.add('active');document.body.style.overflow='hidden';}}" style="width:100%; margin-top:2px; background:linear-gradient(135deg, #b91c1c, #991b1b); color:#ffffff; font-weight:700; border:none; padding:6px 10px; border-radius:6px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 2px 8px rgba(185,28,28,0.35); font-size:0.8rem;">` +
+                    `🔑 Ver Tabla Completa de Claves (2026)` +
+                `</button>` +
+            `</div>`;
+        },
         img: "img/equipos/ARRIS_TG3442/frontal.jpg",
+        clavesTechnician: {
+            user: "technician",
+            descripcion: "Claves de acceso diario para técnico (Velocidades > 301 Mbps)",
+            img: "img/equipos/ARRIS_TG3442/claves_arris_3.1_2026.jpg",
+            keys: {
+                "1/10/2026": "EDLAZAPYUF", "2/10/2026": "OWG7C0EFBB", "3/10/2026": "MXI7W38LCA", "4/10/2026": "4M26QUVPNU",
+                "5/10/2026": "E84V80468V", "6/10/2026": "3E565RXNT6", "7/10/2026": "G63V824FG1", "8/10/2026": "H5LVKW9F84",
+                "9/10/2026": "R7YMQD49H4", "10/10/2026": "SAIMRJ67B3", "11/10/2026": "XNEFPTQTB9", "12/10/2026": "BDFAUTEQLQ",
+                "13/10/2026": "DGFAGSDOXR", "14/10/2026": "9R07RZ21NZ", "15/10/2026": "RW07L2ETOY", "16/10/2026": "4T06UA7DM6",
+                "17/10/2026": "ORU6WB8CP0", "18/10/2026": "RVBV2NT38X", "19/10/2026": "M0ZM0R3V5U", "20/10/2026": "TT3VEMQIB3",
+                "21/10/2026": "M6DM2ZCU5S", "22/10/2026": "R97M3RCCHR", "23/10/2026": "LRQFW5CSR9", "24/10/2026": "KTRFUZIVST",
+                "25/10/2026": "HGC7CVWTYO", "26/10/2026": "5F26T5H3FU", "27/10/2026": "9DR7B18W0M", "28/10/2026": "JEA625J1LU",
+                "29/10/2026": "DW262AK006", "30/10/2026": "3JIVEN97UW", "31/10/2026": "4IGV87A9OZ",
+                "1/11/2026": "ADBVQNT38K", "2/11/2026": "BC4V204680", "3/11/2026": "9DR7B6EWCB", "4/11/2026": "9R07RAE1DA",
+                "5/11/2026": "VD3AZAMYUJ", "6/11/2026": "ZZ9AZ7LPMK", "7/11/2026": "2TAFUTIOST", "8/11/2026": "1NBFPTQSB9",
+                "9/11/2026": "0QCFI5QWMA", "10/11/2026": "8JXMRUFUN4", "11/11/2026": "MNDMSZCUN3", "12/11/2026": "L2LV8W9F8R",
+                "13/11/2026": "M1IVEN97UV", "14/11/2026": "ORU6WB5GU6", "15/11/2026": "4M26QU6FY6", "16/11/2026": "5F26T57E2I",
+                "17/11/2026": "6G9AGSAOXV", "18/11/2026": "AL9AUS94UW", "19/11/2026": "DDLAZA8YUX", "20/11/2026": "HZRAZ77PMY",
+                "21/11/2026": "OTOFUBI6ST", "22/11/2026": "NNPFPBQAB9", "23/11/2026": "MQQFINQEMA", "24/11/2026": "XQ3VEMQIB2",
+                "25/11/2026": "YP3VE24FG6", "26/11/2026": "DW262AH450", "27/11/2026": "4T06UAI39U", "28/11/2026": "ORU6WBJ2CO",
+                "29/11/2026": "4M26QUK1GO", "30/11/2026": "5F26T5L0K0",
+                "1/12/2026": "9DR7BZ8WAE", "2/12/2026": "LLLAUSQ4UG", "3/12/2026": "RV7MKRCC5C", "4/12/2026": "DBIVKN97U0",
+                "5/12/2026": "MXI7WJQLEA", "6/12/2026": "5D3AJ0MPIK", "7/12/2026": "3QAFI5QVMA", "8/12/2026": "H73VWMQIBJ",
+                "9/12/2026": "JEA6250MJU", "10/12/2026": "ODXAZAIYU0", "11/12/2026": "ZREFWTCER9", "12/12/2026": "L3GVE7A903",
+                "13/12/2026": "4M26QU4I3C", "14/12/2026": "ARF7DR2TN1", "15/12/2026": "V2IFH5TX88", "16/12/2026": "MMDMXZCUNZ",
+                "17/12/2026": "DW262A8EM6", "18/12/2026": "OWG7CAQFRX", "19/12/2026": "RTMFUNIHST", "20/12/2026": "B6YM1R025V",
+                "21/12/2026": "UU4VQ0468B", "22/12/2026": "BGFAGS60X0", "23/12/2026": "FLFAUS54U1", "24/12/2026": "RP7M5RCCZR",
+                "25/12/2026": "YQIVEN97UU", "26/12/2026": "MXI7WDKLZP", "27/12/2026": "ZDXAJ01PI5", "28/12/2026": "IQVFIZQPMA",
+                "29/12/2026": "3E565RK290", "30/12/2026": "JEA625L1D0", "31/12/2026": "IDRAZAXYU9"
+            }
+        },
         imagenes: [
             { label: "Frontal", src: "img/equipos/ARRIS_TG3442/frontal.jpg", desc: "Vista frontal con panel de indicadores LED" },
             { label: "Lateral (Right)", src: "img/equipos/ARRIS_TG3442/lateral_derecha.webp", desc: "Vista lateral derecha de ventilación y disipación" },
-            { label: "Posterior (Back / Puertos)", src: "img/equipos/ARRIS_TG3442/posterior.png", desc: "Panel posterior: Puertos Ethernet Gigabit, coaxial RF, alimentación y reset" }
+            { label: "Posterior (Back / Puertos)", src: "img/equipos/ARRIS_TG3442/posterior.png", desc: "Panel posterior: Puertos Ethernet Gigabit, coaxial RF, alimentación y reset" },
+            { label: "🔑 Claves Technician (2026)", src: "img/equipos/ARRIS_TG3442/claves_arris_3.1_2026.jpg", desc: "Tabla oficial de contraseñas diarias technician (Octubre - Diciembre 2026)" }
         ],
-        descripcion: "Router HFC DOCSIS 3.1 Gigabit Wi-Fi 6 (1 Gbps). Compatible con Repetidor Claro."
+        descripcion: "Router HFC DOCSIS 3.1 Gigabit Wi-Fi 6 (1 Gbps). Empleado en velocidades superiores a 301 Mbps. Compatible con Repetidor Claro."
     },
     "INFINITY601": {
         nombre: "CASTLENET INFINITY601",

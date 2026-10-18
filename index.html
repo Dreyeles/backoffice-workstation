@@ -21,7 +21,7 @@
                         title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'"
                         onmouseout="this.style.transform='scale(1)'"><span
                             style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span
-                            style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.8.2</span></span>
+                            style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.8.3</span></span>
                 </div>
                 <div class="brand-subtitle">PLATAFORMA LOCAL DE PLANTILLAS Y SEGUIMIENTO PARA BO-FIJA</div>
             </div>
@@ -638,6 +638,15 @@
                             <div id="eqCredentials"
                                 style="display:none; font-family:monospace; background:rgba(0,0,0,0.2); padding:0.5rem; border-radius:6px; font-size:0.8rem; margin-top:0.5rem; color:var(--text-color); border:1px solid rgba(255,255,255,0.1);">
                             </div>
+
+                            <!-- Botón de Acceso a Claves Technician (ej. ARRIS TG3442A) -->
+                            <div id="eqActionsBox" style="margin-top:0.6rem; display:none;">
+                                <button type="button" id="btnEqClavesTechnician" class="btn btn-sm"
+                                    style="width:100%; background:linear-gradient(135deg, #b91c1c, #991b1b); color:#ffffff; font-weight:700; border:none; padding:0.45rem 0.8rem; border-radius:6px; display:flex; align-items:center; justify-content:center; gap:0.45rem; box-shadow:0 2px 8px rgba(185,28,28,0.35); transition:transform 0.15s ease;"
+                                    onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                                    🔑 Ver Claves Diarias Technician (2026)
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -866,7 +875,7 @@
     <div id="changelogModal" class="modal-overlay">
         <div class="modal-content" style="max-width: 720px; max-height: 90vh; display: flex; flex-direction: column;">
             <div class="card-title" style="display:flex; justify-content:space-between; align-items:center;">
-                <div class="card-title-text">🚀 Novedades de la Versión 2.8.2</div>
+                <div class="card-title-text">🚀 Novedades de la Versión 2.8.3</div>
                 <button id="changelogModalClose" class="btn btn-sm">✕</button>
             </div>
 
@@ -874,6 +883,17 @@
                 style="font-size: 0.92rem; line-height: 1.55; color: var(--text-main); margin-top: 1rem; overflow-y: auto; padding-right: 0.4rem;">
                 <ul
                     style="padding-left: 1.3rem; margin-bottom: 1.3rem; display: flex; flex-direction: column; gap: 0.65rem;">
+                    <li
+                        style="border-left: 3px solid #ef4444; padding-left: 0.5rem; background: rgba(239,68,68,0.08); border-radius: 0 4px 4px 0; padding-top: 0.35rem; padding-bottom: 0.35rem;">
+                        <strong>🔑 Novedades v2.8.3 — Claves Diarias Technician ARRIS TG3442A (DOCSIS 3.1):</strong>
+                        <ul
+                            style="margin-top: 0.35rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.3rem;">
+                            <li><strong>🔑 Acceso Technician ARRIS TG3442A:</strong> Integración de la tabla oficial de claves diarias para el modelo ARRIS TG3442A (velocidades > 301 Mbps) con imagen en alta definición y visor interactivo.</li>
+                            <li><strong>⚡ Clave de Hoy y Copia en 1 Clic:</strong> Detección automática de la fecha actual con muestra destacada de la contraseña del día y botones directos de copia para el usuario (<code>technician</code>) y la clave.</li>
+                            <li><strong>📅 Selector de Fecha Dinámico:</strong> Posibilidad de consultar contraseñas de cualquier día de Octubre, Noviembre y Diciembre 2026 de forma interactiva.</li>
+                            <li><strong>🔄 Invalidación de Caché Automática:</strong> Versionado de scripts para asegurar la carga inmediata de las últimas actualizaciones sin bloqueos de memoria caché en el navegador.</li>
+                        </ul>
+                    </li>
                     <li
                         style="border-left: 3px solid #8b5cf6; padding-left: 0.5rem; background: rgba(139,92,246,0.08); border-radius: 0 4px 4px 0; padding-top: 0.35rem; padding-bottom: 0.35rem;">
                         <strong>🛡️ Novedades v2.8.2 — Versión de Seguridad, LiveChat Púrpura y Sincronización Reactiva:</strong>
@@ -1603,7 +1623,80 @@
                                     style="font-family: monospace; color: #60a5fa; font-weight: 700; background: rgba(59, 130, 246, 0.12); padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(59, 130, 246, 0.25);">--</span>
                             </div>
                         </div>
+
+                        <!-- Botón de Acceso en Modal -->
+                        <div id="eqModalActionsBox" style="margin-top:0.85rem; padding-top:0.65rem; border-top:1px dashed var(--border-color); display:none;">
+                            <button type="button" id="btnEqModalClavesTechnician" class="btn btn-sm"
+                                style="width:100%; background:linear-gradient(135deg, #b91c1c, #991b1b); color:#ffffff; font-weight:700; border:none; padding:0.5rem 0.85rem; border-radius:6px; display:flex; align-items:center; justify-content:center; gap:0.45rem; box-shadow:0 2px 8px rgba(185,28,28,0.35); transition:transform 0.15s ease;"
+                                onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                                🔑 Ver Claves Technician (Arris 3.1)
+                            </button>
+                        </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE CLAVES TECHNICIAN (ARRIS TG3442A) -->
+    <div id="arrisKeysModal" class="modal-overlay" style="z-index: 2250;">
+        <div class="modal-content" style="max-width: 780px; max-height: 92vh; display: flex; flex-direction: column; padding: 1.25rem;">
+            <!-- Modal Header -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 0.85rem;">
+                <div>
+                    <div style="font-size: 1.15rem; font-weight: 800; color: #ef4444; display: flex; align-items: center; gap: 0.45rem;">
+                        🔑 Claves ARRIS 3.1 — 2026 (Technician)
+                    </div>
+                    <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem;">
+                        ARRIS TG3442A · DOCSIS 3.1 (Velocidades superiores a 301 Mbps) · Claro
+                    </div>
+                </div>
+                <button type="button" id="btnArrisKeysModalClose" class="btn btn-sm" style="border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid var(--border-color);">✕</button>
+            </div>
+
+            <!-- Panel Rápido: Clave de Hoy & Usuario -->
+            <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 0.85rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+                <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                    <div>
+                        <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Usuario:</div>
+                        <div style="font-family: monospace; font-size: 1rem; font-weight: 700; color: #fff;">technician</div>
+                    </div>
+                    <button type="button" id="btnCopyArrisUser" class="btn btn-sm" style="font-size: 0.75rem; padding: 0.25rem 0.65rem;">📋 Copiar</button>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                    <div>
+                        <div style="font-size: 0.7rem; color: #f87171; text-transform: uppercase; font-weight: 700;">
+                            📅 Clave (<span id="arrisKeysDateText">--</span>):
+                        </div>
+                        <div id="arrisKeysTodayPassword" style="font-family: monospace; font-size: 1.15rem; font-weight: 800; color: #22c55e; letter-spacing: 1px;">
+                            --
+                        </div>
+                    </div>
+                    <button type="button" id="btnCopyArrisTodayPass" class="btn btn-sm" style="font-size: 0.75rem; padding: 0.3rem 0.8rem; font-weight: 700; background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; border-radius: 6px; box-shadow: 0 2px 6px rgba(16,185,129,0.3);">
+                        📋 Copiar Clave
+                    </button>
+                </div>
+
+                <!-- Selector Interactivo de Fecha -->
+                <div style="display: flex; align-items: center; gap: 0.4rem; background: rgba(0,0,0,0.25); padding: 0.3rem 0.6rem; border-radius: 6px; border: 1px solid var(--border-color);">
+                    <label for="arrisKeysDateInput" style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700; white-space: nowrap;">📅 Fecha:</label>
+                    <input type="date" id="arrisKeysDateInput" style="padding: 0.2rem 0.4rem; font-size: 0.75rem; border-radius: 4px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-color); font-weight: 600; cursor: pointer;">
+                    <button type="button" id="btnArrisDateToday" class="btn btn-xs" style="font-size: 0.7rem; padding: 0.2rem 0.5rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 4px; font-weight: 700; cursor: pointer;" title="Volver a la fecha de hoy">Hoy</button>
+                </div>
+            </div>
+
+            <!-- Visor de la Imagen Oficial con Scroll -->
+            <div style="flex: 1; overflow-y: auto; background: #0b1120; border-radius: 8px; border: 1px solid var(--border-color); display: flex; justify-content: center; align-items: flex-start; padding: 0.5rem; min-height: 380px;">
+                <img id="arrisKeysModalImg" src="img/equipos/ARRIS_TG3442/claves_arris_3.1_2026.jpg" alt="Tabla de Claves ARRIS 3.1 - 2026" style="width: 100%; max-width: 680px; height: auto; border-radius: 6px; box-shadow: 0 4px 16px rgba(0,0,0,0.5);">
+            </div>
+
+            <!-- Footer con Acciones -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px solid var(--border-color); font-size: 0.78rem; color: var(--text-muted); flex-wrap: wrap; gap: 0.5rem;">
+                <div>💡 La contraseña cambia diariamente a las 00:00 hrs. Válido Octubre - Diciembre 2026.</div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <a href="img/equipos/ARRIS_TG3442/claves_arris_3.1_2026.jpg" target="_blank" rel="noopener noreferrer" class="btn btn-sm" style="font-size: 0.78rem;">🔍 Abrir en Pestaña</a>
+                    <button type="button" id="btnArrisKeysModalCloseBottom" class="btn btn-sm">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -1758,27 +1851,27 @@
 
     <!-- SCRIPTS MODULARES ORGANIZADOS POR CAPAS -->
     <!-- 1. Catálogo y Utilidades Base -->
-    <script src="dataset.js"></script>
-    <script src="js/core/utils.js"></script>
+    <script src="dataset.js?v=2.8.3"></script>
+    <script src="js/core/utils.js?v=2.8.3"></script>
 
     <!-- 2. Motores Inteligentes (Engines) -->
-    <script src="js/engines/autocorrect.js"></script>
-    <script src="js/engines/predictive.js"></script>
-    <script src="js/engines/case-parser.js"></script>
-    <script src="js/engines/category-predictor.js"></script>
-    <script src="js/engines/sidebars.js"></script>
+    <script src="js/engines/autocorrect.js?v=2.8.3"></script>
+    <script src="js/engines/predictive.js?v=2.8.3"></script>
+    <script src="js/engines/case-parser.js?v=2.8.3"></script>
+    <script src="js/engines/category-predictor.js?v=2.8.3"></script>
+    <script src="js/engines/sidebars.js?v=2.8.3"></script>
 
     <!-- 3. Pestañas Funcionales (Tabs) -->
-    <script src="js/tabs/generator.js"></script>
-    <script src="js/tabs/tracker.js"></script>
-    <script src="js/tabs/niveles.js"></script>
-    <script src="js/tabs/equipos.js"></script>
-    <script src="js/tabs/plantillas-custom.js"></script>
-    <script src="js/tabs/remedy.js"></script>
-    <script src="js/tabs/historial.js"></script>
+    <script src="js/tabs/generator.js?v=2.8.3"></script>
+    <script src="js/tabs/tracker.js?v=2.8.3"></script>
+    <script src="js/tabs/niveles.js?v=2.8.3"></script>
+    <script src="js/tabs/equipos.js?v=2.8.3"></script>
+    <script src="js/tabs/plantillas-custom.js?v=2.8.3"></script>
+    <script src="js/tabs/remedy.js?v=2.8.3"></script>
+    <script src="js/tabs/historial.js?v=2.8.3"></script>
 
     <!-- 4. Orquestador y Estado Global -->
-    <script src="app.js"></script>
+    <script src="app.js?v=2.8.3"></script>
 </body>
 
 </html>

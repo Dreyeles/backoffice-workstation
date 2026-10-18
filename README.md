@@ -11,15 +11,29 @@
 
 **Plataforma Integral de Productividad, Diagnóstico Técnico en Tiempo Real y Generación Automatizada de Plantillas para BackOffice Telecom.**
 
-[🌐 Probar en Vivo (GitHub Pages)](https://dreyeles.github.io/backoffice-workstation/) · [✨ Novedades v2.8.2](#-novedades-clave-de-la-versi%C3%B3n-282) · [📌 Módulos](#-m%C3%B3dulos-y-capacidades-principales) · [⌨️ Atajos de Teclado](#%EF%B8%8F-atajos-y-productividad)
+[🌐 Probar en Vivo (GitHub Pages)](https://dreyeles.github.io/backoffice-workstation/) · [✨ Novedades v2.8.3](#-novedades-clave-de-la-versi%C3%B3n-283) · [📌 Módulos](#-m%C3%B3dulos-y-capacidades-principales) · [⌨️ Atajos de Teclado](#%EF%B8%8F-atajos-y-productividad)
 
 </div>
 
 ---
 
-## 🌟 Novedades Clave de la Versión 2.8.2
+## 🌟 Novedades Clave de la Versión 2.8.3
 
-La versión **2.8.2** implementa un sistema autónomo de seguridad y respaldo previo, identidad visual púrpura para plantillas LiveChat y sincronización reactiva:
+La versión **2.8.3** añade la gestión completa de claves diarias de técnico (Technician) para equipos DOCSIS 3.1 Gigabit, con detección de fecha en tiempo real y visor oficial:
+
+### 1. 🔑 Claves Diarias Technician para ARRIS TG3442A
+- **Soporte DOCSIS 3.1 Gigabit:** Integración del modelo `ARRIS TG3442A` (velocidades superiores a 301 Mbps) con tabla completa de contraseñas de técnico para Octubre, Noviembre y Diciembre 2026.
+- **Clave del Día Automática:** Al buscar el equipo, calcula y muestra inmediatamente la contraseña que corresponde al día actual con botones de copia en 1 clic para usuario y clave.
+- **Visor HD y Selector de Fecha:** Modal interactivo con imagen oficial en alta resolución y selector interactivo para consultar contraseñas de cualquier día.
+
+### 2. 🔄 Invalidación Inteligente de Caché
+- **Carga Inmediata de Scripts:** Implementación de query strings de versionado en todos los módulos (`?v=2.8.3`) para garantizar que las actualizaciones se reflejen al instante en el navegador sin interferencias de la caché.
+
+---
+
+## 🌟 Novedades Anteriores (Versión 2.8.2)
+
+La versión **2.8.2** implementó un sistema autónomo de seguridad y respaldo previo, identidad visual púrpura para plantillas LiveChat y sincronización reactiva:
 
 ### 1. 🛡️ Versión de Seguridad Anterior Automática
 - **Respaldo Bidireccional Offline:** Cada vez que realizas un commit/push, el Git Hook genera una copia completa y funcional de la versión estable anterior en `version_anterior/`.
