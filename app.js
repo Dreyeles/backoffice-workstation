@@ -247,6 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
         eqFirmware: document.getElementById('eqFirmware'),
         eqPlataformas: document.getElementById('eqPlataformas'),
         eqDesc: document.getElementById('eqDesc'),
+        eqNota: document.getElementById('eqNota'),
         eqCredentials: document.getElementById('eqCredentials'),
 
         // Modal Equipos

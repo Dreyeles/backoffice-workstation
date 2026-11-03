@@ -1061,7 +1061,8 @@ const modelosData = {
             { label: "Perspectiva", src: "img/equipos/HUAWEI_HG8245W5-6T/perspectiva.webp", desc: "Vista angular del equipo" },
             { label: "Posterior (Puertos)", src: "img/equipos/HUAWEI_HG8245W5-6T/posterior.avif", desc: "Panel posterior: 4x GE, puerto de voz y puerto óptico SC/APC" }
         ],
-        descripcion: "ONT FTTH GPON Wi-Fi 5 High Power. Plataforma de revisión sin TR-069 (No Homologado)."
+        descripcion: "ONT FTTH GPON Wi-Fi 5 High Power. Plataforma de revisión sin TR-069 (No Homologado).",
+        nota: "Para acceder de forma remota, a veces es necesario solicitar al cliente una foto de la etiqueta del equipo."
     },
     "HG8247U": {
         nombre: "HUAWEI HG8247U",
@@ -1305,6 +1306,7 @@ const equiposClaro = Object.keys(modelosData).map(key => {
         imagen: modelosData[key].img,
         imagenes: modelosData[key].imagenes || (modelosData[key].img ? [{ label: "Principal", src: modelosData[key].img, desc: "Vista principal del equipo" }] : []),
         descripcion: modelosData[key].descripcion,
+        nota: modelosData[key].nota || '',
         repetidor: modelosData[key].repetidor,
         velocidad: modelosData[key].velocidad,
         credenciales: modelosData[key].credenciales || ''

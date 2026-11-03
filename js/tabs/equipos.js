@@ -135,6 +135,7 @@ window.BO_MODULES = window.BO_MODULES || {};
                             imagen: modelosData[k].img,
                             imagenes: modelosData[k].imagenes || (modelosData[k].img ? [{ label: "Frontal", src: modelosData[k].img, desc: "Vista frontal del equipo" }] : []),
                             descripcion: modelosData[k].descripcion,
+                            nota: modelosData[k].nota || '',
                             repetidor: modelosData[k].repetidor,
                             velocidad: modelosData[k].velocidad,
                             credenciales: modelosData[k].credenciales,
@@ -341,6 +342,16 @@ window.BO_MODULES = window.BO_MODULES || {};
                             elements.eqDesc.style.display = 'block';
                         }
 
+                        // Nota especial del equipo (campo opcional)
+                        if (elements.eqNota) {
+                            if (result.nota) {
+                                elements.eqNota.innerHTML = `<strong>&#x26A0;&#xFE0F; Nota:</strong> ` + escapeHtml(result.nota);
+                                elements.eqNota.style.display = 'block';
+                            } else {
+                                elements.eqNota.style.display = 'none';
+                            }
+                        }
+
                         // Handle credentials
                         if (result.clavesTechnician) {
                             const now = new Date();
@@ -443,6 +454,7 @@ window.BO_MODULES = window.BO_MODULES || {};
                         if (elements.eqFirmware) elements.eqFirmware.style.display = 'none';
                         if (elements.eqPlataformas) elements.eqPlataformas.style.display = 'none';
                         if (elements.eqDesc) elements.eqDesc.style.display = 'none';
+                        if (elements.eqNota) elements.eqNota.style.display = 'none';
                         if (elements.eqCredentials) elements.eqCredentials.style.display = 'none';
                         if (elements.eqActionsBox) elements.eqActionsBox.style.display = 'none';
 

@@ -271,6 +271,19 @@ document.addEventListener('DOMContentLoaded', () => {
         eqModalFw: document.getElementById('eqModalFw'),
         eqModalPlat: document.getElementById('eqModalPlat'),
         eqModalSpeed: document.getElementById('eqModalSpeed'),
+        eqActionsBox: document.getElementById('eqActionsBox'),
+        btnEqClavesTechnician: document.getElementById('btnEqClavesTechnician'),
+        eqModalActionsBox: document.getElementById('eqModalActionsBox'),
+        btnEqModalClavesTechnician: document.getElementById('btnEqModalClavesTechnician'),
+        arrisKeysModal: document.getElementById('arrisKeysModal'),
+        btnArrisKeysModalClose: document.getElementById('btnArrisKeysModalClose'),
+        btnArrisKeysModalCloseBottom: document.getElementById('btnArrisKeysModalCloseBottom'),
+        btnCopyArrisUser: document.getElementById('btnCopyArrisUser'),
+        btnCopyArrisTodayPass: document.getElementById('btnCopyArrisTodayPass'),
+        arrisKeysDateText: document.getElementById('arrisKeysDateText'),
+        arrisKeysTodayPassword: document.getElementById('arrisKeysTodayPassword'),
+        arrisKeysDateInput: document.getElementById('arrisKeysDateInput'),
+        btnArrisDateToday: document.getElementById('btnArrisDateToday'),
 
         // Toast Container
         toastContainer: document.getElementById('toastContainer')
@@ -351,7 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnChangelog = document.getElementById('btnChangelog');
     const changelogModal = document.getElementById('changelogModal');
     const changelogModalClose = document.getElementById('changelogModalClose');
-    const APP_VERSION = '2.8.2';
+    const APP_VERSION = '2.8.3';
 
     if (btnChangelog && changelogModal) {
         btnChangelog.addEventListener('click', () => {

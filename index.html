@@ -21,7 +21,7 @@
                         title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'"
                         onmouseout="this.style.transform='scale(1)'"><span
                             style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span
-                            style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.8.3</span></span>
+                            style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.8.4</span></span>
                 </div>
                 <div class="brand-subtitle">PLATAFORMA LOCAL DE PLANTILLAS Y SEGUIMIENTO PARA BO-FIJA</div>
             </div>
@@ -635,6 +635,7 @@
                             <div id="eqDesc"
                                 style="font-size:0.8rem; color:var(--text-color); background:var(--bg-card); padding:0.45rem 0.65rem; border-radius:6px; border:1px solid var(--border-color); margin-top:0.4rem; text-align:left;">
                                 --</div>
+                                                        <div id="eqNota" style="display:none; font-size:0.8rem; color:#fbbf24; background:rgba(251,191,36,0.08); padding:0.45rem 0.65rem; border-radius:6px; border:1px solid rgba(251,191,36,0.35); margin-top:0.4rem; text-align:left;"></div>
                             <div id="eqCredentials"
                                 style="display:none; font-family:monospace; background:rgba(0,0,0,0.2); padding:0.5rem; border-radius:6px; font-size:0.8rem; margin-top:0.5rem; color:var(--text-color); border:1px solid rgba(255,255,255,0.1);">
                             </div>
@@ -875,7 +876,7 @@
     <div id="changelogModal" class="modal-overlay">
         <div class="modal-content" style="max-width: 720px; max-height: 90vh; display: flex; flex-direction: column;">
             <div class="card-title" style="display:flex; justify-content:space-between; align-items:center;">
-                <div class="card-title-text">🚀 Novedades de la Versión 2.8.3</div>
+                <div class="card-title-text">🚀 Novedades de la Versión 2.8.4</div>
                 <button id="changelogModalClose" class="btn btn-sm">✕</button>
             </div>
 
@@ -883,6 +884,15 @@
                 style="font-size: 0.92rem; line-height: 1.55; color: var(--text-main); margin-top: 1rem; overflow-y: auto; padding-right: 0.4rem;">
                 <ul
                     style="padding-left: 1.3rem; margin-bottom: 1.3rem; display: flex; flex-direction: column; gap: 0.65rem;">
+                    <li
+                        style="border-left: 3px solid #10b981; padding-left: 0.5rem; background: rgba(16, 185, 129, 0.08); border-radius: 0 4px 4px 0; padding-top: 0.35rem; padding-bottom: 0.35rem;">
+                        <strong>🚀 Novedades v2.8.4 — Mejoras de estabilidad y optimizaciones:</strong>
+                        <ul
+                            style="margin-top: 0.35rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.3rem;">
+                            <li>Mejoras de estabilidad y optimizaciones</li>
+                        </ul>
+                    </li>
+
                     <li
                         style="border-left: 3px solid #ef4444; padding-left: 0.5rem; background: rgba(239,68,68,0.08); border-radius: 0 4px 4px 0; padding-top: 0.35rem; padding-bottom: 0.35rem;">
                         <strong>🔑 Novedades v2.8.3 — Claves Diarias Technician ARRIS TG3442A (DOCSIS 3.1):</strong>
@@ -1851,27 +1861,27 @@
 
     <!-- SCRIPTS MODULARES ORGANIZADOS POR CAPAS -->
     <!-- 1. Catálogo y Utilidades Base -->
-    <script src="dataset.js?v=2.8.3"></script>
-    <script src="js/core/utils.js?v=2.8.3"></script>
+    <script src="dataset.js?v=2.8.4"></script>
+    <script src="js/core/utils.js?v=2.8.4"></script>
 
     <!-- 2. Motores Inteligentes (Engines) -->
-    <script src="js/engines/autocorrect.js?v=2.8.3"></script>
-    <script src="js/engines/predictive.js?v=2.8.3"></script>
-    <script src="js/engines/case-parser.js?v=2.8.3"></script>
-    <script src="js/engines/category-predictor.js?v=2.8.3"></script>
-    <script src="js/engines/sidebars.js?v=2.8.3"></script>
+    <script src="js/engines/autocorrect.js?v=2.8.4"></script>
+    <script src="js/engines/predictive.js?v=2.8.4"></script>
+    <script src="js/engines/case-parser.js?v=2.8.4"></script>
+    <script src="js/engines/category-predictor.js?v=2.8.4"></script>
+    <script src="js/engines/sidebars.js?v=2.8.4"></script>
 
     <!-- 3. Pestañas Funcionales (Tabs) -->
-    <script src="js/tabs/generator.js?v=2.8.3"></script>
-    <script src="js/tabs/tracker.js?v=2.8.3"></script>
-    <script src="js/tabs/niveles.js?v=2.8.3"></script>
-    <script src="js/tabs/equipos.js?v=2.8.3"></script>
-    <script src="js/tabs/plantillas-custom.js?v=2.8.3"></script>
-    <script src="js/tabs/remedy.js?v=2.8.3"></script>
-    <script src="js/tabs/historial.js?v=2.8.3"></script>
+    <script src="js/tabs/generator.js?v=2.8.4"></script>
+    <script src="js/tabs/tracker.js?v=2.8.4"></script>
+    <script src="js/tabs/niveles.js?v=2.8.4"></script>
+    <script src="js/tabs/equipos.js?v=2.8.4"></script>
+    <script src="js/tabs/plantillas-custom.js?v=2.8.4"></script>
+    <script src="js/tabs/remedy.js?v=2.8.4"></script>
+    <script src="js/tabs/historial.js?v=2.8.4"></script>
 
     <!-- 4. Orquestador y Estado Global -->
-    <script src="app.js?v=2.8.3"></script>
+    <script src="app.js?v=2.8.4"></script>
 </body>
 
 </html>

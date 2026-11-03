@@ -94,6 +94,7 @@ window.BO_MODULES = window.BO_MODULES || {};
 
                 if (query.length < 2) {
                     elements.eqResultContainer.style.display = 'none';
+                    if (elements.eqActionsBox) elements.eqActionsBox.style.display = 'none';
                     currentSelectedEq = null;
                     currentEqAngleIndex = 0;
                     syncCardImage();
@@ -135,7 +136,9 @@ window.BO_MODULES = window.BO_MODULES || {};
                             imagenes: modelosData[k].imagenes || (modelosData[k].img ? [{ label: "Frontal", src: modelosData[k].img, desc: "Vista frontal del equipo" }] : []),
                             descripcion: modelosData[k].descripcion,
                             repetidor: modelosData[k].repetidor,
-                            velocidad: modelosData[k].velocidad
+                            velocidad: modelosData[k].velocidad,
+                            credenciales: modelosData[k].credenciales,
+                            clavesTechnician: modelosData[k].clavesTechnician
                         };
                     });
 
@@ -339,11 +342,61 @@ window.BO_MODULES = window.BO_MODULES || {};
                         }
 
                         // Handle credentials
-                        if (result.credenciales) {
+                        if (result.clavesTechnician) {
+                            const now = new Date();
+                            const d = now.getDate();
+                            const m = now.getMonth() + 1;
+                            const y = now.getFullYear();
+                            const keyRes = getArrisKeyForDate(d, m, y, result.clavesTechnician);
+                            const todayKey = keyRes?.pass || 'Consultar tabla';
+                            const dateLabel = `${String(d).padStart(2, '0')}/${String(m).padStart(2, '0')}/${y}`;
+
+                            elements.eqCredentials.innerHTML = `
+                                <div style="display:flex; flex-direction:column; gap:0.45rem; font-family:inherit; text-align:left;">
+                                    <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.25); padding:0.35rem 0.6rem; border-radius:6px; border:1px solid rgba(255,255,255,0.06);">
+                                        <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">👤 Usuario:</span>
+                                        <div style="display:flex; align-items:center; gap:0.4rem;">
+                                            <code style="color:#ffffff; font-weight:700; font-size:0.85rem; font-family:monospace;">technician</code>
+                                            <button type="button" class="btn btn-xs btn-copy-card-user" style="padding:1px 6px; font-size:0.7rem; border-radius:3px; cursor:pointer;">📋 Copiar</button>
+                                        </div>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(16, 185, 129, 0.12); border:1px solid rgba(16, 185, 129, 0.35); padding:0.35rem 0.6rem; border-radius:6px;">
+                                        <span style="font-size:0.75rem; color:#34d399; font-weight:700;">🔑 Clave de Hoy (${dateLabel}):</span>
+                                        <div style="display:flex; align-items:center; gap:0.4rem;">
+                                            <code style="color:#22c55e; font-weight:800; font-size:0.95rem; font-family:monospace; letter-spacing:0.5px;">${escapeHtml(todayKey)}</code>
+                                            <button type="button" class="btn btn-xs btn-copy-card-pass" style="padding:2px 8px; font-size:0.72rem; font-weight:700; background:#10b981; color:#ffffff; border:none; border-radius:4px; box-shadow:0 1px 4px rgba(16,185,129,0.3); cursor:pointer;">📋 Copiar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            elements.eqCredentials.style.display = 'block';
+
+                            const btnUser = elements.eqCredentials.querySelector('.btn-copy-card-user');
+                            if (btnUser) {
+                                btnUser.addEventListener('click', (ev) => {
+                                    ev.stopPropagation();
+                                    if (window.copyToClipboard) window.copyToClipboard('technician', 'Usuario technician copiado');
+                                });
+                            }
+                            const btnPass = elements.eqCredentials.querySelector('.btn-copy-card-pass');
+                            if (btnPass) {
+                                btnPass.addEventListener('click', (ev) => {
+                                    ev.stopPropagation();
+                                    if (window.copyToClipboard && todayKey && todayKey !== 'Consultar tabla') {
+                                        window.copyToClipboard(todayKey, `Clave de hoy (${todayKey}) copiada`);
+                                    }
+                                });
+                            }
+                        } else if (result.credenciales) {
                             elements.eqCredentials.innerHTML = result.credenciales.replace(/\|/g, '<br>');
                             elements.eqCredentials.style.display = 'block';
                         } else {
                             elements.eqCredentials.style.display = 'none';
+                        }
+
+                        // Botón de Acceso a Claves Technician (ej. ARRIS TG3442A)
+                        if (elements.eqActionsBox) {
+                            elements.eqActionsBox.style.display = result.clavesTechnician ? 'block' : 'none';
                         }
 
                         // Handle equipment and gallery
@@ -391,6 +444,7 @@ window.BO_MODULES = window.BO_MODULES || {};
                         if (elements.eqPlataformas) elements.eqPlataformas.style.display = 'none';
                         if (elements.eqDesc) elements.eqDesc.style.display = 'none';
                         if (elements.eqCredentials) elements.eqCredentials.style.display = 'none';
+                        if (elements.eqActionsBox) elements.eqActionsBox.style.display = 'none';
 
                         elements.eqImage.style.display = 'none';
                         elements.eqImagePlaceholder.style.display = 'block';
@@ -595,6 +649,11 @@ window.BO_MODULES = window.BO_MODULES || {};
                     elements.eqModalFw.textContent = eq.firmware || 'No especificado';
                 }
 
+                // Botón de Acceso a Claves en Modal de Equipo
+                if (elements.eqModalActionsBox) {
+                    elements.eqModalActionsBox.style.display = eq.clavesTechnician ? 'block' : 'none';
+                }
+
 
                     if (elements.eqModalThumbnails) {
                         elements.eqModalThumbnails.innerHTML = '';
@@ -710,15 +769,205 @@ window.BO_MODULES = window.BO_MODULES || {};
                 });
             }
 
-            document.addEventListener('keydown', (e) => {
+            // Modal de Claves Technician (ej. ARRIS TG3442A)
+            function getArrisKeyForDate(day, month, year, techData) {
+                if (!techData || !techData.keys) return null;
+                const d = parseInt(day, 10);
+                const m = parseInt(month, 10);
+                const y = parseInt(year, 10);
+
+                // Variaciones de formato en la tabla oficial
+                const candidates = [
+                    `${d}/${m}/${y}`,
+                    `${d}/${m}/2026`,
+                    `${String(d).padStart(2, '0')}/${String(m).padStart(2, '0')}/${y}`,
+                    `${String(d).padStart(2, '0')}/${String(m).padStart(2, '0')}/2026`
+                ];
+
+                for (const cand of candidates) {
+                    if (techData.keys[cand]) {
+                        return { pass: techData.keys[cand], dateKey: cand, fallback: false };
+                    }
+                }
+
+                // Si el mes no está en el rango Q4 2026 (Oct, Nov, Dic), buscar el día equivalente en Octubre 2026
+                const keyOct = `${d}/10/2026`;
+                if (techData.keys[keyOct]) {
+                    return { pass: techData.keys[keyOct], dateKey: keyOct, fallback: true };
+                }
+
+                return null;
+            }
+
+            function updateArrisModalKey(d, m, y, techData) {
+                const result = getArrisKeyForDate(d, m, y, techData);
+                const formattedDate = `${String(d).padStart(2, '0')}/${String(m).padStart(2, '0')}/${y}`;
+
+                if (elements.arrisKeysDateText) {
+                    if (result && result.fallback) {
+                        elements.arrisKeysDateText.textContent = `${formattedDate} (ref: ${result.dateKey})`;
+                    } else {
+                        elements.arrisKeysDateText.textContent = formattedDate;
+                    }
+                }
+
+                if (elements.arrisKeysTodayPassword) {
+                    if (result && result.pass) {
+                        elements.arrisKeysTodayPassword.textContent = result.pass;
+                        elements.arrisKeysTodayPassword.style.color = '#22c55e';
+                    } else {
+                        elements.arrisKeysTodayPassword.textContent = 'Consultar tabla';
+                        elements.arrisKeysTodayPassword.style.color = '#f59e0b';
+                    }
+                }
+            }
+
+            function openArrisKeysModal(eq) {
+                const targetEq = eq || currentSelectedEq;
+                let techData = targetEq?.clavesTechnician;
+                if (!techData && typeof modelosData !== 'undefined') {
+                    techData = modelosData["TG3442"]?.clavesTechnician;
+                }
+
+                const now = new Date();
+                const d = now.getDate();
+                const m = now.getMonth() + 1;
+                const y = now.getFullYear();
+
+                if (elements.arrisKeysDateInput) {
+                    const yyyy = String(y).padStart(4, '0');
+                    const mm = String(m).padStart(2, '0');
+                    const dd = String(d).padStart(2, '0');
+                    elements.arrisKeysDateInput.value = `${yyyy}-${mm}-${dd}`;
+                }
+
+                updateArrisModalKey(d, m, y, techData);
+
+                const modalImg = document.getElementById('arrisKeysModalImg');
+                if (modalImg && techData?.img) {
+                    modalImg.src = techData.img;
+                }
+
+                if (elements.arrisKeysModal) {
+                    elements.arrisKeysModal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+
+            function closeArrisKeysModal() {
+                if (elements.arrisKeysModal) {
+                    elements.arrisKeysModal.classList.remove('active');
+                }
                 if (elements.eqModalViewer && elements.eqModalViewer.classList.contains('active')) {
-                    if (e.key === 'Escape') {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+            }
+
+            window.openArrisKeysModal = openArrisKeysModal;
+            window.closeArrisKeysModal = closeArrisKeysModal;
+
+            if (elements.arrisKeysDateInput) {
+                elements.arrisKeysDateInput.addEventListener('change', (e) => {
+                    const val = e.target.value;
+                    if (!val) return;
+                    const parts = val.split('-');
+                    if (parts.length === 3) {
+                        const selY = parseInt(parts[0], 10);
+                        const selM = parseInt(parts[1], 10);
+                        const selD = parseInt(parts[2], 10);
+                        let techData = currentSelectedEq?.clavesTechnician || (typeof modelosData !== 'undefined' ? modelosData["TG3442"]?.clavesTechnician : null);
+                        updateArrisModalKey(selD, selM, selY, techData);
+                    }
+                });
+            }
+
+            if (elements.btnArrisDateToday) {
+                elements.btnArrisDateToday.addEventListener('click', () => {
+                    const now = new Date();
+                    const d = now.getDate();
+                    const m = now.getMonth() + 1;
+                    const y = now.getFullYear();
+                    if (elements.arrisKeysDateInput) {
+                        const yyyy = String(y).padStart(4, '0');
+                        const mm = String(m).padStart(2, '0');
+                        const dd = String(d).padStart(2, '0');
+                        elements.arrisKeysDateInput.value = `${yyyy}-${mm}-${dd}`;
+                    }
+                    let techData = currentSelectedEq?.clavesTechnician || (typeof modelosData !== 'undefined' ? modelosData["TG3442"]?.clavesTechnician : null);
+                    updateArrisModalKey(d, m, y, techData);
+                });
+            }
+
+            if (elements.btnEqClavesTechnician) {
+                elements.btnEqClavesTechnician.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openArrisKeysModal(currentSelectedEq);
+                });
+            }
+
+            if (elements.btnEqModalClavesTechnician) {
+                elements.btnEqModalClavesTechnician.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openArrisKeysModal(currentSelectedEq);
+                });
+            }
+
+            if (elements.btnArrisKeysModalClose) {
+                elements.btnArrisKeysModalClose.addEventListener('click', closeArrisKeysModal);
+            }
+
+            if (elements.btnArrisKeysModalCloseBottom) {
+                elements.btnArrisKeysModalCloseBottom.addEventListener('click', closeArrisKeysModal);
+            }
+
+            if (elements.arrisKeysModal) {
+                elements.arrisKeysModal.addEventListener('click', (e) => {
+                    if (e.target === elements.arrisKeysModal) {
+                        closeArrisKeysModal();
+                    }
+                });
+            }
+
+            if (elements.btnCopyArrisUser) {
+                elements.btnCopyArrisUser.addEventListener('click', () => {
+                    if (window.copyToClipboard) {
+                        window.copyToClipboard('technician', 'Usuario technician copiado al portapapeles');
+                    }
+                });
+            }
+
+            if (elements.btnCopyArrisTodayPass) {
+                elements.btnCopyArrisTodayPass.addEventListener('click', () => {
+                    const pass = elements.arrisKeysTodayPassword ? elements.arrisKeysTodayPassword.textContent.trim() : '';
+                    if (pass && pass !== '--' && pass !== 'Ver tabla') {
+                        if (window.copyToClipboard) {
+                            window.copyToClipboard(pass, `Clave de hoy (${pass}) copiada al portapapeles`);
+                        }
+                    } else if (window.copyToClipboard) {
+                        window.copyToClipboard(pass, 'Clave copiada');
+                    }
+                });
+            }
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    if (elements.arrisKeysModal && elements.arrisKeysModal.classList.contains('active')) {
+                        closeArrisKeysModal();
+                        return;
+                    }
+                    if (elements.eqModalViewer && elements.eqModalViewer.classList.contains('active')) {
                         if (isModalZooming) {
                             resetModalZoom();
                         } else {
                             closeEqModalViewer();
                         }
-                    } else if (e.key === 'ArrowLeft' && elements.btnEqModalPrev) {
+                        return;
+                    }
+                }
+                if (elements.eqModalViewer && elements.eqModalViewer.classList.contains('active')) {
+                    if (e.key === 'ArrowLeft' && elements.btnEqModalPrev) {
                         elements.btnEqModalPrev.click();
                     } else if (e.key === 'ArrowRight' && elements.btnEqModalNext) {
                         elements.btnEqModalNext.click();
