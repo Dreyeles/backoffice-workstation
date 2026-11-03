@@ -2122,6 +2122,10 @@ body {
 
 .predictive-dropdown {
   position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
   z-index: 9999;
   background: var(--bg-card);
   backdrop-filter: blur(14px);
@@ -2187,7 +2191,6 @@ body {
 .predictive-item.is-selected {
   background: var(--primary-glow);
   color: #fff;
-  padding-left: 14px;
 }
 
 .predictive-item-match {

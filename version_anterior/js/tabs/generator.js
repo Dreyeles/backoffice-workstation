@@ -32,15 +32,25 @@ window.BO_MODULES = window.BO_MODULES || {};
                 const container = document.getElementById('genProblemaOptions');
                 if (!container) return;
                 container.innerHTML = '';
-                list.forEach(prob => {
+                list.forEach((prob, idx) => {
                     const div = document.createElement('div');
                     div.className = 'custom-option';
                     div.textContent = prob;
-                    div.addEventListener('click', (e) => {
+                    const selectOption = (e) => {
+                        e.preventDefault();
                         e.stopPropagation();
                         setProblemValue(prob);
                         const problemaDropdown = document.getElementById('problemaDropdown');
                         if (problemaDropdown) problemaDropdown.classList.remove('open');
+                        currentFocus = -1;
+                    };
+                    div.addEventListener('mousedown', selectOption);
+                    div.addEventListener('click', selectOption);
+                    div.addEventListener('mouseenter', () => {
+                        const options = container.getElementsByClassName('custom-option');
+                        for (let i = 0; i < options.length; i++) options[i].classList.remove('active');
+                        div.classList.add('active');
+                        currentFocus = idx;
                     });
                     container.appendChild(div);
                 });
@@ -73,7 +83,11 @@ window.BO_MODULES = window.BO_MODULES || {};
                 });
 
                 currentProblemList = combined;
-                renderProblemOptions(currentProblemList);
+                const query = (elements.genProblema?.value || '').toLowerCase().trim();
+                const toRender = (query && keepCurrentValue)
+                    ? currentProblemList.filter(p => p.toLowerCase().includes(query))
+                    : currentProblemList;
+                renderProblemOptions(toRender);
 
                 if (!keepCurrentValue) {
                     setProblemValue('');
@@ -938,6 +952,12 @@ ${contactLines}`;
             const btnToggleProblema = document.getElementById('btnToggleProblemaDropdown');
             const problemaWrapper = document.getElementById('problemaWrapper');
             let currentFocus = -1;
+
+            if (problemaDropdown) {
+                problemaDropdown.addEventListener('mousedown', (e) => {
+                    e.preventDefault();
+                });
+            }
 
             if (elements.genProblema) {
                 elements.genProblema.addEventListener('input', (e) => {

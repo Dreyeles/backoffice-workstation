@@ -311,6 +311,10 @@ window.BO_MODULES = window.BO_MODULES || {};
             }
             syncGhostStyles();
 
+            dropdownEl.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+            });
+
             const closeDropdown = () => {
                 dropdownEl.classList.remove('is-open');
                 dropdownEl.innerHTML = '';
@@ -327,6 +331,21 @@ window.BO_MODULES = window.BO_MODULES || {};
             const getSegmentContext = () => {
                 const val = inputEl.value || '';
                 const cursor = (typeof inputEl.selectionStart === 'number') ? inputEl.selectionStart : val.length;
+
+                if (!isMultiline && !/[,\;\|]/.test(val)) {
+                    return {
+                        val,
+                        cursor,
+                        textBefore: val,
+                        textAfter: '',
+                        beforeSegment: '',
+                        rawSegment: val,
+                        leadingPrefix: '',
+                        prefix: val.trim(),
+                        afterSegment: ''
+                    };
+                }
+
                 const textBefore = val.substring(0, cursor);
                 const textAfter = val.substring(cursor);
 
@@ -404,9 +423,17 @@ window.BO_MODULES = window.BO_MODULES || {};
                         <span class="predictive-item-badge">${idx === 0 ? 'Tab ↹' : `↵`}</span>
                     `;
 
-                    item.addEventListener('mousedown', (e) => {
+                    const selectSuggestion = (e) => {
                         e.preventDefault();
+                        e.stopPropagation();
                         applySuggestion(phrase);
+                    };
+
+                    item.addEventListener('mousedown', selectSuggestion);
+                    item.addEventListener('click', selectSuggestion);
+                    item.addEventListener('mouseenter', () => {
+                        activeIndex = idx;
+                        updateSelection();
                     });
 
                     dropdownEl.appendChild(item);
@@ -449,6 +476,8 @@ window.BO_MODULES = window.BO_MODULES || {};
                 clearGhost();
                 closeDropdown();
                 renderGeneratorPreviews();
+                inputEl.dispatchEvent(new Event('input', { bubbles: true }));
+                inputEl.dispatchEvent(new Event('change', { bubbles: true }));
             };
 
             const handleInputEvent = () => {
