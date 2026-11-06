@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         customTemplates: JSON.parse(localStorage.getItem('bo_custom_templates') || '[]'),
         customRemedyViews: JSON.parse(localStorage.getItem('bo_custom_remedy_views') || '[]'),
         history: JSON.parse(localStorage.getItem('bo_history') || '[]'),
+        fieldHistory: JSON.parse(localStorage.getItem('bo_field_history') || '{\"descartes\":[],\"soluciones\":[],\"problemas\":[],\"telefonos\":[],\"sots\":[]}'),
         learnedPhrases: JSON.parse(localStorage.getItem('bo_learned_phrases') || '{"descartes":[],"soluciones":[],"problemas":[]}'),
         activeTab: 'tab-generator',
         siacTemplateMode: localStorage.getItem('bo_siac_template_mode') || 'wsp',
@@ -323,6 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (targetId === 'tab-history') {
             if (window.renderHistoryTable) window.renderHistoryTable();
             if (window.renderLatestFullCases) window.renderLatestFullCases();
+            if (window.renderFieldHistoryView) window.renderFieldHistoryView();
         }
     }
     window.switchTab = switchTab;

@@ -21,7 +21,7 @@
                         title="Ver Novedades de esta versión" onmouseover="this.style.transform='scale(1.05)'"
                         onmouseout="this.style.transform='scale(1)'"><span
                             style="background: #334155; color: #cbd5e1; padding: 0.15rem 0.4rem; -webkit-text-fill-color: #cbd5e1; font-weight: normal; text-transform: uppercase;">Versión</span><span
-                            style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.8.5</span></span>
+                            style="background: var(--primary); color: white; padding: 0.15rem 0.5rem; font-weight: bold; -webkit-text-fill-color: white;">2.8.6</span></span>
                 </div>
                 <div class="brand-subtitle">PLATAFORMA LOCAL DE PLANTILLAS Y SEGUIMIENTO PARA BO-FIJA</div>
             </div>
@@ -167,16 +167,6 @@
                                     spellcheck="true" autocomplete="off"></textarea>
                                 <div class="predictive-dropdown" id="dropdownGenDescartes"></div>
                             </div>
-
-                            <span class="form-label" style="margin-top:0.4rem; font-size:0.75rem;">Descartes Rápida
-                                Selección:</span>
-                            <div id="quickDescartesContainer" class="chips-container"></div>
-                        </div>
-
-                        <!-- Hashtags Section -->
-                        <div class="form-group" style="margin-top:1rem;">
-                            <label class="form-label">Etiquetas / Hashtags</label>
-                            <div id="hashtagsContainer" class="chips-container"></div>
                         </div>
 
                         <!-- Categorías Section -->
@@ -269,6 +259,7 @@
 
             </div>
         </section>
+
 
         <!-- ===================================================================
              TAB 2: AYUDA Y SEGUIMIENTO (TRACKER)
@@ -902,7 +893,7 @@
     <div id="changelogModal" class="modal-overlay">
         <div class="modal-content" style="max-width: 720px; max-height: 90vh; display: flex; flex-direction: column;">
             <div class="card-title" style="display:flex; justify-content:space-between; align-items:center;">
-                <div class="card-title-text">🚀 Novedades de la Versión 2.8.5</div>
+                <div class="card-title-text">🚀 Novedades de la Versión 2.8.6</div>
                 <button id="changelogModalClose" class="btn btn-sm">✕</button>
             </div>
 
@@ -910,6 +901,15 @@
                 style="font-size: 0.92rem; line-height: 1.55; color: var(--text-main); margin-top: 1rem; overflow-y: auto; padding-right: 0.4rem;">
                 <ul
                     style="padding-left: 1.3rem; margin-bottom: 1.3rem; display: flex; flex-direction: column; gap: 0.65rem;">
+                    <li
+                        style="border-left: 3px solid #10b981; padding-left: 0.5rem; background: rgba(16, 185, 129, 0.08); border-radius: 0 4px 4px 0; padding-top: 0.35rem; padding-bottom: 0.35rem;">
+                        <strong>🚀 Novedades v2.8.6 — se quitaron los botones de descartes:</strong>
+                        <ul
+                            style="margin-top: 0.35rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.3rem;">
+                            <li>se quitaron los botones de descartes</li>
+                        </ul>
+                    </li>
+
                     <li
                         style="border-left: 3px solid #10b981; padding-left: 0.5rem; background: rgba(16, 185, 129, 0.08); border-radius: 0 4px 4px 0; padding-top: 0.35rem; padding-bottom: 0.35rem;">
                         <strong>🚀 Novedades v2.8.5 — implementacion de historial de capos individuales:</strong>
@@ -1896,27 +1896,27 @@
 
     <!-- SCRIPTS MODULARES ORGANIZADOS POR CAPAS -->
     <!-- 1. Catálogo y Utilidades Base -->
-    <script src="dataset.js?v=2.8.5"></script>
-    <script src="js/core/utils.js?v=2.8.5"></script>
+    <script src="dataset.js?v=2.8.6"></script>
+    <script src="js/core/utils.js?v=2.8.6"></script>
 
     <!-- 2. Motores Inteligentes (Engines) -->
-    <script src="js/engines/autocorrect.js?v=2.8.5"></script>
-    <script src="js/engines/predictive.js?v=2.8.5"></script>
-    <script src="js/engines/case-parser.js?v=2.8.5"></script>
-    <script src="js/engines/category-predictor.js?v=2.8.5"></script>
-    <script src="js/engines/sidebars.js?v=2.8.5"></script>
+    <script src="js/engines/autocorrect.js?v=2.8.6"></script>
+    <script src="js/engines/predictive.js?v=2.8.6"></script>
+    <script src="js/engines/case-parser.js?v=2.8.6"></script>
+    <script src="js/engines/category-predictor.js?v=2.8.6"></script>
+    <script src="js/engines/sidebars.js?v=2.8.6"></script>
 
     <!-- 3. Pestañas Funcionales (Tabs) -->
-    <script src="js/tabs/generator.js?v=2.8.5"></script>
-    <script src="js/tabs/tracker.js?v=2.8.5"></script>
-    <script src="js/tabs/niveles.js?v=2.8.5"></script>
-    <script src="js/tabs/equipos.js?v=2.8.5"></script>
-    <script src="js/tabs/plantillas-custom.js?v=2.8.5"></script>
-    <script src="js/tabs/remedy.js?v=2.8.5"></script>
-    <script src="js/tabs/historial.js?v=2.8.5"></script>
+    <script src="js/tabs/generator.js?v=2.8.6"></script>
+    <script src="js/tabs/tracker.js?v=2.8.6"></script>
+    <script src="js/tabs/niveles.js?v=2.8.6"></script>
+    <script src="js/tabs/equipos.js?v=2.8.6"></script>
+    <script src="js/tabs/plantillas-custom.js?v=2.8.6"></script>
+    <script src="js/tabs/remedy.js?v=2.8.6"></script>
+    <script src="js/tabs/historial.js?v=2.8.6"></script>
 
     <!-- 4. Orquestador y Estado Global -->
-    <script src="app.js?v=2.8.5"></script>
+    <script src="app.js?v=2.8.6"></script>
 </body>
 
 </html>

@@ -419,4 +419,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.BO_MODULES.remedy?.init) window.BO_MODULES.remedy.init(state, elements);
         if (window.BO_MODULES.historial?.init) window.BO_MODULES.historial.init(state, elements);
     }
+
+    
 });

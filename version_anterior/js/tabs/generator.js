@@ -1096,6 +1096,12 @@ ${contactLines}`;
                         };
                     }
 
+                    if (elements.genDescartes?.value) commitFieldHistory('descartes', elements.genDescartes.value);
+                    if (elements.genSolucion?.value) commitFieldHistory('soluciones', elements.genSolucion.value);
+                    if (elements.genProblema?.value) commitFieldHistory('problemas', elements.genProblema.value);
+                    if (elements.genTelefono?.value) commitFieldHistory('telefonos', elements.genTelefono.value);
+                    if (elements.genSot?.value) commitFieldHistory('sots', elements.genSot.value);
+
                     elements.genTelefono.value = '';
                     elements.genSot.value = '';
                     elements.genContactId.value = '';
@@ -1199,6 +1205,100 @@ ${contactLines}`;
                     executeCopyTemplate(elements.previewManto, 'Plantilla Mantenimiento copiada', 'Generador Manto');
                 });
             }
+
+            // ==========================================================================
+            // SALVAVIDAS & CAPTURA INTELIGENTE DE CAMPOS INDIVIDUALES
+            // ==========================================================================
+            function commitFieldHistory(category, text) {
+                if (!text) return;
+                const clean = text.trim();
+                const minLen = (category === 'telefonos' || category === 'sots' || category === 'problemas') ? 4 : 6;
+                if (clean.length < minLen || clean.toUpperCase() === 'N/A') return;
+
+                if (!state.fieldHistory) {
+                    state.fieldHistory = { descartes: [], soluciones: [], problemas: [], telefonos: [], sots: [] };
+                }
+                if (!Array.isArray(state.fieldHistory[category])) {
+                    state.fieldHistory[category] = [];
+                }
+
+                const list = state.fieldHistory[category];
+                const top = list[0];
+
+                if (top && top.text === clean) return;
+
+                const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                if (top && (clean.startsWith(top.text) || top.text.startsWith(clean))) {
+                    top.text = clean;
+                    top.timestamp = timeStr;
+                } else {
+                    const existingIdx = list.findIndex(item => item.text.toLowerCase() === clean.toLowerCase());
+                    if (existingIdx !== -1) {
+                        list.splice(existingIdx, 1);
+                    }
+
+                    list.unshift({
+                        id: Date.now(),
+                        text: clean,
+                        timestamp: timeStr
+                    });
+
+                    if (list.length > 10) {
+                        list.pop();
+                    }
+                }
+
+                try {
+                    localStorage.setItem('bo_field_history', JSON.stringify(state.fieldHistory));
+                } catch (e) {
+                    console.warn('Storage limit for field history', e);
+                }
+
+                if (window.renderFieldHistoryView) {
+                    window.renderFieldHistoryView();
+                }
+            }
+
+            function setupFieldSnapshotTracking(inputEl, category) {
+                if (!inputEl) return;
+                let lastSeenValue = inputEl.value || '';
+                let typingTimer = null;
+
+                inputEl.addEventListener('input', () => {
+                    const currentVal = inputEl.value || '';
+                    if (lastSeenValue.trim().length >= 10 && currentVal.trim().length <= 2) {
+                        commitFieldHistory(category, lastSeenValue);
+                    }
+
+                    if (typingTimer) clearTimeout(typingTimer);
+                    lastSeenValue = currentVal;
+
+                    typingTimer = setTimeout(() => {
+                        commitFieldHistory(category, inputEl.value);
+                    }, 2500);
+                });
+
+                inputEl.addEventListener('blur', () => {
+                    if (typingTimer) clearTimeout(typingTimer);
+                    commitFieldHistory(category, inputEl.value);
+                });
+
+                inputEl.addEventListener('paste', () => {
+                    setTimeout(() => {
+                        lastSeenValue = inputEl.value || '';
+                        commitFieldHistory(category, inputEl.value);
+                    }, 50);
+                });
+            }
+
+            setupFieldSnapshotTracking(elements.genDescartes, 'descartes');
+            setupFieldSnapshotTracking(elements.genSolucion, 'soluciones');
+            setupFieldSnapshotTracking(elements.genProblema, 'problemas');
+            setupFieldSnapshotTracking(elements.genTelefono, 'telefonos');
+            setupFieldSnapshotTracking(elements.genSot, 'sots');
+
+            window.commitFieldHistory = commitFieldHistory;
 
             renderGeneratorPreviews();
         }

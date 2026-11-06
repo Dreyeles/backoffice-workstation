@@ -185,12 +185,13 @@ window.BO_MODULES = window.BO_MODULES || {};
     // Export / Import Backup JSON (incluye plantillas, historial y frases aprendidas)
     elements.btnExportJson.addEventListener('click', () => {
         const backupData = {
-            version: '2.6.5',
+            version: '2.8.4',
             exportDate: new Date().toISOString(),
             advisorName: state.advisorName,
             advisorCode: state.advisorCode,
             customTemplates: state.customTemplates,
             history: state.history,
+            fieldHistory: state.fieldHistory || { descartes: [], soluciones: [], problemas: [], telefonos: [], sots: [] },
             learnedPhrases: state.learnedPhrases || { descartes: [], soluciones: [], problemas: [] }
         };
 
@@ -229,6 +230,12 @@ window.BO_MODULES = window.BO_MODULES || {};
                     localStorage.setItem('bo_history', JSON.stringify(state.history));
                     renderHistoryTable();
                 }
+                if (data.fieldHistory && typeof data.fieldHistory === 'object') {
+                    state.fieldHistory = data.fieldHistory;
+                    localStorage.setItem('bo_field_history', JSON.stringify(state.fieldHistory));
+                    countMsgs.push('borradores de campos');
+                    renderFieldHistoryView();
+                }
                 if (data.learnedPhrases) {
                     state.learnedPhrases = {
                         descartes: Array.from(new Set([...(state.learnedPhrases?.descartes || []), ...(data.learnedPhrases.descartes || [])])),
@@ -247,8 +254,157 @@ window.BO_MODULES = window.BO_MODULES || {};
     });
 
 
-            window.addHistoryRecord = addHistoryRecord;
-            window.renderHistoryTable = renderHistoryTable;
+    // ==========================================================================
+    // RECUPERADOR DE CAMPOS INDIVIDUALES (BORRADORES RECIENTES)
+    // ==========================================================================
+    let activeFieldCategory = 'descartes';
+    const fieldHistoryPills = document.getElementById('fieldHistoryPills');
+    const fieldHistoryList = document.getElementById('fieldHistoryList');
+    const btnClearFieldHistory = document.getElementById('btnClearFieldHistory');
+
+    const countFieldDescartes = document.getElementById('countFieldDescartes');
+    const countFieldSoluciones = document.getElementById('countFieldSoluciones');
+    const countFieldProblemas = document.getElementById('countFieldProblemas');
+    const countFieldTelefonos = document.getElementById('countFieldTelefonos');
+    const countFieldSots = document.getElementById('countFieldSots');
+
+    function renderFieldHistoryView() {
+        if (!state.fieldHistory) {
+            state.fieldHistory = { descartes: [], soluciones: [], problemas: [], telefonos: [], sots: [] };
+        }
+
+        if (countFieldDescartes) countFieldDescartes.textContent = state.fieldHistory.descartes?.length || 0;
+        if (countFieldSoluciones) countFieldSoluciones.textContent = state.fieldHistory.soluciones?.length || 0;
+        if (countFieldProblemas) countFieldProblemas.textContent = state.fieldHistory.problemas?.length || 0;
+        if (countFieldTelefonos) countFieldTelefonos.textContent = state.fieldHistory.telefonos?.length || 0;
+        if (countFieldSots) countFieldSots.textContent = state.fieldHistory.sots?.length || 0;
+
+        if (!fieldHistoryList) return;
+        fieldHistoryList.innerHTML = '';
+
+        const items = state.fieldHistory[activeFieldCategory] || [];
+
+        if (items.length === 0) {
+            fieldHistoryList.innerHTML = `
+                <div style="text-align:center; padding:1.75rem 1rem; color:var(--text-muted); background:rgba(0,0,0,0.1); border-radius:6px; border:1px dashed var(--border-color); font-size:0.85rem;">
+                    📭 No hay textos recientes guardados en esta categoría.<br>
+                    <span style="font-size:0.75rem; opacity:0.75;">Conforme redactes en el generador o si borras un campo por error, se respaldarán aquí automáticamente.</span>
+                </div>
+            `;
+            return;
+        }
+
+        const categoryLabels = {
+            descartes: '📋 Descartes Realizados',
+            soluciones: '💡 Solución del Caso',
+            problemas: '⚠️ Problema Detectado',
+            telefonos: '📱 Teléfono',
+            sots: '🏷️ SOT'
+        };
+
+        items.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.style.cssText = 'background:var(--bg-card); border:1px solid var(--border-color); border-radius:8px; padding:0.75rem 1rem; display:flex; flex-direction:column; gap:0.5rem; transition:border-color 0.2s;';
+            card.onmouseover = () => { card.style.borderColor = 'var(--primary)'; };
+            card.onmouseout = () => { card.style.borderColor = 'var(--border-color)'; };
+
+            card.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:0.35rem;">
+                    <div style="display:flex; align-items:center; gap:0.5rem;">
+                        <span style="background:rgba(59,130,246,0.15); color:#60a5fa; font-weight:700; padding:1px 6px; border-radius:4px;">${categoryLabels[activeFieldCategory] || activeFieldCategory} #${index + 1}</span>
+                        <span style="color:var(--text-muted);">🕒 ${escapeHtml(item.timestamp || 'Reciente')}</span>
+                    </div>
+                    <button type="button" class="btn btn-xs btn-delete-field-item" data-id="${item.id}" style="color:var(--danger); background:transparent; border:none; cursor:pointer; font-size:0.8rem; padding:1px 5px;" title="Eliminar este borrador">✕</button>
+                </div>
+                <div style="white-space:pre-wrap; word-break:break-word; font-family:inherit; font-size:0.85rem; color:var(--text-main); line-height:1.45; background:rgba(0,0,0,0.15); padding:0.5rem 0.75rem; border-radius:6px; max-height:160px; overflow-y:auto;">${escapeHtml(item.text)}</div>
+                <div style="display:flex; justify-content:flex-end; gap:0.5rem; align-items:center;">
+                    <button type="button" class="btn btn-xs btn-copy-field-item" style="padding:4px 10px; font-size:0.75rem; border-radius:4px; cursor:pointer;">📋 Copiar</button>
+                    <button type="button" class="btn btn-xs btn-primary btn-restore-field-item" style="padding:4px 12px; font-size:0.75rem; font-weight:bold; border-radius:4px; cursor:pointer; display:flex; align-items:center; gap:4px;">↩️ Restaurar en Generador</button>
+                </div>
+            `;
+
+            card.querySelector('.btn-copy-field-item').addEventListener('click', () => {
+                copyToClipboard(item.text, 'Texto copiado al portapapeles');
+            });
+
+            card.querySelector('.btn-delete-field-item').addEventListener('click', () => {
+                const idx = state.fieldHistory[activeFieldCategory].findIndex(x => x.id === item.id);
+                if (idx !== -1) {
+                    state.fieldHistory[activeFieldCategory].splice(idx, 1);
+                    localStorage.setItem('bo_field_history', JSON.stringify(state.fieldHistory));
+                    renderFieldHistoryView();
+                    showToast('Borrador eliminado');
+                }
+            });
+
+            card.querySelector('.btn-restore-field-item').addEventListener('click', () => {
+                let restored = false;
+                if (activeFieldCategory === 'descartes' && elements.genDescartes) {
+                    elements.genDescartes.value = item.text;
+                    elements.genDescartes.classList.remove('input-invalid');
+                    restored = true;
+                } else if (activeFieldCategory === 'soluciones' && elements.genSolucion) {
+                    elements.genSolucion.value = item.text;
+                    elements.genSolucion.classList.remove('input-invalid');
+                    restored = true;
+                } else if (activeFieldCategory === 'problemas' && elements.genProblema) {
+                    if (window.setProblemValue) {
+                        window.setProblemValue(item.text);
+                    } else {
+                        elements.genProblema.value = item.text;
+                    }
+                    elements.genProblema.classList.remove('input-invalid');
+                    restored = true;
+                } else if (activeFieldCategory === 'telefonos' && elements.genTelefono) {
+                    elements.genTelefono.value = item.text;
+                    elements.genTelefono.classList.remove('input-invalid');
+                    restored = true;
+                } else if (activeFieldCategory === 'sots' && elements.genSot) {
+                    elements.genSot.value = item.text;
+                    elements.genSot.classList.remove('input-invalid');
+                    restored = true;
+                }
+
+                if (restored) {
+                    if (window.renderGeneratorPreviews) window.renderGeneratorPreviews();
+                    showToast(`✓ ${categoryLabels[activeFieldCategory]} restaurado en el Generador`, 'success');
+                    if (window.switchTab) {
+                        window.switchTab('tab-generator');
+                    }
+                }
+            });
+
+            fieldHistoryList.appendChild(card);
+        });
+    }
+
+    if (fieldHistoryPills) {
+        fieldHistoryPills.querySelectorAll('.chip').forEach(pill => {
+            pill.addEventListener('click', () => {
+                fieldHistoryPills.querySelectorAll('.chip').forEach(p => p.classList.remove('active'));
+                pill.classList.add('active');
+                activeFieldCategory = pill.getAttribute('data-field') || 'descartes';
+                renderFieldHistoryView();
+            });
+        });
+    }
+
+    if (btnClearFieldHistory) {
+        btnClearFieldHistory.addEventListener('click', () => {
+            if (!state.fieldHistory || !state.fieldHistory[activeFieldCategory]?.length) return;
+            if (confirm(`¿Limpiar el historial de borradores de este campo?`)) {
+                state.fieldHistory[activeFieldCategory] = [];
+                localStorage.setItem('bo_field_history', JSON.stringify(state.fieldHistory));
+                renderFieldHistoryView();
+                showToast('Historial del campo vaciado');
+            }
+        });
+    }
+
+    renderFieldHistoryView();
+    window.renderFieldHistoryView = renderFieldHistoryView;
+    window.addHistoryRecord = addHistoryRecord;
+    window.renderHistoryTable = renderHistoryTable;
         }
     };
 })();
